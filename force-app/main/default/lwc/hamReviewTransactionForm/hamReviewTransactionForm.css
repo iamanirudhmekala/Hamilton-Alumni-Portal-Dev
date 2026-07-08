@@ -1,0 +1,511 @@
+/* Hamilton College Brand Colors */
+:host {
+    --ham-primary-blue: #00205B;
+    --ham-secondary-blue: #0056B3;
+    --ham-light-blue-bg: #E8F1F8;
+    --ham-lighter-blue-bg: #EFF6FF;
+    --ham-success-green: #059669;
+    --ham-success-light: #ECFDF5;
+    --ham-success-bright: #86EFAC;
+    --ham-white: #FFFFFF;
+    --ham-gray-text: #6B7280;
+    --ham-dark-text: #111827;
+    --ham-border-gray: #E5E7EB;
+    --ham-light-gray-bg: #F8F9FA;
+    --ham-warning-bg: #FEF3C7;
+    --ham-warning-border: #F59E0B;
+    --ham-warning-text: #78350F;
+    --ham-blue-link: #60A5FA;
+    --ham-blue-text: #1E40AF;
+}
+
+/* Main Container */
+.ham-giving-app {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--ham-light-blue-bg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Header */
+.ham-header {
+    background: var(--ham-primary-blue);
+    padding: 9px 20px 12px;
+}
+
+.ham-header-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ham-white);
+    margin-bottom: 2px;
+}
+
+.ham-header-subtitle {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* Step Indicators */
+.ham-steps {
+    display: flex;
+    background: var(--ham-white);
+    border-bottom: 0.5px solid var(--ham-border-gray);
+}
+
+.ham-step {
+    flex: 1;
+    padding: 10px 4px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--ham-light-gray-bg);
+    border-right: 0.5px solid var(--ham-border-gray);
+    transition: all 0.2s;
+}
+
+.ham-step:last-child {
+    border-right: none;
+}
+
+.ham-step-label {
+    font-size: 10px;
+    color: var(--ham-gray-text);
+    font-weight: 400;
+}
+
+.ham-step-active {
+    background: var(--ham-primary-blue);
+}
+
+.ham-step-active .ham-step-label {
+    color: var(--ham-white);
+    font-weight: 600;
+}
+
+.ham-step-completed {
+    background: var(--ham-success-light);
+    cursor: pointer;
+}
+
+.ham-step-completed .ham-step-label {
+    color: var(--ham-success-green);
+}
+
+.ham-step-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.ham-step-disabled .ham-step-label {
+    color: var(--ham-gray-text);
+}
+
+/* Content Card */
+.ham-content-card {
+    background: var(--ham-white);
+    border: 0.5px solid var(--ham-border-gray);
+    border-radius: 14px;
+    margin: 12px 16px;
+    padding: 20px 16px;
+    min-height: 600px;
+}
+
+.ham-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+
+/* Section Labels */
+.ham-section-label {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.7px;
+    color: var(--ham-gray-text);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+/* Frequency Buttons */
+.ham-frequency-buttons {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+}
+
+.ham-frequency-button {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--ham-border-gray);
+    border-radius: 8px;
+    background: var(--ham-light-gray-bg);
+    color: var(--ham-gray-text);
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ham-frequency-button:hover {
+    background: var(--ham-border-gray);
+}
+
+.ham-frequency-active {
+    background: var(--ham-primary-blue);
+    border-color: var(--ham-primary-blue);
+    color: var(--ham-white);
+    font-weight: 600;
+}
+
+/* Amount Container */
+.ham-amount-container {
+    background: var(--ham-light-gray-bg);
+    border: 2px solid var(--ham-secondary-blue);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+.ham-amount-label {
+    font-size: 12px;
+    color: var(--ham-gray-text);
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.ham-amount-input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ham-white);
+    border: 2.5px solid var(--ham-secondary-blue);
+    border-radius: 10px;
+    padding: 8px 16px;
+}
+
+.ham-dollar-sign {
+    font-size: 34px;
+    font-weight: 600;
+    color: var(--ham-primary-blue);
+    margin-right: 4px;
+}
+
+.ham-amount-input {
+    border: none;
+    outline: none;
+    font-size: 44px;
+    font-weight: 600;
+    color: var(--ham-primary-blue);
+    text-align: center;
+    width: 100%;
+    max-width: 200px;
+    background: transparent;
+}
+
+.ham-amount-input::placeholder {
+    color: var(--ham-gray-text);
+    opacity: 0.5;
+}
+
+/* Total Box */
+.ham-total-box {
+    background: var(--ham-lighter-blue-bg);
+    border: 1px solid var(--ham-blue-link);
+    border-radius: 10px;
+    padding: 13px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ham-blue-text);
+    margin-bottom: 20px;
+}
+
+/* Suggested Amounts */
+.ham-suggested-amounts {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.ham-suggested-button {
+    padding: 10px;
+    border: 1px solid var(--ham-border-gray);
+    border-radius: 8px;
+    background: var(--ham-white);
+    color: var(--ham-gray-text);
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ham-suggested-button:hover {
+    background: var(--ham-light-blue-bg);
+    border-color: var(--ham-primary-blue);
+}
+
+.ham-suggested-button.active {
+    background: var(--ham-light-blue-bg);
+    border: 2px solid var(--ham-primary-blue);
+    color: var(--ham-primary-blue);
+    font-weight: 600;
+}
+
+/* Checkbox */
+.ham-checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--ham-white);
+    border: 1px solid var(--ham-border-gray);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+.ham-checkbox {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 1px solid var(--ham-border-gray);
+    border-radius: 4px;
+    background: var(--ham-light-blue-bg);
+}
+
+.ham-checkbox-label {
+    font-size: 12px;
+    color: var(--ham-dark-text);
+    cursor: pointer;
+    margin: 0;
+}
+
+/* Tip Box */
+.ham-tip-box {
+    background: var(--ham-warning-bg);
+    border: 1px solid var(--ham-warning-border);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 11px;
+    color: var(--ham-warning-text);
+    margin-bottom: 16px;
+}
+
+/* Buttons */
+.ham-primary-button {
+    width: 100%;
+    background: var(--ham-primary-blue);
+    color: var(--ham-white);
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ham-primary-button:hover {
+    background: #001847;
+}
+
+.ham-back-button {
+    background: var(--ham-light-gray-bg);
+    border: 1px solid var(--ham-border-gray);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: var(--ham-gray-text);
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: all 0.2s;
+}
+
+.ham-back-button:hover {
+    background: var(--ham-border-gray);
+}
+
+/* Selected Designations Box */
+.ham-selected-box {
+    background: var(--ham-success-light);
+    border: 2px solid var(--ham-success-bright);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+}
+
+.ham-selected-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ham-success-green);
+    margin-bottom: 8px;
+}
+
+.ham-selected-divider {
+    height: 1px;
+    background: var(--ham-success-bright);
+    margin-bottom: 8px;
+}
+
+.ham-selected-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+}
+
+.ham-selected-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ham-dark-text);
+}
+
+.ham-selected-amount {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ham-secondary-blue);
+}
+
+/* Total Gift Box */
+.ham-total-gift-box {
+    background: var(--ham-lighter-blue-bg);
+    border: 1px solid var(--ham-blue-link);
+    border-radius: 8px;
+    padding: 11px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ham-blue-text);
+    margin-bottom: 12px;
+}
+
+/* Designation Tabs */
+.ham-designation-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.ham-designation-tab {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--ham-border-gray);
+    border-radius: 8px;
+    background: var(--ham-light-gray-bg);
+    color: var(--ham-gray-text);
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ham-designation-tab:hover {
+    background: var(--ham-border-gray);
+}
+
+.ham-tab-active {
+    background: var(--ham-primary-blue);
+    border-color: var(--ham-primary-blue);
+    color: var(--ham-white);
+    font-weight: 600;
+}
+
+/* Info Box */
+.ham-info-box {
+    background: var(--ham-lighter-blue-bg);
+    border: 1px solid var(--ham-blue-link);
+    border-radius: 8px;
+    padding: 11px 12px;
+    font-size: 11px;
+    color: var(--ham-blue-text);
+    margin-bottom: 12px;
+}
+
+/* Transition Spinner */
+.ham-transition-spinner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    padding: 40px 20px;
+}
+
+.ham-spinner-text {
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ham-primary-blue);
+}
+
+/* Landing Screen */
+.ham-landing {
+    text-align: center;
+    padding: 8px 0;
+}
+
+.ham-landing-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ham-primary-blue);
+    margin-bottom: 10px;
+}
+
+.ham-landing-subtitle {
+    font-size: 13px;
+    color: var(--ham-gray-text);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.ham-landing-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ham-landing-card {
+    background: var(--ham-light-gray-bg);
+    border: 1.5px solid var(--ham-border-gray);
+    border-radius: 12px;
+    padding: 20px 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.ham-landing-card:hover {
+    border-color: var(--ham-secondary-blue);
+    background: var(--ham-lighter-blue-bg);
+    box-shadow: 0 2px 8px rgba(0, 32, 91, 0.08);
+}
+
+.ham-landing-card-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.ham-landing-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ham-primary-blue);
+    margin-bottom: 4px;
+}
+
+.ham-landing-card-desc {
+    font-size: 12px;
+    color: var(--ham-gray-text);
+    line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .ham-giving-app {
+        max-width: 100%;
+    }
+
+    .ham-content-card {
+        margin: 8px;
+    }
+}

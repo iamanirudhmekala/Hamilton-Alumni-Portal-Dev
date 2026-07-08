@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Household_Prospect_Stage__c</fullName>
+    <description>This field is used to understand the Constituent Prospect stage from Account&apos;s Prospect Stage.</description>
+    <label>Household Prospect Stage</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Identified</fullName>
+                <default>false</default>
+                <label>Identified</label>
+            </value>
+            <value>
+                <fullName>Qualify</fullName>
+                <default>false</default>
+                <label>Qualify</label>
+            </value>
+            <value>
+                <fullName>Cultivate/Open</fullName>
+                <default>false</default>
+                <label>Cultivate/Open</label>
+            </value>
+            <value>
+                <fullName>Negotiate/Close</fullName>
+                <default>false</default>
+                <label>Negotiate/Close</label>
+            </value>
+            <value>
+                <fullName>Steward</fullName>
+                <default>false</default>
+                <label>Steward</label>
+            </value>
+            <value>
+                <fullName>Not a Prospect</fullName>
+                <default>false</default>
+                <label>Not a Prospect</label>
+            </value>
+            <value>
+                <fullName>Gatekeeping</fullName>
+                <default>false</default>
+                <label>Gatekeeping</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

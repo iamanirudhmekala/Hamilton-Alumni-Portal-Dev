@@ -1,0 +1,19 @@
+<template>
+    <template lwc:if={isDiscoveryMode}>
+        <c-ham_groups-discovery onviewgroup={handleViewGroup} user-contact-id={userContactId} viewtoggle={viewtoggle}
+         images={images} label={label}  is-override={isOverride}>
+
+        </c-ham_groups-discovery> 
+    </template>
+
+    <template lwc:else>
+        <c-ham_group-dashboard
+            group-id={groupId}
+            subview={subview}
+            user-contact-id={userContactId}
+            is-override={isOverride}
+            onnavigategroup={handleViewGroup}
+            onbacktodiscovery={handleBackToDiscovery}>
+        </c-ham_group-dashboard>
+    </template>
+</template>

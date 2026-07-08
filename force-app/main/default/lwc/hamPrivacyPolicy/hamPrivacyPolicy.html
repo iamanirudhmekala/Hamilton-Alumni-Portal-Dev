@@ -1,0 +1,756 @@
+<template>
+
+    <!-- Header -->
+    <div class="header">
+        Hamilton
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+
+        <!-- Top Tabs -->
+        <div class="top-tabs">
+
+            <div
+                class={privacyClass}
+                onclick={showPrivacy}>
+                Privacy Policy
+            </div>
+
+            <div
+                class={agreementClass}
+                onclick={showAgreement}>
+                User Agreement License
+            </div>
+
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-container">
+
+            <div class="right-panel">
+
+                <!-- Privacy Policy -->
+                <template if:true={isPrivacy}>
+
+                    <div class="document-container">
+
+                        <h1>Hamilton Advancement Digital Services Privacy Policy </h1>
+
+  <p>Last modified: 12-05-2026 </p>
+
+
+<h2>Introduction</h2>
+
+
+
+
+<p>Hamilton College ("Hamilton" or "we") respect your privacy and are committed to protecting it through our compliance with this policy. This Privacy Policy ("Policy") describes:</p>
+
+
+<ul>
+
+
+<li>The types of information we may collect or that you may provide when you download, install, create an account on, access, or use the Hamilton College Advancement: Salesforce Experience Cloud Mobile Go Application or portal website (collectively the "Advancement Digital Services").</li>
+
+
+<li>Our practices for collecting, using, maintaining, protecting, and disclosing that information.</li>
+
+
+</ul>
+
+
+
+
+
+
+<p>This Policy applies only to information we collect via the Advancement Digital Services and in email, text, and other electronic communications sent through or in connection with the Advancement Digital Services. If you are located within the European Union and are looking for more information, please visit our <a href="https://www.hamilton.edu/gdpr">GDPR Privacy Notices</a>.</p>
+
+
+
+
+
+
+<div class="callout">
+
+
+<strong>Important</strong>
+
+
+This policy does <em>not</em> apply to information we collect offline or on any other Hamilton apps or websites, nor to information you provide to or that is collected by any third party.
+
+
+</div>
+
+
+
+
+
+
+<p>Please read this Policy carefully to understand our policies and practices regarding your information and how we will treat it. If you do not agree with our policies and practices, do not download, create an account, or use the Advancement Digital Services. By downloading, creating an account, or using the Advancement Digital Services, you agree to this Privacy Policy and our <a href="#">Terms of Use</a>, incorporated herein by reference. This Policy may change from time to time (see <a href="#changes">Changes to Our Privacy Policy</a>). Your continued use of the Advancement Digital Services after we revise this Policy means you accept those changes, so please check the Policy periodically for updates.</p>
+
+
+
+
+
+
+<!-- Children -->
+
+
+<h2>Children Under the Age of 13</h2>
+
+
+<p>The Advancement Digital Services are not intended for children under 13 years of age. No one under age 13 may provide any information from children under 13. We do not knowingly collect personal information from children under 13. If you are under 13, do not use or provide any information on the Advancement Digital Services or through any of its features, create an account, or provide any information about yourself to us, including your name, address, telephone number, email address, or any screen name or username you may use.</p>
+
+
+<p>If we learn we have collected or received personal information from a child under 13 without verification of parental consent, we will delete that information. If you believe we might have any information from or about a child under 13, please <a href="#contact">contact us</a>.</p>
+
+
+
+
+
+
+<!-- Information We Collect -->
+
+
+<h2>Information We Collect and How We Collect It</h2>
+
+
+<p>We collect information from and about users of our Advancement Digital Services:</p>
+
+
+<ul>
+
+
+<li>Directly from you when you provide it to us.</li>
+
+
+<li>Automatically when you use the Advancement Digital Services.</li>
+
+
+<li>From our internal records related to your time at Hamilton.</li>
+
+
+<li>From publicly available sources.</li>
+
+
+</ul>
+
+
+
+
+
+
+<h3>Information You Provide to Us</h3>
+
+
+<p>When you download, create an account, or use the Advancement Digital Services, we may ask you to provide information:</p>
+
+
+<ul>
+
+
+<li>By which you may be personally identified, such as name, address, email address, telephone number, account credentials, graduation and post-graduation information, employment information, location information (if enabled), profile photo (if enabled and shared), or any other information that may be considered personal information under applicable law ("personal information").</li>
+
+
+</ul>
+
+
+<p>This information includes:</p>
+
+
+<ul>
+
+
+<li>Information that you provide by completing webforms via the Advancement Digital Services, including information provided at the time of creating an account and posting information.</li>
+
+
+<li>Records and copies of your correspondence (including email addresses and phone numbers), if you contact us.</li>
+
+
+<li>Your responses to surveys or other inquiries that we might ask you to complete.</li>
+
+
+<li>Your search queries in the Advancement Digital Services.</li>
+
+
+</ul>
+
+
+
+
+
+
+<h3>Information We Collect Through Automatic Data Collection Technologies</h3>
+
+
+<p>As you navigate through and interact with our Advancement Digital Services, we may use automatic data collection technologies to collect certain information about your device, browsing, and usage activity, including:</p>
+
+
+<ul>
+
+
+<li><strong>Usage Details.</strong> Traffic data, location data, logs, and other communication data and the resources you access and use on or through the Advancement Digital Services.</li>
+
+
+<li><strong>Device Information.</strong> Your device's unique identifier, IP address, operating system, browser type, mobile network information, and the device's telephone number.</li>
+
+
+<li><strong>Stored Information and Files.</strong> Metadata and other information associated with other files stored on your device — for example, photographs, audio and video clips, personal contacts, and address book information — if you enable such access.</li>
+
+
+<li><strong>Location Information.</strong> Real-time information about the location of your device, if you enable such access.</li>
+
+
+</ul>
+
+
+
+
+
+
+<p>If you do not want us to collect this information, do not download the Advancement Digital Services, delete it from your device, or do not enable certain features (like location services or photo sharing). Please note that opting out of location information collection will disable its location-based features.</p>
+
+
+
+
+
+
+<h3>Technologies Used for Automatic Collection</h3>
+
+
+<ul>
+
+
+<li><strong>Cookies</strong> are small files placed on your device that allow us to recognize your browser and store preferences or settings. Types of cookies we use include:
+
+
+<ul>
+
+
+<li><em>Strictly Necessary Cookies:</em> Required for the Advancement Digital Services to function and cannot be switched off.</li>
+
+
+<li><em>Functional Cookies:</em> Enable enhanced functionality and personalization.</li>
+
+
+<li><em>Marketing Cookies:</em> Used to support promotional features and measure engagement, such as displaying institutional messages or understanding aggregate interaction with campaigns.</li>
+
+
+</ul>
+
+
+</li>
+
+
+<li><strong>Pixels</strong> are small pieces of code embedded on a webpage that help track user interactions, such as page views or clicks. They are often used to measure the effectiveness of advertising and may allow third-party providers to collect information about your activity for analytics and marketing purposes.</li>
+
+
+<li><strong>Analytics</strong> may be provided by third-party vendors to analyze traffic and usage. For example, we utilize Google Analytics, which tracks and reports website traffic. You can opt out of Google Analytics by installing the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics opt-out browser add-on</a>. For more information, please visit the <a href="https://policies.google.com/privacy?hl=en" target="_blank" rel="noopener">Google Privacy Terms</a> page.</li>
+
+
+</ul>
+
+
+
+
+
+
+<p>We may tie non-personal information collected automatically to personal information about you that we collect from other sources or that you provide to us.</p>
+
+
+<p>By using the Advancement Digital Services, unless you set your browser otherwise, you consent to our use of these technologies as described above. If you do not want to allow cookies or analytics cookies, you can generally opt out by setting your browser to reject cookies. Please be aware that disabling cookies may limit functionality and impact your overall experience.</p>
+
+
+
+
+
+
+<!-- User Generated Content -->
+
+
+<h2>User Generated Content</h2>
+
+
+<p>Some features of our Advancement Digital Services enable users to submit their own content, such as through messaging boards or connecting and messaging with others. You understand and agree that Hamilton may not review, audit, or otherwise verify the accuracy of your data. Please remember that any Personal Information you submit or post as user-generated content could in some cases be seen by others or become public.</p>
+
+
+<p>If you submit such information, you are solely responsible for any information uploaded or entered. You should exercise caution when deciding to disclose your Personal Information in such submissions or posts. We cannot prevent others from using that information in a manner that may violate this Policy or the law. You shall not provide any information other than your own, or of others without their express consent.</p>
+
+
+
+
+
+
+<!-- How We Use -->
+
+
+<h2>How We Use Your Information</h2>
+
+
+<p>We use information that we collect about you or that you provide to us, including any personal information, to:</p>
+
+
+<ul>
+
+
+<li>Provide you with the Advancement Digital Services and its contents, and any other information, products, or services that you request from us, including by providing a more personalized experience.</li>
+
+
+<li>Improve our Advancement Digital Services.</li>
+
+
+<li>Alumni and donor outreach and engagement.</li>
+
+
+<li>Marketing and analytics.</li>
+
+
+<li>Fulfill any other purpose for which you provide it.</li>
+
+
+<li>Give you notices about your account.</li>
+
+
+<li>Carry out our obligations and enforce our rights arising from any contracts entered into between you and us.</li>
+
+
+<li>Notify you when Advancement Digital Services updates are available, and of changes to any products or services we offer or provide through it.</li>
+
+
+<li>Feedback purposes.</li>
+
+
+<li>Promotional and recruiting purposes, including soliciting financial contributions.</li>
+
+
+<li>Statistical and behavioral analysis of online behavior for development purposes.</li>
+
+
+<li>Content improvement and customization.</li>
+
+
+<li>To detect, prevent, and address technical issues.</li>
+
+
+<li>To prevent and detect criminal and/or fraudulent activity.</li>
+
+
+<li>Legal compliance.</li>
+
+
+<li>Other purposes for which we have obtained your consent.</li>
+
+
+</ul>
+
+
+
+
+
+
+<!-- Disclosure -->
+
+
+<h2>Disclosure of Your Information</h2>
+
+
+<p>We may disclose aggregated information about our users, and information that does not identify any individual or device, without restriction.</p>
+
+
+<p>In addition, we may disclose personal information that we collect or you provide:</p>
+
+
+<ul>
+
+
+<li>To our subsidiaries and affiliates.</li>
+
+
+<li>To contractors, service providers, and other third parties we use to support our business, including our digital services developers.</li>
+
+
+<li>To a buyer or other successor in the event of a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Hamilton's assets.</li>
+
+
+<li>To fulfill the purpose for which you provide it.</li>
+
+
+<li>For any other purpose disclosed by us when you provide the information.</li>
+
+
+<li>With your consent.</li>
+
+
+</ul>
+
+
+<p>We may also disclose your personal information:</p>
+
+
+<ul>
+
+
+<li>To comply with any court order, law, or legal process, including to respond to any government or regulatory request.</li>
+
+
+<li>To enforce our rights arising from any contracts entered into between you and us, including the <a href="#">Terms of Use</a>.</li>
+
+
+<li>If we believe disclosure is necessary or appropriate to protect the rights, property, or safety of Hamilton, our students, alumni, faculty and staff, or others.</li>
+
+
+</ul>
+
+
+
+
+
+
+<!-- Choices -->
+
+
+<h2>Choices About How We Use and Disclose Your Information</h2>
+
+
+<p>We strive to provide you with choices regarding the information you provide to us:</p>
+
+
+<ul>
+
+
+<li><strong>Tracking Technologies.</strong> You can set your browser to refuse all or some browser cookies, or to alert you when cookies are being sent. If you disable or refuse cookies, some parts of the Advancement Digital Services may be inaccessible or not function properly.</li>
+
+
+<li><strong>Location Information.</strong> You can choose whether or not to allow the Advancement Digital Services to collect and use real-time location data through the device's privacy settings. If you block location information, some features may become inaccessible or not function properly.</li>
+
+
+<li><strong>Promotion by Hamilton.</strong> If you do not want us to use your email address or other contact information to promote our advancement services, you can opt out by logging into the Advancement Digital Services and adjusting your user preferences in your account profile, or by sending us an email.</li>
+
+
+</ul>
+
+
+<p>We do not control third parties' collection or use of your information to serve interest-based advertising. However, these third parties may provide you with ways to choose not to have your information collected or used in this way. You can opt out of receiving targeted ads from members of the Network Advertising Initiative ("NAI") on the <a href="https://optout.networkadvertising.org/" target="_blank" rel="noopener">NAI's website</a>.</p>
+
+
+
+
+
+
+<!-- Accessing -->
+
+
+<h2>Accessing and Correcting Your Personal Information and Account</h2>
+
+
+<p>You can review and change your personal information by logging into the Advancement Digital Services and visiting your account profile page. You may also send us an email to request correction to any personal information that you have provided to us. You may request deletion of your account via your account profile or by emailing us.</p>
+
+
+
+
+
+
+<!-- Third Party Links -->
+
+
+<h2>Third Party Links</h2>
+
+
+<p>The Advancement Digital Services may contain links to other websites or applications, including social media platforms, which are operated by us or third parties. Please be aware that Hamilton is not responsible for the privacy practices of any third party. Once you enter those websites from a link from our Advancement Digital Services, our Privacy Policy and Terms of Use do not apply. We do not control and accept no liability or responsibility for those websites. Please consult the terms and conditions and privacy policies of those third-party websites to find out how they collect and use your information.</p>
+
+
+
+
+
+
+<!-- Retention -->
+
+
+<h2>Retention</h2>
+
+
+<p>Hamilton retains personal information processed and collected via the Advancement Digital Services for as long as necessary to maintain alumni relations, academic, archiving purposes, and our other legitimate business purposes. Hamilton will process and store your personal information only for the period necessary to achieve the purpose of the storage, or as permitted by law.</p>
+
+
+
+
+
+
+<!-- Data Security -->
+
+
+<h2>Data Security</h2>
+
+
+<p>We have implemented measures designed to secure your information from accidental loss and from unauthorized access, use, alteration, and disclosure. However, the safety and security of your information also depends on you. Where we have given you (or where you have chosen) a password for access to certain parts of our Advancement Digital Services, you are responsible for keeping this password confidential. We ask you not to share your password with anyone.</p>
+
+
+<p>Unfortunately, the transmission of information via the internet and mobile platforms is not completely secure. Although we do our best to protect your information, we cannot guarantee the security of your personal information transmitted through our Advancement Digital Services. Any transmission of personal information is at your own risk. We are not responsible for circumvention of any privacy settings or security measures included through the Advancement Digital Services.</p>
+
+
+
+
+
+
+<!-- Changes -->
+
+
+<h2 id="changes">Changes to Our Privacy Policy</h2>
+
+
+<p>We may update our Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. We will let you know via email and/or other notice prior to any material changes becoming effective and we will update the "Last Modified" date at the top of this Policy. You are advised to review this Policy periodically for any changes. Changes to this Policy are effective when they are posted on this page.</p>
+
+
+
+
+
+
+<hr />
+
+
+
+
+
+
+<!-- Contact -->
+
+
+<h2 id="contact">Contact Information</h2>
+
+
+<p>If you have any questions concerning these policies, please contact us at:</p>
+
+
+<div class="callout">
+
+
+<strong>Contact </strong>
+
+
+Information Security Officer<br />
+
+
+198 College Hill Road<br />
+
+
+Clinton, NY 13323<br />
+
+
+Email: <a href="mailto:jtylutki@hamilton.edu">jtylutki@hamilton.edu</a>
+
+
+</div>
+
+
+
+
+
+
+
+
+                    </div>
+
+                </template>
+
+                <!-- Agreement -->
+                <template if:true={isAgreement}>
+
+                    <div class="document-container">
+
+  
+  <h1>Hamilton College Advancement Digital Services<br>End User License Agreement</h1>
+
+
+  <p>This End User License Agreement ("Agreement") is a binding agreement between you ("End User," "you," "your," or "Licensee") and Hamilton College ("Hamilton," "we," or "us"). This Agreement governs your use of the Hamilton College Advancement: Salesforce Experience Cloud Mobile Go Application (the "Application") and the advancement portal website (the "Portal Website") (collectively, the "Advancement Digital Services"). The Advancement Digital Services are licensed, not sold, to you.</p>
+
+  
+  <div class="notice">
+    <strong>Important Notice </strong>
+    BY DOWNLOADING, ACCESSING, INSTALLING, OR USING THE ADVANCEMENT DIGITAL SERVICES, YOU (A) ACKNOWLEDGE THAT YOU HAVE READ AND UNDERSTAND THIS AGREEMENT; (B) REPRESENT THAT YOU ARE 18 YEARS OF AGE OR OLDER OR OTHERWISE OF LEGAL AGE TO ENTER INTO A BINDING AGREEMENT; AND (C) ACCEPT THIS AGREEMENT AND AGREE THAT YOU ARE LEGALLY BOUND BY ITS TERMS. IF YOU DO NOT AGREE TO THESE TERMS, DO NOT DOWNLOAD, ACCESS, INSTALL, OR USE THE ADVANCEMENT DIGITAL SERVICES AND DELETE THE APPLICATION FROM YOUR MOBILE DEVICE.
+  </div>
+
+  <!-- 1 -->
+  <section>
+    <h2><span class="sec-num">1</span> License Grant</h2>
+    <p>Subject to the terms of this Agreement, Hamilton grants you a limited, non-exclusive, and nontransferable license to:</p>
+    <ol class="alpha-list">
+      <li><span class="list-label">a.</span><span>Download, install, access, and use the Advancement Digital Services for your personal, non-commercial use on devices owned or otherwise controlled by you ("Devices") strictly in accordance with the Advancement Digital Services' documentation; and</span></li>
+      <li><span class="list-label">b.</span><span>Access, stream, download, and use the Advancement Digital Services and content and services made available in or otherwise accessible strictly in accordance with this Agreement.</span></li>
+    </ol>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <h2><span class="sec-num">2</span> License Restrictions and Prohibited Uses</h2>
+    <p>You may use the Advancement Digital Services only for lawful purposes and in accordance with this Agreement. You agree not to use the Advancement Digital Services to:</p>
+    <ol class="alpha-list">
+      <li><span class="list-label">a.</span><span>Copy the Advancement Digital Services, except as expressly permitted by this license;</span></li>
+      <li><span class="list-label">b.</span><span>Modify, translate, adapt, or otherwise create derivative works or improvements, whether or not patentable, of the Advancement Digital Services;</span></li>
+      <li><span class="list-label">c.</span><span>Reverse engineer, disassemble, decompile, decode, or otherwise attempt to derive or gain access to the source code of the Advancement Digital Services or any part thereof;</span></li>
+      <li><span class="list-label">d.</span><span>Remove, delete, alter, or obscure any trademark or any copyright, trademark, patent, or other intellectual property or proprietary rights notices from the Advancement Digital Services, including any copy thereof;</span></li>
+      <li><span class="list-label">e.</span><span>Rent, lease, lend, sell, sublicense, assign, distribute, publish, transfer, or otherwise make available the Advancement Digital Services, or any feature or functionality of the Advancement Digital Services, to any third party for any reason;</span></li>
+      <li><span class="list-label">f.</span><span>Use any robot, spider, or other automatic device, process, or means to access the Advancement Digital Services for any purpose, including monitoring or copying any of the material on the Advancement Digital Services;</span></li>
+      <li><span class="list-label">g.</span><span>Use any manual process to monitor or copy any of the material on the Advancement Digital Services, or for any other purpose not expressly authorized in this Agreement, without Hamilton's prior written consent;</span></li>
+      <li><span class="list-label">h.</span><span>Frame, mirror, or otherwise incorporate the Advancement Digital Services or any portion thereof as part of any other mobile application, website, or service;</span></li>
+      <li><span class="list-label">i.</span><span>In any manner that could disable, overburden, damage, or impair the Advancement Digital Services or interfere with any other party's use of the Advancement Digital Services;</span></li>
+      <li><span class="list-label">j.</span><span>Remove, disable, circumvent, or otherwise create or implement any workaround to any copy protection, rights management, or security features in or protecting the Advancement Digital Services;</span></li>
+      <li><span class="list-label">k.</span><span>In, or in association with, the design, construction, maintenance, or operation of any hazardous environments or systems, safety-critical applications, vehicle operation applications or any police, fire, or other safety response systems, and military or aerospace applications, weapons systems, or environments;</span></li>
+      <li><span class="list-label">l.</span><span>In any way that violates any applicable law;</span></li>
+      <li><span class="list-label">m.</span><span>For the purpose of exploiting, harming, or attempting to exploit or harm minors in any way by exposing them to inappropriate content, asking for personally identifiable information, or otherwise;</span></li>
+      <li><span class="list-label">n.</span><span>To transmit, or procure the sending of, any advertising or promotional material without our prior written consent, including any "junk mail," "chain letter," "spam," or any other similar solicitation;</span></li>
+      <li><span class="list-label">o.</span><span>To impersonate or attempt to impersonate Hamilton, a Hamilton employee, another user, or any other person or entity (including, without limitation, by using email addresses or screen names associated with any of the foregoing);</span></li>
+      <li><span class="list-label">p.</span><span>To engage in any other conduct that restricts or inhibits anyone's use or enjoyment of the Advancement Digital Services, or which, as determined by us, may harm Hamilton, or expose them to liability; or</span></li>
+      <li><span class="list-label">q.</span><span>Otherwise attempt to interfere with the proper working of the Advancement Digital Services.</span></li>
+    </ol>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <h2><span class="sec-num">3</span> Reservation of Rights</h2>
+    <p>You acknowledge and agree that the Advancement Digital Services are provided under license, and not sold, to you. You do not acquire any ownership interest in the Advancement Digital Services under this Agreement, or any other rights thereto other than to use the Advancement Digital Services in accordance with the license granted, and subject to all terms, conditions, and restrictions, under this Agreement. Hamilton and its licensors and service providers reserve and shall retain their entire right, title, and interest in and to the Advancement Digital Services, including all copyrights, trademarks, and other intellectual property rights therein or relating thereto, except as expressly granted to you in this Agreement.</p>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <h2><span class="sec-num">4</span> Collection and Use of Your Information</h2>
+    <p>You acknowledge that when you download, install, access, or use the Advancement Digital Services, Hamilton may use automatic means (including, for example, cookies and web beacons) to collect information about your device and about your use of the Advancement Digital Services. You also may be required to provide certain information about yourself as a condition to downloading, installing, accessing, or using the Advancement Digital Services or certain of its features or functionality, and the Advancement Digital Services may provide you with opportunities to share information about yourself with others.</p>
+    <p>All information we collect through or in connection with the Advancement Digital Services is subject to our Advancement Digital Services Privacy Policy, incorporated herein by reference. By downloading, installing, using, accessing, and providing information to or through the Advancement Digital Services, you consent to all actions taken by us with respect to your information in compliance with the Privacy Policy.</p>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <h2><span class="sec-num">5</span> Website Access</h2>
+    <p>The Advancement Digital Services may provide you with access to Hamilton's website located at <a href="https://www.hamilton.edu/">https://www.hamilton.edu/</a> and products and services accessible thereon, and certain features, functionality, and content accessible on or through the Advancement Digital Services may be hosted on the Website (collectively, "Content and Services"). Your access to and use of such Content and Services are governed by the Website's <a href="https://www.hamilton.edu/privacy/website-terms-of-use">Terms of Use</a> and <a href="https://www.hamilton.edu/privacy">Privacy Policy</a>, which are incorporated herein by this reference. Any violation of such Terms of Use will also be deemed a violation of this Agreement.</p>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <h2><span class="sec-num">6</span> Geographic Restrictions</h2>
+    <p>Hamilton is based in the state of New York in the United States. You acknowledge that you may not be able to access all or some of the Content and Services outside of the United States and that access thereto may not be legal by certain persons or in certain countries. If you access the Website from outside the United States, you do so at your own initiative and risk, and consent to potential processing, collection, and transfer of your Personal Data to a country that may have different privacy laws and that may or may not be as comprehensive as your own.</p>
+  </section>
+
+  <!-- 7 -->
+  <section>
+    <h2><span class="sec-num">7</span> User Contributions; Content Standards; Monitoring and Enforcement</h2>
+    <p>The Advancement Digital Services may include interactive features that allow users to post, submit, publish, display, or transmit content ("User Contributions"). All User Contributions are non-confidential and non-proprietary and must comply with this Agreement, the Website Terms of Use, and all applicable laws.</p>
+    <p>By submitting User Contributions, you represent and warrant that you own or control all necessary rights to such content and grant Hamilton and its affiliates, licensors, service providers, successors, and assigns a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, perform, display, distribute, and otherwise disclose such content for purposes related to the Advancement Digital Services. You are solely responsible for your User Contributions, including their legality, accuracy, and appropriateness, and Hamilton assumes no responsibility or liability for user-generated content.</p>
+    <p>User Contributions must not violate applicable law or infringe the rights of others and must not be defamatory, obscene, sexually explicit, abusive, harassing, hateful, deceptive, violent, discriminatory, or otherwise objectionable; promote illegal activity; impersonate any person or entity; involve unauthorized commercial activity; or otherwise interfere with the safe and proper operation of the Advancement Digital Services.</p>
+    <p>Hamilton reserves the right, but does not assume any obligation, to monitor, review, remove, restrict, or refuse to post any User Contributions; to take any action deemed necessary or appropriate in response to User Contributions or use of the Advancement Digital Services; to disclose user information as required to comply with law or protect rights, safety, or property; and to suspend or terminate access to the Advancement Digital Services for any violation of this Agreement. Hamilton has no liability for any action or inaction regarding User Contributions or for the removal or non-removal of content.</p>
+  </section>
+
+  <!-- 8 -->
+  <section>
+    <h2><span class="sec-num">8</span> Reliance on Information Posted; Updates</h2>
+    <p>The information presented on or through the Advancement Digital Services is made available solely for general information purposes. We do not warrant the accuracy, completeness, or usefulness of this information. Any reliance you place on such information is strictly at your own risk. Hamilton disclaims all liability and responsibility arising from any reliance placed on such materials by you or any other visitor to the Advancement Digital Services, or by anyone who may be informed of any of its contents.</p>
+    <p>Hamilton may from time to time in its sole discretion develop and provide Advancement Digital Services updates, which may include upgrades, bug fixes, patches, other error corrections, and/or new features (collectively, including related documentation, "Updates"). Updates may also modify or delete in their entirety certain features and functionality. You agree that Hamilton has no obligation to provide any Updates or to continue to provide or enable any particular features or functionality.</p>
+    <p>Based on your device settings, when your device is connected to the internet either: (i) the Advancement Digital Services will automatically download and install all available Updates; or (ii) you may receive notice of or be prompted to download and install available Updates. You shall promptly download and install all Updates and acknowledge and agree that the Advancement Digital Services or portions thereof may not properly operate should you fail to do so. You further agree that all Updates will be deemed part of the Advancement Digital Services and be subject to all terms and conditions of this Agreement.</p>
+  </section>
+
+  <!-- 9 -->
+  <section>
+    <h2><span class="sec-num">9</span> Third-Party Materials</h2>
+    <p>The Advancement Digital Services may display, include, or make available third-party content (including data, information, applications, and other products, services, and/or materials) or provide links to third-party websites or services, including through third-party advertising ("Third-Party Materials"). You acknowledge and agree that Hamilton is not responsible for Third-Party Materials, including their accuracy, completeness, timeliness, validity, copyright compliance, legality, decency, quality, or any other aspect thereof. Hamilton does not assume and will not have any liability or responsibility to you or any other person or entity for any Third-Party Materials. Third-Party Materials and links thereto are provided solely as a convenience to you, and you access and use them entirely at your own risk and subject to such third parties' terms and conditions.</p>
+  </section>
+
+  <!-- 10 -->
+  <section>
+    <h2><span class="sec-num">10</span> Google and Apple</h2>
+    <p>If you download or access the Application through Google Play, the Apple App Store, or a device made by Google or Apple, you acknowledge and agree that:</p>
+    <ol class="alpha-list">
+      <li><span class="list-label">a. </span><span><strong>Parties and Responsibility.</strong> This Agreement is concluded between you and Hamilton only, and not with Google or Apple. Hamilton, and not Google or Apple, is solely responsible for the Application and its content. Nothing in this Agreement is intended to provide usage rights that are less restrictive than, or in conflict with, the applicable Google Play or Apple App Store terms of service. In the event of any conflict between this Agreement and the Apple App Store Terms of Service or the Google Play Store Terms of Service, the Apple and Google Terms of Service shall control.</span></li>
+      <li><span class="list-label">b. </span><span><strong>License Scope.</strong> The license granted to you under Section 1 is limited to a non-transferable license to use the Application on devices you own or control, and only as permitted by the Google Play Terms of Service and/or the usage rules set forth in the Apple App Store Terms of Service, including permitted use through Apple's Family Sharing or volume purchasing features where applicable.</span></li>
+      <li><span class="list-label">c. </span><span><strong>Maintenance and Support.</strong> Google and Apple have no obligation whatsoever to provide any maintenance or support services with respect to the Application.</span></li>
+      <li><span class="list-label">d. </span><span><strong>Warranties.</strong> To the maximum extent permitted by applicable law, Google and Apple provide the Application "as is." In the event of any failure of the Application to conform to any applicable warranty, you may notify Google or Apple, as applicable, and Google or Apple may refund the purchase price, if any, for the Application. To the maximum extent permitted by law, Google and Apple will have no other warranty obligation whatsoever.</span></li>
+      <li><span class="list-label">e. </span><span><strong>Product Claims.</strong> Google and Apple are not responsible for addressing any claims by you or any third party relating to the Application or your possession or use of the Application, including, but not limited to: (i) product liability claims; (ii) any claim that the Application fails to conform to any applicable legal or regulatory requirement; or (iii) claims arising under consumer protection, privacy, or similar legislation. Any such claims are the sole responsibility of Hamilton to the extent required by applicable law.</span></li>
+      <li><span class="list-label">f. </span><span><strong>Intellectual Property Claims.</strong> In the event of any third-party claim that the Application or your possession or use of the Application infringes a third party's intellectual property rights, Google and Apple will have no responsibility for the investigation, defense, settlement, or discharge of such claim.</span></li>
+      <li><span class="list-label">g. </span><span><strong>Third-Party Beneficiaries.</strong> Google and Apple and their respective subsidiaries are third-party beneficiaries of this Agreement and, upon your acceptance of this Agreement, will have the right (and will be deemed to have accepted the right) to enforce this Agreement against you as a third-party beneficiary.</span></li>
+    </ol>
+  </section>
+
+  <!-- 11 -->
+  <section>
+    <h2><span class="sec-num">11</span> Term and Termination</h2>
+    <ol class="alpha-list">
+      <li><span class="list-label">a.</span><span>The term of Agreement commences when you download or install the Application, use or access the Portal Website, or acknowledge your acceptance and will continue in effect until terminated by you or Hamilton as set forth in this Section 11.</span></li>
+      <li><span class="list-label">b.</span><span>You may terminate this Agreement by deleting your account in the Advancement Digital Services. Hamilton may terminate this Agreement at any time and for any reason in its sole discretion without notice to you. In addition, this Agreement will terminate immediately and automatically without any notice if you violate any of the terms and conditions of this Agreement.</span></li>
+      <li><span class="list-label">c.</span><span>Upon termination, all rights granted to you under this Agreement will also terminate and you must cease all use of the Advancement Digital Services and delete all copies of the Advancement Digital Services from your device(s) and account. Termination will not limit any of Hamilton's rights or remedies at law or in equity.</span></li>
+    </ol>
+  </section>
+
+  <!-- 12 -->
+  <section>
+    <h2><span class="sec-num">12</span> Disclaimer of Warranties</h2>
+    <p>You understand that we cannot and do not guarantee or warrant that files or other content available for downloading from the internet or the Advancement Digital Services will be free of viruses or other destructive code. You are responsible for implementing sufficient procedures and checkpoints to satisfy your particular requirements for anti-virus protection and accuracy of data input and output, and for maintaining a means external to our site for any reconstruction of any lost data.</p>
+    <div class="caps-block">
+      TO THE FULLEST EXTENT PROVIDED BY LAW, HAMILTON WILL NOT BE LIABLE FOR ANY LOSS OR DAMAGE CAUSED BY A DISTRIBUTED DENIAL-OF-SERVICE ATTACK, VIRUSES, OR OTHER TECHNOLOGICALLY HARMFUL MATERIAL THAT MAY INFECT YOUR DEVICE PROGRAMS, DATA, OR OTHER PROPRIETARY MATERIAL DUE TO YOUR USE OF THE ADVANCEMENT DIGITAL SERVICES OR ANY SERVICES OR ITEMS OBTAINED THROUGH THE ADVANCEMENT DIGITAL SERVICES OR YOUR DOWNLOADING OF ANY MATERIAL POSTED ON IT, OR ON ANY WEBSITE LINKED TO IT.<br><br>
+      THE ADVANCEMENT DIGITAL SERVICES ARE PROVIDED TO END USER "AS IS" AND WITH ALL FAULTS AND DEFECTS WITHOUT WARRANTY OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED UNDER APPLICABLE LAW, HAMILTON, ON ITS OWN BEHALF AND ON BEHALF OF ITS AFFILIATES AND ITS AND THEIR RESPECTIVE LICENSORS AND SERVICE PROVIDERS, EXPRESSLY DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE, WITH RESPECT TO THE ADVANCEMENT DIGITAL SERVICES, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT, AND WARRANTIES THAT MAY ARISE OUT OF COURSE OF DEALING, COURSE OF PERFORMANCE, USAGE, OR TRADE PRACTICE. WITHOUT LIMITATION TO THE FOREGOING, HAMILTON PROVIDES NO WARRANTY OR UNDERTAKING, AND MAKES NO REPRESENTATION OF ANY KIND THAT THE ADVANCEMENT DIGITAL SERVICES WILL MEET YOUR REQUIREMENTS, ACHIEVE ANY INTENDED RESULTS, BE COMPATIBLE, OR WORK WITH ANY OTHER SOFTWARE, APPLICATIONS, SYSTEMS, OR SERVICES, OPERATE WITHOUT INTERRUPTION, IT IS FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS, MEET ANY PERFORMANCE OR RELIABILITY STANDARDS, OR BE ERROR-FREE, OR THAT ANY ERRORS OR DEFECTS CAN OR WILL BE CORRECTED.<br><br>
+      SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF OR LIMITATIONS ON IMPLIED WARRANTIES OR THE LIMITATIONS ON THE APPLICABLE STATUTORY RIGHTS OF A CONSUMER, SO SOME OR ALL OF THE ABOVE EXCLUSIONS AND LIMITATIONS MAY NOT APPLY TO YOU.
+    </div>
+  </section>
+
+  <!-- 13 -->
+  <section>
+    <h2><span class="sec-num">13</span> Limitation of Liability</h2>
+    <div class="caps-block">
+      TO THE FULLEST EXTENT PROVIDED BY LAW, IN NO EVENT WILL HAMILTON, ITS AFFILIATES, OR THEIR LICENSORS, SERVICE PROVIDERS, EMPLOYEES, AGENTS, OFFICERS, OR DIRECTORS BE LIABLE FOR DAMAGES OF ANY KIND, UNDER ANY LEGAL THEORY, ARISING OUT OF OR IN CONNECTION WITH YOUR USE, OR INABILITY TO USE, THE ADVANCEMENT DIGITAL SERVICES, ANY WEBSITES OR APPLICATION LINKED TO IT, ANY CONTENT ON ADVANCEMENT DIGITAL SERVICES OR SUCH OTHER WEBSITES, INCLUDING ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO, PERSONAL INJURY, PAIN AND SUFFERING, EMOTIONAL DISTRESS, LOSS OF REVENUE, LOSS OF PROFITS, LOSS OF BUSINESS OR ANTICIPATED SAVINGS, LOSS OF USE, LOSS OF GOODWILL, LOSS OF DATA, AND WHETHER CAUSED BY TORT (INCLUDING NEGLIGENCE), BREACH OF CONTRACT, OR OTHERWISE, EVEN IF FORESEEABLE.
+    </div>
+  </section>
+
+  <!-- 14 -->
+  <section>
+    <h2><span class="sec-num">14</span> Indemnification</h2>
+    <p>You agree to indemnify, defend, and hold harmless Hamilton and its officers, directors, employees, agents, affiliates, successors, and assigns from and against any and all losses, damages, liabilities, deficiencies, claims, actions, judgments, settlements, interest, awards, penalties, fines, costs, or expenses of whatever kind, including attorneys' fees, arising from or relating to your use or misuse of the Advancement Digital Services or your breach of this Agreement, including but not limited to the content you submit or make available through the Advancement Digital Services.</p>
+  </section>
+
+  <!-- 15 -->
+  <section>
+    <h2><span class="sec-num">15</span> Export Regulation</h2>
+    <p>The Advancement Digital Services may be subject to U.S. export control laws, including the Export Control Reform Act and its associated regulations. You shall not, directly or indirectly, export, re-export, or release the Advancement Digital Services to, or make the Advancement Digital Services accessible from, any jurisdiction or country to which export, re-export, or release is prohibited by law, rule, or regulation. You shall comply with all applicable federal laws, regulations, and rules, and complete all required undertakings (including obtaining any necessary export license or other governmental approval), prior to exporting, re-exporting, releasing, or otherwise making the Advancement Digital Services available outside the US.</p>
+  </section>
+
+  <!-- 17 -->
+  <section>
+    <h2><span class="sec-num">17</span> Waiver and Severability</h2>
+    <p>No waiver by Hamilton of any provision of this Agreement shall be deemed a waiver of any other provision or a continuing waiver of the same provision. Any failure by Hamilton to enforce any right or provision shall not constitute a waiver of such right or provision. If any provision of this Agreement is held invalid, illegal, or unenforceable by a court of competent jurisdiction, such provision shall be limited or eliminated to the minimum extent necessary, and the remaining provisions shall continue in full force and effect.</p>
+  </section>
+
+  <!-- 18 -->
+  <section>
+    <h2><span class="sec-num">18</span> Governing Law</h2>
+    <p>This Agreement is governed by and construed in accordance with the internal laws of the State of New York without giving effect to any choice or conflict of law provision or rule. Any legal suit, action, or proceeding arising out of or related to this Agreement or the Advancement Digital Services shall be instituted exclusively in the federal courts of the United States or the courts of the State of New York in each case located in Oneida County, New York. You waive any and all objections to the exercise of jurisdiction over you by such courts and to venue in such courts.</p>
+  </section>
+
+  <!-- 19 Limitation of Time -->
+  <section>
+    <h2><span class="sec-num">19</span> Limitation of Time to File Claims</h2>
+    <div class="caps-block">
+      ANY CAUSE OF ACTION OR CLAIM YOU MAY HAVE ARISING OUT OF OR RELATING TO THIS AGREEMENT OR THE ADVANCEMENT DIGITAL SERVICES MUST BE COMMENCED WITHIN ONE (1) YEAR AFTER THE CAUSE OF ACTION ACCRUES OTHERWISE SUCH CAUSE OF ACTION OR CLAIM IS PERMANENTLY BARRED.
+    </div>
+  </section>
+
+  <!-- 19 Entire Agreement -->
+  <section>
+    <h2><span class="sec-num">19</span> Entire Agreement</h2>
+    <p>This Agreement, our Terms of Use, and our Privacy Policy constitute the entire agreement between you and Hamilton with respect to the Advancement Digital Services and supersede all prior or contemporaneous understandings and agreements, whether written or oral, with respect to the Advancement Digital Services.</p>
+  </section>
+
+  <!-- 20 -->
+  <section>
+    <h2><span class="sec-num">20</span> Contacting Us</h2>
+    <p>The Advancement Digital Services are operated by Hamilton College. All feedback, comments, requests for technical support, and other communications should be directed to <a href="mailto:webmaster@hamilton.edu">webmaster@hamilton.edu</a>.</p>
+  </section>
+
+
+
+                    </div>
+
+                </template>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</template>

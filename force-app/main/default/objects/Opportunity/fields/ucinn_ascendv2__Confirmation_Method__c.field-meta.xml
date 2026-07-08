@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Confirmation_Method__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Confirmation Method</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Email/Online Confirmation</fullName>
+                <default>false</default>
+                <label>Email/Online Confirmation</label>
+            </value>
+            <value>
+                <fullName>Matching Form Received</fullName>
+                <default>false</default>
+                <label>Matching Form Received</label>
+            </value>
+            <value>
+                <fullName>Automatic Process</fullName>
+                <default>false</default>
+                <label>Automatic Process</label>
+            </value>
+            <value>
+                <fullName>Historical Data Conversion</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Historical Data Conversion</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

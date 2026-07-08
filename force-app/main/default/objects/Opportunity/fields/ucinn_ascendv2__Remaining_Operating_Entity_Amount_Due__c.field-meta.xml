@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Remaining_Operating_Entity_Amount_Due__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>IF((RecordType.DeveloperName == &apos;Recurring_Gift&apos;), 0.00,
+IF(ISPICKVAL(StageName, &quot;Written Off&quot;) || ISPICKVAL(StageName, &quot;Cancelled&quot;) || ISPICKVAL(StageName, &quot;Void&quot;), 0.00, IF(ucinn_ascendv2__Operating_Entity_Amount__c  - ucinn_ascendv2__Operating_Entity_Amount_Paid_to_Date__c &gt; 0,ucinn_ascendv2__Operating_Entity_Amount__c  - ucinn_ascendv2__Operating_Entity_Amount_Paid_to_Date__c, 0)
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Remaining Operating Entity Amount Due</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Create_Opp_From_Checkout__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Create Opportunity from ticket purchase.</description>
+    <inlineHelpText>When true, creates a Salesforce Opportunity record when an attendee completes checkout.</inlineHelpText>
+    <label>Create Opportunity From Checkout</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

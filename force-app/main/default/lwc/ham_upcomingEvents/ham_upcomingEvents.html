@@ -1,0 +1,174 @@
+<template>
+    <div class={kirklandOverrideClass}>
+
+        <!-- ═══════════════════════════════════════════════════════════════════
+             DESKTOP VIEW  (screenWidth >= 1024)
+        ════════════════════════════════════════════════════════════════════ -->
+        <template lwc:if={isDesktopView}>
+            <div class="dynamic-feed-container slds-p-around_medium">
+
+                <!-- Header row: title + redirect icon -->
+                <div class="slds-grid slds-grid_align-spread slds-wrap slds-var-m-bottom_medium">
+                    <h2 class="section-header">{label.eventstitle}</h2>
+                    <a title="View All" class="slds-p-top_x-small" onclick={handleNavigateToAll}>
+                        <template lwc:if={isOverride}>
+                            <img src={images.widgetRedirectGreen} height="20px" width="20px" />
+                        </template>
+                        <template lwc:else>
+                            <img src={images.widgetRedirect} height="20px" width="20px" />
+                        </template>
+                    </a>
+                </div>
+
+                <!-- In Person / Virtual toggle buttons -->
+                <div class="event-btn-container">
+                    <button class={inPersonClass} data-filter="In Person" onclick={handleFilterChange}>
+                        <template lwc:if={isOverride}>
+                            <img src={kirklandInPersonImg} class="btn-icon" data-filter="In Person"
+                                onclick={handleFilterChange} />
+                        </template>
+                        <template lwc:else>
+                            <img src={inPersonImg} class="btn-icon" data-filter="In Person"
+                                onclick={handleFilterChange} />
+                        </template>
+                        In Person
+                    </button>
+                    <button class={virtualClass} data-filter="Virtual" onclick={handleFilterChange}>
+                        <template lwc:if={isOverride}>
+                            <img src={kirklandVirtualImg} class="btn-icon" data-filter="Virtual"
+                                onclick={handleFilterChange} />
+                        </template>
+                        <template lwc:else>
+                            <img src={virtualImg} class="btn-icon" data-filter="Virtual" onclick={handleFilterChange} />
+                        </template>
+                        Virtual
+                    </button>
+                </div>
+
+                <!-- Loading skeleton -->
+                <template lwc:if={isLoading}>
+                    <div class="slds-grid slds-wrap slds-grid_pull-padded">
+                        <template for:each={placeholders} for:item="p">
+                            <div key={p}
+                                class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-p-horizontal_x-small">
+                                <div class="news-card-placeholder">
+                                    <div class="image-placeholder"></div>
+                                    <div class="content-placeholder">
+                                        <div class="text-placeholder-line text-placeholder-title"></div>
+                                        <div class="text-placeholder-line text-placeholder-title"></div>
+                                        <div class="text-placeholder-line"></div>
+                                        <div class="text-placeholder-line text-placeholder-short"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- Event cards grid -->
+                <template lwc:else>
+                    <template lwc:if={hasEvents}>
+                        <div class="slds-grid slds-wrap slds-grid_pull-padded">
+                            <template for:each={displayedEvents} for:item="event">
+                                <div key={event.id}
+                                    class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-p-horizontal_x-small">
+                                    <div class="dynamic-card" onclick={handleCardClick} data-link={event.buttonUrl}>
+                                        <div class="content-body">
+
+                                            <!-- Image -->
+                                            <div class="image-wrapper slds-var-m-bottom_small slds-var-p-top_small">
+                                                <img src={event.imageUrl} alt={event.title} onerror={handleImageError}
+                                                    loading="lazy" class="img-border" />
+                                            </div>
+
+                                            <!-- Title -->
+                                            <h3>
+                                                <span title={event.title}>{event.title}</span>
+                                            </h3>
+
+                                            <!-- Date line + Location line -->
+                                            <div class="event-additionals">
+                                                <div class="article-event-date">{event.dateLine}</div>
+                                                <div class="article-event-location">{event.locationLine}</div>
+                                            </div>
+
+                                            <!-- Description -->
+                                            <p class="article-description" title={event.fullDescription}>
+                                                {event.trimmedDescription}
+                                            </p>
+
+                                            <!-- Learn More/Register  OR  Modify Registration -->
+                                            <div class="article-footer">
+                                                <template lwc:if={event.buttonUrl}>
+                                                    <div class="seemoreandregister-row">
+                                                        <button class="my-card-btn" onclick={handleRegisterClick}
+                                                            data-url={event.buttonUrl} title={event.buttonLabel}>
+                                                            {event.buttonLabel}
+                                                        </button>
+                                                    </div>
+                                                </template>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- No events state -->
+                    <template lwc:else>
+                        <div class="slds-notify slds-notify_alert slds-theme_info slds-m-top_small" role="alert">
+                            <span class="slds-icon_container slds-icon-utility-info slds-m-right_x-small"
+                                title="Information">
+                                <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
+                            </span>
+                            <h2>No Events are available.</h2>
+                        </div>
+                    </template>
+                </template>
+
+            </div>
+        </template>
+
+        <!-- ═══════════════════════════════════════════════════════════════════
+             MOBILE VIEW  (screenWidth < 1024)
+        ════════════════════════════════════════════════════════════════════ -->
+        <template lwc:if={isMobileView}>
+            <a onclick={handleNavigateToAll} class="slds-text-link_reset">
+                <div class="content-body">
+
+                    <div class="feed-item">
+                        <div class="image-wrapper slds-var-m-bottom_small">
+                            <img src={mobileImageUrl} alt="Event" onerror={handleImageError} loading="lazy"
+                                class={mobileImageClass} />
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="my-card-title">
+                            <span>
+                                {label.eventmobile}
+                                <template lwc:if={isOverride}>
+                                    <img src={images.mobileArrowGreen} height="15px" width="15px" class="mobile-redirect-icon" />
+                                </template>
+                                <template lwc:else>
+                                    <img src={images.mobileArrow} height="15px" width="15px" class="mobile-redirect-icon" />
+                                </template>
+            
+                            </span>
+                        </h3>
+                    </div>
+
+                    <div>
+                        <p class="article-description slds-text-body_small slds-var-m-bottom_small">
+                            {label.eventsdescmobile}
+                        </p>
+                    </div>
+
+                </div>
+            </a>
+        </template>
+
+    </div>
+</template>

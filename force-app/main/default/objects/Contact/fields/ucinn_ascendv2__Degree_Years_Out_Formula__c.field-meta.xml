@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Degree_Years_Out_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <description>This is the calculation of Current Year - Earliest Degree Year for living constituents.</description>
+    <externalId>false</externalId>
+    <formula>IF ( ucinn_ascendv2__Is_Deceased__c, NULL, YEAR(TODAY()) -  ucinn_ascendv2__Earliest_Degree_Year_Roll_Up__c )</formula>
+    <inlineHelpText>This is the calculation of Current Year - Earliest Degree Year for living constituents.</inlineHelpText>
+    <label>Degree Years Out</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

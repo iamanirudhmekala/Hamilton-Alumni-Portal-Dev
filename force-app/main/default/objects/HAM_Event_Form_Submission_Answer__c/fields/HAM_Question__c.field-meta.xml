@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Question__c</fullName>
+    <description>Denormalized copy of the form question text at the time of submission, for reporting and historical reference.</description>
+    <inlineHelpText>The question text as it appeared on the form when this answer was submitted.</inlineHelpText>
+    <label>Question</label>
+    <length>32768</length>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

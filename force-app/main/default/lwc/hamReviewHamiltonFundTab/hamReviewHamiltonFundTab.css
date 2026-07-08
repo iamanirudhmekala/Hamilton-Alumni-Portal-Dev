@@ -1,0 +1,108 @@
+/* Hamilton Fund Tab Styles - Figma Design */
+.ham-hamilton-tab {
+    padding: 0;
+}
+
+.ham-designation-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.ham-designation-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 140px;
+    transition: all 0.2s;
+}
+
+.ham-designation-card:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ham-card-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #00205B;
+    margin-bottom: 4px;
+    line-height: 1.3;
+    min-height: 28px;
+}
+
+.ham-card-description {
+    font-size: 10px;
+    color: #6B7280;
+    margin-bottom: auto;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+.ham-card-amount-input {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1.5px solid #0056B3;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #0056B3;
+    margin-bottom: 6px;
+    text-align: left;
+    background: #FFFFFF;
+}
+
+.ham-card-amount-input:focus {
+    outline: none;
+    border-color: #00205B;
+}
+
+.ham-card-button {
+    width: 100%;
+    padding: 6px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.ham-card-button-add {
+    background: #00205B;
+    color: #FFFFFF;
+}
+
+.ham-card-button-add:hover {
+    background: #001847;
+}
+
+.ham-card-button-added {
+    background: #059669;
+    color: #FFFFFF;
+}
+
+.ham-card-button-added:hover {
+    background: #047857;
+}
+
+.ham-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.ham-empty-text {
+    font-size: 13px;
+    color: #6B7280;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .ham-designation-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

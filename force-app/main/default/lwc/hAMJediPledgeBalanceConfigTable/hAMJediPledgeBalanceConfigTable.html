@@ -1,0 +1,120 @@
+<template>
+    <div class="backgroundWhite">
+       <lightning-accordion allow-multiple-sections-open="true" active-section-name={activeBalanceSection} onsectiontoggle={handleBalanceSectionToggle}>
+            <lightning-accordion-section name={accordianName} label={accordianName}>
+                <template if:true={loading}>
+                    <lightning-spinner
+                        alternative-text="Loading..."
+                        size="medium"
+                        variant="brand">
+                    </lightning-spinner>
+                </template>
+                <template lwc:if={pageBalance}>
+                    <!-- Balance Record Table -->
+                    <div class="slds-p-around_small" style="width: 100%;">
+                        <div class="label slds-text-title_caps slds-text-color_brand">{accordianName}</div>
+
+                        <!-- Desktop: Datatable -->
+                        <template if:false={isMobile}>
+                            <div style="overflow-x: auto;">
+                                <lightning-datatable
+                                    key-field="Id"
+                                    data={pageBalance}
+                                    columns={displayColumns}
+                                    hide-checkbox-column
+                                    sorted-by={sortedBy}
+                                    sorted-direction={sortedDirection}
+                                    onsort={handleEventSort}>
+                                </lightning-datatable>
+                            </div>
+                        </template>
+
+                        <!-- Mobile: Card Layout -->
+                        <template if:true={isMobile}>
+                            <!-- Year Filter (Last 5 Year tables only) -->
+                            <template if:true={showYearFilter}>
+                                <div class="mobile-filter-bar">
+                                    <lightning-combobox
+                                        label="Year"
+                                        value={_selectedYear}
+                                        options={mobileYearOptions}
+                                        onchange={handleYearFilterChange}
+                                        variant="label-hidden"
+                                        placeholder="All Years"
+                                        class="mobile-year-combo">
+                                    </lightning-combobox>
+                                    <template if:true={_selectedYear}>
+                                        <lightning-button-icon
+                                            icon-name="utility:clear"
+                                            alternative-text="Clear filter"
+                                            title="Clear filter"
+                                            label="Clear filter"
+                                            onclick={clearYearFilter}
+                                            variant="bare"
+                                            class="slds-var-m-left_x-small">
+                                        </lightning-button-icon>
+                                    </template>
+                                </div>
+                            </template>
+                            <div class="mobile-sort-bar">
+                                <lightning-combobox
+                                    label="Sort by"
+                                    value={sortedBy}
+                                    options={mobileSortOptions}
+                                    onchange={handleMobileSortChange}
+                                    class="mobile-sort-combo">
+                                </lightning-combobox>
+                                <lightning-button-icon
+                                    icon-name={mobileSortDirectionIcon}
+                                    alternative-text={mobileSortDirectionLabel}
+                                    title={mobileSortDirectionLabel}
+                                    label={mobileSortDirectionLabel}
+                                    onclick={toggleMobileSortDirection}
+                                    class="slds-var-m-left_x-small">
+                                </lightning-button-icon>
+                            </div>
+                            <div class="mobile-card-container">
+                                <template for:each={mobileCards} for:item="card">
+                                    <div key={card.Id} class="mobile-card">
+                                        <div class="card-header">{card.headerValue}</div>
+                                        <template for:each={card.fields} for:item="field">
+                                            <template if:true={field.isStacked}>
+                                                <div key={field.key} class="card-row-stacked">
+                                                    <span class="card-label">{field.label}</span>
+                                                    <span class="card-value-full">{field.value}</span>
+                                                    <template if:true={field.needsTruncation}>
+                                                        <div class="show-more-row">
+                                                            <a data-fieldkey={field.key} onclick={toggleShowMore}>{field.showMoreLabel}</a>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                            <template if:false={field.isStacked}>
+                                                <div key={field.key} class="card-row">
+                                                    <span class="card-label">{field.label}</span>
+                                                    <span class="card-value">{field.value}</span>
+                                                </div>
+                                            </template>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <!-- Pagination Controls (shared, only show if more than pageSize records) -->
+                        <template if:true={showPagination}>
+                            <div class="slds-m-top_small slds-grid slds-grid_align-spread slds-align_absolute-center">
+                                <lightning-button label="Prev" onclick={prevPage} disabled={isFirstPage}></lightning-button>
+                                <div class="slds-m-horizontal_small">
+                                    Page {pageNumber} of {totalPages} · {totalRecords} total
+                                </div>
+                                <lightning-button label="Next" onclick={nextPage} disabled={isLastPage}></lightning-button>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <template lwc:else>No Records Found</template>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </div>
+</template>

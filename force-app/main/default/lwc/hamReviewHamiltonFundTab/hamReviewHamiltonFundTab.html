@@ -1,0 +1,35 @@
+<template>
+    <div class="ham-hamilton-tab">
+        <template lwc:if={hasDesignations}>
+            <div class="ham-designation-grid">
+                <template for:each={enrichedDesignations} for:item="designation">
+                    <div key={designation.id} class="ham-designation-card">
+                        <div class="ham-card-title">{designation.name}</div>
+                        <template lwc:if={designation.isSelected}>
+                            <input
+                                type="text"
+                                class="ham-card-amount-input"
+                                value={designation.selectedAmount}
+                                data-id={designation.id}
+                                oninput={handleAmountInput}
+                                placeholder="$ 0.00"
+                            />
+                        </template>
+                        <button
+                            class={designation.buttonClass}
+                            data-id={designation.id}
+                            disabled={designation.isAddDisabled}
+                            onclick={handleDesignationClick}>
+                            {designation.buttonLabel}
+                        </button>
+                    </div>
+                </template>
+            </div>
+        </template>
+        <template lwc:else>
+            <div class="ham-empty-state">
+                <p class="ham-empty-text">No Hamilton Fund designations available at this time.</p>
+            </div>
+        </template>
+    </div>
+</template>

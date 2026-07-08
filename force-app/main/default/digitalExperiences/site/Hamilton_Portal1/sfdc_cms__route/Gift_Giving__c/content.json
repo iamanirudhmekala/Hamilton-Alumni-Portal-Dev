@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Gift Giving",
+  "contentBody" : {
+    "activeViewId" : "Gift_Giving",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-gift-giving",
+    "urlPrefix" : "gift-giving"
+  },
+  "urlName" : "gift-giving"
+}

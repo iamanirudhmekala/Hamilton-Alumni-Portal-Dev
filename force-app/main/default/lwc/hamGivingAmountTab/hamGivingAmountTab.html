@@ -1,0 +1,50 @@
+<template>
+    <section class="form-section-compact" style="border: 2px solid #e5e7eb;">
+        <div class="amount-tab">
+            <button data-amount-btn="once" class="amount-tab-item amount-tab-item-active"
+                onclick={amountButtonClick}>Give
+                Once</button>
+            <button data-amount-btn="monthly" class="amount-tab-item amount-tab-item-inactive"
+                onclick={amountButtonClick}>
+                Monthly</button>
+            <template lwc:if={disabledPledgeTab}>
+                <button data-amount-btn="pledge"
+                    class="amount-tab-item amount-tab-item-inactive amount-tab-item-disabled"
+                    disabled={disabledPledgeTab}>Pay
+                    Pledge</button>
+            </template>
+            <template lwc:else>
+                <button data-amount-btn="pledge" class="amount-tab-item amount-tab-item-inactive"
+                    onclick={amountButtonClick}>Pay
+                    Pledge</button>
+            </template>
+        </div>
+
+
+        <div>
+            <template if:true={isOneTime}>
+                <div>
+                    <c-ham-giving-amount is-give-once="true" form-data={formData}></c-ham-giving-amount>
+                </div>
+
+            </template>
+
+            <template if:true={isRecurring}>
+                <div>
+                    <c-ham-giving-amount is-give-once="false" form-data={formData}></c-ham-giving-amount>
+                </div>
+            </template>
+
+            <template if:true={isPledge}>
+                <c-ham-pledge-amount form-data={formData} pledges={pledges}></c-ham-pledge-amount>
+            </template>
+        </div>
+
+        <div class="form-submit" style="margin-top: 1.5rem;">
+            <button class="btn btn-primary btn-large" disabled={isAmountTabIncomplete}
+                onclick={handleContinueToDesignation}>
+                Continue to Designation →
+            </button>
+        </div>
+    </section>
+</template>

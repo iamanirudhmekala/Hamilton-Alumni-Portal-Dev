@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Show_Expired_Tickets__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Display expired tickets on event page.</description>
+    <inlineHelpText>When true, tickets past their sales end date are still visible (but not purchasable) on the event page.</inlineHelpText>
+    <label>Show Expired Tickets</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

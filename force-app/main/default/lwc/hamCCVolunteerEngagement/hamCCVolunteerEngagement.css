@@ -1,0 +1,140 @@
+/* ── Quick-select chips ─────────────────────── */
+.quick-select-section {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.quick-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.quick-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    border: 1px solid #0066cc;
+    background-color: #ffffff;
+    color: #0066cc;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+}
+
+.quick-chip:hover {
+    background-color: #e6f2ff;
+}
+
+.quick-chip_selected {
+    background-color: #0066cc;
+    color: #ffffff;
+}
+
+.quick-chip_selected:hover {
+    background-color: #0052a3;
+}
+
+/* ── Header: desktop vs mobile action buttons ──
+   Controlled by isMobile JS flag — no media query.
+── */
+.desktop-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mobile-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* ── Keep header buttons on one line ────────── */
+.slds-no-flex {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+}
+
+.slds-no-flex .slds-var-m-right_x-small,
+.slds-no-flex .slds-m-right_x-small {
+    margin-right: 0 !important;
+}
+
+.slds-no-flex .slds-m-left_x-small {
+    margin-left: 0 !important;
+}
+
+/* ── Prevent card header overflow ───────────── */
+.slds-card__header {
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.slds-media__body {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.slds-card__header-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Involvement Description typeahead ──────── */
+.desc-typeahead {
+    position: relative;
+}
+
+.desc-dropdown {
+    position: absolute;
+    z-index: 9000;
+    background: #ffffff;
+    border: 1px solid #dddbda;
+    border-top: none;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 0.25rem 0.25rem;
+}
+
+.desc-option {
+    padding: 0.4rem 0.75rem;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    color: #080707;
+}
+
+.desc-option:hover {
+    background-color: #f3f3f3;
+}
+
+/* ── Mobile filter card & form ─────────────── */
+.mobile-filter-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.5rem 0.25rem;
+}
+
+.mobile-filter-field {
+    width: 100%;
+}
+
+.mobile-filter-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 0.5rem;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 0.25rem;
+}

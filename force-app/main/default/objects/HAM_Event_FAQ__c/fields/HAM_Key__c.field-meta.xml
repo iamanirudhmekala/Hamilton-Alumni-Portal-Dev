@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Key__c</fullName>
+    <caseSensitive>true</caseSensitive>
+    <description>Indexed key field used for upsert operations and cross-system identification. Mirrors conference360__Key__c from Blackthorn. Falls back to BT record Id if source key is null.</description>
+    <externalId>true</externalId>
+    <inlineHelpText>This is a unique identifier for this FAQ record. Case-sensitive. Do not edit manually — managed by the migration process.</inlineHelpText>
+    <label>Key</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

@@ -1,0 +1,342 @@
+<template>
+    <div class={wrapperClass}>
+        
+        <template if:true={isLoading}>
+            <div class="spinner-container">
+                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:true={showMainContent}>
+            <div class="modal-content-container">
+                
+                <div class="header">
+                    <h2 class="main-heading">{label.editProfTitle}</h2>
+                    
+                    <div class="profile-header-section">
+                        
+                        <div class="profile-picture-area">
+                            <div class="profile-container">
+                                <template if:true={profilePicUrl}>
+                                    <img src={profilePicUrl} class="profile-image-large" />
+                                </template>
+                                <template if:false={profilePicUrl}>
+                                        <div class="my-avatar-container">
+                                             <img src={avatarNew} alt="Profile Picture" />
+                                        </div>
+                                </template>
+                                
+                                <div class="pic-privacy-eye slds-is-relative" onclick={handleProfilePicEyeClick}>
+                                    <img src={profilePicEyeIconUrl} alt="Privacy toggle" class="eye-icon-img" />
+                                    <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom slds-tooltip-wrapper" role="tooltip">
+                                        <div class="slds-popover__body">{profilePicEyeTooltip}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-area">
+                            <h1 class="profile-name-display name-with-badge">
+                                <span class="name-text">
+                                    {contactName}
+                                    <template if:true={isKirklandAlumnae}>
+                                        <img src={kirklandAlumnaeIcon}
+                                            alt="Kirkland Alumnae"
+                                            title="Kirkland Alumnae"
+                                            class="kirkland-badge profile-badge" />
+                                    </template>
+                                </span>
+                            </h1>
+
+                            <template if:true={showClassOf}>
+                                <p class="class-year-display">Class of 
+                                    <span> {graduationYear}</span>
+                                </p>
+                            </template>
+                            
+                            <template if:false={isEmployee}>
+                                <div class="edit-pic-action">
+                                     <template if:false={showFileUpload}>
+                                        <button class="cancel" onclick={toggleFileUpload}>{label.editProfPicture}</button>
+                                    </template>
+                                    <template if:true={showFileUpload}>
+                                        <div class="file-upload-inline" style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                            <lightning-file-upload
+                                                label=""
+                                                name="fileUploader"
+                                                accept=".jpg, .png, .jpeg"
+                                                record-id={userContactId}
+                                                onuploadfinished={handleUploadFinished}>
+                                            </lightning-file-upload>
+                                            
+                                            <template if:true={uploadedFileName}>
+                                                <div class="uploaded-file-name slds-text-color_success slds-m-left_small" style="display: flex; align-items: center;">
+                                                    <lightning-icon icon-name="doctype:image" size="small" class="slds-m-right_xx-small"></lightning-icon>
+                                                    <span>{uploadedFileName}</span>
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <button class="cancel slds-m-top_small" onclick={handleFileDelete}>{label.editProfCancel}</button>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+
+                        <div class="header-buttons mobile-hide">
+                            <button class="cancel" onclick={handlePreview}>{label.editProfButton1}</button>
+                            <button class="save" onclick={handleSave}>{label.editProfButton2}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <template if:true={isEmployee}>
+                    <div class="custom-info-banner">
+                        <lightning-icon icon-name="utility:info" size="x-small" class="info-icon"></lightning-icon>
+                        <span>{label.editProfInfo}</span>
+                    </div>
+                </template>
+
+                 <div class="header-mobile-buttons ">
+                            <button class="save" onclick={handleSave}>{label.editProfButton2}</button>
+                            <button class="cancel" onclick={handlePreview}>{label.editProfButton1}</button>
+                           
+                </div>
+
+                <div class="my-profile-sections">
+                    <template for:each={sections} for:item="section">
+                        <div key={section.name} class="profile-section">
+                            <h3 class="section-title">{section.name}</h3>
+                            <template if:true={section.isPersonalInfo}>
+                                <div class="custom-info-banner">
+                                    <lightning-icon icon-name="utility:info" size="x-small" class="info-icon"></lightning-icon>
+                                    <span>Updates to personal information will be reflected in communications from the College.</span>
+                                </div>
+                            </template>
+                            <div class="fields-grid">
+                                <template for:each={section.fields} for:item="field">
+                                    <div key={field.metadataDevName} class="field-item">
+                                        <div class="field-label-container">
+                                            <label class="field-label">{field.label}</label>
+                                            <template if:true={field.hasHelpText}>
+                                                <lightning-helptext class="my-help-text" content={field.helpText}></lightning-helptext>
+                                            </template>
+                                        </div>
+                                        <div class={field.containerClass}>
+
+                                            <template if:true={field.isReadOnly}>
+                                                <span class="field-input field-input-readonly">{field.value}</span>
+                                            </template>
+
+                                            <template if:false={field.isReadOnly}>
+                                                <template if:true={field.isList}>
+                                                    <div class="list-multiselect-wrapper">
+                                                        <div class="list-display-box field-input" data-key={field.metadataDevName} onclick={handleListDisplayClick}>
+                                                            <span class="list-display-text">{field.value}</span>
+                                                            <span class="list-chevron">▼</span>
+                                                        </div>
+                                                        <template if:true={field.isDropdownOpen}>
+                                                            <div class="list-dropdown-panel" onclick={handleDropdownPanelClick}>
+                                                                <div class="list-search-container" style="padding: 8px 16px; border-bottom: 1px solid #eee;">
+                                                                    <lightning-input
+                                                                        type="search"
+                                                                        placeholder="Search..."
+                                                                        variant="label-hidden"
+                                                                        data-key={field.metadataDevName}
+                                                                        onchange={handleListSearch}>
+                                                                    </lightning-input>
+                                                                </div>
+                                                                <template for:each={field.listOptions} for:item="opt">
+                                                                    <template if:true={opt.visible}>
+                                                                        <label key={opt.value} class="list-option-row">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                checked={opt.checked}
+                                                                                data-key={field.metadataDevName}
+                                                                                data-value={opt.value}
+                                                                                onchange={handleListCheckboxChange}
+                                                                            />
+                                                                            <span class="list-option-label">{opt.label}</span>
+                                                                        </label>
+                                                                    </template>
+                                                                </template>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+
+                                                <template if:true={field.isPicklist}>
+                                                    <div class="select-wrapper">
+                                                        <select
+                                                            class="field-input field-select custom-select"
+                                                            data-key={field.metadataDevName}
+                                                            onchange={handleInputChange}
+                                                            disabled={isEmployee}
+                                                        >
+                                                            <template for:each={field.options} for:item="opt">
+                                                                <option key={opt.value} value={opt.value} class="my-option-class" selected={opt.selected}>
+                                                                    {opt.label}
+                                                                </option>
+                                                            </template>
+                                                        </select>
+                                                        <span class="select-icon">▼</span>
+                                                    </div>
+                                                </template>
+
+                                                <template if:false={field.isPicklist}>
+                                                    <template if:false={field.isList}>
+                                                        <input type="text"
+                                                               class="field-input"
+                                                               value={field.value}
+                                                               data-key={field.metadataDevName}
+                                                               onchange={handleInputChange}
+                                                               readonly={isEmployee}/>
+                                                    </template>
+                                                </template>
+                                            </template>
+
+                                            <template if:true={field.hasPrivacy}>
+                                                <div class="eye-icon-wrapper slds-is-relative" onclick={handleEyeClick} data-portal-id={field.portalId}>
+                                                    <img src={field.eyeIconUrl} alt="Privacy toggle" class="eye-icon-img" />
+                                                    <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom slds-tooltip-eye" role="tooltip">
+                                                        <div class="slds-popover__body">{field.eyeTooltip}</div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <template if:true={field.fieldError}>
+                                            <p class="field-error-message">{field.fieldError}</p>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+
+                    <div class="profile-section visibility-settings-section">
+                        <h3 class="section-title">{label.editProfdirecPS}</h3>
+                        <p class="visibility-description">{label.editProfVisibiltyDesc}</p>
+                        
+                        <div class="my-privacy-banner-container">
+                            <div class={accordionClass}>
+                                <template for:each={visibilityGroups} for:item="group">
+                                    <div key={group.name} class="accordion-item">
+
+                                        <button
+                                            class="accordion-header"
+                                            data-name={group.name}
+                                            onclick={toggleAccordion}
+                                            aria-expanded={group.isOpen}
+                                        >
+                                            <span>{group.label}</span>
+                                            <span class="accordion-icon">▾</span>
+                                        </button>
+
+                                        <template if:true={group.isOpen}>
+                                            <div class="accordion-content">
+                                                <div class="visibility-toggles-container">
+                                                    <template for:each={group.toggles} for:item="toggle">
+                                                        <div key={toggle.portalId} class="visibility-toggle-row">
+                                                            <div class="toggle-info">
+                                                                <span class="toggle-name">{toggle.label}</span>
+                                                                <span class="toggle-desc">{toggle.description}</span>
+                                                            </div>
+
+                                                            <div class={toggle.wrapperClass}
+                                                                data-portal-id={toggle.portalId}
+                                                                onclick={handleToggleChange}
+                                                                role="switch"
+                                                                aria-checked={toggle.checked}>
+                                                                <span class={toggle.trackClass}></span>
+                                                                <span class="custom-toggle-label-active">Yes</span>
+                                                                <span class="custom-toggle-label-inactive">No</span>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                    </div>
+                                </template>
+                            </div>
+                        
+                            <template if:true={showMasterToggle}>
+                                <div class="privacy-banner">
+                                    <div class="privacy-banner-content">
+                                        <strong>{masterPrivacyLabel}</strong>
+                                        <p>{masterPrivacyDescription}</p>
+                                    </div>
+                                    <div class="master-toggle-wrapper">
+                                        <div class="custom-toggle-wrapper"
+                                             onclick={handleMasterToggle}
+                                             role="switch"
+                                             aria-checked={isMasterChecked}>
+                                            <span class={masterTrackClass}></span>
+                                            <span class="custom-toggle-label-active">Yes</span>
+                                            <span class="custom-toggle-label-inactive">No</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <button class="cancel" onclick={handlePreview}>Preview Profile</button>
+                    <button class="save" onclick={handleSave}>Save Settings</button>
+                </div>
+            </div>
+        </template>
+
+        <template if:true={showPreview}>
+            <c-ham_preview-profile-cmp
+                profile-data={previewData}
+                is-override={isOverride}
+                onback={closePreview}
+                onsave={handleSaveFromPreview}>
+            </c-ham_preview-profile-cmp>
+        </template>
+
+        <template if:true={showCustomToast}>
+            <c-ham_custom-toast-cmp
+                title={toastConfig.title}
+                message={toastConfig.message}
+                variant={toastConfig.variant}
+                duration={toastConfig.duration}
+                onclose={handleToastClose}>
+            </c-ham_custom-toast-cmp>
+        </template>
+
+        <template if:true={showWithdrawModal}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="withdraw-modal-heading"
+                class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container custom-modal-container">
+                    <div class="slds-modal__content slds-p-around_large slds-text-align_center custom-modal-content">
+                        <button class="slds-button slds-button_icon custom-close-button" onclick={closeWithdrawModal}>
+                            <lightning-icon icon-name="utility:close" alternative-text="Close" size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        
+                        
+                        <p class="slds-text-body_regular slds-m-bottom_large">
+                            {label.directoryVisibilityToggle}
+                        </p>
+                        
+                        <div class="slds-grid slds-grid_align-center slds-gutters_small">
+                            <div class="slds-col">
+                                <button class="slds-button slds-button_brand modal-button" onclick={closeWithdrawModal}>No</button>
+                            </div>
+                            <div class="slds-col">
+                                <button class="slds-button slds-button_outline-brand modal-button" onclick={confirmWithdraw}>Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="slds-backdrop slds-backdrop_open" onclick={closeWithdrawModal}></div>
+        </template>
+    </div>
+</template>

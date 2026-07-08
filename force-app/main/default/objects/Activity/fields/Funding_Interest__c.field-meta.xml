@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Funding_Interest__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This is the look up to the Volunteer Opportunities</description>
+    <inlineHelpText>This is the look up to the Volunteer Opportunities</inlineHelpText>
+    <label>Funding Interest</label>
+    <referenceTo>ucinn_ascendv2__Funding_Interest__c</referenceTo>
+    <relationshipLabel>Activities</relationshipLabel>
+    <relationshipName>Activities</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

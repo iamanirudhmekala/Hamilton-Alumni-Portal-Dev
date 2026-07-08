@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cvent_Event__c</fullName>
+    <description>Identifies the Event record to which this person is associated.</description>
+    <inlineHelpText>Select the Event for which this individual is participating or has an assigned role (e.g., speaker, presenter, moderator, sponsor, or host).</inlineHelpText>
+    <label>Cvent Event</label>
+    <referenceTo>CventEvents__Event__c</referenceTo>
+    <relationshipName>Associated_People</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

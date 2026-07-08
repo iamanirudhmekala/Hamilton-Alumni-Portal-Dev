@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Adjustment_Reason__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Adjustment Reason (DEPRECATED)</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Amount Change</fullName>
+                <default>false</default>
+                <label>Amount Change</label>
+            </value>
+            <value>
+                <fullName>Appeal Code Change</fullName>
+                <default>false</default>
+                <label>Appeal Code Change</label>
+            </value>
+            <value>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+                <label>Cancelled</label>
+            </value>
+            <value>
+                <fullName>Data entry error</fullName>
+                <default>false</default>
+                <label>Data entry error</label>
+            </value>
+            <value>
+                <fullName>Designation change</fullName>
+                <default>false</default>
+                <label>Designation change</label>
+            </value>
+            <value>
+                <fullName>Donor request</fullName>
+                <default>false</default>
+                <label>Donor request</label>
+            </value>
+            <value>
+                <fullName>Expired credit card</fullName>
+                <default>false</default>
+                <label>Expired credit card</label>
+            </value>
+            <value>
+                <fullName>Gift Date Change</fullName>
+                <default>false</default>
+                <label>Gift Date Change</label>
+            </value>
+            <value>
+                <fullName>Gift to Pledge Payment</fullName>
+                <default>false</default>
+                <label>Gift to Pledge Payment</label>
+            </value>
+            <value>
+                <fullName>Gift Type Change</fullName>
+                <default>false</default>
+                <label>Gift Type Change</label>
+            </value>
+            <value>
+                <fullName>Insufficient funds</fullName>
+                <default>false</default>
+                <label>Insufficient funds</label>
+            </value>
+            <value>
+                <fullName>Invalid credit card number</fullName>
+                <default>false</default>
+                <label>Invalid credit card number</label>
+            </value>
+            <value>
+                <fullName>Recognition Change</fullName>
+                <default>false</default>
+                <label>Recognition Change</label>
+            </value>
+            <value>
+                <fullName>Unsigned check</fullName>
+                <default>false</default>
+                <label>Unsigned check</label>
+            </value>
+            <value>
+                <fullName>Void</fullName>
+                <default>false</default>
+                <label>Void</label>
+            </value>
+            <value>
+                <fullName>Written Off</fullName>
+                <default>false</default>
+                <label>Written Off</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

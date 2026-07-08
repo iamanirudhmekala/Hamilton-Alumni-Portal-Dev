@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Required__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates whether this form element was required in Blackthorn.</description>
+    <inlineHelpText>Checked if the attendee was required to answer this question.</inlineHelpText>
+    <label>Required</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

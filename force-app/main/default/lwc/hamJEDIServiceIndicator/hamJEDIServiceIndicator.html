@@ -1,0 +1,219 @@
+<template>
+    <div class="backgroundWhite">
+        <lightning-accordion allow-multiple-sections-open="true" active-section-name={activeSectionName} onsectiontoggle={handleSectionToggle}>
+            <lightning-accordion-section name="Alumni Service Indicators" label="Alumni Service Indicators">
+                <!-- Loading Spinner -->
+                <template if:true={loading}>
+                    <lightning-spinner
+                        alternative-text="Loading..."
+                        size="medium"
+                        variant="brand">
+                    </lightning-spinner>
+                </template>
+
+                <!-- Active Service Indicators Section -->
+                <template if:false={loading}>
+                    <!-- Only show Active section if there are active indicators -->
+                    <template if:true={hasActiveIndicators}>
+                    <div class="slds-var-m-bottom_large">
+                        <!-- Section Header -->
+                        <div class="slds-grid slds-grid_vertical-align-center slds-wrap slds-gutters_small slds-var-m-bottom_medium">
+                            <div class="slds-col slds-no-flex section-title-group">
+                                <lightning-badge
+                                    label={activeIndicatorsCountLabel}
+                                    class="badge-success slds-var-m-right_x-small">
+                                </lightning-badge>
+                                <h2 class="slds-text-color_default">
+                                    Service Indicators
+                                </h2>
+                            </div>
+                            <div class="slds-col active-controls-row">
+                                <lightning-combobox
+                                    name="activeSort"
+                                    label="Sort By"
+                                    value={activeSortField}
+                                    placeholder="Sort by..."
+                                    options={activeSortOptions}
+                                    onchange={handleActiveSortChange}
+                                    variant="label-hidden"
+                                    class="active-combo-item">
+                                </lightning-combobox>
+                                <lightning-combobox
+                                    name="activePortalFilter"
+                                    label="Filter"
+                                    value={activePortalFilter}
+                                    placeholder="Portal..."
+                                    options={portalFilterOptions}
+                                    onchange={handleActivePortalFilterChange}
+                                    variant="label-hidden"
+                                    class="active-combo-item">
+                                </lightning-combobox>
+                            </div>
+                        </div>
+
+                        <!-- Active Indicators Cards Grid -->
+                        <div class="slds-grid slds-wrap slds-grid_pull-padded-medium">
+                            <template for:each={filteredActiveIndicators} for:item="indicator">
+                                <div key={indicator.Id} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4 slds-var-p-horizontal_medium slds-var-m-bottom_medium">
+                                    <article class={indicator.colorClass}>
+                                        <div class="slds-card__header">
+                                            <header class="slds-media slds-media_center">
+                                                <div class="slds-media__body">
+                                                    <h3 class="slds-card__header-title">
+                                                        <a onclick={handleRecordClick}
+                                                           data-id={indicator.Id}
+                                                           class="slds-text-heading_small slds-text-link"
+                                                           role="button"
+                                                           tabindex="0">
+                                                            {indicator.serviceIndicatorName}
+                                                        </a>
+                                                        <template if:true={indicator.ucinn_ascendv2__Service_Indicator_Description_Formula__c}>
+                                                            <span class="indicator-title-wrapper">
+                                                                <lightning-icon
+                                                                    icon-name="utility:info"
+                                                                    size="xx-small"
+                                                                    class="info-icon">
+                                                                </lightning-icon>
+                                                                <span class="indicator-tooltip">{indicator.ucinn_ascendv2__Service_Indicator_Description_Formula__c}</span>
+                                                            </span>
+                                                        </template>
+                                                    </h3>
+                                                </div>
+                                                <div class="slds-no-flex">
+                                                    <span class="custom-badge">{indicator.code}</span>
+                                                </div>
+                                            </header>
+                                        </div>
+                                        <div class="slds-card__body slds-card__body_inner">
+                                            <template if:true={indicator.ucinn_ascendv2__Service_Indicator_Description_Formula__c}>
+                                                <p class="mobile-description">{indicator.ucinn_ascendv2__Service_Indicator_Description_Formula__c}</p>
+                                            </template>
+                                            <template if:true={indicator.ucinn_ascendv2__Comments__c}>
+                                                <p class="slds-text-body_regular slds-text-color_weak slds-var-m-bottom_small">
+                                                    {indicator.ucinn_ascendv2__Comments__c}
+                                                </p>
+                                            </template>
+                                            <div class="slds-grid slds-grid_vertical-align-center">
+                                                <lightning-icon
+                                                    icon-name="utility:event"
+                                                    size="x-small"
+                                                    class="slds-var-m-right_xx-small slds-icon-text-default">
+                                                </lightning-icon>
+                                                <span class="slds-text-body_small slds-text-color_weak">
+                                                    Since: {indicator.formattedStartDate}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Inactive Service Indicators Section -->
+                <!-- Only show Inactive section if there are inactive indicators -->
+                <template if:true={hasInactiveIndicators}>
+                    <div>
+                        <!-- Section Header -->
+                        <div class="slds-grid slds-grid_vertical-align-center slds-wrap slds-gutters_small slds-var-m-bottom_medium">
+                            <div class="slds-col slds-no-flex section-title-group">
+                                <lightning-badge
+                                    label={inactiveIndicatorsCountLabel}
+                                    class="badge-error slds-var-m-right_x-small">
+                                </lightning-badge>
+                                <h2 class="slds-text-color_default">
+                                    Service Indicators
+                                </h2>
+                            </div>
+                            <div class="slds-col slds-no-flex active-sort-col">
+                                <lightning-combobox
+                                    name="inactivePortalFilter"
+                                    label="Filter"
+                                    value={inactivePortalFilter}
+                                    placeholder="Portal..."
+                                    options={portalFilterOptions}
+                                    onchange={handleInactivePortalFilterChange}
+                                    variant="label-hidden">
+                                </lightning-combobox>
+                            </div>
+                        </div>
+
+                        <!-- Inactive Indicators DataTable (desktop) -->
+                        <template if:false={isMobile}>
+                            <lightning-datatable
+                                key-field="Id"
+                                data={pagedInactiveIndicators}
+                                columns={inactiveColumns}
+                                hide-checkbox-column
+                                sorted-by={sortedBy}
+                                sorted-direction={sortedDirection}
+                                onsort={handleSort}
+                                onrowaction={handleRowAction}>
+                            </lightning-datatable>
+                        </template>
+
+                        <!-- Inactive Indicators Mobile List -->
+                        <template if:true={isMobile}>
+                            <div class="inactive-mobile-list">
+                                <template for:each={mobileInactiveIndicators} for:item="row">
+                                    <div key={row.Id} class="inactive-mobile-row">
+                                        <!-- Row header: name + code + chevron -->
+                                        <div class="inactive-row-header" data-id={row.Id} onclick={handleRowToggle}>
+                                            <a onclick={handleRecordClick} data-id={row.Id} class="slds-text-link inactive-row-name">{row.serviceIndicatorName}</a>
+                                            <div class="inactive-row-right">
+                                                <template if:true={row.code}>
+                                                    <span class="inactive-code-badge">{row.code}</span>
+                                                </template>
+                                                <lightning-icon
+                                                    icon-name={row.chevronIcon}
+                                                    size="xx-small"
+                                                    class="inactive-chevron">
+                                                </lightning-icon>
+                                            </div>
+                                        </div>
+                                        <!-- Expandable dates -->
+                                        <template if:true={row.isExpanded}>
+                                            <div class="inactive-row-details">
+                                                <div class="inactive-detail-row">
+                                                    <span class="inactive-detail-label">Start</span>
+                                                    <span>{row.formattedStartDate}</span>
+                                                </div>
+                                                <div class="inactive-detail-row">
+                                                    <span class="inactive-detail-label">End</span>
+                                                    <span>{row.formattedEndDate}</span>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <!-- Pagination Controls -->
+                        <div class="slds-m-top_small slds-grid slds-grid_align-spread slds-align_absolute-center">
+                            <lightning-button label="Prev" onclick={handlePreviousPage} disabled={isFirstPage}></lightning-button>
+                            <div class="slds-m-horizontal_small">
+                                Page {currentPage} of {totalPages} · {inactiveIndicators.length} total
+                            </div>
+                            <lightning-button label="Next" onclick={handleNextPage} disabled={isLastPage}></lightning-button>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Show message only when both sections are empty -->
+                <template if:true={hasNoIndicators}>
+                    <div class="slds-text-align_center slds-var-p-around_medium slds-text-color_weak">
+                        <lightning-icon
+                            icon-name="utility:info"
+                            size="small"
+                            class="slds-var-m-bottom_x-small">
+                        </lightning-icon>
+                        <p class="slds-text-body_small">No Service Indicators found for this contact.</p>
+                    </div>
+                </template>
+            </template>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </div>
+</template>

@@ -1,0 +1,1285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Membership_Benefit</fullName>
+    <active>false</active>
+    <description>Membership benefit product</description>
+    <label>Membership Benefit</label>
+    <picklistValues>
+        <picklist>Family</picklist>
+        <values>
+            <fullName>None</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>HAM_Building_Code__c</picklist>
+        <values>
+            <fullName>10</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>112</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>13</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>14</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>16</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>17</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1812</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>20</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>202</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>21</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>22</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>23</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>24</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>26</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>27</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>28</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>31</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>32</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>33</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>37</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>40</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>41</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>43</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>50</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>51</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>52</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>53</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>54</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>55</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>56</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>57</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>58</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>59</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>60</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>61</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>62</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>63</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>64</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>65</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>66</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>67</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>68</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>70</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>74</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>80</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>81</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>82</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>83</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>90</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>91</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>92</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>95</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>98</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>99</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ABH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AGYM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ALCC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ALCT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ARTH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BEN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BLOD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BOAT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BSAV</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BTRK</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CCEM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CHAP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CNPY</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CNSL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>COMM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CRAF</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CRG</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CUPR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CYN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CYS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DANC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DAYS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DUNH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ELIH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FARS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FERY</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FIF</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FLDH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GG</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GLEN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GLHS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GOLF</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HLTH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>JHSN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>KC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>KG</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>KGRN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>KIRK</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>KRJH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>KTSA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LISQ</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIST</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LOVE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LPUB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MAIL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MCEW</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MCWN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MFLD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MLBK</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MRH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MUSM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MWAY</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NCE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OAND</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OBSV</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PHIL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PHYS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>POOL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PPAV</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRAC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRIT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRNT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RBBF</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REMT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REQD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RFAR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RGLN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ROOT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RUDD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RUGB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SAFT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SAGE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SCCT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SCE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SCHA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SDV</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SFH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SIUD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SOUT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SPEN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>STEU</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TBA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TENN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TPAV</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WELN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WTMR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XX</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>HAM_Building_Name__c</picklist>
+        <values>
+            <fullName>120 College Hill Rd</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>202 College Hill Rd</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>202 College Hill%2C Phil Bldg</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3 College Hill Rd</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3994 Campus Rd%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4002 Apt 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4002 Apt 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6 Stryker Lane</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>95 College Hill Road</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AFRO-LATIN CULTURAL CENTER</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Alpha Delta Phi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Alpha Theta Chi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Alumni Gym</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Anderson Road Apartments</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Anderson-Connell Alumni Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Art History-Molly Root House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Azel Backus House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Babbitt</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Beinecke Student Activities Village</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Benedict Hall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bldg TBA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Blood Dance Studio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Blood Fitness Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Boathouse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bristol Campus Ctr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bristol Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bristol Pool</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bundy East</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bundy West</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Burke Library</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Buttrick Hall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>C%2EA%2E Johnson Bldg%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Campus Road Athletic Field</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Campus Safety Office</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Canopy - for Courses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Carnegie</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Carriage House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Center for Health and Wellness</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chapel</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chi Psi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>China Program</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>College Cemetery</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commons Apt</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commons Dining Hall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Community and 1812 Gardens</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Counseling Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Couper Hall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Court Yard North</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Court Yard South</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Days-Massolo Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Delta Phi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dunham</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dunham Dormitory</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Eells</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Elihu Root House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Emerson Literary Soc</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Facilities Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Faculty Artist Studio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Faculty%2FStaff</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Farmhouse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ferguson House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ferguson Intramural Fields</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ferry Building</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Glen House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Glen House - Do Not Use</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Glenview A</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Glenview B</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Grant Garden</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Griffin Rd</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hamilton Horizons</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hamilton in France</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hamilton in Spain</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indoor Practice Facilty</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Kappa Delta Omega</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Keehn</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Kennedy Center Theatre%2FArts</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Kirkland</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Kirkland Cottage</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Kirkland Glen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Kirkland Green</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Kirner-Johnson Building</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>List Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Little Pub</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Little Squash Courts</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Love Field%2FPritchard Track</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M%2EB%2E Scott Field House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mail Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Major</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Martin%27s Way</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mason Field</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>McEwen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>McEwen Building</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>McIntosh</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Milbank</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Milbank Dorm</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Minor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Molly Root House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Morris House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New Matric-Unassignd</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>North</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>North Campus Exterior</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Assigned</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observatory</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Off Campus</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>One Anderson Road</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Phi Beta Chi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Philip Spencer House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Picnic Pavilion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>President%27s House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Print Shop</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pritchard Track</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Remote Course</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Required Special Dates</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rogers Estate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Root</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Root Farmhouse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Root Glen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Root Hall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Royce Baseball Field</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rudd Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rugby%2FIntramural Field</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ruth and Elmer Wellin Museum</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sadove Student Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sage Rink</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Saunders House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Schambach Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Scott Field House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sem%2E in Washington</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sigma Phi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Siuda House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Skenandoa House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Small Seminar Room</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>South</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>South Campus Exterior</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>South Residence Hall - Reg Ofc</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Steuben Field</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Taylor Science Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Theta Delta Chi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tietje Tennis Crts</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tolles Pavilion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tompkins Golf Course</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wallace Johnson</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wellin Hall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wertimer House</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Woollcott House</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>HAM_Status__c</picklist>
+        <values>
+            <fullName>Available</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Confirmed%2FNo Longer Available</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Under Discussion</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>QuantityUnitOfMeasure</picklist>
+        <values>
+            <fullName>Each</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>bt_stripe__Type__c</picklist>
+        <values>
+            <fullName>Service</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ucinn_ascendv2__Color__c</picklist>
+        <values>
+            <fullName>Blue</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Green</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Red</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ucinn_ascendv2__Material__c</picklist>
+        <values>
+            <fullName>Gold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Platinum</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Silver</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ucinn_ascendv2__Payment_Options__c</picklist>
+        <values>
+            <fullName>Auto Renewing Membership</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Installment Based Membership</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>One-Time Membership</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ucinn_ascendv2__Size__c</picklist>
+        <values>
+            <fullName>Large</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medium</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Small</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

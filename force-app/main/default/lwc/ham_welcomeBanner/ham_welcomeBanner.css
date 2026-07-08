@@ -1,0 +1,256 @@
+/* ── Banner Container ─────────────────────────────── */
+.banner-container {
+    position: relative;
+    overflow: hidden;
+    min-height: 160px;
+    display: flex;
+    align-items: stretch;
+}
+
+.banner-container.kirkland-override {
+    /* No background color change needed — the overlay handles the tint */
+}
+
+/* ── Chapel Bell Background Image ─────────────────── */
+.banner-bg-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 65%;
+    /* height: 100%; */
+    object-fit: cover;
+    object-position: top center;
+    z-index: 0;
+    transform: translateY(-120px);
+}
+
+/* ── Gradient Overlay (white → transparent for alumni, green for Kirkland) ── */
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* White fade from left covering ~50%, then transparent so image shows on right */
+    background: linear-gradient(
+        to right,
+        #D9ECFA 0%,
+        #D9ECFA 35%,
+        rgba(217, 236, 250, 0.85) 50%,
+        rgba(217, 236, 250, 0.3) 65%,
+        transparent 80%
+    );
+    z-index: 1;
+}
+
+/* Kirkland override: green-tinted gradient */
+.kirkland-override .banner-overlay {
+    /* background: linear-gradient(
+        to right,
+        #EDFCF3 0%,
+        #EDFCF3 35%,
+        rgba(237, 252, 243, 0.85) 50%,
+        rgba(237, 252, 243, 0.3) 65%,
+        transparent 80%
+    ); */
+
+    background: linear-gradient(to right, #EDFCF3 0%, #EDFCF3 35%, #EDFCF390 50%, transparent 65%, transparent 80%);
+}
+
+/* ── Content Layer (above image + overlay) ─────────── */
+.banner-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 24px 25px 16px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* ── Top Row: Welcome text + Pill ──────────────────── */
+.banner-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.banner-message {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 350;
+    font-family: 'Mallory-main', sans-serif;
+    color: #111C24;
+    text-align: left;
+}
+
+.bold-name {
+    font-size: 1.75rem;
+    font-weight: 700;
+    font-family: 'Mallory-main', sans-serif;
+    color: #111C24;
+    display: inline;
+}
+
+/* ── Kirkland Badge in Banner ─────────────────────── */
+.name-with-badge {
+    display: inline;
+}
+
+.kirkland-badge {
+    margin-left: 6px;
+    vertical-align: super;
+    opacity: 0.9;
+}
+
+.banner-badge {
+    width: 18px;
+    height: 18px;
+}
+
+/* ── Registered Users Pill ────────────────────────── */
+.registered-users-pill {
+    flex-shrink: 0;
+    border: 1.5px solid #2E6DA4;
+    border-radius: 10px;
+    padding: 4px 14px;
+    font-size: 0.9rem;
+    font-family: 'Mallory-main', sans-serif;
+    color: #2E6DA4;
+    white-space: nowrap;
+    background-color: #fff;
+    /* background-color: rgba(255, 255, 255, 0.85); */
+}
+
+/* ── Badge Row (bottom of banner) ────────────────── */
+.icon-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.icon-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 14px;
+    color: #111C24;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    font-family: 'Mallory', sans-serif;
+    font-weight: 400;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px;
+    height: 42px;
+    background-color: white;
+    border: 1px solid #F2F2F2;
+    border-radius: 50%;
+    margin-bottom: 0.4rem;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+    flex-shrink: 0;
+}
+
+/* ── Birthday Glow ────────────────────────────────── */
+@keyframes birthday-glow {
+    from { box-shadow: 0 0 10px rgba(255, 107, 107, 0.5); }
+    to { box-shadow: 0 0 20px rgba(255, 165, 0, 0.8); }
+}
+
+/* ── Kirkland Override ────────────────────────────── */
+.kirkland-override .registered-users-pill {
+    border-color: #166837 !important;
+    color: #166837 !important;
+}
+
+/* ── Mobile Responsive ────────────────────────────── */
+@media (max-width: 1023px) {
+    .banner-container {
+        min-height: 120px;
+    }
+
+    .banner-content {
+        padding: 10px 25px 10px 25px;
+    }
+
+    .banner-message {
+        font-size: 20px;
+        font-weight: 350;
+        font-family: 'Mallory-main', sans-serif;
+        color: #111C24;
+        text-align: left;
+        line-height: 29px;
+    }
+
+    .bold-name {
+        font-size: 20px;
+        font-weight: 700;
+        font-family: 'Mallory-main', sans-serif;
+        color: #111C24;
+        line-height: 29px;
+        display: block;
+    }
+
+    .banner-bg-image {
+        width: 55%;
+        transform: translateY(-50px);
+        height: unset;
+    }
+
+    .banner-overlay {
+        background: linear-gradient(
+            to right,
+            #D9ECFA 0%,
+            #D9ECFA 40%,
+            rgba(217, 236, 250, 0.9) 55%,
+            rgba(217, 236, 250, 0.3) 70%,
+            transparent 85%
+        );
+    }
+
+    .kirkland-override .banner-overlay {
+        background: linear-gradient(
+            to right,
+            #EDFCF3 0%,
+            #EDFCF3 40%,
+            rgba(237, 252, 243, 0.9) 55%,
+            rgba(237, 252, 243, 0.3) 70%,
+            transparent 85%
+        );
+    }
+
+    .banner-container.kirkland-override {
+        background-color: #EDFCF3;
+    }
+
+    .icon-row {
+        gap: 10px;
+        margin-top: 8px;
+    }
+
+    .icon-label {
+        font-size: 11px;
+        padding: 0.25rem;
+    }
+
+    .icon {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+@media (max-width: 768px){
+   .banner-bg-image {
+        /* width: 55%; */
+        transform: unset !important;
+        height: 100% !important; 
+    } 
+
+}

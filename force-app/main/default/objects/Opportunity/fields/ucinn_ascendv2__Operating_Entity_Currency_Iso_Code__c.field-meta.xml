@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Operating_Entity_Currency_Iso_Code__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Operating Entity Currency ISO Code</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>ucinn_ascendv2__Currency_Codes</valueSetName>
+    </valueSet>
+</CustomField>

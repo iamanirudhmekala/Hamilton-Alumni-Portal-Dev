@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Form_Type__c</fullName>
+    <description>The type of form carried over from Blackthorn.</description>
+    <inlineHelpText>Whether this form was shown before registration, after, or as a survey.</inlineHelpText>
+    <label>Form Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Pre-registration</fullName>
+                <default>false</default>
+                <label>Pre-registration</label>
+            </value>
+            <value>
+                <fullName>Post-registration</fullName>
+                <default>false</default>
+                <label>Post-registration</label>
+            </value>
+            <value>
+                <fullName>Survey</fullName>
+                <default>false</default>
+                <label>Survey</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

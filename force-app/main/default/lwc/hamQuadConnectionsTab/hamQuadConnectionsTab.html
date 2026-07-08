@@ -1,0 +1,65 @@
+<template>
+    <div class="tab-content">
+        <div class="section-header">
+            <div>
+                <div class="eyebrow">HAM_Connection__c · Data Source = Portal User</div>
+                <h2 class="section-title">Connections, bookmarks, favorites &amp; blocks</h2>
+            </div>
+            <lightning-button
+                variant="neutral"
+                label="Refresh"
+                icon-name="utility:refresh"
+                onclick={handleRefresh}
+                disabled={isLoading}
+            ></lightning-button>
+        </div>
+
+        <template if:true={hasError}>
+            <div class="error-banner">{errorMessage}</div>
+        </template>
+
+        <div class="kpi-row">
+            <template for:each={kpiTiles} for:item="tile">
+                <c-ham-quad-kpi-tile
+                    key={tile.label}
+                    label={tile.label}
+                    value={tile.value}
+                    sub={tile.sub}
+                    tone={tile.tone}
+                    big
+                ></c-ham-quad-kpi-tile>
+            </template>
+        </div>
+
+        <div class="grid-two">
+            <div class="card">
+                <div class="card-title">Daily new records (last 14 days, Portal User only)</div>
+                <div class="chart-wrap">
+                    <canvas lwc:ref="dailyCanvas"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">New records by status (30 days, Portal User)</div>
+                <table class="status-table">
+                    <tbody>
+                        <template for:each={statusBreakdown} for:item="row">
+                            <tr key={row.name}>
+                                <td class="status-name">{row.name}</td>
+                                <td class="status-value">{row.formattedValue}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+
+                <div class="all-time-block">
+                    <div class="all-time-title">All-time totals (Portal User only)</div>
+                    <div class="all-time-row">Total records: <b>{formattedAllTimeTotal}</b></div>
+                    <div class="all-time-row">Bookmarked: <b>{formattedBookmarked}</b></div>
+                    <div class="all-time-row">Favorited (ever): <b>{formattedFavorited}</b></div>
+                    <div class="all-time-row">Blocked (ever): <b>{formattedBlocked}</b></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

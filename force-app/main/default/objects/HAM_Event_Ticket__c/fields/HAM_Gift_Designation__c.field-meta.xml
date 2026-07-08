@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Gift_Designation__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Hamilton-specific gift designation linked to this ticket for advancement tracking.</description>
+    <inlineHelpText>The gift designation associated with this ticket. Carried over from Blackthorn.</inlineHelpText>
+    <label>Gift Designation</label>
+    <referenceTo>ucinn_ascendv2__Designation__c</referenceTo>
+    <relationshipLabel>Event Tickets</relationshipLabel>
+    <relationshipName>Event_Tickets</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

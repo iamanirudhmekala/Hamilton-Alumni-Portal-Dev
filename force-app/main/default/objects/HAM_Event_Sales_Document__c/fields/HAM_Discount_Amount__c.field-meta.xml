@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Discount_Amount__c</fullName>
+    <description>Total discount amount applied to this sales document.</description>
+    <inlineHelpText>Discount deducted from the subtotal on this sales document.</inlineHelpText>
+    <label>Discount Amount</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

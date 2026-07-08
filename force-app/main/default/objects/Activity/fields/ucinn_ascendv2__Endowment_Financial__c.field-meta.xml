@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Endowment_Financial__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <label>Endowment Financial</label>
+    <referenceTo>ucinn_ascendv2__Endowment_Financials__c</referenceTo>
+    <relationshipLabel>Stewardships</relationshipLabel>
+    <relationshipName>Activities_Endowment_Financial</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

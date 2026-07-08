@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CMP_Type__c</fullName>
+    <description>Controls Apex logic (GivingDay, News, Events, Gallery).</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Controls Apex logic (GivingDay, News, Events, Gallery).</inlineHelpText>
+    <label>Component Type</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>GivingDay</fullName>
+                <default>true</default>
+                <label>GivingDay</label>
+            </value>
+            <value>
+                <fullName>News</fullName>
+                <default>false</default>
+                <label>News</label>
+            </value>
+            <value>
+                <fullName>Events</fullName>
+                <default>false</default>
+                <label>Events</label>
+            </value>
+            <value>
+                <fullName>Gallery</fullName>
+                <default>false</default>
+                <label>Gallery</label>
+            </value>
+            <value>
+                <fullName>Volunteer Opp</fullName>
+                <default>false</default>
+                <label>Volunteer Opp</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

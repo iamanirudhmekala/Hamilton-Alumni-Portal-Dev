@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Active__c</fullName>
+    <description>Indicates whether the person’s association with the event is currently active.</description>
+    <formula>TODAY() &lt;=  HAM_End_Date__c</formula>
+    <inlineHelpText>Automatically set to true when today’s date is on or before the End Date. The association is marked inactive after the End Date has passed.</inlineHelpText>
+    <label>Active</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

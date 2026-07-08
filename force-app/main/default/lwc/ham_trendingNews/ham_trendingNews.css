@@ -1,0 +1,8 @@
+.placeholder-widget {
+    border: 2px dashed #ccc;
+    background-color: #f9f9f9;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}

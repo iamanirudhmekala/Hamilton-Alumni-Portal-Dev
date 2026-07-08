@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>iWave_PROscores__Fundraising_iWave</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>LEAD.COMPANY</columns>
+    <columns>iWave_PROscores__iWave_PROscore__c</columns>
+    <columns>iWave_PROscores__iWave_Est_Capacity__c</columns>
+    <columns>iWave_PROscores__iWave_Donation_Count__c</columns>
+    <columns>iWave_PROscores__iWave_Donation_Total__c</columns>
+    <columns>iWave_PROscores__Last_PROscore_Created__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>iWave</label>
+</ListView>

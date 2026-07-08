@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Quantity_Sold__c</fullName>
+    <description>Total number of tickets sold, carried over from Blackthorn.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>How many tickets were sold.</inlineHelpText>
+    <label>Quantity Sold</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Is_Household_Name_Overridden__c</fullName>
+    <defaultValue>false</defaultValue>
+    <deprecated>false</deprecated>
+    <description>Allows the household name to be manually updated without any household automatic naming. Household automatic naming is disabled.</description>
+    <inlineHelpText>Allows the household name to be manually updated without any household automatic naming. Household automatic naming is disabled.</inlineHelpText>
+    <label>Is Household Name Overridden</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

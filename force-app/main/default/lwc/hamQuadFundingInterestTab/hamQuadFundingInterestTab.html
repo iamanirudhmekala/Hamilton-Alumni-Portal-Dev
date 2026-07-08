@@ -1,0 +1,51 @@
+<template>
+    <div class="tab-content">
+        <div class="section-header">
+            <div>
+                <div class="eyebrow">ucinn_ascendv2__Funding_Interest__c</div>
+                <h2 class="section-title">New interest records added</h2>
+            </div>
+            <lightning-button
+                variant="neutral"
+                label="Refresh"
+                icon-name="utility:refresh"
+                onclick={handleRefresh}
+                disabled={isLoading}
+            ></lightning-button>
+        </div>
+
+        <template if:true={hasError}>
+            <div class="error-banner">{errorMessage}</div>
+        </template>
+
+        <div class="kpi-row">
+            <template for:each={kpiTiles} for:item="tile">
+                <c-ham-quad-kpi-tile
+                    key={tile.label}
+                    label={tile.label}
+                    value={tile.value}
+                    sub={tile.sub}
+                    tone={tile.tone}
+                    big={tile.big}
+                ></c-ham-quad-kpi-tile>
+            </template>
+        </div>
+
+        <div class="grid-two-even">
+            <div class="card">
+                <div class="card-title">New by category (30 days)</div>
+                <div class="chart-wrap">
+                    <canvas lwc:ref="newByCategoryCanvas"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">All-time by category</div>
+                <div class="chart-wrap">
+                    <canvas lwc:ref="allTimeByCategoryCanvas"></canvas>
+                </div>
+                <div class="footnote">{formattedNoCategoryCount} additional all-time records have no Category set (excluded from this chart).</div>
+            </div>
+        </div>
+    </div>
+</template>

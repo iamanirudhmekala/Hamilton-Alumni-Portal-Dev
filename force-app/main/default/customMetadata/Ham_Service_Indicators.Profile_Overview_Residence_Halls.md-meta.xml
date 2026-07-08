@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Profile Overview Residence Halls</label>
+    <protected>false</protected>
+    <values>
+        <field>Filter_Placeholder__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Indicator_For_Field__c</field>
+        <value xsi:type="xsd:string">RESIDENCE_HALLS</value>
+    </values>
+    <values>
+        <field>Indicator_Value__c</field>
+        <value xsi:type="xsd:string">SIV_VIS_RESIDENCE</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Module__c</field>
+        <value xsi:type="xsd:string">Profile Overview</value>
+    </values>
+</CustomMetadata>

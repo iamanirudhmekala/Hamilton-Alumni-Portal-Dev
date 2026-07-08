@@ -1,0 +1,86 @@
+<template>
+    <div class={wrapperClass}>
+        <div class="top-nav">
+            <button class="back-link" onclick={handleBack}>
+                <span class="chevron">&lsaquo;</span> Back
+            </button>
+        </div>
+
+        <div class="profile-card">
+            <div class="mobile-profile-header">
+                <template if:true={hasProfilePic}>
+                    <div class="mobile-pic has-photo">
+                        <img src={profileData.pic} alt="Profile" />
+                    </div>
+                </template>
+                <template if:false={hasProfilePic}>
+                    <div class="mobile-pic">
+                        <img src={hamicons.profileIcon} alt="User" />
+                    </div>
+                </template>
+                
+                <div class="mobile-name-social">
+                    <h1 class="user-name">{profileData.name}</h1>
+                    <div class="social-icons">
+                        <template for:each={socialMediaLinks} for:item="link">
+                            <a key={link.label} class={link.linkClass} href="javascript:void(0);" onclick={handleSocialClick} data-url={link.url} data-label={link.label}>
+                                <img src={link.iconUrl} alt={link.label} class="social-icon-img"/>
+                            </a>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-left desktop-only">
+                <template if:true={hasProfilePic}>
+                    <div class="profile-icon-container has-photo">
+                        <img src={profileData.pic} class="profile-img" alt="Profile" />
+                    </div>
+                </template>
+                <template if:false={hasProfilePic}>
+                    <div class="profile-icon-container">
+                        <img src={hamicons.profileIcon} class="profile-img" alt="User" />
+                    </div>
+                </template>
+
+                <div class="social-icons">
+                    <template for:each={socialMediaLinks} for:item="link">
+                        <a key={link.label} class={link.linkClass} href="javascript:void(0);" onclick={handleSocialClick} data-url={link.url} data-label={link.label}>
+                            <img src={link.iconUrl} alt={link.label} class="social-icon-img"/>
+                        </a>
+                    </template>
+                </div>
+            </div>
+
+            <div class="card-right">
+                <div class="card-header desktop-only">
+                    <h1 class="user-name">{profileData.name}</h1>
+                    <template if:true={profileData.year}>
+                        <p class="class-year">Class of {profileData.year}</p>
+                    </template>
+                </div>
+
+                <template for:each={rightColumnSections} for:item="section">
+                    <div key={section.name} class="info-section">
+                        <div class="divider"></div>
+                        <h3 class="section-heading">{section.name}</h3>
+                        
+                        <div class="section-grid">
+                            <template for:each={section.fields} for:item="field">
+                                <div key={field.label} class="info-row">
+                                    <span class="info-label">{field.label}</span>
+                                    <span class="info-value">{field.value}</span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <div class="action-buttons bottom-actions">
+                    <button class="btn-back" onclick={handleBack}>Back to Settings</button>
+                    <button class="btn-save" onclick={handleSave}>Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

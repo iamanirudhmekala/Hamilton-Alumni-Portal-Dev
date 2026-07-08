@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Bill_To_Account__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Account billed for this sales document. Migrated from bt_stripe__Bill_To__c on bt_stripe__Sales_Document__c.</description>
+    <inlineHelpText>The billing account from the original Blackthorn invoice.</inlineHelpText>
+    <label>Bill To Account</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Sales Documents (Bill To)</relationshipLabel>
+    <relationshipName>HAM_Bill_To_Sales_Documents</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

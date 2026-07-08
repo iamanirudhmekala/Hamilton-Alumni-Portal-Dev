@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Answer_Text_Long__c</fullName>
+    <description>Long-form answer text (up to 30,000 characters) for answers that exceed the 255-character limit of HAM_Answer__c.</description>
+    <inlineHelpText>Use this field for long answers that exceed 255 characters, such as essay responses or detailed comments.</inlineHelpText>
+    <label>Answer (Long)</label>
+    <length>30000</length>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>4</visibleLines>
+</CustomField>

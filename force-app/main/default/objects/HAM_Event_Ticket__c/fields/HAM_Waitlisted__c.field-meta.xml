@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Waitlisted__c</fullName>
+    <description>Number of registrants currently on the waitlist for this ticket type.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Current number of waitlisted registrants for this ticket type.</inlineHelpText>
+    <label>Waitlisted</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

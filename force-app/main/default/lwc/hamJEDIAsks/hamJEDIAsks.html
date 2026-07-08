@@ -1,0 +1,116 @@
+<template>
+    <div class="backgroundWhite">
+        <lightning-accordion allow-multiple-sections-open="true" active-section-name={activeAsksSectionName} onsectiontoggle={handleAsksSectionToggle}>
+            <lightning-accordion-section name="Asks" label="Asks">
+
+                <!-- Loading Spinner -->
+                <template lwc:if={loading}>
+                    <lightning-spinner
+                        alternative-text="Loading..."
+                        size="medium"
+                        variant="brand">
+                    </lightning-spinner>
+                </template>
+
+                <template lwc:if={hasAsks}>
+                    <div class="slds-p-around_small">
+
+                        <!-- Desktop datatable -->
+                        <template lwc:if={isMobile}>
+                            <!-- Mobile sort bar -->
+                            <div class="mobile-sort-bar">
+                                <lightning-combobox
+                                    label="Sort by"
+                                    variant="label-hidden"
+                                    placeholder="Sort by..."
+                                    options={mobileSortOptions}
+                                    value={sortedBy}
+                                    onchange={handleMobileSortChange}>
+                                </lightning-combobox>
+                                <lightning-button-icon
+                                    icon-name={sortDirectionIcon}
+                                    alternative-text={sortDirectionLabel}
+                                    title={sortDirectionLabel}
+                                    onclick={toggleSortDirection}
+                                    class="slds-var-m-left_x-small">
+                                </lightning-button-icon>
+                            </div>
+                            <div class="mobile-filter-bar">
+                                <lightning-combobox
+                                    class="mobile-stage-combo"
+                                    label="Stage"
+                                    variant="label-hidden"
+                                    placeholder="All Stages"
+                                    options={mobileStageOptions}
+                                    value={_selectedStage}
+                                    onchange={handleStageFilterChange}>
+                                </lightning-combobox>
+                                <template lwc:if={_selectedStage}>
+                                    <button class="stage-clear-btn" onclick={clearStageFilter} title="Clear">✕</button>
+                                </template>
+                            </div>
+
+                            <!-- Mobile cards -->
+                            <template for:each={mobileCards} for:item="card">
+                                <div key={card.id} class="ask-card" style={card.cardStyle}>
+                                    <div class="ask-card-header">
+                                        <a href={card.headerLink} target="_blank">{card.headerValue}</a>
+                                    </div>
+                                    <div class="ask-card-body">
+                                        <template for:each={card.bodyFields} for:item="field">
+                                            <div key={field.label} class="ask-card-row">
+                                                <span class="ask-card-label">{field.label}</span>
+                                                <span class="ask-card-value">{field.value}</span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </template>
+
+                        <template lwc:else>
+                            <div style="overflow-x:auto">
+                                <lightning-datatable
+                                    key-field="Id"
+                                    data={pageAsks}
+                                    columns={askColumns}
+                                    hide-checkbox-column
+                                    sorted-by={sortedBy}
+                                    sorted-direction={sortedDirection}
+                                    onsort={handleAskSort}>
+                                </lightning-datatable>
+                            </div>
+                        </template>
+
+                        <!-- Pagination Controls (only show if more than 10 records) -->
+                        <template lwc:if={showPagination}>
+                            <div class="slds-m-top_small slds-grid slds-grid_align-spread slds-align_absolute-center">
+                                <lightning-button
+                                    label="Prev"
+                                    onclick={prevPage}
+                                    disabled={isFirstPage}>
+                                </lightning-button>
+                                <div class="slds-m-horizontal_small">
+                                    Page {pageNumber} of {totalPages} · {totalRecords} total
+                                </div>
+                                <lightning-button
+                                    label="Next"
+                                    onclick={nextPage}
+                                    disabled={isLastPage}>
+                                </lightning-button>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <template lwc:else>
+                    <template lwc:if={dataLoaded}>
+                        <div class="slds-p-around_small">
+                            <p>No asks found for this contact.</p>
+                        </div>
+                    </template>
+                </template>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </div>
+</template>

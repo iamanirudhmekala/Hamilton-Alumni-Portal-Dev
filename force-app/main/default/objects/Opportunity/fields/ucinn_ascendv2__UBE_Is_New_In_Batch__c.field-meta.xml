@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__UBE_Is_New_In_Batch__c</fullName>
+    <defaultValue>false</defaultValue>
+    <deprecated>false</deprecated>
+    <description>Unified Business Engine (UBE) flag indicating the record is being processed in batch.</description>
+    <inlineHelpText>If True, this particular record is being processed by an apex batch class.  This field is set to True if UBE Batch Status == ‘in-progress’.</inlineHelpText>
+    <label>UBE New In Batch</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

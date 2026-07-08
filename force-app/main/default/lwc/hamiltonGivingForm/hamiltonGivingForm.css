@@ -1,0 +1,106 @@
+/* Inherit variables from parent component */
+.single-page-form {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    padding: 2rem 3rem;
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+}
+
+.form-layout-with-carousel {
+    display: block;
+}
+
+.form-content-main {
+    min-width: 0;
+}
+
+.form-header {
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.form-section-compact {
+    padding-bottom: 0;
+}
+
+.gift-type-tab {
+    display: flex;
+}
+
+.gift-type-tab .gift-tab:nth-of-type(1) {
+    border-top-left-radius: 8px; 
+    border-bottom-left-radius: 8px;
+}
+
+.gift-type-tab .gift-tab:nth-of-type(3) {
+    border-top-right-radius: 8px; 
+    border-bottom-right-radius: 8px;
+}
+
+.gift-tab {
+    flex: 1;
+    padding: var(--spacing-lg) var(--spacing-lg);
+    border: none;
+    border-right: 1px solid #e5e7eb;
+    background: white;
+    color: #374151;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9375rem;
+    position: relative;
+    font-weight: 500;
+}
+
+.arrow-tab {
+    position: relative;
+    padding: var(--spacing-lg) var(--spacing-2xl) !important;
+    background: #d1d5db !important;
+    color: #6b7280 !important;
+    border: none !important;
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 0 100%, 15px 50%);
+    margin-right: -15px;
+    z-index: 1;
+    transition: all 0.3s ease;
+    font-weight: 600 !important;
+}
+
+.arrow-tab:first-child {
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 0 100%);
+    margin-left: 0;
+}
+
+.arrow-tab:last-child {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 15px 50%);
+    margin-right: 0;
+}
+
+.arrow-tab:hover {
+    background: #9ca3af !important;
+    color: #374151 !important;
+    z-index: 2;
+}
+
+.arrow-tab.active {
+    background: linear-gradient(
+      135deg,
+      var(--hamilton-navy) 0%,
+      var(--hamilton-navy-light) 100%) !important;
+    color: white !important;
+    z-index: 3;
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
+    box-shadow: 0 4px 12px rgba(0, 32, 91, 0.3) !important;
+}
+
+@media screen and (max-width: 767px) {
+    .single-page-form {
+        padding: 1rem;
+    }
+
+    .gift-tab {
+        font-size: medium;
+    }
+
+}

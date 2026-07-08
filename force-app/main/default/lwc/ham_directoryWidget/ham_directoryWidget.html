@@ -1,0 +1,377 @@
+<template>
+    <div class={widgetClass}>
+
+        <!--Desktop view -->
+        <template lwc:if={isDesktopView}>
+
+            <template lwc:if={isConnectionsData}>
+            <!--Header Section-->
+            <div class="slds-card__header slds-grid main-container">
+                <header class="directory-header">
+                    <div>
+                        <h1 class="section-header">{label.directoryWidget}</h1>
+                        <template lwc:if={isConnections}>
+                            <p class="connection-count">{connectioncount}&nbsp;{label.directoryWidgetCon}</p>
+                        </template>
+                        <template lwc:if={isBookmarks}>
+                            <h2 class="connection-count">{label.directoryWidgetBook}</h2>
+                        </template>
+                    </div>
+                    <a class="rounded-btn" onclick={handleMyImpactNavigation}>
+                        <template lwc:if={isOverride}>
+                            <img src={images.widgetRedirectGreen} height="20px" width="20px" />
+                        </template>
+                        <template lwc:else>
+                            <img src={images.widgetRedirect} height="20px" width="20px" />
+                        </template>
+                    </a>
+                </header>
+            </div>
+
+            <!-- Connection card grid body -->
+            <div class="slds-card__body slds-card__body_inner">
+                <template lwc:if={hasCards}>
+
+                    <!-- 2-col card grid — shows pagedList (2 cards at a time) -->
+                    <div class="profile-card-grid">
+                        <template for:each={pagedList} for:item="alumni">
+                            <div key={alumni.linkedConstituentId} class="profile-card"
+                                onclick={handleProfileSelect} data-id={alumni.linkedConstituentId}>
+
+                                <!-- Photo -->
+                                <div class="card-photo-wrapper">
+                                    <template lwc:if={alumni.header.photoUrl}>
+                                        <img src={alumni.header.photoUrl} class="card-photo" alt="Profile Picture" />
+                                    </template>
+                                    <template lwc:else>
+                                        <div class="card-photo-placeholder">
+                                            <img src={imageToUse.avatarNew} class="card-photo-default" alt="Profile Picture" />
+                                        </div>
+                                    </template>
+                                    
+                                </div>
+
+                                <!-- Name + class year -->
+                                <div class="card-name">{alumni.displayName} 
+                                    <template lwc:if={alumni.header.isKirklandAlumnae}>
+                                        <img src={imageToUse.kirklandLogo} alt="Kirkland Alumnae" class="kirkland-badge profile-badge" />
+                                    </template>
+
+                                </div>
+
+                                <!-- Degree + Industry fields -->
+                                <template for:each={alumni.displayFields} for:item="field">
+                                    <div key={field.label} class="card-field">
+                                        <span class="card-field-label">{field.label}</span>
+                                        <span class="card-field-value">{field.value}</span>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+
+                   
+
+                </template>
+
+                <footer class="directory-footer">
+                    <div>
+                        <button class="btn-primary" onclick={handleDirectoryNavigation}
+                            data-name={label.buildCommunity}>{label.findConnection}</button>
+                        <button class="btn-secondary" onclick={handleDirectoryNavigation}
+                            data-name="My Connections">{label.seeAllConnections}</button>
+                    </div>
+
+                     <!-- Pagination arrows -->
+                    <div class="card-pagination">
+                        <button class={prevBtnClass} onclick={handlePrevPage} aria-label="Previous">
+                            <template lwc:if={isOverride}>
+                            <img src={imageToUse.arrowLeftGreen} alt="Previous" class="page-arrow-icon" />
+                            </template>
+                             <template lwc:else>
+                            <img src={imageToUse.arrowLeft} alt="Previous" class="page-arrow-icon" />
+                             </template>
+                        </button>
+                        <button class={nextBtnClass} onclick={handleNextPage} aria-label="Next">
+                             <template lwc:if={isOverride}>
+                            <img src={imageToUse.arrowRightGreen} alt="Next" class="page-arrow-icon" />
+                             </template>
+                              <template lwc:else>
+                            <img src={imageToUse.arrowRight} alt="Next" class="page-arrow-icon" />
+                              </template>
+                        </button>
+                    </div>
+                    
+                </footer>
+            </div>
+            </template>
+            <template lwc:else>
+                    <template lwc:if={isClassmates}>
+                            <!--Header Section-->
+                            <div class="slds-card__header slds-grid main-container">
+                                <header class="directory-header">
+                                    <div>
+                                        <h1 class="section-header">{label.directoryWidget}</h1>
+                                        
+                                        <h2 class="connection-count">{label.directoryWidgetClass}</h2>
+                                        
+                                    </div>
+                                    <a class="rounded-btn" onclick={handleMyImpactNavigation}>
+                                        <template lwc:if={isOverride}>
+                                            <img src={images.widgetRedirectGreen} height="20px" width="20px" />
+                                        </template>
+                                        <template lwc:else>
+                                            <img src={images.widgetRedirect} height="20px" width="20px" />
+                                        </template>
+                                    </a>
+                                </header>
+                            </div>
+
+                            <!-- Connection card grid body -->
+                            <div class="slds-card__body slds-card__body_inner">
+                                <template lwc:if={hasClassmateCards}>
+                                    <!-- 2-col card grid — shows pagedList (2 cards at a time) -->
+                                    <div class="profile-card-grid">
+                                        <template for:each={pagedClassmateList} for:item="alumni">
+                                            <div key={alumni.connectionId} class="profile-card"
+                                                onclick={handleProfileSelect} data-id={alumni.connectionId}>
+
+                                                <!-- Photo -->
+                                                <div class="card-photo-wrapper">
+                                                    <template lwc:if={alumni.header.photoUrl}>
+                                                        <img src={alumni.header.photoUrl} class="card-photo" alt="Profile Picture" />
+                                                    </template>
+                                                    <template lwc:else>
+                                                        <div class="card-photo-placeholder">
+                                                            <img src={imageToUse.avatarNew} class="card-photo-default" alt="Profile Picture" />
+                                                        </div>
+                                                    </template>
+                                                    
+                                                </div>
+
+                                                <!-- Name + class year -->
+                                                <div class="card-name">{alumni.displayName} 
+                                                    <template lwc:if={alumni.header.isKirklandAlumnae}>
+                                                        <img src={imageToUse.kirklandLogo} alt="Kirkland Alumnae" class="kirkland-badge profile-badge" />
+                                                    </template>
+
+                                                </div>
+
+                                                <!-- Degree + Industry fields -->
+                                                <template for:each={alumni.displayFields} for:item="field">
+                                                    <div key={field.label} class="card-field">
+                                                        <span class="card-field-label">{field.label}</span>
+                                                        <span class="card-field-value">{field.value}</span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                                <footer class="directory-footer">
+                                    <div>
+                                        <button class="btn-primary" onclick={handleDirectoryNavigation}
+                                            data-name={label.buildCommunity}>{label.findConnection}</button>
+                                        <button class="btn-secondary" onclick={handleDirectoryNavigation}
+                                            data-name="My Connections">{label.seeAllConnections}</button>
+                                    </div>
+
+                                    <!-- Pagination arrows -->
+                                    <div class="card-pagination">
+                                        <button class={classmateprevBtnClass} onclick={handleClassmatePrevPage} aria-label="Previous">
+                                            <template lwc:if={isOverride}>
+                                            <img src={imageToUse.arrowLeftGreen} alt="Previous" class="page-arrow-icon" />
+                                            </template>
+                                            <template lwc:else>
+                                            <img src={imageToUse.arrowLeft} alt="Previous" class="page-arrow-icon" />
+                                            </template>
+                                        </button>
+                                        <button class={classmatenextBtnClass} onclick={handleClassmateNextPage} aria-label="Next">
+                                            <template lwc:if={isOverride}>
+                                            <img src={imageToUse.arrowRightGreen} alt="Next" class="page-arrow-icon" />
+                                            </template>
+                                            <template lwc:else>
+                                            <img src={imageToUse.arrowRight} alt="Next" class="page-arrow-icon" />
+                                            </template>
+                                        </button>
+                                    </div>
+                                    
+                                </footer>
+                            </div>
+                    </template>
+                    <!--If no connection/ classmate render template-->
+                    <template lwc:else>
+                         <!--Header Section-->
+                            <div class="slds-card__header slds-grid main-container">
+                                <header class="directory-header">
+                                    <div>
+                                        <h1 class="section-header">{label.directoryWidget}</h1>
+                                        
+                                    </div>
+                                    <a class="rounded-btn" onclick={handleMyImpactNavigation}>
+                                        <template lwc:if={isOverride}>
+                                            <img src={images.widgetRedirectGreen} height="20px" width="20px" />
+                                        </template>
+                                        <template lwc:else>
+                                            <img src={images.widgetRedirect} height="20px" width="20px" />
+                                        </template>
+                                    </a>
+                                </header>
+                            </div>
+                            <div class="slds-card__body slds-card__body_inner">
+
+                            <div class="desk-messagecls">
+                                {labels.directiryMsg}
+                            </div>
+                             <footer class="directory-footer">
+                                    <div>
+                                        <button class="btn-primary" onclick={handleDirectoryNavigation}
+                                            data-name={label.buildCommunity}>{label.findConnection}</button>
+                                        <button class="btn-secondary" onclick={handleDirectoryNavigation}
+                                            data-name="My Connections">{label.seeAllConnections}</button>
+                                    </div>
+
+                                    <!-- Pagination arrows -->
+                                    <div class="card-pagination">
+                                        <button class={classmateprevBtnClass} onclick={handleClassmatePrevPage} aria-label="Previous">
+                                            <template lwc:if={isOverride}>
+                                            <img src={imageToUse.arrowLeftGreen} alt="Previous" class="page-arrow-icon" />
+                                            </template>
+                                            <template lwc:else>
+                                            <img src={imageToUse.arrowLeft} alt="Previous" class="page-arrow-icon" />
+                                            </template>
+                                        </button>
+                                        <button class={classmatenextBtnClass} onclick={handleClassmateNextPage} aria-label="Next">
+                                            <template lwc:if={isOverride}>
+                                            <img src={imageToUse.arrowRightGreen} alt="Next" class="page-arrow-icon" />
+                                            </template>
+                                            <template lwc:else>
+                                            <img src={imageToUse.arrowRight} alt="Next" class="page-arrow-icon" />
+                                            </template>
+                                        </button>
+                                    </div>
+                                    
+                                </footer>
+                            </div>
+                    </template>
+            </template>
+
+        </template>
+
+        <!--Mobile View-->
+        <template lwc:if={isMobileView}>
+            <div class="mob-widget-header">
+                <h1 class="section-header">{label.alumnidirectory}</h1>
+                <a class="rounded-btn" onclick={handleMyImpactNavigation}>
+                    <template lwc:if={isOverride}>
+                        <img src={images.widgetRedirectGreen} height="20px" width="20px" />
+                    </template>
+                    <template lwc:else>
+                        <img src={images.widgetRedirect} height="20px" width="20px" />
+                    </template>
+                </a>
+            </div>
+
+            <template lwc:if={isConnectionsData}>
+                <template lwc:if={isConnections}>
+                    <p class="mob-connection-count">{connectioncount}&nbsp;{label.directoryWidgetCon}</p>
+                </template>
+                <template lwc:if={isBookmarks}>
+                    <p class="mob-connection-count">{label.directoryWidgetBook}</p>
+                </template>
+
+                <!-- Horizontal scrollable card row -->
+                <div class="mob-card-scroll">
+                    <template for:each={enrichedList} for:item="alumni">
+                        <div key={alumni.linkedConstituentId} class="mob-profile-card"
+                            data-id={alumni.linkedConstituentId} onclick={handleProfileSelect}>
+
+                            <!-- Photo -->
+                            <div class="mob-card-photo-wrapper">
+                                <template lwc:if={alumni.header.photoUrl}>
+                                    <img src={alumni.header.photoUrl} class="mob-card-photo" alt="Profile Picture" />
+                                </template>
+                                <template lwc:else>
+                                    <div class="mob-card-photo-placeholder">
+                                        <img src={imageToUse.avatarNew} class="mob-card-photo-default" alt="Profile Picture" />
+                                    </div>
+                                </template>
+                                
+                            </div>
+
+                            <!-- Name + class year -->
+                            <div class="mob-card-name">{alumni.displayName}
+                                <template lwc:if={alumni.header.isKirklandAlumnae}>
+                                    <img src={imageToUse.kirklandLogo} alt="Kirkland Alumnae" class="kirkland-badge profile-badge" />
+                                </template>
+                            </div>
+
+                            <!-- Degree + Industry inline -->
+                            <template for:each={alumni.displayFields} for:item="field">
+                                <div key={field.label} class="mob-card-field">
+                                    <span class="mob-card-field-label">{field.label}</span>
+                                    <span class="mob-card-field-value">{field.value}</span>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <template lwc:else>
+
+                    <template lwc:if={isClassmates}>
+                        
+                        <h2 class="connection-count">{label.directoryWidgetClass}</h2>
+
+                        <!-- Horizontal scrollable card row -->
+                        <div class="mob-card-scroll">
+                            <template for:each={enrichedClassmateList} for:item="alumni">
+                                <div key={alumni.connectionId} class="mob-profile-card"
+                                    data-id={alumni.connectionId} onclick={handleProfileSelect}>
+
+                                    <!-- Photo -->
+                                    <div class="mob-card-photo-wrapper">
+                                        <template lwc:if={alumni.header.photoUrl}>
+                                            <img src={alumni.header.photoUrl} class="mob-card-photo" alt="Profile Picture" />
+                                        </template>
+                                        <template lwc:else>
+                                            <div class="mob-card-photo-placeholder">
+                                                <img src={imageToUse.avatarNew} class="mob-card-photo-default" alt="Profile Picture" />
+                                            </div>
+                                        </template>
+                                        
+                                    </div>
+
+                                    <!-- Name + class year -->
+                                    <div class="mob-card-name">{alumni.displayName}
+                                        <template lwc:if={alumni.header.isKirklandAlumnae}>
+                                            <img src={imageToUse.kirklandLogo} alt="Kirkland Alumnae" class="kirkland-badge profile-badge" />
+                                        </template>
+                                    </div>
+
+                                    <!-- Degree + Industry inline -->
+                                    <template for:each={alumni.displayFields} for:item="field">
+                                        <div key={field.label} class="mob-card-field">
+                                            <span class="mob-card-field-label">{field.label}</span>
+                                            <span class="mob-card-field-value">{field.value}</span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <div class="mob-messagecls">
+                             {labels.directiryMsg}
+                        </div>
+                    </template>
+            </template>
+             
+               
+           
+            <div>
+                <button class="navigate-button" onclick={handleMyImpactNavigation}>{label.searchAndMakeConnections}</button>
+            </div>
+        </template>
+    </div>
+</template>

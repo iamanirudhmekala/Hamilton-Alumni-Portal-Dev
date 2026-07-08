@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Trivia_Option_Chosen__c</fullName>
+    <description>Stores the option chosen for particular Hamilton Trivia question on Alumni Portal</description>
+    <inlineHelpText>Stores the option chosen for particular Hamilton Trivia question on Alumni Portal</inlineHelpText>
+    <label>HAM Trivia Option Chosen</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>TextArea</type>
+</CustomField>

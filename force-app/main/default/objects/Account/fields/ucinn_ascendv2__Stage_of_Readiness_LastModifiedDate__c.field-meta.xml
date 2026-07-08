@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Stage_of_Readiness_LastModifiedDate__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Last Modified Date for the Stage of Readiness</description>
+    <label>Stage of Readiness Last Modified Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>DateTime</type>
+</CustomField>

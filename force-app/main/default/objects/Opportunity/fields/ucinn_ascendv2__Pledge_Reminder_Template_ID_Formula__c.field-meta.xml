@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Pledge_Reminder_Template_ID_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Template to use based on payments</description>
+    <externalId>false</externalId>
+    <formula>IF (ucinn_ascendv2__Number_of_Pledges_Roll_Up__c = 1, &quot;a2Li0000000zhXM&quot;,&quot;a2Li0000000zhXR&quot;)</formula>
+    <label>Pledge Reminder Template ID (DEPRECATED</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

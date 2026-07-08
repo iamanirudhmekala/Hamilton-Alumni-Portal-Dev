@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Constituent__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Identifies the constituent associated with this receipt.</description>
+    <inlineHelpText>Select the constituent to whom this receipt applies. This lookup determines the recipient and is used for receipt generation, delivery, and reporting.</inlineHelpText>
+    <label>Constituent</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Receipts</relationshipLabel>
+    <relationshipName>Receipts</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

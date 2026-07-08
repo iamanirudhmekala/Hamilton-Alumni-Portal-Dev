@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>iWave_PROscores__iWave_PROscore__c</fullName>
+    <deprecated>false</deprecated>
+    <description>A rating, from 4 (highest) to 1 (lowest) to indicate their potential as a prospect, weighted based on Propensity, Affinity, and Capacity.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>A rating, from 4 (highest) to 1 (lowest) to indicate their potential as a prospect, weighted based on Propensity, Affinity, and Capacity.</inlineHelpText>
+    <label>iWave Score</label>
+    <precision>1</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

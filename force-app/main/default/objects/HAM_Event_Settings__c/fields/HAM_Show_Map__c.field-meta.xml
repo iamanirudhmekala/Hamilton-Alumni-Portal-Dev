@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Show_Map__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Show map on navigator app.</description>
+    <inlineHelpText>When true, the Map view is displayed in the Blackthorn Navigator mobile app.</inlineHelpText>
+    <label>Show Map</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>conference360__Events_Price_Control__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Used to set dynamic pricing for the identified Events user.</description>
+    <inlineHelpText>Used to set dynamic pricing for the identified Events user.</inlineHelpText>
+    <label>Events Price Control</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Member</fullName>
+                <default>false</default>
+                <label>Member</label>
+            </value>
+            <value>
+                <fullName>Non-member</fullName>
+                <default>false</default>
+                <label>Non-member</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

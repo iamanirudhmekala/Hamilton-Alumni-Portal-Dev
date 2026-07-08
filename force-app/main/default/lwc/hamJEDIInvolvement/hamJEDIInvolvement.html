@@ -1,0 +1,116 @@
+<template>
+    <div class="backgroundWhite">
+        <lightning-accordion allow-multiple-sections-open="true" active-section-name={activeSection} onsectiontoggle={handleSectionToggle}>
+            <lightning-accordion-section name={tableTitle} label={tableTitle}>
+                <!-- Button Row Right-Aligned -->
+                <div class="slds-grid slds-grid_align-end slds-p-bottom_small">
+                    <lightning-button label={advanceFiltersButtonLabel} onclick={toggleAdvanceFilters}></lightning-button>
+                </div>
+
+                <!-- Advance Filters Panel -->
+                <template if:true={showAdvanceFilters}>
+                    <div class="slds-box slds-m-bottom_small">
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <!-- Start Date -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                                <lightning-input
+                                    type="date"
+                                    label="Start Date"
+                                    value={filterStartDate}
+                                    onchange={handleStartDateChange}>
+                                </lightning-input>
+                            </div>
+
+                            <!-- End Date -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                                <lightning-input
+                                    type="date"
+                                    label="End Date"
+                                    value={filterEndDate}
+                                    onchange={handleEndDateChange}>
+                                </lightning-input>
+                            </div>
+
+                            <!-- Role -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                                <lightning-combobox
+                                    label="Role"
+                                    value={filterRole}
+                                    options={roleOptions}
+                                    onchange={handleRoleChange}>
+                                </lightning-combobox>
+                            </div>
+
+                            <!-- Category (Multi-Select) -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                                <lightning-dual-listbox
+                                    label="Category"
+                                    source-label="Available"
+                                    selected-label="Selected"
+                                    options={categoryOptions}
+                                    value={filterCategory}
+                                    onchange={handleCategoryChange}
+                                    size="3">
+                                </lightning-dual-listbox>
+                            </div>
+                        </div>
+
+                        <!-- Filter Action Buttons -->
+                        <div class="slds-grid slds-grid_align-end slds-m-top_small">
+                            <lightning-button
+                                label="Clear"
+                                onclick={handleClearFilters}
+                                class="slds-m-right_small">
+                            </lightning-button>
+                            <lightning-button
+                                label="Search"
+                                variant="brand"
+                                onclick={handleSearchFilters}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </template>
+
+                <template if:true={loading}>
+                    <lightning-spinner
+                        alternative-text="Loading..."
+                        size="medium"
+                        variant="brand">
+                    </lightning-spinner>
+                </template>
+                <template lwc:if={pageInvolvements.length}>
+                    <!-- Involvement Records Table -->
+                    <div class="slds-p-around_small" style="width: 100%;">
+                        <div style="overflow-x: auto;">
+                            <lightning-datatable
+                                key-field="Id"
+                                data={pageInvolvements}
+                                columns={displayColumns}
+                                hide-checkbox-column
+                                sorted-by={sortedBy}
+                                sorted-direction={sortedDirection}
+                                onsort={handleSort}>
+                            </lightning-datatable>
+                        </div>
+
+                        <!-- Pagination Controls -->
+                        <template if:true={showPagination}>
+                            <div class="slds-m-top_small slds-grid slds-grid_align-spread slds-align_absolute-center">
+                                <lightning-button label="Prev" onclick={prevPage} disabled={isFirstPage}></lightning-button>
+                                <div class="slds-m-horizontal_small">
+                                    Page {pageNumber} of {totalPages} · {totalRecords} total
+                                </div>
+                                <lightning-button label="Next" onclick={nextPage} disabled={isLastPage}></lightning-button>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="slds-p-around_medium slds-text-align_center">
+                        No Involvement Value found
+                    </div>
+                </template>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </div>
+</template>

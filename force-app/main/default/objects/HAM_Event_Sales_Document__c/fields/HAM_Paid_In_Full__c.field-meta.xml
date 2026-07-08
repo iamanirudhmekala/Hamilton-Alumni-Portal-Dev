@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Paid_In_Full__c</fullName>
+    <description>Timestamp when payment was completed in full. Migrated from bt_stripe__Paid_In_Full__c on bt_stripe__Sales_Document__c.</description>
+    <inlineHelpText>Date and time the invoice was paid in full in the Blackthorn system.</inlineHelpText>
+    <label>Paid In Full</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

@@ -1,0 +1,30 @@
+<template>
+    <template lwc:if={isSelected}>
+        <div
+            class="designation__item--disabled" onclick={handleDesignationSelection}>
+            <div class="designation-detail">
+                <div class="header">
+                    {name}</div>
+                <!-- <p>{desc}</p> -->
+                <slot></slot>
+            </div><button type="button"
+                class="designation__item__btn--disabled">✓ Added</button>
+        </div>
+    </template>
+    <template lwc:else>
+
+        <div class="designation__item" onclick={handleDesignationSelection}>
+            <div class="designation-detail">
+                <div class="header">
+                    {name}</div>
+                <!-- <p>{desc}</p> -->
+                <slot></slot>
+            </div>
+            <button type="button"
+                class="designation__item__btn">
+                <span style="font-size: 1.125rem;">+
+                </span>Add
+            </button>
+        </div>
+    </template>
+</template>

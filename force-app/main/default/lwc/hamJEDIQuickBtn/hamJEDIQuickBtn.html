@@ -1,0 +1,102 @@
+<template>
+    <div class="jedi-nav-container">
+        <h2>Quick Actions</h2>
+        <div class="button-container">
+            <lightning-button
+                label="Create Contact Report"
+                onclick={openContactReportModal}
+                variant="brand">
+            </lightning-button>
+            <lightning-button
+                label="Submit AIS Request YODA"
+                onclick={openAsanaForm}
+                variant="brand">
+            </lightning-button>
+            <lightning-button
+                label="Create Task"
+                onclick={openTaskModal}
+                variant="brand">
+            </lightning-button>
+            <lightning-button
+                label="Log / Create Meeting"
+                onclick={openMeetingModal}
+                variant="brand">
+            </lightning-button>
+        </div>
+    </div>
+
+    <!-- Modal for Contact Report Flow -->
+    <template if:true={isContactReportModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" data-id="contactReportModal">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title">New Contact Report</h2>
+                    <button class="slds-button slds-button_icon slds-modal__close" title="Close" onclick={closeContactReportModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                    </button>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" style="min-height: 200px; position: relative;">
+                    <template if:true={isFlowLoading}>
+                        <lightning-spinner alternative-text="Loading form..." size="medium" variant="brand"></lightning-spinner>
+                    </template>
+                    <lightning-flow
+                        flow-api-name="Contact_Report_Create_New_Contact_Report_Gift_Officers"
+                        flow-input-variables={contactReportFlowInputVariables}
+                        onstatuschange={handleContactReportFlowStatusChange}>
+                    </lightning-flow>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Modal for Task Flow -->
+    <template if:true={isTaskModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" data-id="taskModal">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title">New Task</h2>
+                    <button class="slds-button slds-button_icon slds-modal__close" title="Close" onclick={closeTaskModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                    </button>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" style="min-height: 200px; position: relative;">
+                    <template if:true={isTaskFlowLoading}>
+                        <lightning-spinner alternative-text="Loading form..." size="medium" variant="brand"></lightning-spinner>
+                    </template>
+                    <lightning-flow
+                        flow-api-name="HAM_Task_Create_New_Task"
+                        flow-input-variables={taskFlowInputVariables}
+                        onstatuschange={handleTaskFlowStatusChange}>
+                    </lightning-flow>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Modal for Meeting Flow -->
+    <template if:true={isMeetingModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" data-id="meetingModal">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title">Log / Create Meeting</h2>
+                    <button class="slds-button slds-button_icon slds-modal__close" title="Close" onclick={closeMeetingModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                    </button>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" style="min-height: 200px; position: relative;">
+                    <template if:true={isMeetingFlowLoading}>
+                        <lightning-spinner alternative-text="Loading form..." size="medium" variant="brand"></lightning-spinner>
+                    </template>
+                    <lightning-flow
+                        flow-api-name="HAM_Meeting_Create_New_Meeting"
+                        flow-input-variables={meetingFlowInputVariables}
+                        onstatuschange={handleMeetingFlowStatusChange}>
+                    </lightning-flow>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

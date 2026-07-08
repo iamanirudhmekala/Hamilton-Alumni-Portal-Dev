@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Event_Item_Session__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Lookup to the item-session record defining the ticket-session pairing for this attendee&apos;s registration.</description>
+    <inlineHelpText>The item-session record associated with this attendee&apos;s session registration.</inlineHelpText>
+    <label>Event Item Session</label>
+    <referenceTo>HAM_Event_Item_Session__c</referenceTo>
+    <relationshipLabel>HAM Event Session Attendees</relationshipLabel>
+    <relationshipName>HAM_Event_Session_Attendees</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

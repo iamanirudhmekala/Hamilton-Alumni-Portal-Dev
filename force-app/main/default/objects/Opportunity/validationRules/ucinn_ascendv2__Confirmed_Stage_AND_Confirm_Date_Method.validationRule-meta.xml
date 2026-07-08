@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Confirmed_Stage_AND_Confirm_Date_Method</fullName>
+    <active>true</active>
+    <description>A Matching Gift must have Confirmation Date and Confirmation Method before its stage can be set to &quot;Confirmed&quot;.</description>
+    <errorConditionFormula>$Setup.ucinn_ascendv2__Bypass_Settings__c.ucinn_ascendv2__Bypass_Validation_Rules__c &lt;&gt; TRUE &amp;&amp;
+ISPICKVAL(StageName, &quot;Confirmed&quot;) &amp;&amp;
+(ISBLANK(ucinn_ascendv2__Confirmation_Date__c) ||  ISPICKVAL(ucinn_ascendv2__Confirmation_Method__c, &quot;&quot;)) &amp;&amp;
+RecordType.DeveloperName = &quot;Matching_Gift&quot;</errorConditionFormula>
+    <errorMessage>Confirmation Date and Confirmation Method must be filled out if stage is &quot;Confirmed.&quot;</errorMessage>
+</ValidationRule>

@@ -1,0 +1,162 @@
+<template>
+    <div class="backgroundWhite">
+        <lightning-accordion allow-multiple-sections-open="true" active-section-name={activeStudentSectionBio} onsectiontoggle={handleStudentSectionToggle}>
+            <lightning-accordion-section name="Student Summary" label="Student Summary">
+                    <div class="slds-grid slds-wrap slds-gutters slds-p-around_small">
+
+                        <!-- Row 1 -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                            <div class="label">Concentration</div>
+                            <div>{contactEducationWrapper.concentrations}</div>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                            <div class="label">Class Year</div>
+                            <div>{educationDetails.ucinn_ascendv2__Conferred_Degree_Year__c}</div>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                            <div class="label">Minor</div>
+                            <div>{contactEducationWrapper.minors}</div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                            <div class="label">Athletics</div>
+                            <div class="wrapLong">{contactEducationWrapper.athletics}</div>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                            <div class="label">Society</div>
+                            <div class="wrapLong">{contactEducationWrapper.societies}</div>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                            <div class="label">Clubs</div>
+                            <div class="wrapLong">{contactEducationWrapper.clubs}</div>
+                        </div>
+
+                        <!-- Awards -->
+                        <div class="slds-col slds-size_1-of-1 slds-p-top_medium">
+                            <div class="label slds-text-title_caps slds-text-color_brand">Awards</div>
+
+                            <!-- Mobile: cards -->
+                            <template if:true={isMobile}>
+                                <div class="mobile-card-container">
+                                    <template for:each={awards} for:item="award">
+                                        <div key={award.Id} class="mobile-card">
+                                            <div class="card-header">
+                                                <a href={award.nameLink} target="_blank">{award.Name}</a>
+                                            </div>
+                                            <div class="card-divider"></div>
+                                            <div class="card-row">
+                                                <span class="card-label">Designation Name</span>
+                                                <span>
+                                                    <template if:true={award.designationLink}>
+                                                        <a href={award.designationLink} target="_blank">{award.designationName}</a>
+                                                    </template>
+                                                    <template if:false={award.designationLink}>
+                                                        {award.designationName}
+                                                    </template>
+                                                </span>
+                                            </div>
+                                            <div class="card-row">
+                                                <span class="card-label">Type</span>
+                                                <span>{award.ucinn_ascendv2__Type__c}</span>
+                                            </div>
+                                            <div class="card-row">
+                                                <span class="card-label">Fiscal Year</span>
+                                                <span class="card-value-bold">{award.ucinn_ascendv2__Fiscal_Year__c}</span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+
+                            <!-- Desktop: datatable -->
+                            <template if:false={isMobile}>
+                                <div style="overflow-x:auto">
+                                    <lightning-datatable key-field="id" data={awards} columns={awardColumns} hide-checkbox-column></lightning-datatable>
+                                </div>
+                            </template>
+                        </div>
+
+                    </div>
+            </lightning-accordion-section>
+            <template lwc:if={hasOtherDegrees}>
+                <lightning-accordion-section name="Other Degrees" label={otherDegreeLabel}>
+                    <div class="slds-p-around_small">
+
+                        <!-- Mobile: cards -->
+                        <template if:true={isMobile}>
+                            <div class="mobile-card-container">
+                                <template for:each={otherDegrees} for:item="deg">
+                                    <div key={deg.Id} class="mobile-card">
+                                        <div class="card-header">
+                                            <a href={deg.degreeLink} target="_blank">{deg.Name}</a>
+                                        </div>
+                                        <div class="card-divider"></div>
+                                        <div class="card-row">
+                                            <span class="card-label">Institution</span>
+                                            <span>
+                                                <template if:true={deg.institutionLink}>
+                                                    <a href={deg.institutionLink} target="_blank">{deg.institutionName}</a>
+                                                </template>
+                                                <template if:false={deg.institutionLink}>
+                                                    {deg.institutionName}
+                                                </template>
+                                            </span>
+                                        </div>
+                                        <div class="card-row">
+                                            <span class="card-label">Degree Year</span>
+                                            <span class="card-value-bold">{deg.ucinn_ascendv2__Conferred_Degree_Year__c}</span>
+                                        </div>
+                                        <div class="card-row">
+                                            <span class="card-label">Degree Code</span>
+                                            <span>
+                                                <template if:true={deg.degreeCodeLink}>
+                                                    <a href={deg.degreeCodeLink} target="_blank">{deg.degreeCodeDesc}</a>
+                                                </template>
+                                                <template if:false={deg.degreeCodeLink}>
+                                                    {deg.degreeCodeDesc}
+                                                </template>
+                                            </span>
+                                        </div>
+                                        <template if:true={deg.HAM_First_Major__c}>
+                                            <div class="card-row">
+                                                <span class="card-label">First Major</span>
+                                                <span>{deg.HAM_First_Major__c}</span>
+                                            </div>
+                                        </template>
+                                        <template if:true={deg.HAM_First_Minor__c}>
+                                            <div class="card-row">
+                                                <span class="card-label">First Minor</span>
+                                                <span>{deg.HAM_First_Minor__c}</span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <!-- Desktop: datatable -->
+                        <template if:false={isMobile}>
+                            <div style="overflow-x:auto">
+                                <lightning-datatable
+                                    key-field="Id"
+                                    data={otherDegrees}
+                                    columns={otherDegreeColumns}
+                                    hide-checkbox-column
+                                    sorted-by={sortedBy}
+                                    sorted-direction={sortedDirection}
+                                    onsort={handleOtherDegreeSort}>
+                                </lightning-datatable>
+                            </div>
+                        </template>
+
+                    </div>
+                </lightning-accordion-section>
+            </template>
+        </lightning-accordion>
+    </div>
+</template>

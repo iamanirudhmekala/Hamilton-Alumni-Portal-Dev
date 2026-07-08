@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Channel to sync volunteer opportunity interest changes between components</description>
+    <isExposed>true</isExposed>
+    <lightningMessageFields>
+        <description>The ID of the opportunity that was updated</description>
+        <fieldName>opportunityId</fieldName>
+    </lightningMessageFields>
+    <lightningMessageFields>
+        <description>Whether user is interested or not</description>
+        <fieldName>isInterested</fieldName>
+    </lightningMessageFields>
+    <lightningMessageFields>
+        <description>The active interest record ID</description>
+        <fieldName>activeInterestId</fieldName>
+    </lightningMessageFields>
+    <masterLabel>Volunteer Opportunity Sync</masterLabel>
+</LightningMessageChannel>

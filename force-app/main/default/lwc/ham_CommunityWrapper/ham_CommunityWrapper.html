@@ -1,0 +1,58 @@
+<template>
+    <div class={wrapperClass}>
+        <div class="component-container-main">
+
+            <!-- Tab row: tabs on left, view toggle on right -->
+            <div class="tab-row">
+                <div class="component-container-tabset">
+                    <div class={newsTabClass} onclick={handleTabClick} data-tab="News">News</div>
+                    <div class={groupsTabClass} onclick={handleTabClick} data-tab="Groups">Groups</div> 
+                    <div class={resourcesTabClass} onclick={handleTabClick} data-tab="Resources">Resources</div>
+                </div>
+
+                <div class="view-toggle">
+                    <button class={listViewClass} data-view="list" onclick={handleViewToggle} title="List View">
+                        <template lwc:if={isListView}>
+                            <img src={icons.viewCheckIcon} class="check-icon" />
+                        </template>
+                        <img src={icons.listViewIcon} alt="List view" />
+                    </button>
+                    <button class={gridViewClass} data-view="grid" onclick={handleViewToggle} title="Grid View">
+                        <template lwc:if={isGridView}>
+                            <img src={icons.viewCheckIcon} class="check-icon" />
+                        </template>
+                        <img src={icons.gridViewIcon} alt="Grid view" />
+                    </button>
+                </div>
+            </div>
+
+            <div class="main-tab-line"></div>
+
+            <!-- Tab content -->
+            <div class="community-content">
+                <template lwc:if={isNewsActive}>
+                    <c-ham_-news-cmp user-contact-id={userContactId} view={view} is-override={isOverride}></c-ham_-news-cmp>
+                </template>
+           
+            
+                <template lwc:if={isGroupsActive}>
+                    <c-ham_-groups-orchestrator
+                        group-id={groupId}
+                        subview={subview}
+                        onnavigategroup={handleGroupNav}
+                        user-contact-id={userContactId}
+                        viewtoggle={view}
+                        is-override={isOverride}
+                        images={images} label={label}>
+                    </c-ham_-groups-orchestrator>
+                </template>
+           
+
+                <template lwc:if={isResourcesActive}>
+                    <c-ham_-global-resources view-mode={view} is-override={isOverride}></c-ham_-global-resources>
+                </template>
+            </div>
+
+        </div>
+    </div>
+</template>

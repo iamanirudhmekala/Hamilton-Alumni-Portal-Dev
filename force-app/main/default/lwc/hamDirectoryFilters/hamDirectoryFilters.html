@@ -1,0 +1,50 @@
+<template>
+    <div class="filters-container">
+        <template for:each={filtersData} for:item="filter">
+                <div key={filter.order} class="filter-pill">
+                    <button
+                        class="pill-btn"
+                        type="button"
+                        data-order={filter.order}
+                        onclick={toggleDropdown}
+                    >
+                        <span class="pill-label">{filter.placeholder}</span>
+                        <template lwc:if={filter.isMoreFilters}>
+                            <img src={MoreFiltersIcon} alt="More Filters" />
+                        </template>
+                        <template lwc:else>
+                            <!--<lightning-icon
+                                icon-name="utility:chevrondown"
+                                size="x-small"
+                                class="chevron">
+                            </lightning-icon>-->
+                            <div class="dropdownicon-wrapper">
+                                <!-- Outer PNG -->
+                                <img src={DropDownOuter} class="outer-icon" alt="Outer" />
+
+                                <!-- Inner PNG -->
+                                <img src={DropDownInner} class="inner-icon" alt="Inner" />
+                            </div>
+                        </template>
+                    </button>
+
+                    <!-- Dropdown -->
+                    <template lwc:if={filter.isOpen}>
+                        <div class="dropdown">
+                            <template for:each={filter.values} for:item="val">
+                                <div
+                                    key={val}
+                                    class="dropdown-item"
+                                    data-order={filter.order}
+                                    data-value={val}
+                                    onclick={handleSelect}
+                                >
+                                    {val}
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+        </template>
+    </div>
+</template>

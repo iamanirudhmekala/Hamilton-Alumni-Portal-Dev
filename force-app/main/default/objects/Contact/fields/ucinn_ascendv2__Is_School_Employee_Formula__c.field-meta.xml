@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Is_School_Employee_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Check box is checked if one of the Constituent type selected is either:
+Staff Full-time (or) Staff Part-time (or) Faculty Full-time (or) Faculty Part-time</description>
+    <formula>INCLUDES( ucinn_ascendv2__Contact_Type__c , &quot;Staff Full-time&quot;) ||
+INCLUDES( ucinn_ascendv2__Contact_Type__c , &quot;Staff Part-time&quot;) ||
+INCLUDES( ucinn_ascendv2__Contact_Type__c , &quot;Faculty Full-time&quot;) ||
+INCLUDES( ucinn_ascendv2__Contact_Type__c , &quot;Faculty Part-time&quot;)</formula>
+    <label>Is School Employee</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

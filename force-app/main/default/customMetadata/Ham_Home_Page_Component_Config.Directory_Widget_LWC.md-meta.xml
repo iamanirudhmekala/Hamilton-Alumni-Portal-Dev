@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Directory Widget LWC</label>
+    <protected>false</protected>
+    <values>
+        <field>CMP_Key__c</field>
+        <value xsi:type="xsd:string">DirectoryWidgetLWC</value>
+    </values>
+    <values>
+        <field>CMP_Type__c</field>
+        <value xsi:type="xsd:string">Directory Widget</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Max_Records__c</field>
+        <value xsi:type="xsd:double">4.0</value>
+    </values>
+    <values>
+        <field>Sort_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Source_Object__c</field>
+        <value xsi:type="xsd:string">HAM_Connection__c</value>
+    </values>
+    <values>
+        <field>WHERE_Clause__c</field>
+        <value xsi:nil="true"/>
+    </values>
+</CustomMetadata>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_BT_Line_Item__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Traceability lookup to the original Blackthorn line item this record was migrated from. Will be empty once Blackthorn is decommissioned.</description>
+    <inlineHelpText>The original Blackthorn line item this record was migrated from. Used for migration QC and validation only.</inlineHelpText>
+    <label>BT Line Item</label>
+    <referenceTo>bt_stripe__Line_Item__c</referenceTo>
+    <relationshipLabel>HAM Event Line Items</relationshipLabel>
+    <relationshipName>HAM_Event_Line_Items_BT</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,320 @@
+/* ==========================================================================
+   OUTER CONTAINER
+   ========================================================================== */
+
+
+.news-module {
+    padding: 0px;
+}
+
+/* ==========================================================================
+   PILL TAB TOGGLE  (mirrors ham_eventsCmp branding)
+   ========================================================================== */
+
+.subtabs-row {
+    display: flex;
+    align-items: center;
+    padding: 16px 0 20px 0;
+}
+
+.subtabs {
+    display: flex;
+    gap: 12px;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Mallory-main', sans-serif;
+    white-space: nowrap;
+    cursor: pointer;
+    border: none;
+}
+
+.active-pill {
+    background: #002F86;
+    color: #fff;
+}
+
+.inactive-pill {
+    background: #fff;
+    border: 1px solid #D1D5DC;
+    color: #000;
+}
+
+/* ==========================================================================
+   FILTERS ROW
+   ========================================================================== */
+
+.filters-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.sort-box-container {
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+}
+
+.sort-box-container label {
+    color: #000;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Mallory-main', sans-serif;
+    margin-bottom: 8px;
+}
+
+.sort-by-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: 1px solid #D1D5DC;
+    padding: 10px 16px;
+    background-color: #fff;
+    color: #000;
+    font-weight: 400;
+    font-family: 'Mallory-main', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.sort-by-btn img {
+    width: 18px;
+    height: 18px;
+}
+
+.filter-label {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* Dropdown list */
+.slds-dropdown-trigger {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.dropdown-list {
+    list-style: none;
+    margin: 4px 0 0 0;
+    padding: 0;
+    border: 1px solid #D1D5DC;
+    border-radius: 10px;
+    background: #fff;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.dropdown-list li {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Mallory-main', sans-serif;
+    color: #000;
+}
+
+.dropdown-list li:hover {
+    background: #f3f3f3;
+}
+
+/* ==========================================================================
+   DATE FILTER DROPDOWN  (SLDS)
+   ========================================================================== */
+
+.my-dropdown-container {
+    padding: 0 !important;
+    background-color: #fff;
+    max-width: 100% !important;
+}
+
+.my-dropdown-container ul .slds-dropdown__item.is-selected {
+    background-color: #E2F3FF;
+}
+
+.my-dropdown-container ul .slds-dropdown__item.is-selected a {
+    background-color: #E2F3FF;
+    font-weight: bold;
+}
+
+.my-dropdown-container ul .slds-dropdown__item a {
+    padding: 10px 16px;
+    color: #000;
+    font-weight: 400;
+    font-family: 'Mallory-main', sans-serif;
+    font-size: 14px;
+}
+
+.my-dropdown-container ul .slds-dropdown__item a span {
+    font-weight: 400;
+    font-family: 'Mallory-main', sans-serif;
+    font-size: 14px;
+    color: #000;
+}
+
+.my-dropdown-container ul .slds-dropdown__item a:hover {
+    background-color: transparent;
+}
+
+.list-date-container {
+    padding: 20px 20px 12px 20px;
+}
+
+.list-date-title-small {
+    color: #000;
+    font-weight: 400;
+    font-family: 'Mallory-main', sans-serif;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.from-date-input-container .slds-input {
+    color: #181818 !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    font-family: 'Mallory-main', sans-serif !important;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 990;
+    background: transparent;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+.read-more-btn {
+    background: #002F86;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    align-self: flex-start;
+    font-family: 'Mallory-main', sans-serif;
+    transition: background 0.2s ease;
+}
+
+.read-more-btn:hover {
+    background: #002266;
+}
+
+/* ==========================================================================
+   EMPTY STATE
+   ========================================================================== */
+
+.empty-state {
+    padding: 40px;
+    text-align: center;
+    color: #666;
+    font-family: 'Mallory-main', sans-serif;
+    font-size: 16px;
+}
+
+.list-date-container {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.list-date-title-small {
+    display: block;
+    margin-bottom: 12px;
+}
+
+.date-field-wrapper {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden; /* 🔥 important for iOS */
+}
+
+.from-date-input-container,
+.date-input {
+    width: 100%;
+    min-width: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+
+    .from-date-input-container, .date-input{
+        width: 70% !important;
+    }
+
+    .list-date-container {
+        width: 100%;
+    }
+
+    .my-dropdown-container{
+        width: 100% !important;
+    }
+
+    .date-field-wrapper {
+        width: 100%;
+    }
+
+    .for-inner-padding{
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    .subtabs{
+        gap: 0px;
+        border: 1px solid #DEE2E8;
+        background: #fff;
+    }
+
+    .pill.active-pill {
+        border-radius: 8px;
+    }
+    .pill {
+    border-radius: unset;
+}
+}
+@media (max-width: 767px) {
+    .sort-box-container {
+        width: 45%;
+    }
+}
+
+@media (max-width: 480px) {
+    .filters-row {
+        flex-direction: column;
+    }
+
+    .sort-box-container {
+        width: 100%;
+    }
+}
+
+/* ── Kirkland Override ───────────────────────────────────────── */
+.kirkland-override .active-pill { background: #166837 !important; }
+.kirkland-override .read-more-btn { background: #166837 !important; }
+.kirkland-override .my-dropdown-container ul .slds-dropdown__item.is-selected { background-color: #D4EDDA !important; }
+.kirkland-override .my-dropdown-container ul .slds-dropdown__item.is-selected a { background-color: #D4EDDA !important; }

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Top_25_Prospect__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Top 25 Prospect</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Athletic Department</fullName>
+                <default>false</default>
+                <label>Athletic Department</label>
+            </value>
+            <value>
+                <fullName>Corporations Top 25</fullName>
+                <default>false</default>
+                <label>Corporations Top 25</label>
+            </value>
+            <value>
+                <fullName>Foundations Top 25</fullName>
+                <default>false</default>
+                <label>Foundations Top 25</label>
+            </value>
+            <value>
+                <fullName>Libraries</fullName>
+                <default>false</default>
+                <label>Libraries</label>
+            </value>
+            <value>
+                <fullName>Office of the Provost</fullName>
+                <default>false</default>
+                <label>Office of the Provost</label>
+            </value>
+            <value>
+                <fullName>School for Communications</fullName>
+                <default>false</default>
+                <label>School for Communications</label>
+            </value>
+            <value>
+                <fullName>School of Accounting</fullName>
+                <default>false</default>
+                <label>School of Accounting</label>
+            </value>
+            <value>
+                <fullName>School of Architecture</fullName>
+                <default>false</default>
+                <label>School of Architecture</label>
+            </value>
+            <value>
+                <fullName>School of Art and Design</fullName>
+                <default>false</default>
+                <label>School of Art and Design</label>
+            </value>
+            <value>
+                <fullName>School of Business</fullName>
+                <default>false</default>
+                <label>School of Business</label>
+            </value>
+            <value>
+                <fullName>School of Cinematic Arts</fullName>
+                <default>false</default>
+                <label>School of Cinematic Arts</label>
+            </value>
+            <value>
+                <fullName>School of Dance</fullName>
+                <default>false</default>
+                <label>School of Dance</label>
+            </value>
+            <value>
+                <fullName>School of Dentistry</fullName>
+                <default>false</default>
+                <label>School of Dentistry</label>
+            </value>
+            <value>
+                <fullName>School of Dramatic Arts</fullName>
+                <default>false</default>
+                <label>School of Dramatic Arts</label>
+            </value>
+            <value>
+                <fullName>School of Education</fullName>
+                <default>false</default>
+                <label>School of Education</label>
+            </value>
+            <value>
+                <fullName>School of Engineering</fullName>
+                <default>false</default>
+                <label>School of Engineering</label>
+            </value>
+            <value>
+                <fullName>School of Gerontology</fullName>
+                <default>false</default>
+                <label>School of Gerontology</label>
+            </value>
+            <value>
+                <fullName>School of Law</fullName>
+                <default>false</default>
+                <label>School of Law</label>
+            </value>
+            <value>
+                <fullName>School of Letters, Arts &amp; Sciences</fullName>
+                <default>false</default>
+                <label>School of Letters, Arts &amp; Sciences</label>
+            </value>
+            <value>
+                <fullName>School of Music</fullName>
+                <default>false</default>
+                <label>School of Music</label>
+            </value>
+            <value>
+                <fullName>School of Pharmacy</fullName>
+                <default>false</default>
+                <label>School of Pharmacy</label>
+            </value>
+            <value>
+                <fullName>School of Public Policy</fullName>
+                <default>false</default>
+                <label>School of Public Policy</label>
+            </value>
+            <value>
+                <fullName>School of Social Work</fullName>
+                <default>false</default>
+                <label>School of Social Work</label>
+            </value>
+            <value>
+                <fullName>University Advancement</fullName>
+                <default>false</default>
+                <label>University Advancement</label>
+            </value>
+            <value>
+                <fullName>University Advancement: NY Top 25</fullName>
+                <default>false</default>
+                <label>University Advancement: NY Top 25</label>
+            </value>
+            <value>
+                <fullName>University Advancement: Parents Top 25</fullName>
+                <default>false</default>
+                <label>University Advancement: Parents Top 25</label>
+            </value>
+            <value>
+                <fullName>University Advancement: SF Top 25</fullName>
+                <default>false</default>
+                <label>University Advancement: SF Top 25</label>
+            </value>
+            <value>
+                <fullName>University Hospital</fullName>
+                <default>false</default>
+                <label>University Hospital</label>
+            </value>
+            <value>
+                <fullName>University Relations</fullName>
+                <default>false</default>
+                <label>University Relations</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

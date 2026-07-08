@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Contact_Mobile</fullName>
+    <fields>Name</fields>
+    <fields>ucinn_ascendv2__Donor_ID__c</fields>
+    <fields>ucinn_ascendv2__PRM__c</fields>
+    <fields>AccountId</fields>
+    <fields>ucinn_ascendv2__Primary_Contact_Type__c</fields>
+    <fields>Phone</fields>
+    <fields>Email</fields>
+    <fields>ucinn_ascendv2__Preferred_Address_Formula__c</fields>
+    <fields>Birthdate</fields>
+    <fields>ucinn_ascendv2__Preferred_Spouse__c</fields>
+    <label>Contact Compact Layout</label>
+</CompactLayout>

@@ -1,0 +1,1671 @@
+.event-content {
+    width: 100%;
+    padding: 24px 32px;
+}
+
+/* Header */
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kirkland-override input[type="checkbox"] {
+accent-color: #166837 !important;
+}
+
+.host-event-modal .modal{
+    width: 500px !important;
+    border-radius: 8px;
+}
+
+/* --- CUSTOM INFO BANNER --- */
+.custom-info-banner {
+    background-color: #f3f3f3;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    padding: 0.8rem;
+    margin: 2rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.custom-info-banner a {
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.host-event-modal .modal h2{
+    text-align: center;
+    margin-top: 20px;
+    color: #090A0A;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-family: 'Mallory-main', sans-serif;
+}
+.confirmation-modal-text{
+    text-align: center;
+    margin-top: 20px;
+    color: #090A0A;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.host-event-modal .modal .actions .btn-primary{
+    background-color: #002F86;
+}
+
+.host-event-modal .modal .actions .btn{
+    padding: 8px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Mallory-main', sans-serif;
+    border-radius: 6px;
+}
+
+/* Title */
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* Host Event Button */
+
+.host-btn {
+    background: #0b3d91;
+    color: #F4F4F4;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+/* Search Row */
+
+.search-row {
+    margin-top:24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.search-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap: nowrap;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 420px;
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Search input */
+
+.search-input::placeholder {
+    color: #0A0A0A80;
+}
+.search-input {
+    width: 380px;
+    height: 44px;
+    border: 1px solid #D1D5DC;
+    border-radius: 10px;
+    padding: 0 14px;
+    font-size: 15px;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+/* Search button */
+
+.search-btn {
+    width:44px;
+    height:44px;
+    background:#123d8d;
+    border:none;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.search-icon {
+    --sds-c-icon-color-foreground-default:white;
+}
+
+/* Tabs Container */
+
+.component-container-main {
+    margin-top: 40px;
+    background-color: #F4F4F4;
+    border-radius: 28px;
+    padding: 0;
+    padding-bottom: 5px;
+    position: relative;
+}
+
+/* Tabset */
+
+.component-container-tabset {
+    display: flex;
+    gap: 12px;
+}
+
+.tabs-header{
+    padding:0;
+}
+
+.tabs{
+    display:flex;
+    gap:24px;
+    padding-left:0px;
+}
+
+/* TAB */
+
+.tab{
+    padding:12px 30px;
+    font-weight:600;
+    cursor:pointer;
+    border-radius:14px 14px 0 0;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+/* ACTIVE TAB */
+
+.active-tab{
+    background:#123d8d;
+    color:white;
+}
+
+/* INACTIVE TAB */
+
+.inactive-tab{
+    color:#000;
+    font-weight: 400;
+}
+
+/* BLUE LINE UNDER TABS */
+
+.tab-underline{
+    width:100%;
+    height:1px;
+    background:#002F86;
+    margin-top:-1px;
+}
+
+/* subtabs row */
+
+.subtabs-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:16px;
+    padding:16px 24px 20px 24px;
+}
+
+.subtabs{
+    display:flex;
+    gap:12px;
+}
+
+/* pills */
+
+.pill{
+    display:inline-flex;
+    align-items:center;
+    padding:8px 16px;
+    border-radius:20px;
+    font-weight:500;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.active-pill{
+    background:#123d8d;
+    color:white;
+}
+
+.inactive-pill{
+    background:white;
+    border:1px solid #D1D5DC;
+}
+
+.filter-btn {
+    width:44px;
+    height:44px;
+    background:white;
+    border:none;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+
+   /* Overlay */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        min-height: 600px;
+        height: 100%;
+        background: rgba(0,0,0,0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        overflow: hidden;
+    }
+
+    .attendees-modal {
+    width: 1150px;
+    /* max-width: 95vw; */
+    /* max-height: 80vh; */
+    /* overflow-y: auto; */
+    /* padding: 32px; */
+    border-radius: 20px;
+}
+
+    /* Modal box */
+    .modal {
+    background: #fff;
+        border-radius: 20px;
+        overflow-y: auto;
+    width: 1100px; 
+    max-height: 500px;
+    max-width: 95vw; 
+    padding: 24px 32px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+    /* Close button */
+    .close-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #f4f4f4;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 18px;
+        cursor: pointer;    
+        margin-left: auto;
+    }
+
+      h2 {
+        margin-top: 0;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .modal-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #101828;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+    .subtext {
+        color: #555;
+        margin: 10px 0 20px;
+    }
+
+    /* Info box */
+    .info-box {
+        background: #eef4ff;
+        border: 1px solid #c7d7ff;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    /* Buttons */
+    .actions {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        width: 160px;
+    }
+
+    .btn-primary {
+        background: #1b4db1;
+        color: white;
+    }
+
+    .btn-secondary {
+        background: white;
+        border: 1px solid #1b4db1;
+        color: #1b4db1;
+    }
+
+.spinner-fixed{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+/* EVENTS GRID */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center; 
+    gap: 28px;
+    padding: 32px;
+}
+
+/* CARD */
+.event-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    /*transition: transform 0.2s ease, box-shadow 0.2s ease;*/
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 0;
+}
+
+.event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+/* IMAGE */
+.event-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+    /* flex-shrink: 0; */
+    object-position: center;
+}
+
+/* BODY */
+.event-body {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* TITLE */
+.event-title {
+    font-size: 18px;
+    font-weight: 600;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /*  max 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    min-height: 48px; /*  reserve 2 lines */
+    font-family: 'Mallory-main', sans-serif;
+}
+
+/* DESCRIPTION */
+.event-desc {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    min-height: 40px;
+    font-family: 'Mallory-main', sans-serif;
+    font-weight: 400;
+    overflow-wrap: break-word;
+}
+
+/* META */
+.event-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    min-height: 56px;
+}
+
+.meta-item span{
+    font-family: 'Mallory-main', sans-serif;
+}
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.meta-date-text{
+    font-weight: 500;
+}
+
+.meta-item span:last-child {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.icon {
+    font-size: 14px;
+}
+
+/* DIVIDER */
+.divider {
+    width: 100%;
+    height: 1px;
+    background: #F3F4F6;;
+    margin: 6px 0 10px 0;
+}
+
+/* ATTENDEES */
+.attendees {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 32px;
+}
+
+/*.attendees-section {
+    min-height: 50px; 
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}*/
+
+.attendees-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding-top: 4px;   
+    min-height: 36px;  
+}
+
+.avatars {
+    position: relative;
+    width: auto;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    position: absolute;
+    border: 2px solid white;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.attendee-text {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.2;
+    display: flex;
+    align-items: center; 
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.event-action-btn {
+    /* width: 100%; */
+    background: #123d8d;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.no-events-wrapper {
+    padding: 24px;
+}
+
+.no-events-banner {
+    border-radius: 12px;
+}
+
+/*Loading Overlay with Blur */
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    backdrop-filter: blur(6px);
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.clickable-attendees {
+    cursor: pointer;
+}
+
+
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    /* padding-bottom: 16px; */
+    /* border-bottom: 1px solid #E5E5E5; */
+
+    margin-bottom: 24px;
+}
+
+
+
+.event-title-modal {
+    font-weight: 600;
+    margin: 16px 0 8px;
+}
+
+/* .attendees-list {
+    margin-top: 10px;
+} */
+
+.attendee-row {
+    /* CSS Grid locks every column to its declared width regardless of content length.
+       Columns: left-icons | avatar | name | grad-year | connection-btn */
+    display: grid;
+    grid-template-columns: 44px 68px 1fr 1fr 175px;
+    align-items: center;
+    column-gap: 10px;
+    padding: 6px 4px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;       /* whole row is clickable for View Profile */
+    transition: background 0.15s ease;
+}
+
+.attendee-row:hover {
+    background: #f0f5ff;
+}
+
+.attendee-row--self { 
+    cursor: default; 
+}
+.attendee-row--self:hover { 
+    background: transparent; 
+}
+
+/* Avatar container IS the circle — clips any image to 40×40 regardless of natural size */
+.avatar-container {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;       /* clips tall portrait images to the circle boundary */
+    flex-shrink: 0;
+    align-self: center;
+    justify-self: center;   /* centres the 40px circle in the 68px grid column */
+}
+
+.attendee-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* fills the circle cleanly for any aspect ratio */
+    display: block;
+}
+
+.attendee-name {
+    font-size: 16px;
+    font-weight: 600;
+    white-space: normal;
+    word-break: keep-all;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.attendees-footer {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 14px;
+    border-top: 1px solid #E5E5E5;
+    padding-top: 12px;
+}
+
+.event-btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.event-action-btn {
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.disabled-btn {
+    background: #9bb3d9; /* light blue */
+    cursor: not-allowed;
+    color: white;
+    opacity: 1;
+}
+
+.event-secondary-btn {
+    /* flex: 1; */
+    background: white;
+    color: #123d8d;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1.5px solid #123d8d;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.event-action-btn,
+.event-secondary-btn {
+    height: 35px; /*  fixed height */
+    border-radius: 10px;
+    font-weight: 600;
+    /*width: 48%;*/
+    flex: 1; 
+    display: flex;
+    justify-content: center;
+    font-size: 13px;
+    align-items: center;
+}
+
+.col-name {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;          /* allow text to truncate within grid cell */
+    overflow: hidden;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.col-degree b,
+.col-year b {
+    font-weight: 600;
+}
+
+.col-degree,
+.col-year {
+    color: #231F20;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow-wrap: break-word;
+    font-weight: 400;
+    font-family: 'Mallory-main', sans-serif;
+    min-width: 0;
+}
+
+.col-degree {
+    line-height: 1.5;
+    white-space: normal;
+    word-break: normal;
+}
+
+.col-year {
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.col-action {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
+}
+
+.label {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 2px;
+}
+
+/*.bookmark-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.favorite-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}*/
+
+.bookmark-icon{
+    width: 16px !important;
+}
+
+.bookmark-icon,
+.favorite-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.bookmark-icon:hover,
+.favorite-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Left icons column (bookmark + favorite, before avatar) */
+.col-left-icons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    min-width: 44px;
+}
+
+/* Button group on the right of each attendee row */
+.attendee-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+/* Send Request button — filled blue (primary) */
+.send-request-btn {
+    background: #123d8d;
+    color: #fff;
+    border: 1.5px solid #123d8d;
+    border-radius: 8px;
+    padding: 7px 0;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Mallory-main', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+    width: 155px;           /* fixed — matches widest label "Remove Connection" */
+    text-align: center;
+}
+
+.send-request-btn:hover {
+    background: #0b2d6b;
+    border-color: #0b2d6b;
+}
+
+/* Send Request — greyed out (isRejected = true) */
+.send-request-btn--disabled {
+    background: #9E9E9E !important;
+    border-color: #9E9E9E !important;
+    color: #fff !important;
+    cursor: not-allowed !important;
+    opacity: 0.75;
+}
+
+/* Remove Connection button — light blue fill */
+.remove-connection-btn {
+    background: #D6E4FF;
+    color: #123d8d;
+    border: 1.5px solid #9DBCF5;
+    border-radius: 8px;
+    padding: 7px 0;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Mallory-main', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+    width: 155px;           /* fixed — same as send-request-btn */
+    text-align: center;
+}
+
+.remove-connection-btn:hover {
+    background: #b8d0ff;
+    border-color: #7aa8f0;
+}
+
+/* Cancel Request button — lighter sky-blue fill */
+.cancel-request-btn {
+    background: #EAF3FF;
+    color: #123d8d;
+    border: 1.5px solid #9DBCF5;
+    border-radius: 8px;
+    padding: 7px 0;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Mallory-main', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+    width: 155px;           /* fixed — same as send-request-btn */
+    text-align: center;
+}
+
+.cancel-request-btn:hover {
+    background: #d0e8ff;
+    border-color: #7aa8f0;
+}
+
+/* View Profile button — outlined blue (secondary) */
+.view-profile-btn {
+    background: transparent;
+    color: #123d8d;
+    border: 1.5px solid #123d8d;
+    border-radius: 8px;
+    padding: 7px 0;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Mallory-main', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease, color 0.15s ease;
+    width: 120px;           /* fixed — consistent across all rows */
+    text-align: center;
+}
+
+.view-profile-btn:hover {
+    background: #123d8d;
+    color: #fff;
+}
+
+/* Full-page profile overview overlay */
+.profile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 10001; /* sits above the attendees modal (z-index: 10000) */
+    overflow-y: auto;
+}
+
+/* Pill */
+.filter-pill {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.pill-input {
+    height: 40px;               
+    padding: 0 22px 0 12px;    
+
+    border-radius: 999px;
+    border: 1px solid #cfd7e3;
+    background-color: #ffffff;
+
+    font-size: 1rem;
+    font-weight: 400;
+    color: #1f2937;
+
+    cursor: pointer;
+
+    width: 180px;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.icon-wrapper {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.outer-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.inner-icon {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+}
+
+.dropdown {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    z-index: 999;
+
+    background: white;
+    border: 1px solid #d8dde6;
+    border-radius: 8px;
+
+    min-width: 220px;
+    max-height: 260px;
+    overflow-y: auto;
+
+    box-shadow: 0 6px 18px rgba(0,0,0,0.16);
+}
+
+.dropdown-mobilebase {
+    position: absolute;
+    z-index: 10000;
+    background: white;
+    border: 1px solid #d8dde6;
+    border-radius: 8px;
+    min-width: 190px;
+    max-height: 260px;
+    overflow-y: auto;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.16);
+    top: unset !important;
+    left: unset !important;
+}
+
+.dropdown-search {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.dropdown-search input {
+    width: 100%;
+    height: 32px;
+    padding: 0 10px;
+    font-size: 13px;
+    border-radius: 6px;
+    border: 1px solid #d8dde6;
+}
+
+/* Dropdown items */
+.dropdown-item {
+    padding: 10px 14px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background: #f4f6f9;
+}
+
+.dropdown-empty {
+    padding: 12px;
+    color: #888;
+    font-size: 13px;
+}
+
+.dropdown-search {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.checkbox-item input {
+    margin-top: 4px;
+    cursor: pointer;
+}
+
+.checkbox-item span {
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+/* Backdrop */
+.custom-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+}
+
+/* Modal wrapper */
+.custom-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    padding: 0 20px;
+}
+
+/* Modal card */
+.custom-modal-container {
+    position: relative;
+    background: #ffffff;
+    width: 520px; /* match filter modal width */
+    border-radius: 8px;
+    padding: 32px 24px 24px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Close button */
+.modal-close-btn {
+    position: absolute;   
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f4f4f4;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 32px;
+    text-align: center;
+}
+
+/* Body */
+.custom-modal-body {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.custom-modal-text {
+    font-size: 18px;
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.subtabs-stacked {
+    flex-direction: column;
+    overflow-x: unset;
+}
+
+.subtabs-stacked .pill {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Base style (desktop) */
+.col-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.pagination-container{
+    padding: 0 12px;
+}
+
+.subtab-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+@media  (min-width: 1600px) {
+    .event-image{
+    height: 350px !important;
+}
+}
+@media  (min-width: 2000px) {
+    .event-image{
+    height: 450px !important;
+}
+}
+@media  (min-width: 2500px) {
+    .event-image{
+    height: 550px !important;
+}
+}
+@media  (min-width: 3000px) {
+    .event-image {
+    height: 750px !important;
+}
+}
+
+/* @media  (min-width: 1400px) {
+    .event-image {
+    width: 100%;
+        height: 100%;
+        min-height: 250px;
+}
+} */
+@media (max-width: 1024px) {
+
+      .component-container-main{
+        margin-bottom: 60px;
+    }
+
+
+    .confirmation-modal-text{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 32px;
+    }
+    .host-event-modal .modal h2{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 32px;
+    }
+
+    .host-event-modal .modal{
+        padding: 40px 24px;
+    }
+
+    
+    .search-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .mobile-search-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        width: 100%;
+    }
+
+    .search-input {
+        flex: 1;
+        width: auto;
+    }
+
+    .search-btn {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+    }
+
+    .host-btn {
+        width: 100%;
+        height: 48px;
+        margin-bottom: 12px;
+        white-space: nowrap;
+    }
+
+    .filters-row {
+        display: flex;
+        gap: 6px;
+        padding-bottom: 6px;
+        scrollbar-width: none;
+        margin-top: 10px;
+    }
+
+     .event-action-btn, .event-secondary-btn{
+        font-size: 13px;
+    }
+
+    .filters-row-scroll-wrapper {
+        /* overflow-x: auto; */
+        overflow-y: visible;
+        padding-bottom: 6px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        z-index: 999;
+    }
+
+    .filters-row::-webkit-scrollbar {
+        display: none;
+    }
+
+    .pill-input {
+        width: auto;
+        min-width: 120px;
+        max-width: 150px;
+        padding-right: 28px; /* space for icon */
+        height: 36px;
+        font-size: 14px;
+        border-radius: 20px;
+    }
+
+    .filter-pill {
+        flex-shrink: 0;
+    }
+
+    .subtabs-row {
+        padding: 12px 16px;
+    }
+
+    .subtabs {
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .subtabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .events-grid {
+        grid-template-columns: 1fr;
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .event-btn-row {
+        flex-direction: column;
+    }
+
+    .event-action-btn,
+    .event-secondary-btn {
+        width: 100%;
+        flex: unset;
+    }
+
+    .attendees-modal {
+        width: 95vw;
+        padding: 20px 16px;
+        max-height: 85vh;
+    }
+
+    .attendee-row {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+        padding: 12px !important;
+        border-bottom: none !important;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        background: #F4F4F4;
+        grid-template-columns: unset !important;
+    }
+
+    .avatar-container {
+        width: 44px;
+        height: 44px;
+    }
+
+     .attendee-avatar {
+        width: 100%;
+        height: 100%;
+    }
+
+     .col-name {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2px !important;
+        min-width: 0;
+    }
+
+    .attendee-name {
+        font-size: 16px;
+        font-weight: 500;
+        color: #111C24;
+        width: 100%;
+    }
+
+    .col-degree,
+    .col-year,
+    .col-industry {
+        font-size: 12px;
+        color: #231F20;
+        white-space: normal;
+        width: 100%;
+    }
+
+    .col-left-icons {
+        min-width: unset;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .attendee-btn-group {
+        flex-direction: column;
+        gap: 6px;
+        margin-left: auto;
+    }
+
+    .send-request-btn,
+    .remove-connection-btn,
+    .cancel-request-btn {
+        font-size: 11px;
+        padding: 6px 10px;
+        width: 130px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .event-action-btn, .event-secondary-btn{
+        font-size: 12px;
+    }
+}
+@media (max-width: 1120px) {
+    .event-action-btn, .event-secondary-btn{
+        font-size: 11px;
+    }
+}
+@media (max-width: 1060px) {
+    .event-action-btn, .event-secondary-btn{
+        font-size: 10px;
+    }
+}
+@media (max-width: 768px) {
+
+    .component-container-main{
+        margin-top: 14px;
+    }
+
+    .event-content {
+    padding: 24px 20px 90px 20px;
+    }
+
+    .tab{
+        font-size: 15px;
+        padding: 12px 0px;
+        display: flex;
+        justify-content: center;
+        width: 50%;
+    }
+
+    .pill{
+        padding: 5px 10px;
+    }
+
+    .host-btn{
+        height: unset;
+        padding: 8px 20px;
+        font-size: 14px;
+    }
+
+    .search-input{
+        height: unset;
+        padding: 14px;
+        font-size: 14px;
+    }
+
+}
+/* ─── Attendee Action Confirmation Modal ─────────────────────────────────────
+   z-index 10002/10003 keeps it above the attendees modal (10000).           */
+
+.attendee-action-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10002;
+}
+
+.attendee-action-modal-wrapper {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10003;
+    padding: 0 20px;
+}
+
+.attendee-action-modal-container {
+    position: relative;
+    background: #F4F4F4;
+    width: 520px;
+    max-width: 95vw;
+    border-radius: 12px;
+    padding: 44px 28px 28px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+}
+
+.attendee-action-modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #231F20;
+    font-family: 'Mallory-main', sans-serif;
+    margin: 0 0 20px 0;
+    padding-right: 32px;
+    line-height: 1.35;
+}
+
+.attendee-modal-textarea-wrapper {
+    margin-bottom: 20px;
+}
+
+.attendee-modal-textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+    font-family: 'Mallory-main', sans-serif;
+    color: #333;
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.attendee-modal-textarea::placeholder {
+    color: #999;
+}
+
+.attendee-modal-btn-group {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.attendee-action-primary-btn {
+    background: #002F86;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Mallory-main', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+}
+
+.attendee-action-primary-btn:hover {
+    background: #001f5c;
+}
+
+.attendee-action-secondary-btn {
+    background: transparent;
+    color: #002F86;
+    border: 1.5px solid #002F86;
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Mallory-main', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.attendee-action-secondary-btn:hover {
+    background: #002F86;
+    color: #fff;
+}
+
+/* Disabled state — applied when linked user is inactive */
+.attendee-action-btn--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Inactive-user info banner inside the attendee action modal */
+.attendee-inactive-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #e8f4fd;
+    border: 1px solid #90caf9;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #002F86;
+    font-family: 'Mallory', sans-serif;
+}
+
+.kirkland-override .attendee-inactive-banner {
+    background: #EDFCF3 !important;
+    border-color: #166837 !important;
+    color: #166837 !important;
+}
+
+@media (max-width: 1024px) {
+    .attendee-action-modal-container {
+        padding: 40px 20px 24px;
+    }
+
+    .attendee-action-modal-title {
+        font-size: 17px;
+    }
+
+    .attendee-action-primary-btn,
+    .attendee-action-secondary-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .attendee-modal-btn-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+/* ─────────────────────────────────────────────────────────────────────────────
+   ATTENDEE MODAL — SEARCH BAR
+   Matches the events page search bar style for visual consistency.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.attendee-search-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 0 16px 0;   /* left:0 → aligns with col-left-icons; bottom:16px → gap before rows */
+    max-width: 55%;            /* half-ish width, comfortable on all desktop sizes */
+}
+
+.attendee-search-input {
+    flex: 1;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-family: 'Mallory', sans-serif;
+    color: #333;
+    outline: none;
+    transition: border-color 0.15s ease;
+    min-width: 0;   /* allow flex-shrink inside constrained parent */
+}
+
+.attendee-search-input:focus {
+    border-color: #003087;
+}
+
+.attendee-search-input::placeholder {
+    color: #999;
+    font-size: 0.82rem;
+}
+
+.attendee-search-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: 1px solid #003087;
+    border-radius: 6px;
+    background: #003087;
+    color: white;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.attendee-search-btn:hover {
+    background: #002070;
+}
+
+/* Aligns the pagination result text with the row icons above it.
+   Math: modal-padding(32) + row-padding(4) = 36px (icons).
+         pagination component has internal padding-left: 18px.
+         margin-left: -14px → 32 - 14 + 18 = 36px (text). ✓
+   No changes to ham_PaginationUtil needed. */
+.attendee-pagination-wrapper {
+    margin-left: -14px;
+}
+
+/* ── Issue 7: Spinner + blur overlay inside the attendees modal ────────────
+   The .modal needs position:relative so this absolute overlay covers only
+   the modal box, not the full page. */
+
+.attendees-modal {
+    position: relative;
+}
+
+.attendee-modal-loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;     /* above modal content, below attendee action modal */
+    border-radius: 20px;/* match .modal border-radius */
+}
+
+/* Mobile search bar adjustments */
+@media (max-width: 1024px) {
+    .attendee-search-row {
+        padding: 10px 0 14px 0;
+        max-width: 100%;        /* full width on mobile */
+    }
+
+    .attendee-search-input {
+        font-size: 0.8rem;
+    }
+}
+
+/* ── Kirkland Override ───────────────────────────────────────── */
+.kirkland-override .active-tab { background: #166837 !important; }
+.kirkland-override .active-pill { background: #166837 !important; }
+.kirkland-override .tab-underline { background: #166837 !important; }
+.kirkland-override .host-btn { background: #166837 !important; }
+.kirkland-override .search-btn { background: #166837 !important; }
+.kirkland-override .attendee-search-btn { background: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .event-action-btn { background: #166837 !important; }
+.kirkland-override .event-secondary-btn { color: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .send-request-btn { background: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .remove-connection-btn { background: #D4EDDA !important; color: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .cancel-request-btn { background: #D4EDDA !important; color: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .attendee-action-primary-btn { background: #166837 !important; }
+.kirkland-override .attendee-action-primary-btn:hover { background: #065124 !important; }
+.kirkland-override .attendee-action-secondary-btn { color: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .attendee-action-secondary-btn:hover { background: #166837 !important; color: #fff !important; }
+.kirkland-override .btn-primary { background: #166837 !important; }
+.kirkland-override .btn-secondary { color: #166837 !important; border-color: #166837 !important; }

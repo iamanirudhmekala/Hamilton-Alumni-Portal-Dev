@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Display_Name__c</fullName>
+    <description>Display name used for sponsors on the event page, carried over from Blackthorn.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The name displayed publicly for this sponsor on the event page.</inlineHelpText>
+    <label>Display Name</label>
+    <length>255</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

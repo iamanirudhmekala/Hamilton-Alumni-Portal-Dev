@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Phone__c</fullName>
+    <description>Phone number on the invoice. Migrated from bt_stripe__Phone__c on bt_stripe__Sales_Document__c.</description>
+    <inlineHelpText>Phone number as it appeared on the Blackthorn invoice.</inlineHelpText>
+    <label>Phone</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Phone</type>
+</CustomField>

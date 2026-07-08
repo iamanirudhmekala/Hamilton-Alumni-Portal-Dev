@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Proposal__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <description>Proposal that lead to the pledge.</description>
+    <label>Proposal</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>The opportunity selected is not a proposal type.</errorMessage>
+        <filterItems>
+            <field>Opportunity.RecordType.DeveloperName</field>
+            <operation>contains</operation>
+            <value>Proposal</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Opportunity</referenceTo>
+    <relationshipLabel>Opportunities (Opportunity)</relationshipLabel>
+    <relationshipName>Opportunities_Proposal</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

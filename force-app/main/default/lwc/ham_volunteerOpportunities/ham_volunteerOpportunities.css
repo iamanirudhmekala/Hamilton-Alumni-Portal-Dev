@@ -1,0 +1,644 @@
+/* Main widget container with background and padding */
+.placeholder-widget {
+    background-color: #F4F4F4;
+    padding: 24px;
+    border-radius: 8px;
+}
+
+/* Header section with title and navigation button */
+.opp-header {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Main component title */
+.opp-main-title {
+    /* font-size: 32px; */
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #181818;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+/* Circular navigation button */
+.rounded-btn {
+    background: #f5f5f5;
+    border-radius: 50%;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+}
+
+/* Desktop opportunity cards container */
+.opp-cards-row {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Individual opportunity card - desktop layout */
+.opp-card {
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+}
+
+/* Card hover effect */
+.opp-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Card image container - fixed width */
+.opp-card-image {
+    flex-shrink: 0;
+    width: 156px;
+    height: auto;
+    min-height: 156px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Card image with padding and border radius */
+.opp-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+/* Card content area - title, description, button */
+.opp-card-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Opportunity title */
+.opp-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #091B34;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Opportunity description text */
+.opp-card-description {
+    /* font-size: 14px; */
+    font-size: 1rem;
+    color: #344054;
+    line-height: 1.5;
+    margin: 0;
+    flex-grow: 1;
+}
+
+/* Primary action button - "I'm Interested" */
+.read-more-btn {
+    background-color: #3FB3FF;
+    color: #002F86;
+    border: none;
+    border-radius: 8px;
+    /* padding: 7px 16px; */
+    padding: 14px 30px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    align-self: flex-start;
+    margin-top: 4px;
+}
+/* .read-more-btn {
+    background-color: #002F86;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    align-self: flex-start;
+    margin-top: 4px;
+} */
+
+/* Button hover state */
+.read-more-btn:hover:not(:disabled) {
+    border: 1px solid #002F86;
+    color: #FFFFFF;
+    background-color: #002F86;
+}
+/* .read-more-btn:hover:not(:disabled) {
+    background-color: #02234a;
+} */
+
+/* Button active/pressed state */
+.read-more-btn:active {
+    background-color: #011a36;
+}
+
+/* Button focus state for accessibility */
+.read-more-btn:focus {
+    outline: 2px solid #032d60;
+    outline-offset: 2px;
+}
+
+/* Button disabled state */
+.read-more-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Withdraw Button Styles - shown when user has already expressed interest */
+.withdraw-btn {
+    background-color: #B9B9B9 !important;
+    color: #002F86 !important;
+    border: none;
+}
+
+.withdraw-btn:hover:not(:disabled) {
+    background-color: #B9B9B9 !important;
+}
+
+.withdraw-btn:active:not(:disabled) {
+    background-color: #B9B9B9 !important;
+}
+
+.withdraw-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   MODAL STYLES
+   ========================================================================== */
+
+/* Modal container with max width */
+.custom-modal-container {
+    max-width: 32rem;
+    border-radius: 0.5rem;
+    overflow: visible;
+}
+
+/* Modal content wrapper */
+.custom-modal-content {
+    position: relative;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+}
+
+/* Close button positioned in top-right corner */
+.custom-close-button {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 10;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+/* Close button icon default color */
+.custom-close-button lightning-icon {
+    --slds-c-icon-color-foreground-default: #706e6b;
+}
+
+/* Close button icon hover color */
+.custom-close-button:hover lightning-icon {
+    --slds-c-icon-color-foreground-default: #3e3e3c;
+}
+
+/* Success Icon (Green checkmark) */
+.checkmark-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.checkmark-icon lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.success-icon-inner {
+    color: #ffffff;
+}
+
+/* Warning Icon (Orange warning) for withdraw action */
+.warning-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.warning-icon lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.warning-icon-inner {
+    color: #ffffff;
+}
+
+/* Modal action buttons */
+.modal-button {
+    min-width: 6rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.25rem;
+}
+
+/* Outline button style */
+.slds-button_outline-brand {
+    background-color: #ffffff;
+    border: 1px solid #0176d3;
+    color: #0176d3;
+}
+
+.slds-button_outline-brand:hover {
+    background-color: #f3f3f3;
+}
+
+/* Modal backdrop overlay */
+.slds-backdrop_open {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Modal text styles */
+.slds-modal__content p {
+    color: #3e3e3c;
+    line-height: 1.5;
+}
+
+.slds-modal__content h2 {
+    color: #080707;
+    font-weight: 700;
+}
+
+/* Button with loading spinner */
+.read-more-btn lightning-spinner,
+.read-more-btn-mobile lightning-spinner {
+    margin-right: 4px;
+}
+
+/* Disabled button state with spinner */
+.read-more-btn:disabled,
+.read-more-btn-mobile:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+    position: relative;
+}
+
+/* ==========================================================================
+   MOBILE / CAROUSEL STYLES
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+    /* Mobile widget container - simplified styling */
+    .placeholder-widget {
+        padding: 8px;
+        background-color: white;
+    }
+
+    /* Mobile title - centered and smaller */
+    .opp-main-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #231F20;
+        text-align: left;
+        margin-bottom: 20px;
+        font-family: 'Mallory-main-bold', sans-serif;
+    }
+
+    /* Hide desktop cards on mobile */
+    .opp-cards-row {
+        display: none;
+    }
+
+    .opp-header-mobile{
+        display:flex;
+        justify-content: space-between;
+    }
+
+    /* Show carousel on mobile */
+    .carousel-container {
+        /* display: block; */
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding: 0 20px;
+        margin-bottom: 16px;
+        min-width: 240px;
+    }
+
+    /* Carousel navigation arrows */
+    .carousel-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        padding: 0;
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    .carousel-arrow-top {
+        width: 20px;
+        height: 20px;
+        margin-top:10px;
+    }
+
+    /* Arrow icon sizing */
+    .carousel-arrow img {
+        display: block;
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Arrow active state */
+    .carousel-arrow:active {
+        opacity: 0.7;
+    }
+
+    /* Left arrow positioning */
+    .carousel-arrow-left {
+        left: 0px;
+        padding-right:20px;
+    }
+
+    /* Right arrow positioning */
+    .carousel-arrow-right {
+        right: 0px;
+        padding-left:20px;
+    }
+
+    /* Carousel track container with overflow hidden */
+    .carousel-track-container {
+        overflow: hidden;
+        /* width: 100%; */
+        width: 85%;
+    }
+
+    /* Carousel track for sliding animation */
+    .carousel-track {
+        display: flex;
+        transition: transform 0.4s ease-in-out;
+        width: 100%;
+    }
+
+    /* Individual carousel slide - full width */
+    .carousel-slide {
+        min-width: 100%;
+        max-width: 100%;
+        flex-shrink: 0;
+    }
+
+    /* Mobile card styling */
+    .opp-card-mobile {
+        background-color: #F4F4F4;
+        border-radius: 12px;
+        overflow: hidden;
+        margin: 0 auto;
+        max-width: 100%;
+        scroll-snap-align: start;
+        height: 100%;
+    }
+
+    /* Mobile card image container */
+    .opp-card-image-mobile {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    /* Mobile card image with fixed height */
+    .opp-card-image-mobile img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+        padding: 5px;
+    }
+
+    /* Mobile card content area */
+    .opp-card-content-mobile {
+        padding: 16px;
+    }
+
+    /* Mobile card title */
+    .opp-card-title-mobile {
+        font-size: 16px;
+        font-weight: 600;
+        color: #091B34;
+        margin: 20px 0 8px 0;
+        line-height: 1.4;
+    }
+
+    /* Mobile card description */
+    .opp-card-description-mobile {
+        font-size: 14px;
+        color: #344054;
+        line-height: 1.5;
+        margin: 0 0 20px 0;
+        font-weight: 500;
+    }
+
+    /* Mobile action button - 60% width */
+    .read-more-btn-mobile {
+        background-color: #3FB3FF;
+        color: #002F86;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        width: 60%;
+        transition: background-color 0.2s ease;
+        font-family: 'Mallory-main', sans-serif;
+    }
+
+    /* Mobile button active state */
+    .read-more-btn-mobile:active:not(:disabled) {
+        border: 1px solid #002F86;
+        color: #FFFFFF;
+        background-color: #002F86;
+    }
+
+    /* Mobile button disabled state */
+    .read-more-btn-mobile:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* Mobile Withdraw Button */
+    .withdraw-btn-mobile {
+        background-color: #B9B9B9 !important;
+        color: #002F86 !important;
+        border: none;
+        width: 60%;
+    }
+
+    .withdraw-btn-mobile:active:not(:disabled) {
+        background-color: #B9B9B9 !important;
+    }
+
+    .withdraw-btn-mobile:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* Pagination Dots - carousel indicators */
+    .carousel-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    /* Individual dot indicator */
+    .carousel-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #cfd8e3;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+    }
+
+    /* Active dot - elongated pill shape */
+    .carousel-dot.active {
+        width: 24px;
+        height: 10px;
+        border-radius: 8px;
+        background-color: #1a3d7c;
+    }
+
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        margin: 14px 0;
+    }
+
+    /* Common button styles */
+    .btn {
+        width: 70%;
+        padding: 10px 14px;
+        font-size: 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    /* Filled button */
+    .primary {
+        background-color: #002F86;
+        color: #ffffff;
+        border: none;
+    }
+
+    /* Outlined button */
+    .outline {
+        background-color: #ffffff;
+        color: #002F86;
+        border: 1px solid #002F86;
+    }
+}
+
+/* ── Kirkland Override ───────────────────────────────────────── */
+.kirkland-override .read-more-btn {
+    /* background-color: #D4EDDA !important;
+    color: #166837 !important;
+    border: 1px solid #D4EDDA !important; */
+
+      background-color: #166837 !important;
+    border-color: #166837 !important;
+    color: #ffffff !important;
+}
+
+.kirkland-override .read-more-btn:hover:not(:disabled) {
+    /* background-color: #166837 !important;
+    border-color: #166837 !important;
+    color: #ffffff !important; */
+
+    background-color: #fff !important;
+    border: 1px solid #166837 !important;
+    color: #166837 !important;
+}
+
+.kirkland-override .read-more-btn-mobile {
+    /* background-color: #D4EDDA !important;
+    color: #166837 !important; */
+
+     background-color: #166837 !important;
+    border-color: #166837 !important;
+    color: #ffffff !important;
+}
+
+.kirkland-override .read-more-btn-mobile:active:not(:disabled) {
+    /* background-color: #166837 !important;
+    border-color: #166837 !important;
+    color: #ffffff !important; */
+
+    
+    background-color: #fff !important;
+    border: 1px solid #166837 !important;
+    color: #166837 !important;
+}
+
+.kirkland-override .carousel-dot.active {
+    background-color: #166837 !important;
+}
+
+.kirkland-override .btn.primary {
+    background-color: #166837 !important;
+    color: #ffffff !important;
+}
+
+.kirkland-override .btn.outline {
+    color: #166837 !important;
+    border-color: #166837 !important;
+}
+
+.kirkland-override .slds-button_brand {
+    background-color: #166837 !important;
+    border-color: #166837 !important;
+}
+
+.kirkland-override .carousel-arrow-top {
+        width: 16px !important;
+        height: 16px !important;
+    } 
+
+.kirkland-override .slds-button_outline-brand {
+    color: #166837 !important;
+    border-color: #166837 !important;
+}

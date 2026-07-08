@@ -1,0 +1,138 @@
+.ham-designation-step {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.ham-back-btn {
+    background: #F8F9FA;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #6B7280;
+    cursor: pointer;
+    margin-bottom: 14px;
+    transition: all 0.2s;
+}
+
+.ham-back-btn:hover {
+    background: #E5E7EB;
+}
+
+.ham-selected-box {
+    background: #ECFDF5;
+    border: 2px solid #86EFAC;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+}
+
+.ham-selected-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #059669;
+    margin-bottom: 8px;
+}
+
+.ham-selected-divider {
+    height: 1px;
+    background: #86EFAC;
+    margin-bottom: 8px;
+}
+
+.ham-selected-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 0.5px solid #D1FAE5;
+}
+
+.ham-selected-row:last-child {
+    border-bottom: none;
+}
+
+.ham-selected-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.ham-selected-amount {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0056B3;
+}
+
+.ham-total-box {
+    background: #EFF6FF;
+    border: 1px solid #60A5FA;
+    border-radius: 8px;
+    padding: 11px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1E40AF;
+    margin-bottom: 12px;
+}
+
+.ham-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.ham-tab {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    background: #F8F9FA;
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ham-tab:hover {
+    background: #E5E7EB;
+}
+
+.ham-tab-active {
+    background: #00205B;
+    border-color: #00205B;
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+.ham-info-box {
+    background: #EFF6FF;
+    border: 1px solid #60A5FA;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 11px;
+    color: #1E40AF;
+    margin-bottom: 12px;
+}
+
+.ham-primary-btn {
+    width: 100%;
+    background: #00205B;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: all 0.2s;
+}
+
+.ham-primary-btn:hover:not(:disabled) {
+    background: #001847;
+}
+
+.ham-primary-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

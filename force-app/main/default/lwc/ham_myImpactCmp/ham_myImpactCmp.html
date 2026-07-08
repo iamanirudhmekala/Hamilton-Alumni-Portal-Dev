@@ -1,0 +1,164 @@
+<template>
+    <div class={wrapperClass}>
+    <!-- Mobile Navigation: Tab buttons for switching between different views -->
+    <template lwc:if={isMobileView}>
+         <div class="header-row">
+         <div class="tab-btn">
+             <template lwc:if={isMyImpactActive}>
+                <div class="nav-headertab"
+                    data-tab={label.myImpact}>
+                {label.myImpact}<span> - {tabOrder} of 3</span>
+                </div>
+            </template>
+            <template lwc:elseif={isVolunteerActive}>
+                <div class="nav-headertab"
+                    data-tab={label.volActTab}>
+                {label.volActTab}<span> - {tabOrder} of 3</span>
+                </div>
+            </template>
+            <template lwc:elseif={isOtherActive}>
+                <div class="nav-headertab"
+                    data-tab={label.volunteerOpportunity}>
+                {label.volOppTab}<span> - {tabOrder} of 3</span>
+                </div>
+            </template>
+        </div>
+        <div class={tabContainerClassParent}>
+             <!-- Hamburger (Mobile only) -->
+                <div class="hamburger">
+                      <template lwc:if={isOverride}>
+                    <img src={icons.hamburgerMobileGreen}
+                    class="hamburger-img"
+                    onclick={toggleMenu} />
+                      </template>
+
+                       <template lwc:else>
+                            <img src={images.hamburgerMobile} class="hamburger-img" onclick={toggleMenu} />
+                        </template>
+                   
+                </div>
+           
+        </div>
+        </div>
+        <div class={tabContainerClass}>
+
+        <div class={sidebarClass}>
+            <div class="header-row"> 
+                 <div class="tab-menubtn"><strong>{label.myimpactText}</strong></div>
+                 <div>
+
+                      <template lwc:if={isOverride}>
+                    <img src={icons.hamburgerMobileGreen}
+                    class="hamburger-icon"
+                    onclick={toggleMenu} />
+                      </template>
+
+                       <template lwc:else>
+                            <img src={images.hamburgerMobile}
+                    class="hamburger-icon"
+                    onclick={handleMenuClick} 
+                    data-tab="menu-icon"/>
+                        </template>
+
+                 <!-- <img src={images.hamburgerMobile}
+                    class="hamburger-icon"
+                    onclick={handleMenuClick} 
+                    data-tab="menu-icon"/> -->
+                 </div>
+            </div>
+            <button class={myImpactClass}
+                    data-tab={label.myImpact}
+                    onclick={handleTabClick}>
+                {label.myImpact}
+            </button>
+
+            <button class={volunteerClass}
+                    data-tab={label.volActTab}
+                    onclick={handleTabClick}>
+                {label.volActTab}
+            </button>
+
+            <button class={otherClass}
+                    data-tab={label.volunteerOpportunity}
+                    onclick={handleTabClick}>
+                {label.volOppTab}
+            </button>
+        </div>
+
+        </div>
+
+         <!-- Tabs / Menu -->
+    </template>
+
+    <!-- My Impact Section: Main dashboard view showing user profile, philanthropy, and activities -->
+    <div class="web-view-cmp-container">
+    <template lwc:if={isMyImpactActive}>
+        <!-- Loading Spinner: Displayed while data is being fetched -->
+        <template lwc:if={loading}>
+            <lightning-spinner alternative-text="Loading..." size="medium" variant="brand">
+            </lightning-spinner>
+        </template>
+
+        <!-- Dashboard Container: Top section with profile and philanthropy overview -->
+        <div class="dashboard-container">
+            <!-- Profile Section: User information, contact details, and social links -->
+            <div class="profile-section-container">
+                <c-ham_profile-section contact={contact} major-minor={majorMinor} facebook-url={facebookUrl}
+                    campus-contact={campusContact} my-connect={myConnect} personal-section={personalSection}
+                    label={label} main-resource={mainResource} user-contact-id={userContactId}
+                    social-media-links={socialMediaLinks} is-override={isOverride}></c-ham_profile-section>
+            </div>
+
+            <!-- Philanthropy Section: Badges and philanthropy overview with scroll navigation -->
+            <div class="philanthropy-section-container">
+                <c-ham_philanthropy-section hc-badges={hcBadges} philanthropy-sections={philanthropySections}
+                    label={label} main-resource={mainResource} onscrolltophilanthropy={handleScrollToPhilanthropy}
+                    is-override={isOverride}></c-ham_philanthropy-section>
+            </div>
+        </div>
+
+        <!-- Accordions Container: Expandable sections for service and affinities -->
+        <div class="accordions-container">
+            <!-- My Service Section: User's service activities and volunteer navigation -->
+            <div class="my-service-container">
+                <c-ham_my-service-cmp my-services={myServices} label={label} campus-contact={campusContact}
+                    main-resource={mainResource} onnavigatevolunteer={handleNavigateToVolunteer}
+                    is-override={isOverride}>
+                </c-ham_my-service-cmp>
+            </div>
+
+            <!-- My Affinities Section: User's group affiliations and interests -->
+            <div class="my-affinities-container">
+                <c-ham_my-Affinities-cmp label={label} my-affinities={myAffinities} user-contact-id={userContactId}
+                    onrefreshdata={handleRefreshRequest} is-override={isOverride}>
+                </c-ham_my-Affinities-cmp>
+            </div>
+        </div>
+
+        <!-- Philanthropy Detail Section: Detailed view of philanthropy data and tables -->
+        <div data-id="philanthropy-detail-section-id" class="philanthropy-detail-container" onshowcustomtoast={handleChildToast}>
+            <c-ham_philanthropy-detail-cmp label={label} campus-contact={campusContact} user-contact-id={userContactId}
+                philanthropy-sections={philanthropyDetailSections} philanthropy-data-tables={philanthropyDataTables}
+                show-receipts-table={showReceiptsTable}
+                is-override={isOverride}>
+            </c-ham_philanthropy-detail-cmp>
+        </div>
+
+        <!-- Custom Toast Component: Success/error/info messages displayed to user -->
+        <template lwc:if={showCustomToast}>
+            <c-ham_custom-toast-cmp title={toastTitle} message={toastMessage} variant={toastVariant}
+                duration={toastDuration} onclose={handleErrorClose}>
+            </c-ham_custom-toast-cmp>
+        </template>
+    </template>
+
+    <!-- Volunteer Opportunities Component: Displays available volunteer opportunities -->
+    <template lwc:if={showVolunteerComponent}>
+        <c-ham_-volunteer-opp-cmp main-resource={mainResource.hamIcons} user-contact-id={userContactId} label={label}
+            images={images} is-mobile={isMobileView} is-desktop={isDesktopView} recieved-vol-opp={currentVolTab}
+            is-override={isOverride}>
+        </c-ham_-volunteer-opp-cmp>
+    </template>
+    </div>
+    </div>
+</template>

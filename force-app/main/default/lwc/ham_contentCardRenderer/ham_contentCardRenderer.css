@@ -1,0 +1,297 @@
+/* ==========================================================================
+   GRID VIEW (3-column, image-top cards)
+   ========================================================================== */
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.card-item {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card-image {
+    width: 100%;
+    /* height: 99%; */
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    margin: 0 auto;
+    display: block;
+    border-radius: 12px;
+    height: 280px;
+}
+
+.card-image .my-default-icon {
+ object-position: center ;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
+
+.card-content {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 12px;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000;
+    font-family: 'Mallory-main', sans-serif;
+    line-height: 1.4;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-description {
+    font-size: 14px;
+    color: #555;
+    font-family: 'Mallory-main', sans-serif;
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 63px;
+}
+
+.card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.card-date {
+    font-size: 13px;
+    color: #666;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+/* ==========================================================================
+   LIST VIEW (horizontal rows, image left ~300px)
+   ========================================================================== */
+
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.list-item {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    min-height: 180px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.list-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.list-image {
+    flex: 0 0 300px;
+    overflow: hidden;
+}
+
+.list-image img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 8;
+    object-fit: cover;
+}
+
+.list-content {
+    flex: 1;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.list-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+    font-family: 'Mallory-main', sans-serif;
+    line-height: 1.4;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.list-description {
+    font-size: 15px;
+    color: #555;
+    font-family: 'Mallory-main', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.list-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.list-date {
+    font-size: 14px;
+    color: #666;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+/* ==========================================================================
+   SHARED: READ MORE BUTTON
+   ========================================================================== */
+
+.read-more-btn {
+    background: #002F86;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Mallory-main', sans-serif;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+}
+
+.read-more-btn:hover {
+    background: #002266;
+}
+
+/* ==========================================================================
+   RESPONSIVE: GRID → 2-column on tablet, 1-column on mobile
+   ========================================================================== */
+
+   @media (min-width: 1800px) {
+    .card-image {
+    object-position: center;
+}
+}
+
+
+
+/* @media  (min-width: 1600px) {
+    .card-image img {
+    height: 350px !important;
+}
+}
+@media  (min-width: 2000px) {
+    .card-image img {
+    height: 450px !important;
+}
+}
+@media  (min-width: 2500px) {
+    .card-image img {
+    height: 550px !important;
+}
+}
+@media  (min-width: 3000px) {
+    .card-image img {
+    height: 750px !important;
+}
+} */
+
+@media (max-width: 1200px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* List view stacks vertically on mobile */
+    .list-item {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .list-image {
+        flex: 0 0 200px;
+        width: 100%;
+    }
+
+    .list-content {
+        padding: 20px;
+    }
+
+    .list-title {
+        font-size: 16px;
+    }
+
+    .list-description {
+        font-size: 14px;
+        -webkit-line-clamp: 3;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-content {
+        padding: 16px;
+    }
+
+    .card-footer,
+    .list-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .read-more-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ── Kirkland Override ───────────────────────────────────────── */
+.kirkland-override .read-more-btn { background: #166837 !important; }
+.kirkland-override .read-more-btn:hover { background: #065124 !important; }

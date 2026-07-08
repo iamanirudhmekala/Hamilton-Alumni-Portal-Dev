@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Double_the_Donation_Matching_Status__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Status of matching Double the Donation company to organization from running Double the Donation Batch.</description>
+    <label>Double the Donation Matching Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Confirmed</fullName>
+                <default>false</default>
+                <label>Confirmed</label>
+            </value>
+            <value>
+                <fullName>Review</fullName>
+                <default>false</default>
+                <label>Review</label>
+            </value>
+            <value>
+                <fullName>Suggested Match</fullName>
+                <default>false</default>
+                <label>Suggested Match</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

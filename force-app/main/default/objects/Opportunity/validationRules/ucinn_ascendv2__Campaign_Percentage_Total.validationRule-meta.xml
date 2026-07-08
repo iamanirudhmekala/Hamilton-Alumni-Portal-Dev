@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Campaign_Percentage_Total</fullName>
+    <active>false</active>
+    <errorConditionFormula>$Setup.ucinn_ascendv2__Bypass_Settings__c.ucinn_ascendv2__Bypass_Validation_Rules__c &lt;&gt; TRUE &amp;&amp;
+RecordType.DeveloperName = &quot;Proposal&quot; &amp;&amp; (ucinn_ascendv2__Total_Campaign_Priority_Formula__c &lt;&gt;1.00 || ucinn_ascendv2__Total_Campaign_Priority_Formula__c = 0.00)&amp;&amp;
+RecordType.NamespacePrefix = &apos;ucinn_ascendv2&apos;</errorConditionFormula>
+    <errorDisplayField>ucinn_ascendv2__Faculty_Research_Endowment__c</errorDisplayField>
+    <errorMessage>The sum of faculty/research endowment, academic support, capital projects, and scholarship endowment must total 100%.</errorMessage>
+</ValidationRule>

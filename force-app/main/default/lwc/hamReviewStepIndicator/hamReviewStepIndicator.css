@@ -1,0 +1,48 @@
+.step-indicator {
+    display: flex;
+    background: #FFFFFF;
+    border-bottom: 0.5px solid #E5E7EB;
+}
+
+.step-pill {
+    flex: 1;
+    padding: 10px 4px;
+    text-align: center;
+    background: #F8F9FA;
+    border-right: 0.5px solid #E5E7EB;
+    transition: all 0.2s;
+}
+
+.step-pill:last-child {
+    border-right: none;
+}
+
+.step-label {
+    font-size: 10px;
+    color: #6B7280;
+    font-weight: 400;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.step-pill-active {
+    background: #00205B;
+}
+
+.step-pill-active .step-label {
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+.step-pill-completed {
+    background: #ECFDF5;
+    cursor: pointer;
+}
+
+.step-pill-completed .step-label {
+    color: #059669;
+}
+
+.step-pill-inactive {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

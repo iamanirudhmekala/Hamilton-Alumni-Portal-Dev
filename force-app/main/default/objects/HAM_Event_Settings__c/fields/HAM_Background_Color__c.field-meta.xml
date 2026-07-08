@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Background_Color__c</fullName>
+    <description>Hex color code for registration page background.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Six-character hex code (no #) for the registration page background color (e.g. &apos;ffffff&apos;).</inlineHelpText>
+    <label>Background Color</label>
+    <length>6</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

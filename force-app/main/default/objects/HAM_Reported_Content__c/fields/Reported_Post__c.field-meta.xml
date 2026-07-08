@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reported_Post__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Reported Post</label>
+    <referenceTo>HAM_Group_Post__c</referenceTo>
+    <relationshipLabel>HAM Reported Contents</relationshipLabel>
+    <relationshipName>HAM_Reported_Contents</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

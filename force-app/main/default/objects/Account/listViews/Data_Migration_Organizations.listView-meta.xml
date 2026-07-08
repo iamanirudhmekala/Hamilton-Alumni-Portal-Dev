@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_Migration_Organizations</fullName>
+    <columns>ucinn_ascendv2__External_System_ID__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>ucinn_ascendv2__Preferred_Address_Formula__c</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <columns>ACCOUNT.CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ACCOUNT.RECORDTYPE</field>
+        <operation>notEqual</operation>
+        <value>Account.ucinn_ascendv2__Household</value>
+    </filters>
+    <label>Data Migration - Organizations</label>
+</ListView>

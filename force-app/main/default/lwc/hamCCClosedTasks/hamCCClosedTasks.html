@@ -1,0 +1,143 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <!-- Green box with standard icon -->
+                    <span class="slds-icon_container slds-icon-standard-task" style="background-color: rgb(149, 174, 197);">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                            <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#task"></use>
+                        </svg>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span><strong>All Closed Tasks</strong></span>
+                    </h2>
+                </div>
+                <div class="slds-no-flex">
+                    <!-- Inline Filters button like reference header -->
+                    <lightning-button class="slds-m-right_x-small" label="Filters" onclick={handleFiltersToggle}></lightning-button>
+                    <!-- Inline Refresh button like reference header -->
+                    
+                    <!-- Inline expand/collapse icon button to toggle accordion visibility -->
+                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick={handleAccordionToggle} aria-expanded={isExpanded}>
+                        <lightning-icon icon-name={accordionIconName} size="x-small"></lightning-icon>
+                        <span class="slds-assistive-text">Toggle Closed Tasks</span>
+                    </button>
+                </div>
+            </header>
+        </div>
+        <!-- Expandable body controlled by isExpanded (no standard accordion) -->
+        <template if:true={isExpanded}>
+            <div class="slds-card__body">
+                <!-- Filter Section -->
+                <template if:true={showFilters}>
+                    <div class="slds-box slds-box_x-small slds-m-bottom_small slds-theme_default">
+                        <div class="slds-grid slds-gutters slds-wrap">
+                            <!-- Start Date Filter -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                <lightning-input
+                                    type="date"
+                                    label="Start Date"
+                                    value={filterStartDate}
+                                    onchange={handleStartDateChange}>
+                                </lightning-input>
+                            </div>
+                            <!-- End Date Filter -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                <lightning-input
+                                    type="date"
+                                    label="End Date"
+                                    value={filterEndDate}
+                                    onchange={handleEndDateChange}>
+                                </lightning-input>
+                            </div>
+                            <!-- Priority Filter -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                <lightning-combobox
+                                    name="priority"
+                                    label="Priority"
+                                    placeholder="Select Priority"
+                                    value={filterPriority}
+                                    options={priorityOptions}
+                                    onchange={handlePriorityChange}>
+                                </lightning-combobox>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-gutters slds-wrap slds-m-top_small">
+                            <!-- Search Button -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-order_2 slds-medium-order_1">
+                                <lightning-button variant="brand" label="Apply Filters" onclick={handleSearchFilters}></lightning-button>
+                            </div>
+                            <!-- Clear Button -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-order_1 slds-medium-order_2">
+                                <lightning-button variant="neutral" label="Clear" onclick={handleClearFilters}></lightning-button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Summary Stats -->
+                <div class="slds-grid slds-wrap slds-gutters_small slds-m-bottom_medium">
+                    <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-2">
+                        <div class="slds-box slds-box_x-small slds-text-align_center" style="background-color: #f3f3f3;">
+                            <div class="slds-text-color_weak slds-text-body_small">Total Closed Tasks</div>
+                            <div class="slds-text-heading_medium slds-m-top_small">{totalClosedTasks}</div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-2">
+                        <div class="slds-box slds-box_x-small slds-text-align_center" style="background-color: #f3f3f3;">
+                            <div class="slds-text-color_weak slds-text-body_small">Closed Tasks (Last Month)</div>
+                            <div class="slds-text-heading_medium slds-m-top_small">{closedTasksLastMonth}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <template if:true={hasData}>
+                    <lightning-datatable
+                        data={closedTasksData}
+                        columns={columns}
+                        key-field="id"
+                        hide-checkbox-column
+                        onrowselection={handleRowSelection}
+                        onsort={handleSort}
+                        sorted-direction={sortedDirection}
+                        sorted-by={sortedBy}
+                        max-row-selection="1"
+                    >
+                    </lightning-datatable>
+                    <div class="slds-m-top_medium slds-text-align_center">
+                        <template if:true={showPagination}>
+                            <div class="slds-grid slds-grid_vertical-align-center slds-grid_justify-center slds-m-bottom_small">
+                                <div class="slds-text-body_small slds-var-m-right_small">
+                                    Showing {paginationInfo.startIndex} - {paginationInfo.endIndex} of {recordsCount}
+                                </div>
+                                <lightning-button-icon
+                                    icon-name="utility:chevronleft"
+                                    variant="border-filled"
+                                    size="small"
+                                    disabled={previousDisabled}
+                                    onclick={handlePrevious}
+                                    title="Previous Page"
+                                ></lightning-button-icon>
+                                <span class="slds-var-m-horizontal_small slds-text-body_small">{currentPage} of {totalPages}</span>
+                                <lightning-button-icon
+                                    icon-name="utility:chevronright"
+                                    variant="border-filled"
+                                    size="small"
+                                    disabled={nextDisabled}
+                                    onclick={handleNext}
+                                    title="Next Page"
+                                ></lightning-button-icon>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <template if:false={hasData}>
+                    <p>No closed tasks found.</p>
+                </template>
+            </div>
+        </template>
+    </article>
+</template>

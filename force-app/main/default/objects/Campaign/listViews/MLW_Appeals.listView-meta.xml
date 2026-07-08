@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MLW_Appeals</fullName>
+    <columns>CAMPAIGN.NAME</columns>
+    <columns>ucinn_ascendv2__Motivation_Code__c</columns>
+    <columns>CAMPAIGN.STATUS</columns>
+    <columns>HAM_Channel__c</columns>
+    <columns>HAM_Client__c</columns>
+    <columns>CAMPAIGN.RECORDTYPE</columns>
+    <columns>CAMPAIGN.CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CAMPAIGN.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Campaign.ucinn_ascendv2__Appeal</value>
+    </filters>
+    <label>MLW Appeals</label>
+    <sharedTo>
+        <group>HAM_AisDataEntry</group>
+    </sharedTo>
+</ListView>

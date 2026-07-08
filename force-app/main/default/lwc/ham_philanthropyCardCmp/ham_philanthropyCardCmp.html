@@ -1,0 +1,88 @@
+<template>
+    <div class={wrapperClass}>
+        <template if:true={isReceiptsTable}>
+            <div class="slds-card slds-m-bottom_medium" style="background-color: white; border: 1px solid #dddbda; border-radius: 4px; overflow: hidden;">
+                <div class="slds-p-around_small slds-grid slds-grid_vertical-align-center" 
+                    onclick={toggleFilter} 
+                    style="cursor: pointer; background-color: #f3f3f3; border-bottom: 1px solid #dddbda;">
+                    <lightning-icon 
+                        icon-name={filterIcon} 
+                        size="x-small" 
+                        class="slds-m-right_x-small">
+                    </lightning-icon>
+                    <span class="slds-text-title_bold" style="color: #003366;">Filter by Date Range</span>
+                </div>
+
+                <template if:true={isFilterExpanded}>
+                    <div class="slds-p-around_small">
+                        <div class="slds-grid slds-wrap slds-gutters_small date-grid">
+                            <div class="slds-col slds-size_1-of-2 date-col">
+                                <lightning-input type="date" label="Start Date" onchange={handleStartDate}></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 date-col">
+                                <lightning-input type="date" label="End Date" onchange={handleEndDate}></lightning-input>
+                            </div>
+                            
+                            <div class="slds-col slds-size_1-of-1 slds-m-top_small">
+                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                    <div class="slds-text-align_right slds-text-color_weak slds-text-body_small">
+                                        Showing {showingCount} of {totalCount} {tableNameLower}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <template if:true={cardRecords.length}>
+            <template for:each={cardRecords} for:item="card">
+                <div key={card.Id} class="mobile-pledge-card">
+                    <div class="card-title">
+                        <h3>{card.title}</h3>
+                    </div>
+                    <div class="card-details">
+                        <template for:each={card.fields} for:item="field">
+                            <div key={field.key} class="card-detail-item">
+                                <span class="card-label">{field.label}:</span>
+                                <span class="card-value">
+                                    <template if:true={field.isFileAction}>
+                                        <template if:true={field.isProcessed}>
+                                            <a href="javascript:void(0);" onclick={handleViewFile} data-id={card.Id}>
+                                                <lightning-icon icon-name="utility:download" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                                                View
+                                            </a>
+                                        </template>
+                                        <template if:false={field.isProcessed}>
+                                            <span class="slds-text-color_weak">Processing</span>
+                                        </template>
+                                    </template>
+                                    <template if:false={field.isFileAction}>
+                                        {field.value}
+                                    </template>
+                                </span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </template>
+
+        <template if:false={cardRecords.length}>
+            <div class="no-records-message">{label.noRecordsMsg}</div>
+        </template>
+
+        <template if:true={isReceiptsTable}>
+            <div class="slds-m-top_medium slds-p-around_small footer-message" style="background-color: #fff9e6; border: 1px solid #ffc107; border-radius: 4px;">
+                <lightning-formatted-rich-text value={label.receiptFooter}></lightning-formatted-rich-text>
+            </div>
+        </template>
+
+        <template if:true={tableData.hasMore}>
+            <button class="load-more-button" onclick={handleLoadMore}>
+                {label.loadMoreMobile}
+            </button>
+        </template>
+    </div>
+</template>

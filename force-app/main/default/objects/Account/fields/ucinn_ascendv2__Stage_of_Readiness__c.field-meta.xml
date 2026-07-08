@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Stage_of_Readiness__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Stage of Readiness</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Screened</fullName>
+                <default>false</default>
+                <label>Screened</label>
+            </value>
+            <value>
+                <fullName>Identify</fullName>
+                <default>false</default>
+                <label>Identify</label>
+            </value>
+            <value>
+                <fullName>Assessed</fullName>
+                <default>false</default>
+                <label>Assessed</label>
+            </value>
+            <value>
+                <fullName>Qualify</fullName>
+                <default>false</default>
+                <label>Qualify</label>
+            </value>
+            <value>
+                <fullName>Cultivate/Open</fullName>
+                <default>false</default>
+                <label>Cultivate/Open</label>
+            </value>
+            <value>
+                <fullName>Negotiate/Close</fullName>
+                <default>false</default>
+                <label>Negotiate/Close</label>
+            </value>
+            <value>
+                <fullName>Steward</fullName>
+                <default>false</default>
+                <label>Steward</label>
+            </value>
+            <value>
+                <fullName>Estate Gift</fullName>
+                <default>false</default>
+                <label>Estate Gift</label>
+            </value>
+            <value>
+                <fullName>Not a Prospect Now</fullName>
+                <default>false</default>
+                <label>Not a Prospect Now</label>
+            </value>
+            <value>
+                <fullName>Not a Prospect Ever</fullName>
+                <default>false</default>
+                <label>Not a Prospect Ever</label>
+            </value>
+            <value>
+                <fullName>Annual Giving</fullName>
+                <default>false</default>
+                <label>Annual Giving</label>
+            </value>
+            <value>
+                <fullName>Major Gift Pipeline</fullName>
+                <default>false</default>
+                <label>Major Gift Pipeline</label>
+            </value>
+            <value>
+                <fullName>Leadership Gift Pipeline</fullName>
+                <default>false</default>
+                <label>Leadership Gift Pipeline</label>
+            </value>
+            <value>
+                <fullName>Leadership Donor</fullName>
+                <default>false</default>
+                <label>Leadership Donor</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

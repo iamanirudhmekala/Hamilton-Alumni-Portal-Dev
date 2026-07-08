@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Enabled_Payment_Methods__c</fullName>
+    <description>Semicolon-separated list of payment methods.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Payment methods enabled for checkout (e.g. &apos;Card;Card,Pay Later;Card,Pay Later,ACH&apos;).</inlineHelpText>
+    <label>Enabled Payment Methods</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

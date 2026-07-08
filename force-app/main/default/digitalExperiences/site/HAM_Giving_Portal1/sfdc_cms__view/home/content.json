@@ -1,0 +1,72 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Home",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"090928db-e524-48f7-839f-f3cd32a53426\",\"columns\":[{\"UUID\":\"94b00162-3957-4a5e-a0e0-31ae69ffd41a\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : { },
+              "definition" : "c:hamiltonGivingApp",
+              "id" : "43605530-dbb4-4c98-87c7-702ad7df3689",
+              "type" : "component"
+            }, {
+              "attributes" : { },
+              "definition" : "c:ham_HeaderCmp",
+              "id" : "e31284db-d17c-4db6-9e52-feff041a0cbd",
+              "type" : "component"
+            } ],
+            "id" : "94b00162-3957-4a5e-a0e0-31ae69ffd41a",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "090928db-e524-48f7-839f-f3cd32a53426",
+          "type" : "component"
+        } ],
+        "id" : "d5603762-39f6-47dc-bd68-4d3fb8786927",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "pageTitle" : "Home",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "db964b4d-2ba7-420d-a360-5b06119357f0",
+          "type" : "component"
+        } ],
+        "id" : "532e0780-acdc-4b87-847c-a367e35b55e6",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "42381408-3221-4853-b79c-446f9eca5bcd",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "home"
+  },
+  "urlName" : "home"
+}

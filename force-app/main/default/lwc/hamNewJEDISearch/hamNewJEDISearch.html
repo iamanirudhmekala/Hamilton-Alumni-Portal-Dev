@@ -1,0 +1,242 @@
+<template>
+    <template if:true={loading}>
+        <lightning-spinner
+            alternative-text="Loading..."
+            size="medium"
+            variant="brand">
+        </lightning-spinner>
+    </template>
+
+    <div class="app-container">
+        
+        <header class="app-header">
+            <div class="slds-container_large slds-container_center slds-p-around_medium">
+                <div class="slds-grid slds-grid_vertical-align-center slds-gutters_small">
+                    <div class="slds-col_initial">
+                        <div class="logo-container">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#002855" stroke="#002855" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M2 17L12 22L22 17" stroke="#002855" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2 12L12 17L22 12" stroke="#002855" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="slds-col">
+                        <h1 class="header-title">Constituent Search</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        
+        <!-- UPDATED: Quick Actions Section (Matched to Figma) -->
+        <div class="slds-container_large slds-container_center slds-p-horizontal_large slds-m-bottom_large">
+            <lightning-card title="Quick Actions" class="quick-actions-card">
+                <div class="quick-actions-grid">
+                   
+                        <lightning-button
+                            variant="brand"
+                            label="Create Contact Report"
+                            icon-name="utility:file"
+                            class="action-button customBlueButton"
+                            onclick={handleCreateContactReport}>
+                        </lightning-button>
+                    
+                    <lightning-button
+                        variant="brand"
+                        label="Create Task"
+                        icon-name="utility:task"
+                        class="action-button"
+                        onclick={handleCreateTask}>
+                    </lightning-button>
+                    
+                    <lightning-button
+                        variant="brand"
+                        label="Log / Create Meeting"
+                        icon-name="utility:event"
+                        class="action-button"
+                        onclick={handleLogMeeting}>
+                    </lightning-button>
+                    
+                    <lightning-button
+                        variant="brand"
+                        label='Submit AIS Request "Yoda"'
+                        icon-name="utility:send"
+                        class="action-button"
+                        onclick={handleSubmitAIS}>
+                    </lightning-button>
+                </div>
+            </lightning-card>
+        </div>
+        <!-- END UPDATED SECTION -->
+
+        <main class="app-main slds-container_large slds-container_center slds-p-around_large">
+            
+            <lightning-tabset active-tab-value={activeTab} onselect={handleTabSelect} variant="scoped" class="constituent-tabs">
+                
+                <lightning-tab label="Constituent Search" value="search">
+                    <lightning-card class="slds-m-top_medium search-card" variant="Narrow">
+                        <div class="slds-p-around_large">
+                            <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="constituent-name">Constituent name</label>
+                                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                                            <lightning-icon icon-name="utility:search" size="x-small" class="slds-input__icon"></lightning-icon>
+                                            <input
+                                                type="text"
+                                                id="constituent-name"
+                                                name="constituentName"
+                                                value={constituentName}
+                                                placeholder="Search first or Last Name..."
+                                                onchange={handleChange}
+                                                class="slds-input"
+                                            />
+                                        </div>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="donor-id">Donor Id</label>
+                                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                                            <lightning-icon icon-name="utility:search" size="x-small" class="slds-input__icon"></lightning-icon>
+                                            <input
+                                                type="text"
+                                                id="donor-id"
+                                                name="donorId"
+                                                value={donorId}
+                                                placeholder="Search by Donor Id..."
+                                                onchange={handleChange}
+                                                class="slds-input"
+                                            />
+                                        </div>
+                                    </div>
+                                </lightning-layout-item>
+                            </lightning-layout>
+
+                            <lightning-layout multiple-rows="true" pull-to-boundary="small" class="slds-m-top_medium">
+                                <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                    <lightning-combobox
+                                        name="classYear"
+                                        label="Class Year"
+                                        value={classYear}
+                                        placeholder="Select Class Year"
+                                        options={classYearOptions}
+                                        onchange={handleChange}
+                                    ></lightning-combobox>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                    <lightning-combobox
+                                        name="sportsAssociation"
+                                        label="Sports Association"
+                                        value={sportsAssociation}
+                                        placeholder="Select Sports Associa..."
+                                        options={sportsAssociationOptions}
+                                        onchange={handleChange}
+                                    ></lightning-combobox>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                    <lightning-combobox
+                                        name="primaryOrganization"
+                                        label="Primary Organization"
+                                        value={primaryOrganization}
+                                        placeholder="Select Primary Organiz..."
+                                        options={primaryOrganizationOptions}
+                                        onchange={handleChange}
+                                    ></lightning-combobox>
+                                </lightning-layout-item>
+                            </lightning-layout>
+
+                            <div class="slds-grid slds-grid_align-end slds-m-top_large slds-gutters_small">
+                                <lightning-button
+                                    label="Clear"
+                                    icon-name="utility:close"
+                                    variant="neutral"
+                                    onclick={handleClear}
+                                    class="clear-button"
+                                ></lightning-button>
+                                <lightning-button
+                                    label="Search"
+                                    icon-name="utility:search"
+                                    variant="brand"
+                                    class="search-button"
+                                    onclick={searchConstituents}
+                                ></lightning-button>
+                            </div>
+
+                            <div class="slds-m-top_large slds-border_top slds-border_left slds-border_right slds-border_bottom slds-border-radius_large slds-box_border">
+                                <template lwc:if={pageConstituents}>
+                                    <lightning-datatable
+                                        key-field="Id"
+                                        data={pageConstituents}
+                                        columns={columns}
+                                        sorted-by={sortBy}
+                                        sorted-direction={sortDirection}
+                                        onsort={doSorting}
+                                        onrowaction={handleRowAction}
+                                        hide-checkbox-column="true"
+                                        class="slds-no-row-hover"
+                                    >
+                                    </lightning-datatable>
+                                
+                                    <div class="slds-m-top_small slds-p-around_medium slds-grid slds-grid_align-spread slds-align_absolute-center">
+                                        <lightning-button label="Prev" onclick={prevPage} disabled={isFirstPage}></lightning-button>
+                                        <div class="slds-m-horizontal_small slds-text-color_weak slds-align-middle">
+                                            Page {pageNumber} of {totalPages} · {totalRecords} total
+                                        </div>
+                                        <lightning-button label="Next" onclick={nextPage} disabled={isLastPage}></lightning-button>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </lightning-card>
+
+                    <lightning-card class="slds-m-top_medium search-card" variant="Narrow">
+                        <div class="slds-p-around_large">
+                            <div class="slds-grid slds-grid_align-spread slds-m-bottom_medium">
+                                <h3 class="slds-text-heading_medium primary-text">Recent Prospects</h3>
+                                <lightning-button variant="base" label="View All" class="primary-text slds-p-right_none" title="View all recent prospects"></lightning-button>
+                            </div>
+                            <div class="slds-border_top slds-border_left slds-border_right slds-border_bottom slds-border-radius_large slds-box_border">
+                                <lightning-datatable
+                                    key-field="id"
+                                    data={recentProspectsRecords}
+                                    columns={recentProspectsColumns}
+                                    hide-checkbox-column="true"
+                                    class="slds-no-row-hover"
+                                >
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </lightning-tab>
+
+                <lightning-tab label="My Prospects" value="prospects">
+                    <lightning-card class="slds-m-top_medium search-card" variant="Narrow">
+                        <div class="slds-p-around_large">
+                            <div class="slds-border_top slds-border_left slds-border_right slds-border_bottom slds-border-radius_large slds-box_border">
+                                <lightning-datatable
+                                    key-field="id"
+                                    data={myProspectsRecords}
+                                    columns={myProspectsColumns}
+                                    hide-checkbox-column="true"
+                                    class="slds-no-row-hover"
+                                >
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </lightning-tab>
+            </lightning-tabset>
+        </main>
+
+
+        <footer class="app-footer slds-m-top_large">
+            <div class="slds-container_large slds-container_center slds-p-around_medium">
+                <p class="footer-text slds-text-align_center">
+                    © Hamilton College Advancement Department
+                </p>
+            </div>
+        </footer>
+    </div>
+</template>

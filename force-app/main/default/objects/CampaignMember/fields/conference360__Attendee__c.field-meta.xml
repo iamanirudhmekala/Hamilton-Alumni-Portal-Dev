@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>conference360__Attendee__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <inlineHelpText>When the &quot;Invite Attendee&quot; button is clicked, an attendee record is created for this campaign member. If the attendee registers, the campaign member&apos;s status updates to &quot;Invited&quot;.</inlineHelpText>
+    <label>Attendee</label>
+    <referenceTo>conference360__Attendee__c</referenceTo>
+    <relationshipLabel>CampaignMember</relationshipLabel>
+    <relationshipName>CampaignMember</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

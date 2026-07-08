@@ -1,0 +1,77 @@
+<template>
+    <div class={wrapperClass}>
+
+        <!-- Header: title + redirect icon -->
+        <div class="impact-header">
+            <h2 class="impact-title">My Impact</h2>
+            <a class="redirect-btn" onclick={handleMyImpactNavigation}>
+                <template lwc:if={isOverride}>
+                    <img src={images.widgetRedirectGreen} height="20px" width="20px" alt="View My Impact" />
+                </template>
+                <template lwc:else>
+                    <img src={images.widgetRedirect} height="20px" width="20px" alt="View My Impact" />
+                </template>
+            </a>
+        </div>
+
+        <!-- Section 1: This Year's Hamilton Fund -->
+        <template lwc:if={hasCurrentFY}>
+            <div class="impact-section">
+                <p class="section-label">THIS YEAR&apos;S HAMILTON FUND</p>
+                <div class="fund-amount-row">
+                    <span class="fund-amount">{fundPaidValue}</span>
+                    <!-- <template lwc:if={isFullyPaid}>
+                        <span class="fund-status">fully paid</span>
+                    </template> -->
+                </div>
+                <p class="fund-description">Ensuring the daily educational needs of our students and faculty are met</p>
+            </div>
+            <hr class="section-divider" />
+        </template>
+
+        <!-- Section 2: Lifetime Impact -->
+        <template lwc:if={hasLifetime}>
+            <div class="impact-section">
+                <p class="section-label">LIFETIME GIVING IMPACT</p>
+                <div class="lifetime-grid">
+                    <!-- Committed -->
+                    <div class="lifetime-col">
+                        <span class="lifetime-sublabel">Committed:</span>
+                        <div class="lifetime-amount">{committedValue}</div>
+                        <template lwc:if={yearsOfGivingLabel}>
+                            <span class="lifetime-context">{yearsOfGivingLabel}</span>
+                        </template>
+                    </div>
+                    <!-- Paid to date -->
+                    <div class="lifetime-col">
+                        <span class="lifetime-sublabel">Paid to date:</span>
+                        <div class="lifetime-amount">{paidValue}</div>
+                        <!-- <template lwc:if={percentFulfilled}>
+                            <span class="lifetime-context">{percentFulfilled}</span>
+                        </template> -->
+                    </div>
+                </div>
+            </div>
+            <hr class="section-divider" />
+        </template>
+
+        <!-- Section 3: Volunteer Leadership -->
+        <div class="impact-section">
+            <p class="section-label">{volunteerLeadershipTitle}</p>
+            <template lwc:if={isVolunteer}>
+                <p class="volunteer-text">{volunteerThankYouMsg} <a class="volunteer-link" onclick={handleViewMyVolunteerRoles}>{viewMyVolunteerRoles}</a></p>
+                <div class="volunteer-cards">
+                    <template for:each={volunteerCards} for:item="card">
+                        <div key={card.id} class="volunteer-card">
+                            <div class="volunteer-card-title">{card.name}</div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <template lwc:else>
+                <p class="volunteer-text">{nonVolunteerMsg}</p>
+            </template>
+        </div>
+
+    </div>
+</template>

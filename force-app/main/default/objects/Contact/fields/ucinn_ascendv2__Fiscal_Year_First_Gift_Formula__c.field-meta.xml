@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Fiscal_Year_First_Gift_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>TEXT(
+IF(NOT(ISNULL(ucinn_ascendv2__Date_of_First_Gift__c)) &amp;&amp; NOT(ISNULL(ucinn_ascendv2__Date_of_First_Pledge_Payment__c)), MIN(IF(MONTH(ucinn_ascendv2__Date_of_First_Gift__c) &gt;= 7 &amp;&amp; MONTH(ucinn_ascendv2__Date_of_First_Gift__c) &lt;= 12 ,
+YEAR(ucinn_ascendv2__Date_of_First_Gift__c)+1 ,
+YEAR(ucinn_ascendv2__Date_of_First_Gift__c)),
+IF (MONTH(ucinn_ascendv2__Date_of_First_Pledge_Payment__c) &gt;= 7 &amp;&amp; MONTH(ucinn_ascendv2__Date_of_First_Pledge_Payment__c) &lt;= 12 ,
+YEAR(ucinn_ascendv2__Date_of_First_Pledge_Payment__c)+1 ,
+YEAR(ucinn_ascendv2__Date_of_First_Pledge_Payment__c))),
+IF(NOT(ISNULL(ucinn_ascendv2__Date_of_First_Gift__c)),
+IF(MONTH(ucinn_ascendv2__Date_of_First_Gift__c) &gt;= 7 &amp;&amp; MONTH(ucinn_ascendv2__Date_of_First_Gift__c) &lt;= 12 ,
+YEAR(ucinn_ascendv2__Date_of_First_Gift__c)+1,
+YEAR(ucinn_ascendv2__Date_of_First_Gift__c)),
+IF(MONTH(ucinn_ascendv2__Date_of_First_Pledge_Payment__c) &gt;= 7 &amp;&amp; MONTH(ucinn_ascendv2__Date_of_First_Pledge_Payment__c) &lt;= 12 ,
+YEAR(ucinn_ascendv2__Date_of_First_Pledge_Payment__c)+1 ,
+YEAR(ucinn_ascendv2__Date_of_First_Pledge_Payment__c)))))</formula>
+    <label>Fiscal Year First Gift</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

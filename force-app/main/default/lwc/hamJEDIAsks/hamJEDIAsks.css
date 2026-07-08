@@ -1,0 +1,120 @@
+.backgroundWhite{
+    background-color: white;
+}
+
+.label {
+    font-weight: 400;
+    color: #2d73c3;
+    margin-bottom: 0px;
+}
+
+.custom-blue-heading {
+    color: #2d73c3;
+}
+
+/* ── Mobile sort bar ── */
+.mobile-sort-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.mobile-sort-bar lightning-combobox {
+    flex: 1;
+}
+
+.mobile-filter-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.mobile-stage-combo {
+    flex: 1;
+    max-width: 160px;
+}
+
+.stage-clear-btn {
+    margin-left: 0.4rem;
+    padding: 0 0.5rem;
+    height: 2rem;
+    border: 1px solid #c23934;
+    border-radius: 4px;
+    background: #fff;
+    color: #c23934;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.stage-clear-btn:hover {
+    background: #c23934;
+    color: #fff;
+}
+
+.sort-dir-btn {
+    margin-left: 0.5rem;
+    padding: 0 0.75rem;
+    height: 2rem;
+    border: 1px solid #2d73c3;
+    border-radius: 4px;
+    background: #fff;
+    color: #2d73c3;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.sort-dir-btn:hover {
+    background: #2d73c3;
+    color: #fff;
+}
+
+/* ── Ask cards ── (border-left accent color set dynamically via inline style per Stage) */
+.ask-card {
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.ask-card-header {
+    background: #f4f6fb;
+    padding: 0.5rem 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.ask-card-header a {
+    color: #2d73c3;
+    text-decoration: none;
+}
+
+.ask-card-header a:hover {
+    text-decoration: underline;
+}
+
+.ask-card-body {
+    padding: 0.25rem 0;
+}
+
+.ask-card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.2rem 0.75rem;
+    border-top: 1px solid #f0f0f0;
+    font-size: 0.8125rem;
+}
+
+.ask-card-label {
+    color: #5a6a85;
+    flex: 0 0 45%;
+}
+
+.ask-card-value {
+    font-weight: 600;
+    color: #1a1a1a;
+    text-align: right;
+    flex: 1;
+}

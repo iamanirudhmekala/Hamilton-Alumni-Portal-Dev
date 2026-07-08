@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_BT_Session__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Lookup to the originating Blackthorn session record. Provides a navigable back-link for validation and cross-reference.</description>
+    <inlineHelpText>Click to navigate to the original Blackthorn session record. Null indicates this record was not migrated from Blackthorn.</inlineHelpText>
+    <label>BT Session</label>
+    <referenceTo>conference360__Session__c</referenceTo>
+    <relationshipLabel>Event Sessions</relationshipLabel>
+    <relationshipName>Event_Sessions</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

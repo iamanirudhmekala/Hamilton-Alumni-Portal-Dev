@@ -1,0 +1,224 @@
+<template>
+    <div class={rootClass}>
+
+        <!-- Header -->
+        <h2 class="members-title">Group Members</h2>
+
+        <!-- Search -->
+        <div class="search-row">
+            <div class="search-wrapper">
+                <input type="text" class="search-input" placeholder="Search Members..."
+                    value={searchKey} oninput={handleSearchInput} onkeydown={handleSearchKeydown} />
+                <button class="search-btn" onclick={handleSearch} title="Search">
+                    <lightning-icon icon-name="utility:search" size="x-small" class="search-icon"></lightning-icon>
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <template if:true={hasFilters}>
+            <div class="filter-row">
+                <template for:each={allFilters} for:item="filter">
+                    <div key={filter.fieldApiName} class="filter-item">
+                        <lightning-combobox
+                            name={filter.fieldApiName}
+                            data-field={filter.fieldApiName}
+                            placeholder={filter.placeholder}
+                            options={filter.options}
+                            value={filter.selectedValue}
+                            onchange={handleFilterChange}
+                            variant="label-hidden"
+                            class="filter-combo">
+                        </lightning-combobox>
+                    </div>
+                </template>
+                <button class="clear-filter-btn" onclick={handleClearFilters}>Clear Filter</button>
+            </div>
+        </template>
+
+        <!-- Loading -->
+        <template if:true={isLoading}>
+            <div class="spinner-container">
+                <lightning-spinner alternative-text="Loading members" size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Empty state -->
+        <template if:true={isEmpty}>
+            <div class="empty-state">
+                <p>No members found. Try adjusting your search or filters.</p>
+            </div>
+        </template>
+
+        <!-- Member list -->
+        <template if:true={hasMembers}>
+            <div class="members-list">
+                <template for:each={membersWithUI} for:item="member">
+                    <div class="member-row" key={member.contactId}>
+
+                        <!-- Bookmark icon (toggles filled / outline) -->
+                        <div class="col-bookmark">
+                            <img src={member.bookmarkIcon}
+                                 alt="Bookmark"
+                                 class="bookmark-img"
+                                 data-contact={member.contactId}
+                                 data-name={member.bookmarkStatus}
+                                 title={member.bookmarkHover}
+                                 onclick={handleBookmarkClick} />
+                        </div>
+
+                        <!-- Avatar -->
+                        <div class="col-avatar">
+                            <template if:true={member.photoUrl}>
+                                <img src={member.photoUrl} alt={member.name} class="member-avatar" />
+                            </template>
+                            <template if:false={member.photoUrl}>
+                                <div class="member-avatar member-avatar-fallback">
+                                    <lightning-icon icon-name="standard:person_account" size="small"></lightning-icon>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Info -->
+                        <div class="col-info">
+                            <p class="member-name">{member.name}</p>
+                            <p class="member-meta">
+                                <template if:true={member.graduationYear}>
+                                    <span>Graduation Year:&nbsp;<strong>{member.graduationYear}</strong></span>
+                                </template>
+                                <template if:true={member.degree}>
+                                    <span class="meta-sep">&#160;&#160;</span>
+                                    <span>Degree:&nbsp;<strong>{member.degree}</strong></span>
+                                </template>
+                                <template if:true={member.industry}>
+                                    <span class="meta-sep">&#160;&#160;</span>
+                                    <span>Industry:&nbsp;<strong>{member.industry}</strong></span>
+                                </template>
+                            </p>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="col-actions">
+                            <!-- Main connection button: Send Request / Cancel Request / Remove Connection -->
+                            <button class={member.buttonClass}
+                                    data-contact={member.contactId}
+                                    data-name={member.buttonLabel}
+                                    title={member.buttonHover}
+                                    onclick={handleButtonClick}>
+                                {member.buttonLabel}
+                            </button>
+
+                            <!-- View Profile -->
+                            <button class="outline-btn"
+                                    data-id={member.contactId}
+                                    title={label.viewProfileHover}
+                                    onclick={handleViewProfile}>
+                                {label.viewProfile}
+                            </button>
+
+                            <!-- 3-dot menu -->
+                            <div class="action-menu-wrapper">
+                                <button class="btn-more"
+                                        data-id={member.contactId}
+                                        title="More options"
+                                        onclick={handleMoreClick}>&#8942;</button>
+                                <template if:true={member.showDropdown}>
+                                    <div class="dropdown-menu">
+                                        <button class="dropdown-item"
+                                                data-id={member.contactId}
+                                                onclick={handleViewProfile}>
+                                            {label.viewProfile}
+                                        </button>
+                                        <button class="dropdown-item dropdown-item-danger"
+                                                data-contact={member.contactId}
+                                                data-name="Block"
+                                                onclick={handleButtonClick}>
+                                            {label.blockProfile}
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- Pagination -->
+        <template if:true={hasMembers}>
+            <div class="pagination-row">
+                <p class="results-info">Results: {resultsFrom}&#8211;{resultsTo} of {totalCount}</p>
+                <div class="page-btns">
+                    <button class="page-nav-btn" onclick={handlePrevPage} disabled={isFirstPage}>&#8592;</button>
+                    <template for:each={pageNumbers} for:item="pg">
+                        <button key={pg.key} class={pg.btnClass}
+                                data-page={pg.num} onclick={handlePageClick}>{pg.label}</button>
+                    </template>
+                    <button class="page-nav-btn" onclick={handleNextPage} disabled={isLastPage}>&#8594;</button>
+                </div>
+            </div>
+        </template>
+
+    </div>
+
+    <!-- Confirmation / Send Request modal -->
+    <template if:true={showRequestModal}>
+        <div class="modal-backdrop" onclick={closeRequestModal}></div>
+        <div class="modal-wrapper">
+            <div class="modal-container">
+                <template if:true={isRequestModal}>
+                    <button class="close-button" onclick={closeRequestModal}>
+                        <img src={images.close} alt="close" />
+                    </button>
+                </template>
+
+                <h2 class="modal-title">{modalHeader}</h2>
+
+                <!-- Personalized message textarea (Send Request only) -->
+                <template if:true={isRequestModal}>
+                    <div class="textarea-wrapper">
+                        <textarea class="message-textarea"
+                            onchange={handleMessageChange} rows="4"></textarea>
+                    </div>
+                </template>
+
+                <!-- Inactive user banner -->
+                <template if:true={isInactiveUser}>
+                    <div class="custom-info-banner">
+                        <lightning-icon icon-name="utility:info" size="x-small" class="info-icon"></lightning-icon>
+                        <span>{label.inActiveUserMessage}</span>
+                    </div>
+                </template>
+
+                <div class="button-group">
+                    <template if:true={showPrimaryButton}>
+                        <button disabled={isInactiveUser} class={primaryButtonClass}
+                                onclick={handleRequest} data-name={modalPrimaryButton}>
+                            <template if:true={isRequestModal}>
+                                <img src={images.person} alt="add" />
+                            </template>
+                            <span>{modalPrimaryButton}</span>
+                        </button>
+                    </template>
+                    <button disabled={isInactiveUser} class={secondaryButtonClass}
+                            onclick={handleRequest} data-name={modalSecondaryButton}>
+                        {modalSecondaryButton}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Toast notification -->
+    <template if:true={showCustomToast}>
+        <c-ham_custom-toast-cmp
+            title={toastTitle}
+            message={toastMessage}
+            variant={toastVariant}
+            duration={toastDuration}
+            onclose={handleToastClose}>
+        </c-ham_custom-toast-cmp>
+    </template>
+
+</template>

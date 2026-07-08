@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Payment_Status__c</fullName>
+    <description>Payment status of this sales document as migrated from Blackthorn.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Current payment status of this sales document (e.g. Paid, Unpaid, Partial).</inlineHelpText>
+    <label>Payment Status</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

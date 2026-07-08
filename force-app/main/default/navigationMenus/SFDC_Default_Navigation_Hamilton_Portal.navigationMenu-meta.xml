@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NavigationMenu xmlns="http://soap.sforce.com/2006/04/metadata">
+    <container>Hamilton Portal</container>
+    <containerType>Network</containerType>
+    <label>Default Navigation</label>
+    <navigationMenuItem>
+        <label>Login</label>
+        <position>1</position>
+        <publiclyAvailable>true</publiclyAvailable>
+        <target>/login</target>
+        <type>InternalLink</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <label>FAQ&apos;s</label>
+        <position>2</position>
+        <publiclyAvailable>true</publiclyAvailable>
+        <target>/faq</target>
+        <type>InternalLink</type>
+    </navigationMenuItem>
+</NavigationMenu>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Donor_s_PRM_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Constituent or Organizations PRM for Pledge Receivables Report</description>
+    <externalId>false</externalId>
+    <formula>IF ( ISBLANK( ucinn_ascendv2__Contact__c ),  Account.ucinn_ascendv2__PRM__c ,  ucinn_ascendv2__Contact__r.ucinn_ascendv2__PRM__c  )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Donor&apos;s PRM</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payment_Transaction__c</fullName>
+    <label>Payment Transaction</label>
+    <referenceTo>Payment_Transaction__c</referenceTo>
+    <relationshipLabel>Payment Transaction Designation Items</relationshipLabel>
+    <relationshipName>Payment_Transaction_Designation_Items</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

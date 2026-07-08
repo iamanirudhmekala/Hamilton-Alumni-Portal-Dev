@@ -1,0 +1,538 @@
+/* Root Container */
+.resources-root {
+    background: #ffffff;
+    min-height: 250px;
+    border-radius: 0 0 8px 8px;
+}
+
+.title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0a2463;
+    margin: 0;
+}
+
+/* Add Resource button */
+.btn-add-resource {
+    background: #0a2463;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s;
+}
+
+.btn-add-resource:hover {
+    background-color: #001a5e;
+}
+
+.btn-icon {
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+/* ── Search & Filter toolbar ─────────────────────────────────────── */
+.filters-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    flex: 1 1 220px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f8fafc;
+    border: 1px solid #dbe3ec;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.search-icon {
+    --sds-c-icon-color-foreground-default: #7a7a7a;
+    flex-shrink: 0;
+}
+
+.search-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    font-size: 13.5px;
+    color: #333333;
+}
+
+.category-select {
+    border: 1px solid #dbe3ec;
+    border-radius: 8px;
+    background: #ffffff;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #333333;
+    cursor: pointer;
+    max-width: 190px;
+}
+
+.category-select-full {
+    max-width: none;
+    width: 100%;
+}
+
+.btn-bookmark-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    border: 1px solid #dbe3ec;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555555;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-bookmark-filter .filter-bookmark-icon {
+    --sds-c-icon-color-foreground-default: #7a7a7a;
+}
+
+.btn-bookmark-filter:hover {
+    border-color: #1a518b;
+    color: #1a518b;
+}
+
+.btn-bookmark-filter.active {
+    background: #0a2463;
+    border-color: #0a2463;
+    color: #ffffff;
+}
+
+.btn-bookmark-filter.active .filter-bookmark-icon {
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+/* ── Resource Cards ──────────────────────────────────────────────── */
+.resources-grid {
+    width: 100%;
+}
+
+.resource-card {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #e6e9ec;
+    border-radius: 16px;
+    overflow: visible;
+    height: 100%;
+    padding: 12px 12px 16px 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.resource-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.09);
+    border-color: #1a518b;
+}
+
+/* Amplified cards get the highlighted (gold) treatment */
+.resource-card.amplified {
+    border: 2px solid #c9922a;
+    box-shadow: 0 2px 8px rgba(201, 146, 42, 0.25);
+}
+
+.amplified-badge {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #0a2463;
+    color: #ffffff;
+    font-size: 10.5px;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 4px 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.amplified-badge-icon {
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-left: 8px;
+    padding-top: 2px;
+}
+
+.card-action-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color 0.15s;
+    --sds-c-icon-color-foreground-default: #8a94a6;
+}
+
+.card-action-btn:hover {
+    --sds-c-icon-color-foreground-default: #0a2463;
+}
+
+.card-action-btn.bookmark-active {
+    --sds-c-icon-color-foreground-default: #0a2463;
+}
+
+.card-image-link {
+    display: block;
+    text-decoration: none !important;
+    color: inherit;
+}
+
+.card-image-wrap {
+    height: 160px;
+    background: #eef1f4;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-image-fallback {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resource-icon {
+    --sds-c-icon-color-foreground-default: #1a518b;
+}
+
+.card-body {
+    padding: 12px 4px 0 4px;
+}
+
+.card-category {
+    display: inline-block;
+    background: #eef3f9;
+    color: #1a518b;
+    font-size: 10.5px;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 4px 10px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.card-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.resource-title-link {
+    text-decoration: none !important;
+    color: inherit;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.resource-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0a2463;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.resource-description {
+    font-size: 12.5px;
+    color: #6b7280;
+    line-height: 1.4;
+    margin: 6px 0 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Empty State */
+.empty-state {
+    background: #f8fafc;
+    border: 1px dashed #c8d5e3;
+    border-radius: 8px;
+    min-height: 160px;
+}
+
+.empty-icon {
+    --sds-c-icon-color-foreground-default: #1a518b;
+}
+
+.empty-text {
+    font-size: 13.5px;
+    color: #555555;
+    font-style: italic;
+    margin: 0;
+}
+
+/* Spinner */
+.spinner-container {
+    position: relative;
+    height: 100px;
+}
+
+/* ── Amplify confirmation dialog ─────────────────────────────────── */
+.amplify-modal-container {
+    max-width: 460px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.amplify-modal-content {
+    background: #ffffff;
+    border-radius: 12px;
+}
+
+.amplify-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.amplify-bell-circle {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #eef3f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.amplify-bell-icon {
+    --sds-c-icon-color-foreground-default: #0a2463;
+}
+
+.amplify-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 6px 0;
+}
+
+.amplify-subtitle {
+    font-size: 13.5px;
+    color: #555555;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.amplify-resource-box {
+    background: #f4f8fb;
+    border-radius: 8px;
+    padding: 14px 16px;
+}
+
+.amplify-resource-label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #333333;
+    margin: 0 0 4px 0;
+}
+
+.amplify-resource-name {
+    font-size: 13.5px;
+    color: #444444;
+    margin: 0;
+}
+
+.amplify-warning {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fdf7e7;
+    border: 1px solid #f0dda2;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #7a5c12;
+}
+
+.amplify-warning-icon {
+    --sds-c-icon-color-foreground-default: #c9922a;
+    flex-shrink: 0;
+}
+
+.amplify-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.btn-amplify-cancel {
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #333333;
+    cursor: pointer;
+}
+
+.btn-amplify-cancel:hover {
+    background: #f4f4f4;
+}
+
+.btn-amplify-confirm {
+    flex: 1;
+    background: #0a2463;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-amplify-confirm:hover:not(:disabled) {
+    background: #001a5e;
+}
+
+.btn-amplify-confirm:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Modal styling */
+.resource-modal {
+    --sds-c-modal-color-background: #ffffff;
+}
+
+.resource-modal-content {
+    background: #ffffff;
+}
+
+.btn-submit-resource {
+    background: #0a2463 !important;
+    border-color: #0a2463 !important;
+    color: #ffffff !important;
+}
+
+.btn-submit-resource:hover {
+    background: #001a5e !important;
+    border-color: #001a5e !important;
+}
+
+/* Responsive Grid adjustment */
+@media (max-width: 768px) {
+    .resources-root {
+        padding: 12px;
+    }
+
+    .filters-row {
+        gap: 8px;
+    }
+
+    .category-select {
+        max-width: none;
+        flex: 1 1 auto;
+    }
+}
+
+/* Kirkland Theme override support */
+.resources-root.kirkland-override .title {
+    color: #166837;
+}
+.resources-root.kirkland-override .btn-add-resource {
+    background: #166837;
+}
+.resources-root.kirkland-override .btn-add-resource:hover {
+    background-color: #0d4b26;
+}
+.resources-root.kirkland-override .btn-submit-resource {
+    background: #166837 !important;
+    border-color: #166837 !important;
+}
+.resources-root.kirkland-override .btn-submit-resource:hover {
+    background: #0d4b26 !important;
+    border-color: #0d4b26 !important;
+}
+.resources-root.kirkland-override .resource-title {
+    color: #166837;
+}
+.resources-root.kirkland-override .resource-card:hover {
+    border-color: #166837;
+}
+.resources-root.kirkland-override .resource-icon {
+    --sds-c-icon-color-foreground-default: #166837;
+}
+.resources-root.kirkland-override .card-category {
+    background: #eaf4ee;
+    color: #166837;
+}
+.resources-root.kirkland-override .card-action-btn:hover {
+    --sds-c-icon-color-foreground-default: #166837;
+}
+.resources-root.kirkland-override .card-action-btn.bookmark-active {
+    background: #166837;
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+.resources-root.kirkland-override .btn-bookmark-filter.active {
+    background: #166837;
+    border-color: #166837;
+}
+.resources-root.kirkland-override .empty-icon {
+    --sds-c-icon-color-foreground-default: #166837;
+}
+.resources-root.kirkland-override .amplified-badge {
+    background: #166837;
+}
+.resources-root.kirkland-override .amplify-bell-circle {
+    background: #eaf4ee;
+}
+.resources-root.kirkland-override .amplify-bell-icon {
+    --sds-c-icon-color-foreground-default: #166837;
+}
+.resources-root.kirkland-override .btn-amplify-confirm {
+    background: #166837;
+}
+.resources-root.kirkland-override .btn-amplify-confirm:hover:not(:disabled) {
+    background: #0d4b26;
+}

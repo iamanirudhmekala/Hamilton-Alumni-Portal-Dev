@@ -1,0 +1,149 @@
+/* Define brand colors based on your React/Tailwind component.
+    We can use these variables in child components for consistency.
+*/
+:host {
+    /* Brand Colors */
+    --brand-primary: #002855; /* From your SVG fill */
+    --brand-primary-foreground: #FFFFFF; /* text-primary-foreground */
+    --brand-secondary: #F3F4F6; /* bg-secondary */
+    --brand-secondary-light: #F0F5FA; /* bg-secondary/40 */
+    --brand-muted-text: #6B7280; /* text-muted-foreground */
+    --hamilton-buff: #E8DCC8; /* Added from Figma */
+    
+    /* Borders */
+    --brand-light-border: rgba(0, 40, 85, 0.1); /* border-primary/10 */
+    --brand-medium-border: #E0E0E0; /* border-border */
+    --brand-card-border: #E0F0FF; /* border-primary/10 */
+
+    /* Active States */
+    --brand-primary-active-bg: #003366; /* bg-primary/90 */
+
+    /* === Custom Additions for LWC Integration === */
+
+    /* Style datatable header to match new UI */
+    --slds-c-table-color-background-header: var(--brand-secondary-light);
+    --slds-c-table-color-border-header: var(--brand-light-border);
+    --slds-c-table-text-color-header: var(--brand-primary);
+    
+    /* Remove default rounded corners on datatable to fit card */
+    --slds-c-table-radius-border: 0;
+
+    /* Style for links in tables */
+    --slds-c-anchor-text-color: var(--brand-primary);
+    --slds-c-anchor-text-color-hover: var(--brand-primary-active-bg);
+}
+
+/* Main App Container */
+.app-container {
+    min-height: 100vh;
+    /* bg-gradient-to-br from-secondary/20 via-white to-secondary/30 */
+    background: linear-gradient(to bottom right, rgba(243, 244, 246, 0.2), white, rgba(243, 244, 246, 0.3));
+}
+
+/* Header */
+.app-header {
+    background-color: var(--brand-primary);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+}
+
+.logo-container {
+    width: 2.5rem; /* w-10 */
+    height: 2.5rem; /* h-10 */
+    background-color: var(--brand-secondary);
+    border-radius: 0.5rem; /* rounded-lg */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-title {
+    color: var(--brand-primary-foreground);
+    font-size: 1.5rem; 
+    font-weight: 600;
+}
+
+/* Footer */
+.app-footer {
+    border-top: 1px solid var(--brand-light-border);
+    background-color: rgba(255, 255, 255, 0.5); /* bg-white/50 */
+}
+
+.footer-text {
+    color: var(--brand-muted-text);
+    font-size: 0.875rem; /* text-sm */
+}
+
+/* Style for links inside datatables */
+.primary-text,
+:host .primary-text a {
+    color: var(--brand-primary);
+    font-weight: 600;
+}
+
+/* Specific overrides for datatable links */
+:host .slds-table a {
+    color: var(--brand-primary);
+    font-weight: 600;
+}
+:host .slds-table a:hover,
+:host .slds-table a:focus {
+    color: var(--brand-primary-active-bg);
+    text-decoration: underline;
+}
+
+/* === MERGED FROM FIGMA: QUICK ACTIONS STYLING === */
+
+/* Quick Actions Card */
+.quick-actions-card {
+    background: linear-gradient(to right, rgba(232, 220, 200, 0.3), white); /* Using buff color */
+    border: none !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+}
+
+/* Styling the internal lightning-card body to transparent so gradient shows */
+.quick-actions-card {
+    --slds-c-card-color-background: #f3f3f3;
+    --slds-c-card-shadow: none; 
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.action-button {
+    display: flex;
+    flex-direction: column;
+    background-color: #002855;
+    color: #ffffff;
+}
+
+/* Override standard lightning-button to stretch height */
+.action-button lightning-button {
+    height: 100%;
+    
+}
+
+.action-button button {
+    height: auto;
+    min-height: 4rem;
+    width: 100%;
+    justify-content: center;
+}
+
+/* Brand Button Override for correct color */
+lightning-button[variant="brand"] {
+    --sds-c-button-brand-color-background:#002855;
+    --sds-c-button-brand-color-background-hover: #003366;
+    --sds-c-button-brand-color-border: #002855;
+}
+
+.customBlueButton {
+    display: flex;
+    flex-direction: column;
+    background-color: #002855;
+    color: #ffffff;
+}

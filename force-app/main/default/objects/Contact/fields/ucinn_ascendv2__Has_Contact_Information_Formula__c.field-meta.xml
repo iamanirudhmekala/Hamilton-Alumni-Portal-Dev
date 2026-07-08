@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Has_Contact_Information_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Determine if the constituent has any contact information.</description>
+    <formula>NOT(AND(ISBLANK(Phone), ISBLANK(MobilePhone), ISBLANK(HomePhone), ISBLANK(OtherPhone), ISBLANK(Email), ISBLANK(ucinn_ascendv2__Business_Email__c), ISBLANK(ucinn_ascendv2__Campus_Email__c), ISBLANK(ucinn_ascendv2__Other_Email__c), ISBLANK(ucinn_ascendv2__Personal_Email__c), ISBLANK(MailingStreet), ISBLANK(OtherStreet)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Has Contact Information</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

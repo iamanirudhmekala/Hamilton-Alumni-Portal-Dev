@@ -1,0 +1,87 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Login Test",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : {
+              "isVisible" : true
+            },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "0rem",
+            "sectionConfig" : "{\"UUID\":\"a006e00a-fbe5-4743-a62e-59eb1f29c7a0\",\"columns\":[{\"UUID\":\"3d0fba8e-2639-46a7-90ad-a26f29587083\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"6\",\"seedComponents\":[]},{\"UUID\":\"ad7d8dcb-afd3-4386-828c-62064b9b688f\",\"columnName\":\"Column 2\",\"columnKey\":\"5a004\",\"columnWidth\":\"6\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-end"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "imageInfos" : "",
+                "richTextValue" : "<img src=\"{!contentAsset.hamilton_login_logo.1}\" style=\"width:100%;\"/>"
+              },
+              "definition" : "community_builder:htmlEditor",
+              "id" : "f10c24c7-3fe5-47b3-a581-da72bd24c974",
+              "type" : "component"
+            } ],
+            "id" : "3d0fba8e-2639-46a7-90ad-a26f29587083",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          }, {
+            "children" : [ {
+              "attributes" : {
+                "imageInfos" : "",
+                "richTextValue" : "<img src=\"{!contentAsset.hamilton_login_page_image.1}\" style=\"width:100%;\"/>"
+              },
+              "definition" : "community_builder:htmlEditor",
+              "id" : "fc81b49b-c52d-4490-b2b1-d1fe676ba67f",
+              "type" : "component"
+            } ],
+            "id" : "ad7d8dcb-afd3-4386-828c-62064b9b688f",
+            "name" : "5a004",
+            "title" : "Column 2",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "a006e00a-fbe5-4743-a62e-59eb1f29c7a0",
+          "type" : "component"
+        } ],
+        "id" : "91782f5a-257d-4194-b027-bd272efd00f4",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "pageTitle" : "Login Test",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "1f2139dc-0086-4e79-8fe4-b065689c75c5",
+          "type" : "component"
+        } ],
+        "id" : "3df2d9f1-e109-4338-9ae3-e0d641d1161b",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "b976b03d-6543-473e-8be7-7cb014a1dfab",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-login-test"
+  },
+  "urlName" : "login-test"
+}

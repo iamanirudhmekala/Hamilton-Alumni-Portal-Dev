@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Total_Operating_Entity_Surcharge_Amount__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Total Operating Entity Surcharge Amount</label>
+    <summarizedField>ucinn_ascendv2__Designation_Detail__c.ucinn_ascendv2__Operating_Entity_Surcharge_Amount__c</summarizedField>
+    <summaryForeignKey>ucinn_ascendv2__Designation_Detail__c.ucinn_ascendv2__Opportunity__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

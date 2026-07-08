@@ -1,0 +1,173 @@
+<template>
+    <div class="dash">
+
+        <!-- ── Loading ─────────────────────────────────────────────── -->
+        <template if:true={isLoading}>
+            <div class="state-box">
+                <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+                <p class="state-text">Loading volunteer data...</p>
+            </div>
+        </template>
+
+        <!-- ── Error ────────────────────────────────────────────────── -->
+        <template if:true={hasError}>
+            <div class="state-box">
+                <lightning-icon icon-name="utility:error" size="medium" variant="error"></lightning-icon>
+                <p class="state-text">{errorMessage}</p>
+            </div>
+        </template>
+
+        <!-- ── Dashboard ────────────────────────────────────────────── -->
+        <template if:true={showDashboard}>
+
+            <!-- Search Button (Top) -->
+            <div style="margin-bottom: 1rem; text-align: right;">
+                <lightning-button 
+                    variant="brand" 
+                    label="Search"
+                    icon-name="utility:search"
+                    onclick={handleSearchClick}>
+                </lightning-button>
+            </div>
+
+            <!-- KPI grid: 5 cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Total involvements</div>
+                    <div class="kpi-value">{data.totalInvolvements}</div>
+                    <div class="kpi-sub">{data.fyLabel}</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Unique volunteers</div>
+                    <div class="kpi-value">{data.uniqueVolunteers}</div>
+                    <div class="kpi-sub">distinct constituents</div>
+                </div>
+                <div class="kpi-card kpi-card--green">
+                    <div class="kpi-label">Currently active</div>
+                    <div class="kpi-value">{data.currentCount}</div>
+                    <div class="kpi-sub">{data.formerCount} former status</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Multi-role volunteers</div>
+                    <div class="kpi-value">{data.multiRoleCount}</div>
+                    <div class="kpi-sub">2 or more involvements</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Avg per volunteer</div>
+                    <div class="kpi-value">{data.avgPerVolunteer}</div>
+                    <div class="kpi-sub">involvements per person</div>
+                </div>
+            </div>
+
+            <!-- ── Section: Involvements by type ──────────────────── -->
+            <div class="section-label">Involvements by type</div>
+            <div class="card">
+                <div class="card-title">What are volunteers doing? — {data.totalInvolvements} total</div>
+                <template for:each={data.byCode} for:item="row">
+                    <div key={row.label} class="bar-row">
+                        <span class="bar-label">{row.label}</span>
+                        <div class="bar-track">
+                            <div class="bar-fill bar-fill--blue" style={row.barStyle}></div>
+                        </div>
+                        <span class="bar-count">{row.total}</span>
+                        <span class="bar-pct">{row.pctLabel}</span>
+                    </div>
+                </template>
+            </div>
+
+            <!-- ── Section: Charts row ────────────────────────────── -->
+            <div class="two-col">
+
+                <!-- Monthly trend -->
+                <div class="card">
+                    <div class="card-title">Involvements by month</div>
+                    <div class="dot-legend">
+                        <span><span class="dot dot--blue"></span>{prevCalYear}</span>
+                        <span><span class="dot dot--teal"></span>{currCalYear}</span>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas lwc:ref="trendCanvas"
+                                aria-label="Bar chart of monthly involvements for current fiscal year">
+                        </canvas>
+                    </div>
+                </div>
+
+                <!-- By class year -->
+                <div class="card">
+                    <div class="card-title">Involvements by class year</div>
+                    <div class="dot-legend">
+                        <span><span class="dot dot--purple"></span>Involvements</span>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas lwc:ref="classYearCanvas"
+                                aria-label="Bar chart of involvements by class year">
+                        </canvas>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ── Section: Currently active volunteers ────────────── -->
+            <div class="section-label">Currently active volunteers ({data.currentCount} involvements)</div>
+            <div class="card">
+                <div class="card-title">Active engagement types</div>
+                <template for:each={data.activeByCode} for:item="row">
+                    <div key={row.label} class="bar-row">
+                        <span class="bar-label">{row.label}</span>
+                        <div class="bar-track">
+                            <div class="bar-fill bar-fill--teal" style={row.barStyle}></div>
+                        </div>
+                        <span class="bar-count">{row.total}</span>
+                        <span class="bar-pct">{row.pctLabel}</span>
+                    </div>
+                </template>
+                <template if:false={hasActiveInvolvements}>
+                    <p class="empty-state">No current involvements in this fiscal year.</p>
+                </template>
+            </div>
+
+            <!-- ── Section: Most engaged volunteers ───────────────── -->
+            <div class="section-label">Most engaged volunteers</div>
+            <div class="card">
+                <div class="card-title">Top volunteers by total involvements — {data.fyLabel}</div>
+                <table class="vol-table">
+                    <thead>
+                        <tr>
+                            <th class="col-rank">#</th>
+                            <th>Name</th>
+                            <th class="col-count">Involvements</th>
+                            <th class="col-status">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={data.topVolunteers} for:item="vol">
+                            <tr key={vol.contactId}>
+                                <td class="col-rank rank-num">{vol.rank}</td>
+                                <td>
+                                    <a onclick={handleVolunteerClick} data-id={vol.contactId}>
+                                        {vol.contactName}
+                                    </a>
+                                </td>
+                                <td class="col-count">{vol.involvements}</td>
+                                <td class="col-status">
+                                    <span class={vol.statusClass}>{vol.status}</span>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Search Button (Bottom) -->
+            <div style="margin-top: 1.5rem; text-align: right;">
+                <lightning-button 
+                    variant="brand" 
+                    label="Search"
+                    icon-name="utility:search"
+                    onclick={handleSearchClick}>
+                </lightning-button>
+            </div>
+
+        </template>
+    </div>
+</template>

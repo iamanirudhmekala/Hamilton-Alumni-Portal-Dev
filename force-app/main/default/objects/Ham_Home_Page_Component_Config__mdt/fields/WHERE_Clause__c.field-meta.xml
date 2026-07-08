@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WHERE_Clause__c</fullName>
+    <description>The full SOQL WHERE clause (e.g., Category__c = &apos;News&apos; AND Is_Active__c = TRUE).</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>The full SOQL WHERE clause (e.g., Category__c = &apos;News&apos; AND Is_Active__c = TRUE).</inlineHelpText>
+    <label>WHERE Clause</label>
+    <required>false</required>
+    <type>TextArea</type>
+</CustomField>

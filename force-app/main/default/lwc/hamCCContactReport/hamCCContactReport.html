@@ -1,0 +1,361 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-report" style="background-color: rgb(233, 105, 110);">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                            <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#report"></use>
+                        </svg>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span><strong>Contact Report</strong></span>
+                    </h2>
+                </div>
+               <div class="slds-no-flex">
+                    <template if:false={isMobile}>
+                        <div class="desktop-actions">
+                            <lightning-button
+                                label={filtersButtonLabel}
+                                onclick={handleFiltersToggle}
+                                class="slds-m-right_x-small">
+                            </lightning-button>
+                            <lightning-button
+                                variant="brand"
+                                label="Create Contact Report"
+                                onclick={openFlowModal}>
+                            </lightning-button>
+                        </div>
+                    </template>
+                    <template if:true={isMobile}>
+                        <div class="mobile-actions">
+                            <lightning-button-icon
+                                icon-name="utility:filterList"
+                                aria-label={filtersButtonLabel}
+                                alternative-text={filtersButtonLabel}
+                                title={filtersButtonLabel}
+                                onclick={handleFiltersToggle}
+                                class="slds-var-m-right_x-small">
+                            </lightning-button-icon>
+                            <lightning-button-icon
+                                icon-name="utility:add"
+                                aria-label="Create Contact Report"
+                                alternative-text="Create Contact Report"
+                                title="Create Contact Report"
+                                variant="brand"
+                                onclick={openFlowModal}
+                                class="slds-var-m-right_x-small">
+                            </lightning-button-icon>
+                        </div>
+                    </template>
+                    <button
+                        class="slds-button slds-button_icon slds-button_icon-border-filled slds-m-left_x-small"
+                        onclick={handleAccordionToggle}
+                        aria-expanded={isExpanded}>
+                        <lightning-icon icon-name={accordionIconName} size="x-small"></lightning-icon>
+                        <span class="slds-assistive-text">Toggle Contact Report</span>
+                    </button>
+                </div>
+            </header>
+        </div>
+
+        <template if:true={isExpanded}>
+            <div class="slds-card__body">
+
+                <!-- Filter Section -->
+                <template if:true={showFilters}>
+                    <div class="slds-box slds-box_x-small slds-m-bottom_small slds-theme_default">
+
+                        <!-- DESKTOP Filters: multi-column grid -->
+                        <template if:false={isMobile}>
+                            <div class="slds-grid slds-gutters slds-wrap">
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                    <lightning-input
+                                        type="text"
+                                        label="Search (Summary / Key Points)"
+                                        value={filterSearchText}
+                                        onchange={handleSearchTextChange}
+                                        onkeydown={handleSearchKeyDown}
+                                        placeholder="Search by keyword...">
+                                    </lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                    <lightning-input
+                                        type="date"
+                                        label="Start Date"
+                                        value={filterStartDate}
+                                        onchange={handleStartDateChange}>
+                                    </lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                    <lightning-input
+                                        type="date"
+                                        label="End Date"
+                                        value={filterEndDate}
+                                        onchange={handleEndDateChange}>
+                                    </lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                    <lightning-combobox
+                                        name="publishToListserv"
+                                        label="Published to Listserv"
+                                        placeholder="Select Option"
+                                        value={filterPublishToListserv}
+                                        options={publishToListservOptions}
+                                        onchange={handlePublishToListservChange}>
+                                    </lightning-combobox>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                    <lightning-combobox
+                                        name="isCareerCenterSpecific"
+                                        label="Is Career Center Specific Contact Report"
+                                        placeholder="Select Option"
+                                        value={filterIsCareerCenterSpecific}
+                                        options={isCareerCenterSpecificOptions}
+                                        onchange={handleIsCareerCenterSpecificChange}>
+                                    </lightning-combobox>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-gutters slds-wrap slds-m-top_small">
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-order_2 slds-medium-order_1">
+                                    <lightning-button variant="brand" label="Search" onclick={handleSearchFilters}></lightning-button>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-order_1 slds-medium-order_2">
+                                    <lightning-button variant="neutral" label="Clear" onclick={handleClearFilters}></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- MOBILE Filters: single-column stacked card style -->
+                        <template if:true={isMobile}>
+                            <div class="mobile-filter-card">
+                                <div class="mobile-filter-field">
+                                    <lightning-input
+                                        type="text"
+                                        label="Search (Summary / Key Points)"
+                                        value={filterSearchText}
+                                        onchange={handleSearchTextChange}
+                                        onkeydown={handleSearchKeyDown}
+                                        placeholder="Search by keyword...">
+                                    </lightning-input>
+                                </div>
+                                <div class="mobile-filter-field">
+                                    <lightning-input
+                                        type="date"
+                                        label="Start Date"
+                                        value={filterStartDate}
+                                        onchange={handleStartDateChange}>
+                                    </lightning-input>
+                                </div>
+                                <div class="mobile-filter-field">
+                                    <lightning-input
+                                        type="date"
+                                        label="End Date"
+                                        value={filterEndDate}
+                                        onchange={handleEndDateChange}>
+                                    </lightning-input>
+                                </div>
+                                <div class="mobile-filter-field">
+                                    <lightning-combobox
+                                        name="publishToListserv"
+                                        label="Published to Listserv"
+                                        placeholder="Select Option"
+                                        value={filterPublishToListserv}
+                                        options={publishToListservOptions}
+                                        onchange={handlePublishToListservChange}>
+                                    </lightning-combobox>
+                                </div>
+                                <div class="mobile-filter-field">
+                                    <lightning-combobox
+                                        name="isCareerCenterSpecific"
+                                        label="Is Career Center Specific Contact Report"
+                                        placeholder="Select Option"
+                                        value={filterIsCareerCenterSpecific}
+                                        options={isCareerCenterSpecificOptions}
+                                        onchange={handleIsCareerCenterSpecificChange}>
+                                    </lightning-combobox>
+                                </div>
+                                <div class="mobile-filter-actions">
+                                    <lightning-button
+                                        variant="neutral"
+                                        label="Clear"
+                                        onclick={handleClearFilters}
+                                        class="slds-m-right_small">
+                                    </lightning-button>
+                                    <lightning-button
+                                        variant="brand"
+                                        label="Search"
+                                        onclick={handleSearchFilters}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                        </template>
+
+                    </div>
+                </template>
+
+                <template if:true={hasData}>
+
+                    <!-- DESKTOP: datatable with row actions -->
+                    <template if:false={isMobile}>
+                        <lightning-datatable
+                            data={pagedContactReports}
+                            columns={columns}
+                            key-field="id"
+                            hide-checkbox-column
+                            onsort={handleSort}
+                            onrowaction={handleRowAction}
+                            sorted-direction={sortedDirection}
+                            sorted-by={sortedBy}>
+                        </lightning-datatable>
+                    </template>
+
+                    <!-- MOBILE: sort bar + cards -->
+                    <template if:true={isMobile}>
+                        <div class="mobile-sort-bar">
+                            <lightning-combobox
+                                label="Sort by"
+                                value={sortedBy}
+                                options={mobileSortOptions}
+                                onchange={handleMobileSortChange}
+                                class="mobile-sort-combo">
+                            </lightning-combobox>
+                            <lightning-button-icon
+                                icon-name={mobileSortDirectionIcon}
+                                alternative-text={mobileSortDirectionLabel}
+                                title={mobileSortDirectionLabel}
+                                onclick={toggleMobileSortDirection}
+                                class="slds-var-m-left_x-small">
+                            </lightning-button-icon>
+                        </div>
+
+                        <div class="mobile-card-container">
+                            <template for:each={pagedContactReports} for:item="report">
+                                <div key={report.id} class="mobile-card">
+
+                                    <!-- Card Header: Name link + Action Menu -->
+                                    <div class="card-header">
+                                        <a href={report.recordLink} target="_blank" class="card-title-link">{report.Name}</a>
+                                        <!-- Row action: mirrors datatable row actions -->
+                                        <lightning-button-menu
+                                            alternative-text="Actions"
+                                            icon-size="x-small"
+                                            menu-alignment="right"
+                                            onselect={handleCardAction}
+                                            data-record-id={report.id}
+                                            class="card-action-menu">
+                                            <template for:each={rowActions} for:item="action">
+                                                <lightning-menu-item
+                                                    key={action.name}
+                                                    value={action.name}
+                                                    label={action.label}>
+                                                </lightning-menu-item>
+                                            </template>
+                                        </lightning-button-menu>
+                                    </div>
+
+                                    <div class="card-row">
+                                        <span class="card-label">Contact Method</span>
+                                        <span>{report.ucinn_ascendv2__Contact_Method__c}</span>
+                                    </div>
+                                    <div class="card-row">
+                                        <span class="card-label">Substantive Contact</span>
+                                        <span>{report.ucinn_ascendv2__Substantive_Contact__c}</span>
+                                    </div>
+                                    <div class="card-divider"></div>
+                                    <div class="card-row-stacked">
+                                        <span class="card-label">Description</span>
+                                        <span class="card-value-full">{report.ucinn_ascendv2__Description__c}</span>
+                                    </div>
+                                    <div class="card-divider"></div>
+                                    <div class="card-row-stacked">
+                                        <span class="card-label">Contact Report</span>
+                                        <span class="card-value-full">{report.displayBody}</span>
+                                    </div>
+                                    <template if:true={report.needsTruncation}>
+                                        <div class="show-more-row">
+                                            <a data-id={report.id} onclick={toggleShowMore}>{report.showMoreLabel}</a>
+                                        </div>
+                                    </template>
+                                    <div class="card-divider"></div>
+                                    <div class="card-row">
+                                        <span class="card-label">Date</span>
+                                        <span class="card-value-bold">{report.formattedDate}</span>
+                                    </div>
+                                    <div class="card-row">
+                                        <span class="card-label">PRM at Time of Meeting</span>
+                                        <span>{report.HAM_PRM_at_Time_of_Meeting__c}</span>
+                                    </div>
+                                    <div class="card-row">
+                                        <span class="card-label">Submitted By</span>
+                                        <span class="card-value-bold">{report.LastModifiedByName}</span>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Pagination -->
+                    <div class="slds-m-top_medium slds-text-align_center">
+                        <template if:true={showPagination}>
+                            <div class="slds-grid slds-grid_vertical-align-center slds-grid_justify-center slds-m-bottom_small">
+                                <div class="slds-text-body_small slds-var-m-right_small">
+                                    Showing {paginationInfo.startIndex} - {paginationInfo.endIndex} of {recordsCount}
+                                </div>
+                                <lightning-button-icon
+                                    icon-name="utility:chevronleft"
+                                    variant="border-filled"
+                                    size="small"
+                                    disabled={previousDisabled}
+                                    onclick={handlePrevious}
+                                    title="Previous Page">
+                                </lightning-button-icon>
+                                <span class="slds-var-m-horizontal_small slds-text-body_small">{currentPage} of {totalPages}</span>
+                                <lightning-button-icon
+                                    icon-name="utility:chevronright"
+                                    variant="border-filled"
+                                    size="small"
+                                    disabled={nextDisabled}
+                                    onclick={handleNext}
+                                    title="Next Page">
+                                </lightning-button-icon>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <template if:false={hasData}>
+                    <p>No contact report data found.</p>
+                </template>
+            </div>
+        </template>
+
+        <!-- Modal for Create Contact Report -->
+        <template if:true={isFlowModalOpen}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open" data-id="contactReportModal">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create Contact Report</h2>
+                        <button class="slds-button slds-button_icon slds-modal__close" title="Close" onclick={closeFlowModal}>
+                            <lightning-icon icon-name="utility:close" size="small" alternative-text="close"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning-flow
+                            flow-api-name="Contact_Report_Create_New_Contact_Report_Gift_Officers"
+                            onstatuschange={handleFlowStatusChange}
+                            flow-input-variables={flowInputVariables}>
+                        </lightning-flow>
+                    </div>
+                    <footer class="slds-modal__footer slds-text-align_right">
+                        <lightning-button label="Close" onclick={closeFlowModal}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </article>
+</template>

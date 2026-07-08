@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAMOverall_Fundraising_Goal_Expected_CYR__c</fullName>
+    <description>The realistic expected amount this fiscal year for the prospect as a total to be paid. The amount may change over time, and can include more than one initiative.</description>
+    <inlineHelpText>The realistic expected amount this fiscal year for the prospect as a total to be paid. The amount may change over time, and can include more than one initiative.</inlineHelpText>
+    <label>CYR Tot. Exp $</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

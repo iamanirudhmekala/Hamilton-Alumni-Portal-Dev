@@ -1,0 +1,201 @@
+<template>
+    <div class={wrapperClass}>
+        
+
+        <!-- Pill Tab Toggle: Trending News | Older News -->
+        <div class="for-inner-padding">
+        <div class="subtabs-row">
+            <div class="subtabs">
+                <div class={trendingTabClass} data-tab="trending" onclick={handleTabSwitch}>
+                    {localLabel.currentNews}
+                </div>
+                <div class={olderTabClass} data-tab="older" onclick={handleTabSwitch}>
+                    {localLabel.olderNews}
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================
+             TRENDING NEWS TAB
+             ================================================================ -->
+        <template lwc:if={isTrendingActive}>
+
+            <!-- Category Filter -->
+            <div class="filters-row">
+                <div class="sort-box-container">
+                    <label>Category</label>
+                    <div class="slds-dropdown-trigger slds-dropdown-trigger_click">
+                        <button class="sort-by-btn" aria-haspopup="true" onclick={toggleCurrDropdown}>
+                            <span class="filter-label">{selectedCurrLabel}</span>
+                            <img src={dropdownIcon} alt="" />
+                        </button>
+                        <template lwc:if={isCurrOpen}>
+                            <ul class="dropdown-list">
+                                <template for:each={options} for:item="item">
+                                    <li key={item.value} data-value={item.value} onclick={handleCurrSelect}>
+                                        {item.label}
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Renderer -->
+            <template lwc:if={hasTrendingNews}>
+                <c-ham_content-card-renderer
+                    records={trendingRendererRecords}
+                    view-mode={effectiveViewMode}
+                    content-type="news"
+                    is-override={isOverride}>
+                </c-ham_content-card-renderer>
+            </template>
+            <template lwc:else>
+                <div class="empty-state">
+                    <p>{localLabel.noCurrentNews}</p>
+                </div>
+            </template>
+
+        </template>
+
+        </div>
+            <!-- Pagination -->
+         <template lwc:if={isTrendingActive}>
+            <c-ham_-pagination-util
+                total-records={trendingTotal}
+                page-size={pageSize}
+                current-page={trendingPage}
+                result-label="Records"
+                is-override={isOverride}
+                onpagechange={handleTrendingPageChange}>
+            </c-ham_-pagination-util>
+         </template>
+
+
+        <!-- ================================================================
+             OLDER NEWS TAB
+             ================================================================ -->
+        <template lwc:if={isOlderActive}>
+            <div class="for-inner-padding">
+            <!-- Date + Category Filters -->
+            <div class="filters-row">
+
+                <!-- Date Filter -->
+                <div class="sort-box-container">
+                    <label>Sort by Date</label>
+                    <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                        <button class="sort-by-btn" aria-haspopup="true" onclick={toggleFilterDropdown}>
+                            <span class="filter-label">{filterLabel}</span>
+                            <img src={dropdownIcon} alt="" />
+                        </button>
+                        <template lwc:if={isFilterOpen}>
+                            <div class="slds-dropdown slds-dropdown_left my-dropdown-container" style="z-index: 999;">
+                                <ul class="slds-dropdown__list">
+                                    <li class={allTimeClass}>
+                                        <a href="#" role="menuitem" onclick={handleAllTimeClick} data-range="all">
+                                            <span class="slds-truncate">{localLabel.allTime}</span>
+                                        </a>
+                                    </li>
+                                    <li class={last30Class}>
+                                        <a href="#" role="menuitem" onclick={handleAllTimeClick} data-range="30">
+                                            <span class="slds-truncate">Last 30 Days</span>
+                                        </a>
+                                    </li>
+                                    <li class={last6MonthsClass}>
+                                        <a href="#" role="menuitem" onclick={handleAllTimeClick} data-range="180">
+                                            <span class="slds-truncate">Last 6 Months</span>
+                                        </a>
+                                    </li>
+                                    <li class={lastYearClass}>
+                                        <a href="#" role="menuitem" onclick={handleAllTimeClick} data-range="365">
+                                            <span class="slds-truncate">Last Year</span>
+                                        </a>
+                                    </li>
+                                   <li class="list-date-container">
+
+    <span class="list-date-title-small">
+        Or Select Date Range
+    </span>
+
+    <div class="date-field-wrapper">
+        <lightning-input
+            type="date"
+            label="From"
+            name="fromDate"
+            value={filterFromDateValue}
+            onchange={handleDateChange}
+            class="from-date-input-container">
+        </lightning-input>
+    </div>
+
+    <div class="date-field-wrapper">
+        <lightning-input
+            type="date"
+            label="To Date"
+            name="toDate"
+            value={filterToDateValue}
+            onchange={handleDateChange}
+            class="date-input">
+        </lightning-input>
+    </div>
+
+</li>
+                                </ul>
+                            </div>
+                            <div class="overlay" onclick={toggleFilterDropdown}></div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="sort-box-container">
+                    <label>Category</label>
+                    <div class="slds-dropdown-trigger slds-dropdown-trigger_click">
+                        <button class="sort-by-btn" aria-haspopup="true" onclick={toggleDropdown}>
+                            <span class="filter-label">{selectedLabel}</span>
+                            <img src={dropdownIcon} alt="" />
+                        </button>
+                        <template lwc:if={isOpen}>
+                            <ul class="dropdown-list">
+                                <template for:each={options} for:item="item">
+                                    <li key={item.value} data-value={item.value} onclick={handleSelect}>
+                                        {item.label}
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Card Renderer -->
+            <template lwc:if={hasOlderNews}>
+                <c-ham_content-card-renderer
+                    records={olderRendererRecords}
+                    view-mode={effectiveViewMode}
+                    is-override={isOverride}>
+                </c-ham_content-card-renderer>
+            </template>
+            <template lwc:else>
+                <div class="empty-state">
+                    <p>{noOlderNewsAvailable}</p>
+                </div>
+            </template>
+            </div>
+            <!-- Pagination -->
+            <c-ham_-pagination-util
+                total-records={olderTotal}
+                page-size={pageSize}
+                current-page={olderPage}
+                result-label="Records"
+                is-override={isOverride}
+                onpagechange={handleOlderPageChange}>
+            </c-ham_-pagination-util>
+
+        </template>
+
+    
+    </div>
+</template>

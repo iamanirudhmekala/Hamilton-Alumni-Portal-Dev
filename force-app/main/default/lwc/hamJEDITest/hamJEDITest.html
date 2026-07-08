@@ -1,0 +1,290 @@
+<template>
+    <div class="backgroundWhite">
+
+        <lightning-accordion
+            allow-multiple-sections-open="true"
+            active-section-name={activeReportSection}
+            onsectiontoggle={handleReportSectionToggle}>
+
+            <lightning-accordion-section name="Contact Reports" label="Contact Reports">
+
+                <!-- ACTION BUTTONS -->
+                <div slot="actions">
+
+                    <!-- Desktop Buttons -->
+                    <div class="desktop-actions">
+                        <lightning-button
+                            label={advanceFiltersButtonLabel}
+                            onclick={toggleAdvanceFilters}
+                            class="slds-var-m-right_small">
+                        </lightning-button>
+
+                        <lightning-button
+                            label="Create Contact Report"
+                            onclick={openFlowModal}>
+                        </lightning-button>
+                    </div>
+
+                    <!-- Mobile Icon Buttons -->
+                    <div class="mobile-actions">
+                        <lightning-button-icon
+                            icon-name="utility:filterList"
+                            onclick={toggleAdvanceFilters}
+                            alternative-text={advanceFiltersButtonLabel}
+                            title={advanceFiltersButtonLabel}
+                            class="slds-var-m-right_x-small">
+                        </lightning-button-icon>
+
+                        <lightning-button-icon
+                            icon-name="utility:add"
+                            onclick={openFlowModal}
+                            alternative-text="Create Contact Report"
+                            title="Create Contact Report">
+                        </lightning-button-icon>
+                    </div>
+
+                </div>
+
+                <!-- ADVANCE FILTERS -->
+                <template if:true={showAdvanceFilters}>
+                    <div class="slds-box slds-m-bottom_small">
+
+                        <div class="slds-grid slds-wrap slds-gutters">
+
+                            <!-- Search -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                                <lightning-input
+                                    type="text"
+                                    label="Search (Summary / Key Points)"
+                                    value={filterSearchText}
+                                    onchange={handleSearchTextChange}
+                                    onkeydown={handleSearchKeyDown}
+                                    placeholder="Search by keyword...">
+                                </lightning-input>
+                            </div>
+
+                            <!-- Start Date -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                                <lightning-input
+                                    type="date"
+                                    label="Start Date"
+                                    value={filterStartDate}
+                                    onchange={handleStartDateChange}>
+                                </lightning-input>
+                            </div>
+
+                            <!-- End Date -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                                <lightning-input
+                                    type="date"
+                                    label="End Date"
+                                    value={filterEndDate}
+                                    onchange={handleEndDateChange}>
+                                </lightning-input>
+                            </div>
+
+                            <!-- Publish -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                                <lightning-combobox
+                                    label="Publish to Listserv"
+                                    value={filterPublishToListserv}
+                                    options={publishToListservOptions}
+                                    onchange={handlePublishToListservChange}>
+                                </lightning-combobox>
+                            </div>
+
+                        </div>
+
+                        <!-- Filter Buttons -->
+                        <div class="slds-grid slds-grid_align-end slds-m-top_small">
+
+                            <lightning-button
+                                label="Clear"
+                                onclick={handleClearFilters}
+                                class="slds-m-right_small">
+                            </lightning-button>
+
+                            <lightning-button
+                                label="Search"
+                                variant="brand"
+                                onclick={handleSearchFilters}>
+                            </lightning-button>
+
+                        </div>
+
+                    </div>
+                </template>
+
+                <!-- FLOW MODAL -->
+                <template if:true={isFlowModalOpen}>
+
+                    <section
+                        role="dialog"
+                        tabindex="-1"
+                        class="slds-modal slds-fade-in-open slds-modal_small"
+                        data-id="contactReportModal">
+
+                        <div class="slds-modal__container">
+
+                            <header class="slds-modal__header">
+
+                                <h2 class="slds-modal__title">
+                                    New Contact Report
+                                </h2>
+
+                                <button
+                                    class="slds-button slds-button_icon slds-modal__close"
+                                    onclick={closeFlowModal}>
+
+                                    <lightning-icon
+                                        icon-name="utility:close"
+                                        size="small">
+                                    </lightning-icon>
+
+                                </button>
+
+                            </header>
+
+                            <div class="slds-modal__content slds-p-around_medium">
+
+                                <lightning-flow
+                                    flow-api-name="Contact_Report_Create_New_Contact_Report_Gift_Officers"
+                                    flow-input-variables={flowInputVariables}
+                                    onstatuschange={handleFlowStatusChange}>
+                                </lightning-flow>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+
+                </template>
+
+                <!-- LOADING SPINNER -->
+                <template if:true={loading}>
+                    <lightning-spinner
+                        alternative-text="Loading..."
+                        size="medium"
+                        variant="brand">
+                    </lightning-spinner>
+                </template>
+
+                <!-- CONTACT REPORT DATA -->
+                <template lwc:if={totalRecords}>
+
+                    <div class="slds-p-around_small">
+
+                        <div class="label slds-text-title_caps slds-text-color_brand">
+                            Contact Reports
+                        </div>
+
+                        <!-- DESKTOP TABLE -->
+                        <template if:false={isMobile}>
+
+                            <div style="overflow-x:auto;">
+
+                                <lightning-datatable
+                                    key-field="Id"
+                                    data={pageReports}
+                                    columns={contactReportColumns}
+                                    hide-checkbox-column
+                                    sorted-by={sortedBy}
+                                    sorted-direction={sortedDirection}
+                                    onsort={handleReportSort}>
+                                </lightning-datatable>
+
+                            </div>
+
+                        </template>
+
+                        <!-- MOBILE CARDS -->
+                        <template if:true={isMobile}>
+
+                            <div class="mobile-card-container">
+
+                                <template for:each={pageReports} for:item="report">
+
+                                    <div key={report.Id} class="mobile-card">
+
+                                        <div class="card-header">
+                                            <a href={report.recordLink} target="_blank">
+                                                {report.Name}
+                                            </a>
+                                        </div>
+
+                                        <div class="card-row">
+                                            <span class="card-label">Contact Method</span>
+                                            <span>{report.ucinn_ascendv2__Contact_Method__c}</span>
+                                        </div>
+
+                                        <div class="card-row">
+                                            <span class="card-label">Substantive Contact</span>
+                                            <span>{report.ucinn_ascendv2__Substantive_Contact__c}</span>
+                                        </div>
+
+                                        <div class="card-row wrapText">
+                                            <span class="card-label">Description</span>
+                                            <span>{report.ucinn_ascendv2__Description__c}</span>
+                                        </div>
+
+                                        <div class="card-row wrapText">
+                                            <span class="card-label">Contact Report</span>
+                                            <span>{report.cleanContactReportBody}</span>
+                                        </div>
+
+                                        <div class="card-row">
+                                            <span class="card-label">Date</span>
+                                            <span>{report.ucinn_ascendv2__Date__c}</span>
+                                        </div>
+
+                                        <div class="card-row">
+                                            <span class="card-label">Submitted By</span>
+                                            <span>{report.LastModifiedByName}</span>
+                                        </div>
+
+                                    </div>
+
+                                </template>
+
+                            </div>
+
+                        </template>
+
+                        <!-- PAGINATION -->
+                        <div class="slds-m-top_small slds-grid slds-grid_align-spread slds-align_absolute-center">
+
+                            <lightning-button
+                                label="Prev"
+                                onclick={prevPage}
+                                disabled={isFirstPage}>
+                            </lightning-button>
+
+                            <div class="slds-m-horizontal_small">
+                                Page {pageNumber} of {totalPages} · {totalRecords} total
+                            </div>
+
+                            <lightning-button
+                                label="Next"
+                                onclick={nextPage}
+                                disabled={isLastPage}>
+                            </lightning-button>
+
+                        </div>
+
+                    </div>
+
+                </template>
+
+                <template lwc:else>
+                    No Contact Reports Found
+                </template>
+
+            </lightning-accordion-section>
+
+        </lightning-accordion>
+
+    </div>
+</template>

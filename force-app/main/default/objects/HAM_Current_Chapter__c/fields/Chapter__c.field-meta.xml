@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Chapter__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Links this chapter membership record to a specific Chapter.</description>
+    <inlineHelpText>Select the Chapter this Constituent is associated with. Required.</inlineHelpText>
+    <label>Chapter</label>
+    <referenceTo>HAM_Chapter_Lookup__c</referenceTo>
+    <relationshipLabel>Current Chapters</relationshipLabel>
+    <relationshipName>Current_Chapters</relationshipName>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,76 @@
+<template>
+    <template if:true={alumniUiList}>
+        <div class="directory-list">
+            <template for:each={alumniUiList} for:item="alumni">
+                <div key={alumni.connectionId} class="directory-row">
+
+                    <!-- Bookmark -->
+                    <div class="col bookmark">
+                        <lightning-icon
+                            icon-name="utility:bookmark"
+                            size="x-small">
+                        </lightning-icon>
+                    </div>
+
+                    <!-- Profile image -->
+                    <div class="col profile">
+                        <template lwc:if={alumni.photoUrl}>
+                            <img src={alumni.photoUrl} alt="Profile" class="profile-pic" />
+                        </template>
+                        <template lwc:else>
+                            <lightning-icon icon-name="standard:user" size="medium"></lightning-icon>
+                        </template>
+                    </div>
+
+                    <!-- Name -->
+                    <div class="col name">
+                        <div class="primary-text">
+                            {alumni.name}
+                        </div>
+                    </div>
+
+                    <!-- Graduation Year -->
+                    <div class="col year">
+                        <span class="label">Graduation Year:</span>
+                        <span class="value">
+                            {alumni.graduationYear}
+                        </span>
+                    </div>
+
+                    <!-- Degree -->
+                    <div class="col degree">
+                        <span class="label">Degree:</span>
+                        <span class="value">{alumni.degreeText}</span>
+                    </div>
+
+                    <!-- Industry -->
+                    <div class="col industry">
+                        <span class="label">Industry:</span>
+                        <span class="value">
+                            {alumni.industry}
+                        </span>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="col actions">
+                        <button class="btn primary">
+                            Send Request
+                        </button>
+
+                        <button class="btn secondary">
+                            View Profile
+                        </button>
+
+                        <button class="more-btn">
+                            <lightning-icon
+                                icon-name="utility:threedots_vertical"
+                                size="x-small">
+                            </lightning-icon>
+                        </button>
+                    </div>
+
+                </div>
+            </template>
+        </div>
+    </template>
+</template>

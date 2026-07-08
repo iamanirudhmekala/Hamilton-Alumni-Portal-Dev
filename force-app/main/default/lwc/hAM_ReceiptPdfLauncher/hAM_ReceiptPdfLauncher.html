@@ -1,0 +1,95 @@
+<template>
+    <!-- Match hamCCVolunteerEngagement card/header/actions pattern -->
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-task" style="background-color: #06a59a;">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                            <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#task"></use>
+                        </svg>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span>Receipt PDF Generator</span>
+                    </h2>
+                </div>
+                <div class="slds-no-flex">
+                    <!-- Filter toggle button to mirror hamCCVolunteerEngagement -->
+                    <lightning-button class="slds-m-right_x-small" label={filtersButtonLabel} onclick={toggleFilters}></lightning-button>
+                    <!-- Primary action -->
+                    <lightning-button class="slds-m-right_x-small" variant="brand" label="Generate PDFs" onclick={handleGenerateClick} disabled={generateDisabled}></lightning-button>
+                    <!-- Expand/Collapse button (optional, keep for layout parity) -->
+                    <button class="slds-button slds-button_icon slds-button_icon-border-filled slds-m-left_x-small">
+                        <lightning-icon icon-name="utility:filterList" size="x-small"></lightning-icon>
+                        <span class="slds-assistive-text">Filters</span>
+                    </button>
+                </div>
+            </header>
+        </div>
+
+        <template if:true={isProcessing}>
+            <lightning-spinner size="small" alternative-text="Processing"></lightning-spinner>
+        </template>
+
+        <div class="slds-card__body slds-card__body_inner">
+            <!-- Filters Section (hidden by default to match hamCCVolunteerEngagement) -->
+            <template if:true={showFilters}>
+                <div class="slds-box slds-box_x-small slds-m-bottom_small slds-theme_default">
+                    <div class="slds-grid slds-gutters slds-wrap">
+                        <!-- Type Filter -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                            <lightning-combobox
+                                name="typeFilter"
+                                label="Receipt Type"
+                                placeholder="All Types"
+                                value={filterValue}
+                                options={typeFilterOptions}
+                                onchange={handleTypeFilterChange}>
+                            </lightning-combobox>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-gutters slds-wrap slds-m-top_small">
+                        <!-- Apply Filter Button -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-order_2 slds-medium-order_1">
+                            <lightning-button variant="brand" label="Apply Filters" onclick={handleSearchClick}></lightning-button>
+                        </div>
+                        <!-- Reset Filter Button -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-order_1 slds-medium-order_2">
+                            <lightning-button variant="neutral" label="Reset" onclick={handleClear}></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <template if:true={hasReceipts}>
+                    <lightning-datatable
+                        key-field="Id"
+                        data={pagedReceipts}
+                        columns={columns}
+                        max-row-selection={pageSize}
+                        selected-rows={currentPageSelectedIds}
+                        onrowselection={handleRowSelection}
+                        wrap-text-max-lines="10">
+                    </lightning-datatable>
+
+                    <!-- Pagination Controls -->
+                    <div class="slds-m-top_medium slds-grid slds-grid_vertical-align-center slds-grid_align-spread">
+                        <lightning-button label="Previous" onclick={previousPage} disabled={isPreviousDisabled}></lightning-button>
+                        <span class="slds-text-body_small slds-text-color_weak">Page {currentPage} of {totalPages}</span>
+                        <lightning-button label="Next" onclick={nextPage} disabled={isNextDisabled}></lightning-button>
+                    </div>
+                </template>
+
+                <template if:false={hasReceipts}>
+                    <div class="slds-text-align_center slds-p-around_large">
+                        <p class="slds-text-body_regular">No New Receipts available for Processing</p>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </article>
+</template>

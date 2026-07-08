@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Gender__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Gender</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Agender</fullName>
+                <default>false</default>
+                <label>Agender</label>
+            </value>
+            <value>
+                <fullName>Cis Female</fullName>
+                <default>false</default>
+                <label>Cis Female</label>
+            </value>
+            <value>
+                <fullName>Cis Male</fullName>
+                <default>false</default>
+                <label>Cis Male</label>
+            </value>
+            <value>
+                <fullName>Gender Fluid</fullName>
+                <default>false</default>
+                <label>Gender Fluid</label>
+            </value>
+            <value>
+                <fullName>Gender queer</fullName>
+                <default>false</default>
+                <label>Gender queer</label>
+            </value>
+            <value>
+                <fullName>Nonbinary</fullName>
+                <default>false</default>
+                <label>Nonbinary</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Transgender Female</fullName>
+                <default>false</default>
+                <label>Transgender Female</label>
+            </value>
+            <value>
+                <fullName>Transgender Male</fullName>
+                <default>false</default>
+                <label>Transgender Male</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

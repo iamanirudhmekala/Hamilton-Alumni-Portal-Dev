@@ -1,0 +1,1153 @@
+/* ==========================================================================
+   MAIN CONTAINER & LAYOUT
+   ========================================================================== */
+.component-container {
+    /* padding: 20px; */
+    margin: 24px;
+    margin-top: 40px;
+    /* min-height: 600px;  */
+    background-color: #F4F4F4;
+    border-radius: 20px;
+}
+
+.slds-tabs_default__content{
+    padding: 35px 25px !important;
+}
+
+.info-icon {
+    --sds-c-icon-color-foreground-default: #666;
+}
+/* --- CUSTOM INFO BANNER --- */
+.custom-info-banner {
+    background-color: #f3f3f3; /* Grey background */
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    padding: 0.8rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.custom-info-banner a {
+    color: #333;
+    font-size: 0.9rem;
+}
+
+/* .slds-is-active{
+    border-top-left-radius: 20px !important;
+    border-top-right-radius: 20px !important;
+    background-color: #002F86 !important;
+}
+
+.slds-tabs_default__item.slds-is-active:after{
+    display: none !important;
+} */
+
+/* Utility to ensure equal height cards */
+.h-100 {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Flex column to push date to bottom */
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* Push element to bottom of flex container */
+.slds-m-top_auto {
+    margin-top: auto;
+}
+
+/* Muted text color for secondary information */
+.slds-text-color_weak {
+    color: #696969;
+}
+
+/* View Toggles*/
+.view-toggle {
+    display: flex;
+    margin-left: auto;
+    /* background: #ffffff; */
+    /* border: 1px solid #d8dde6; */
+    /* padding: 4px;
+    gap: 4px; */
+    height: max-content;
+
+    border: 2px solid #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.view-toggle button {
+    /* width: 40px; */
+    height: 40px;
+    /* border-radius: 10px; */
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: width 0.25s ease, background-color 0.25s ease;
+    padding: 0 16px;
+}
+
+/* ICON size */
+.view-toggle button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* ACTIVE */
+.view-toggle .active {
+    width: 64px;              /*noticeably wider */
+    background: #002f86;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+myList.active{
+    border-top-left-radius: 12px !important;
+    border-bottom-left-radius: 12px !important;
+}
+
+myGrid.active{
+    border-top-right-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+}
+
+/* White icons on active */
+.view-toggle .active img {
+    filter: brightness(0) invert(1);
+}
+
+
+
+/* Check icon */
+.check-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    transform: scale(0.7);      /* visually shrink */
+    transform-origin: center;
+}
+
+.view-toggle img,
+.check-icon {
+    flex-shrink: 0;
+}
+
+/* Desktop Image Styling */
+.list-desktop-image {
+    width: 160px;
+    height: 90px;
+    object-fit: cover;
+    /* Updated radius to match new card curve */
+    border-radius: 10px; 
+}
+
+/* ==========================================================================
+   CARDS & IMAGES 
+   ========================================================================== */
+.my-img-container-1{
+    width:40%;
+    border-radius: 10px;
+    /* margin: 16px; */
+   
+}
+
+/* Desktop Image Styling */
+.desktop-image {
+    object-fit: contains;
+    border-radius: 10px; 
+    width: 384px;
+    height: 216px;
+}
+
+/* Mobile Image Styling */
+.mobile-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+/* Card Styling - Updated to match screenshot (Shadow instead of Border) */
+.slds-card_boundary {
+    /* Remove default border */
+    border: none; 
+    /* Add soft shadow like the screenshot */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+    /* Larger border radius */
+    border-radius: 20px; 
+    overflow: hidden;
+    background-color: #ffffff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 16px;
+}
+
+/* Card hover effect - Enhanced shadow */
+.slds-card_boundary:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.my-text-container-1{
+    margin-top: 10px;
+    width:60%;
+
+}
+.my-text-container-1 h3{
+    font-weight: 600;
+    color: #000;
+    font-size: 16px;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.spinner-fixed{
+     position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+.my-text-container-1 p{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-weight: 400;
+    color: #000;
+    font-size: 14px;
+    font-family: 'Mallory-main', sans-serif;
+
+    height: 50px;
+
+}
+
+.my-date-range-img{
+    width: 16px;
+    height: 16px;
+}
+.my-date-range-1{
+    font-family: 'Mallory-main', sans-serif;
+    color: #000000;
+    font-weight: 400;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+/* .slds-tabs_scoped__nav{
+    border-bottom: 1px solid #002F86 !important;
+}
+.slds-tabs_scoped__link{
+    border-right: 0 !important;
+} */
+
+.slds-tabs_scoped__content{
+    border: none !important;
+}
+
+
+
+/* Ensure dropdown trigger container is relative */
+.slds-dropdown-trigger {
+    position: relative;
+    display: inline-block;
+    width: 15%; /* Ensure full width on mobile/filter area */
+}
+
+.sort-box-container{
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sort-box-container label{
+    color: #000;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Mallory-main', sans-serif;
+    margin-bottom: 10px;
+}
+
+.sort-by-btn{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: 1px solid #D1D5DC;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #000;
+    font-weight: 400;
+    font-family: 'Mallory-main', sans-serif;
+    font-size: 14px;
+}
+
+.sort-by-btn img{
+    width: 18px;
+    height: 18px;
+}
+
+.my-dropdown-container{
+    /* padding: 10px 20px; */
+    padding: 0 !important;
+}
+
+
+/* Only apply the background when the 'is-selected' class is present */
+.my-dropdown-container ul .slds-dropdown__item.is-selected {
+    background-color: #E2F3FF;
+}
+
+/* Optional: Keep the hover effect looking clean */
+.my-dropdown-container ul .slds-dropdown__item.is-selected a {
+    background-color: #E2F3FF;
+    font-weight: bold;
+}
+.my-dropdown-container ul .slds-dropdown__item a{
+    padding: 10px 20px;
+    color: #000;
+    font-weight: 400;
+    font-family: 'Mallory-main', sans-serif;
+    font-size: 14px;
+}
+
+.list-date-container{
+    padding: 20px 20px 12px 20px !important;
+}
+
+.from-date-input-container,
+.date-input {
+    width: 90% !important;
+}
+
+
+.list-date-title-small{
+    color: #000;
+    font-weight: 400;
+    font-family: 'Mallory-main', sans-serif;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.from-date-input-container .slds-input{
+    color: #181818 !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    font-family: 'Mallory-main', sans-serif !important;
+}
+
+
+.component-container-main{
+    margin: 24px;
+    margin-top: 40px;
+    /* background-color: #F4F4F4; */
+    border-radius: 20px;
+    min-height: 60vh;
+}
+
+.component-container-tabset{
+    display:flex;
+    justify-content: start;
+    gap:5px;
+    background-color: #F4F4F4;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.component-container-sub-tabset{
+    display:flex;
+    justify-content: start;
+    gap:20px;
+    background-color: #F4F4F4;
+}
+
+.main-tab-inactive{
+    background-color: none;
+    color: black;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    min-width:220px;
+    text-align: center;
+}
+
+.main-tab-active:hover{
+    cursor:context-menu;
+}
+
+.main-tab-inactive:hover{
+    cursor:pointer;
+}
+
+.sub-tab-active:hover{
+    cursor:context-menu;
+}
+
+.sub-tab-inactive:hover{
+    cursor:pointer;
+}
+
+.main-tab-active{
+    background-color: #002F86;
+    color: white;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    min-width:220px;
+    text-align: center;
+}
+.main-tab-line{
+    background-color: #002F86;
+    height:1px;
+    width:100%;
+}
+
+.sub-tab-line{
+    background-color: #002F86;
+    height:1px;
+    width:100%;
+    padding-left: 10px;
+}
+
+.nested-tabset{
+    padding: 40px 30px 0 30px;
+    background-color: #F4F4F4;
+}
+.opportunities-tab{
+    padding: 25px 25px;
+    background-color: #F4F4F4;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.sub-tab-active{
+    border-bottom: 2px solid #002F86;
+    color: #002F86;
+    padding: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.sub-tab-inactive{
+    color: black;
+    padding: 5px;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+}
+
+
+@media (min-width: 1600px) {
+    .component-container-main{
+    min-height: 85vh;
+}
+}
+
+/* Mobile Card Layout Adjustments */
+@media (max-width: 48em) {
+    .slds-card_boundary {
+        /* On mobile, cards might need less radius or different shadow */
+        border-radius: 0.75rem;
+    }
+}
+
+/* ==========================================================================
+   MOBILE ACCORDION STYLES
+   ========================================================================== */
+.custom-mobile-accordion .slds-accordion__summary-heading {
+    font-size: 1.125rem; /* ~18px */
+    font-weight: 700;
+    color: #00396b; /* Dark Blue title from screenshot */
+}
+
+.custom-mobile-accordion .slds-accordion__section {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   FILTER DROPDOWN & OVERLAY
+   ========================================================================== */
+
+/* Simple transparent overlay to detect clicks outside the dropdown */
+.fixed-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 900; /* Below dropdown but above content */
+    background: transparent;
+}
+
+/* Dropdown container with elevated z-index and shadow */
+.slds-dropdown {
+    z-index: 9001; /* Ensure dropdown is above overlay */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 0.5rem;
+}
+
+
+/* Left-aligned dropdown with full width constraint */
+.slds-dropdown_left {
+    /* max-width: 100%; */
+    width: 100%;
+}
+
+/* ==========================================================================
+   PAGINATION STYLES
+   ========================================================================== */
+/* Pagination container with top border separator */
+.bottom-bar {
+    border-top: 1px solid #dddbda;
+    padding-top: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* Button group with small gaps */
+.pagination {
+    display: flex;
+    gap: 0.25rem;
+}
+
+/* Individual page button styling */
+.page-btn {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    cursor: pointer;
+    /* font-size: 0.875rem; */
+    color: #003087;
+    transition: all 0.2s;
+}
+
+/* Page button hover state */
+/* .page-btn:hover:not(:disabled) {
+    background-color: #f3f3f3;
+    border-color: #0176d3;
+} */
+
+/* Active/current page button styling */
+.page-btn.active {
+    background-color: #003087;
+    color: white;
+    /* border-color: #0176d3; */
+}
+
+/* Disabled page button styling */
+.page-btn:disabled, .page-btn.disabled {
+    background-color: #f3f3f3;
+    color: #c9c7c5;
+    cursor: not-allowed;
+    border-color: #dddbda;
+}
+
+/* Record count display text */
+.results-info {
+    color: #3e3e3c;
+    font-size: 0.8125rem;
+}
+
+/* Mobile Pagination Tweaks */
+@media only screen and (max-width: 48em) {
+    /* Reduce padding on mobile for space efficiency */
+    .page-btn {
+        padding: 0.25rem 0.6rem;
+    }
+}
+
+/* ==========================================================================
+   MODALS 
+   ========================================================================== */
+
+/* Custom Modal Container */
+.custom-modal-container {
+    max-width: 32rem;
+    border-radius: 0.5rem;
+    overflow: visible;
+}
+
+/* Custom Modal Content with relative positioning for close button */
+.custom-modal-content {
+    position: relative;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+}
+
+/* Close Button Styling - positioned inside modal content */
+.custom-close-button {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 10;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+/* Close button icon default color */
+.custom-close-button lightning-icon {
+    --slds-c-icon-color-foreground-default: #706e6b;
+}
+
+/* Close button icon hover color */
+.custom-close-button:hover lightning-icon {
+    --slds-c-icon-color-foreground-default: #3e3e3c;
+}
+
+/* Green Checkmark Icon Container */
+.checkmark-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background-color: #7cb342;
+}
+
+/* Checkmark icon color override */
+.checkmark-icon lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+/* Success icon color */
+.success-icon {
+    color: #ffffff;
+}
+
+/* Modal Button Styling */
+.modal-button {
+    min-width: 6rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.25rem;
+}
+
+/* Override for outline button */
+.slds-button_outline-brand {
+    background-color: #ffffff;
+    border: 1px solid #0176d3;
+    color: #0176d3;
+}
+
+/* Outline button hover state */
+.slds-button_outline-brand:hover {
+    background-color: #f3f3f3;
+}
+
+/* Primary brand button - "I'm Interested" and modal actions */
+.slds-button-brand{
+    background-color:#002F86;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    font-weight: 700;
+    border-radius: 8px;
+    font-family: 'Mallory-main', sans-serif;
+    font-size: 13px;
+}
+
+/* Destructive button - "Withdraw" action */
+.slds-button-destructive{
+    background-color:#B9B9B9;
+    color: #002F86;
+    padding: 8px 16px;
+    border: none;
+    font-weight: 700;
+    border-radius: 8px;
+    font-family: 'Mallory-main', sans-serif;
+    font-size: 13px;
+}
+
+
+.slds-button-destructive{
+    cursor: not-allowed;
+}
+
+/* Modal backdrop with semi-transparent overlay */
+.slds-backdrop_open {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Modal body text styling */
+.slds-modal__content p {
+    color: #3e3e3c;
+    line-height: 1.5;
+}
+
+/* Modal heading styling */
+.slds-modal__content h2 {
+    color: #080707;
+    font-weight: 700;
+}
+
+.list-class{
+    display:flex;
+    flex-direction: column;
+    gap:20px;
+    background-color:transparent;
+}
+
+.list-class-element {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    padding: 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: white;
+    width: 100%;
+}
+
+/* Text content - stacked vertically, takes middle space */
+.my-text-container-list {
+    justify-content: center; /* Center content vertically */
+    width: 20%;
+}
+
+.my-text-container-list h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #181818;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.my-text-container-list-desc{
+    justify-content: center;
+    width: 80%;
+}
+
+.my-text-container-list-desc p {
+    margin: 0;
+    font-size: 14px;
+    /* color: #706e6b; */
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* font-weight: 400; */
+    color: #000;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+
+/* Image container - fixed width on the left */
+.my-img-container-list {
+    flex-shrink: 0; /* Prevent image from shrinking */
+    width: 120px;
+    height: 120px;
+}
+
+.list-desktop-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* Button container - stays on the right */
+.list-class-element > div:last-child {
+    flex-shrink: 0; /* Prevent button from shrinking */
+    margin-left: auto; /* Push to the right */
+}
+
+/* ==========================================================================
+   MOBILE COLLAPSIBLE SECTIONS (Tablets and smaller)
+   ========================================================================== */
+@media (max-width: 1023px){
+
+    /* .my-pagination-container-cmp{
+        margin-bottom: 60px;
+    } */
+.my-dropdown-container{
+    z-index: 9999;
+}
+.volunteer-opp-parent-container{
+    padding-bottom: 50px;
+}
+    .slds-dropdown-trigger {
+    width: 75% !important;
+}
+
+.my-date-range-1{
+    font-size: 10px;
+}
+
+.my-date-range-img{
+    width: 11px;
+    height: 11px;
+}
+
+    /* Container for collapsible activity sections on mobile */
+    .current-news-container {
+        /* width: 100%; */
+        background-color: #F4F4F4;
+        min-height: 70px;
+        border-radius: 20px;
+        padding-top: 25px;
+        margin: 25px;
+        /* margin-top: 20px; */
+        /* padding-left: 10px;
+        padding-right: 10px; */
+    }
+
+    /**
+    * Header bar for current news section with toggle
+    * Flexbox layout for heading and icon alignment
+    */
+    .current-news-span {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-bottom: 0px !important;
+    }
+    
+    .sort-by-for-mobile{
+        margin-bottom: 20px !important;
+    }
+
+    /* Pointer cursor on hover to indicate clickable */
+    .current-news-span:hover {
+        cursor: pointer;
+    }
+
+    /**
+    * Heading text for current news section
+    */
+    .current-news-heading {
+        font-size: 16px;
+        font-family: 'Mallory-main', sans-serif;
+        font-weight: 500;
+        line-height: 19px;
+        color: #002F85;
+    }
+
+    /**
+    * Toggle icon container for expand/collapse
+    */
+    .current-news-toggle-icon {
+        display: flex;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+    }
+
+    /**
+    * Content card for current news when expanded
+    * Contains all news items in this section
+    */
+    .current-news-card {
+        margin-top: 10px;
+        width: 100%;
+        background-color: #F4F4F4;
+        border-radius: 0 0 20px 20px;
+        min-height: 400px;
+        margin-bottom: 20px;
+        padding: 20px;
+        padding-bottom: 50px;
+    }
+
+    /* Extra bottom margin for past activity section */
+    .committees-class{
+        margin-bottom: 65px;
+    }
+
+    .my-text-container-1{
+        margin-top: 16px;
+    }
+    .my-text-container-1 p{
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .my-vertical-tab-container{
+        /* padding: 40px 25px; */
+        padding: 20px 25px 40px 25px;
+    }
+
+    .my-article-section-mobile{
+        display: flex;
+        padding: 8px;
+        border-radius: 10px;
+        background-color: white;
+    }
+
+    .my-article-section-mobile-vol{
+        display: flex;
+        padding: 8px;
+        border-radius: 10px;
+        background-color: #F4F4F4;
+    }
+
+    .mobile-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    }
+
+    .slds-button-brand, .slds-button-destructive{
+        padding: 6px 13px !important;
+        font-size: 11px;
+    }
+
+    .my-article-text-container{
+        margin-left: 15px;
+    }
+
+    .my-article-text-container h3{
+        color: #000;
+        font-weight: 500;
+        font-size: 14px;
+        font-family: 'Mallory-main', sans-serif;
+    }
+
+    .my-article-text-container p{
+        color: #000;
+        font-weight: 400;
+        font-size: 12px;
+        font-family: 'Mallory-main', sans-serif;
+        margin-top: 5px;
+        margin-bottom: 7px;
+    }
+
+    .my-article-text-container button{}
+
+}
+
+
+/*============================================================================
+Volunteer opportunity horizontal card
+==============================================================================*/
+/* Grid container: 2 cards per row */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 16px;
+}
+
+/* Individual volunteer opportunity card */
+.vol-opp-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: grid;
+    /* grid-template-columns: 210px 1fr;  */
+    grid-template-columns: 180px 1fr; 
+    gap: 0;
+    transition: box-shadow 0.2s ease;
+}
+
+.vol-opp-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Column 1: Image container with padding */
+.image-column {
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px; /* Equal padding on all sides */
+}
+
+/* Image wrapper */
+.image-wrapper {
+    width: 150px;
+    height: 150px;
+    /* height: unset; */
+    overflow: hidden;
+    border-radius: 8px; /* Optional: slight rounding */
+}
+
+.opp-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+
+/* Column 2: Content container */
+.content-column {
+    /* padding: 20px 24px; */
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Title styling */
+.opp-title {
+    font-weight: 600;
+    color: #000;
+    font-size: 16px;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+/* Description styling */
+.opp-description {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-weight: 400;
+    color: #000;
+    font-size: 14px;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+/* Button container */
+.button-container {
+    margin-top: auto;
+}
+
+/* Button styling */
+.interest-button,
+.withdraw-button {
+    width: auto;
+    min-width: 120px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.interest-button {
+    background: #0176d3;
+    color: white;
+}
+
+.interest-button:hover:not(:disabled) {
+    background: #014486;
+}
+
+.withdraw-button {
+    background: #c23934;
+    color: white;
+}
+
+.withdraw-button:hover:not(:disabled) {
+    background: #a02621;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Responsive: Stack to 1 column on smaller screens */
+@media (max-width: 1200px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .vol-opp-card {
+        grid-template-columns: 1fr;
+    }
+    
+    .image-column {
+        padding: 16px;
+    }
+    
+    .image-wrapper {
+        width: 100%;
+        height: 180px;
+    }
+    
+    .content-column {
+        padding: 16px;
+    }
+    
+    .interest-button,
+    .withdraw-button {
+        width: 100%;
+    }
+}
+
+/* ── Kirkland Override ───────────────────────────────────────── */
+.kirkland-override .main-tab-active {
+    background-color: #166837 !important;
+}
+.kirkland-override .slds-button-destructive{
+    background-color:#EDFCF3 !important;
+    color: #166837 !important;
+}
+
+.kirkland-override .main-tab-line {
+    background-color: #166837 !important;
+}
+
+.kirkland-override .sub-tab-line {
+    background-color: #166837 !important;
+}
+
+.kirkland-override .sub-tab-active {
+    border-bottom-color: #166837 !important;
+    color: #166837 !important;
+}
+
+.kirkland-override .view-toggle .active {
+    background: #166837 !important;
+}
+
+.kirkland-override .slds-button-brand {
+    background-color: #166837 !important;
+}
+
+.kirkland-override .slds-button_brand {
+    background-color: #166837 !important;
+    border-color: #166837 !important;
+}
+
+.kirkland-override .slds-button_outline-brand {
+    color: #166837 !important;
+    border-color: #166837 !important;
+}
+
+.kirkland-override .page-btn.active {
+    background-color: #166837 !important;
+}
+
+.kirkland-override .current-news-heading {
+    color: #166837 !important;
+}
+.kirkland-override .current-news-toggle-icon img {
+    filter: brightness(0) saturate(100%) invert(27%) sepia(79%) saturate(500%) hue-rotate(113deg) brightness(0.9);
+}
+
+.kirkland-override .my-dropdown-container ul .slds-dropdown__item.is-selected {
+    background-color: #D4EDDA !important;
+}
+
+.kirkland-override .my-dropdown-container ul .slds-dropdown__item.is-selected a {
+    background-color: #D4EDDA !important;
+}

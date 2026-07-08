@@ -1,0 +1,659 @@
+.yellow-info-icon {
+    /* --slds-c-icon-color-foreground-default: #f4bc25; */
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    
+}
+
+
+.dir-link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    display: inline;
+}
+
+.directory-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Row container */
+.directory-row {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    border: 1px solid #E4E7EC;
+    width: 100%;
+}
+.for-styling{
+    width: 15px;
+}
+.main-card {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    position: relative;
+    /* ADD THIS LINE */
+    width: 100%;
+    justify-content: space-between;
+}
+
+.left-section-container {
+    width: 80%;
+    display: flex;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.icon-section-container {
+    max-width: 15%;
+    /* border: 2px solid red; */
+    display: flex;
+    gap: 14px;
+    min-width: 10%;
+}
+
+.main-section-container {
+    width: 85%;
+    display: flex;
+    padding-left: 20px;
+}
+
+.dot {
+    height: 16px;
+    width: auto;
+}
+
+.inactive {
+    background-color: #D7EFFF;
+    color: #002F86;
+}
+
+.icon-button:hover {
+    cursor: pointer;
+}
+
+/* Columns */
+.field-col {
+    width: 180px;
+    /* default for most fields */
+    flex-shrink: 0;
+    /* 🔑 prevents collapsing */
+}
+
+.field-col .value {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+.icon-button {
+    height: 22px;
+}
+
+.col {
+    display: flex;
+    align-items: center;
+}
+
+.main-section-container .col {
+    width: 30%;
+}
+
+/* Single icon container (Bookmark only) */
+.bookmark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    flex-shrink: 0;
+}
+
+/* Two icons container (Favorite + Bookmark) */
+.favorite {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /* width: 60px; */
+    gap: 14px;
+    flex-shrink: 0;
+    width: max-content;
+    overflow: hidden;
+}
+
+.profile {
+    /* width: 60px; */
+    /* margin-left:14px; */
+}
+
+.name {
+    /* width: 240px; */
+    /* margin-left: 5px; */
+    width: 20% !important;
+}
+
+.year {
+    width: 20% !important;
+}
+
+/* .degree { width: 20% !important; } */
+/* .industry { width: 200px; } */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    /* margin-left: auto; */
+    position: relative;
+    /* width: 20%; */
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+/* Action menu wrapper */
+.action-menu-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Profile image */
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.row-field.name {
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    /* min-width: 150px; */
+    /* width: 20% !important; */
+    width: 26% !important;
+    color: #231F20 !important;
+    font-family: 'Mallory-main', sans-serif !important;
+    max-width: none !important;
+    text-align: left;
+    margin-left: 6px;
+    overflow: visible;
+    display: flex;
+    gap: 6px;
+    /* align-items: flex-start; */
+    align-items: center;
+}
+
+.name-with-badge {
+    display: flex;
+    align-items: baseline;
+    /* important */
+    gap: 6px;
+}
+
+.name-text {
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+}
+
+.kirkland-badge {
+    width: 14px;
+    height: 14px;
+    margin-left: 4px;
+    vertical-align: super;
+    opacity: 0.85;
+}
+
+.badge-wrapper {
+    display: inline;
+}
+
+/* Name wrapping */
+.primary-text {
+    display: inline;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+/* Labels */
+.label {
+    font-size: 12px;
+    color: #231F2080;
+    margin-right: 4px;
+    font-family: 'Mallory-main', sans-serif;
+    font-weight: 400;
+}
+
+.value {
+    font-size: 12px;
+    color: #231F20;
+    font-family: 'Mallory-main', sans-serif;
+    font-weight: 500;
+}
+
+.btn {
+    /* height: 32px; */
+    width: 160px !important;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    /* min-width: max-content; */
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.connection-msg {
+    margin: 0 50px;
+    background-color: #D7EFFF;
+    color: #002F86;
+    padding: 0 10px;
+    width: 60%;
+    margin-top: 20px;
+    border-radius: 6px;
+}
+
+.manage-btn {
+    height: 32px;
+    width: 90px;
+    padding: 0 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    /* prevents word wrapping */
+    min-width: max-content;
+    /* button grows to fit text */
+}
+
+.active {
+    background: #002F86;
+    color: #ffffff;
+    border: none;
+    /* width: 150px; */
+}
+
+
+.primary-button.disable, .btn.disable {
+    opacity: 0.5;
+    background: #002F86;
+    color: #ffffff;
+    border: none;
+}
+
+.secondary-button.disable {
+    /* background: #6b7280;
+    color: #ffffff;
+    border: none; */
+    opacity: 0.5;
+    color: #002F86;
+    background: #ffffff;
+    border: 2px solid #002F86;
+}
+
+
+.disable:hover {
+    cursor: not-allowed;
+}
+.info-icon {
+    --sds-c-icon-color-foreground-default: #666;
+}
+/* --- CUSTOM INFO BANNER --- */
+.custom-info-banner {
+    background-color: #e8f4fd; /* Grey background */
+    border: 1px solid#90caf9;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #002F86;
+    font-family: 'Mallory', sans-serif;
+}
+.kirkland-override .custom-info-banner {
+    background-color: #D4EDDA !important; /* Green background */
+    border: 1px solid #166837 !important;
+    color: #166837 !important;
+}
+
+
+.inactive {
+    background-color: #D7EFFF;
+    color: #002F86;
+    border: none;
+}
+
+.secondary {
+    background: #ffffff;
+    color: #002F86;
+    border: 1px solid #002F86;
+    width: 125px !important;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    /* min-width: max-content; */
+    font-family: 'Mallory-main', sans-serif;
+}
+
+/* Three dots */
+.more-btn {
+    background: none;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+    position: fixed;
+    top: 35%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+}
+
+/* Modal Wrapper */
+.modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 5;
+    min-width: 600px;
+    max-height: 200px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 10px;
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+}
+
+/* Modal Wrapper */
+.modal-wrapper {
+    position: fixed;
+    top: 35%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+/* Modal Container */
+.modal-container {
+    background: #F4F4F4;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 800px;
+    /* Increased from 600px */
+    padding: 25px;
+    /* Reduced from 40px */
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: 20px;
+    /* Reduced from 24px */
+    right: 20px;
+    /* Reduced from 24px */
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.close-button:hover {
+    background: #f5f5f5;
+}
+
+/* Modal Title */
+.modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: 'Mallory-main', sans-serif;
+    margin: 0 0 20px 0;
+    /* Reduced from 24px */
+    padding-right: 40px;
+    padding-top: 10px;
+    line-height: 1.3;
+    color: #231F20;
+}
+
+/* Textarea Wrapper */
+.textarea-wrapper {
+    margin-bottom: 20px;
+    /* Reduced from 24px */
+}
+
+/* Message Textarea */
+.message-textarea {
+    width: 100%;
+    min-height: 70px;
+    padding: 8px 16px;
+    border-radius: 16px;
+    font-size: 14px;
+    color: #333333;
+    resize: vertical;
+    outline: none;
+    border: none;
+}
+
+.message-textarea::placeholder {
+    color: #999999;
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+/* Primary Button */
+.primary-button img {
+    width: 18px;
+    height: 18px;
+}
+
+.primary-button {
+    /* background: #002F86;
+    color: #ffffff;
+    border: none; */
+    border-radius: 10px;
+    padding: 8px 15px;
+    /* Reduced from 12px */
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: background 0.2s;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.button-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Secondary Button */
+.secondary-button {
+    /* background: transparent;
+    color: #002F86;
+    border: 1px solid #002F86; */
+    border-radius: 10px;
+    padding: 8px 15px;
+    /* Reduced from 12px */
+    font-size: 16px;
+    font-weight: 500;
+    
+    white-space: nowrap;
+    transition: all 0.2s;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.secondary-active{
+    background: transparent;
+    color: #002F86;
+    border: 1px solid #002F86;
+    cursor: pointer;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 4px;
+    background: white;
+    border: 1px solid #d8dde6;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-width: 180px;
+    z-index: 1000;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #181818;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f3f3f3;
+}
+
+.dropdown-item:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.dropdown-item:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+@media (max-width: 1500px) {
+    .left-section-container {
+        width: 70%;
+    }
+
+    .actions {
+        width: 30%;
+    }
+}
+
+@media (max-width: 1350px) {
+    .main-section-container .col {
+        width: 25%;
+    }
+
+    .name {
+        width: 25% !important;
+    }
+
+    .year {
+        width: 25% !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    /* .actions { flex-direction: column; align-items: flex-end; gap: 6px; } .btn { padding: 0 10px; font-size: 12px; } */
+}
+
+/* ── Kirkland Override ───────────────────────────────────────── */
+.kirkland-override .active {
+    background: linear-gradient(90deg, #166837 0%, #065124 100%) !important;
+    background-color: #166837 !important;
+    border-color: #166837 !important;
+    color: #ffffff !important;
+}
+.kirkland-override .primary-button.disable, .kirkland-override .btn.disable {
+    /* background: #6b7280;
+    color: #ffffff;
+    border: none; */
+    opacity: 0.5;
+    background: #166837;
+    color: #ffffff;
+    border-color: #166837 !important;
+}
+.kirkland-override .secondary-button.disable {
+    /* background: #6b7280;
+    color: #ffffff;
+    border: none; */
+    opacity: 0.5;
+    color: #166837;
+    background: #ffffff;
+    border: 2px solid #166837 !important;
+}
+.kirkland-override .inactive {
+    background-color: #D4EDDA !important;
+    color: #166837 !important;
+    border: none !important;
+}
+.kirkland-override .secondary {
+    color: #166837 !important;
+    border-color: #166837 !important;
+}
+.kirkland-override .secondary-active {
+    color: #166837 !important;
+    border-color: #166837 !important;
+}
+.kirkland-override .connection-msg {
+    background-color: #D4EDDA !important;
+    color: #166837 !important;
+}
+.kirkland-override .manage-btn.inactive {
+    background-color: #D4EDDA !important;
+    color: #166837 !important;
+}

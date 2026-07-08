@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>conference360__AttendeeLink__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Once the &quot;Invite Attendee&quot; button is clicked, this AttendeeLink (automatically populated) can be used for email campaigns.</description>
+    <inlineHelpText>Once the &quot;Invite Attendee&quot; button is clicked, this AttendeeLink (automatically populated) can be used for email campaigns.</inlineHelpText>
+    <label>AttendeeLink</label>
+    <required>false</required>
+    <type>Url</type>
+</CustomField>

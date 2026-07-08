@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Payment_Options__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Payment Options</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>One-Time Membership</fullName>
+                <default>false</default>
+                <label>One-Time Membership</label>
+            </value>
+            <value>
+                <fullName>Auto Renewing Membership</fullName>
+                <default>false</default>
+                <label>Auto Renewing Membership</label>
+            </value>
+            <value>
+                <fullName>Installment Based Membership</fullName>
+                <default>false</default>
+                <label>Installment Based Membership</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

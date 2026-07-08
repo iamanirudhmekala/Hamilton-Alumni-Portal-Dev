@@ -1,0 +1,113 @@
+<template>
+    <lightning-card variant="Narrow" title={name} icon-name="standard:contact" class="slds-var-m-bottom_medium">
+        <div slot="actions">
+            <!-- <lightning-button label="Add Attendee" onclick={showAddAttendeeModal}></lightning-button> -->
+             <slot></slot>
+        </div>
+        <div class="slds-p-horizontal_small">
+            <div class="slds-p-around_medium">
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <div class="slds-form-element">
+                            <lightning-input type="text" name="title" label="Enter Meeting title"
+                                onchange={handleInputChange} value={title} required="true"></lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <div class="slds-form-element">
+                            <lightning-input type="text" name="talkingPoints" label="Enter some talking Points"
+                                onchange={handleInputChange} value={talkingPoints}></lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <div class="slds-form-element">
+                            <lightning-combobox name="status" label="Meeting Status" placeholder="Select Status"
+                                options={statusPicklistValues} onchange={handleInputChange}
+                                value={status}></lightning-combobox>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2"></div>
+                    <div class="slds-var-p-around_medium slds-col slds-size_1-of-1 slds-medium-size_1-of-1">
+                        <div class="slds-grid slds-wrap slds-gutters">
+
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                <div class="slds-form-element">
+                                    <lightning-input type="datetime" name="startDate" data-name="startDate" label="Start Date/Time:"
+                                        class="slds-input" onchange={handleInputChange} value={startDate}
+                                        required="true">
+                                    </lightning-input>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                <div class="slds-form-element">
+                                    <lightning-input type="datetime" name="endDate" data-name="endDate" label="End Date/Time:"
+                                        class="slds-input" onchange={handleInputChange} value={endDate} required="true">
+                                    </lightning-input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-var-p-around_x-large slds-col slds-size_1-of-1 slds-medium-size_1-of-1">
+                        <div class="slds-text-heading_small">Hamilton Staff</div>
+                        
+                        <div class="slds-grid slds-wrap slds-gutters slds-var-p-around_medium" style="gap: 0.5rem;">
+                            <template for:each={attendees} for:item="attendee" for:index="idx">
+                                <div style="position:relative;" key={attendee.key}>
+                                    <div class="slds-box" style="display: flex;">
+                                        <lightning-icon 
+                                          icon-name="utility:user" 
+                                          alternative-text="User" 
+                                          size="small" 
+                                        ></lightning-icon>
+                                        <div class="slds-var-p-left_x-small">
+                                            <p>{attendee.fundraiserName}</p>
+                                            <p class="slds-text-body_small slds-text-color_weak">{attendee.fundraiserRole}</p>
+                                        </div>
+                                    </div>
+                                    <lightning-button-icon 
+                                        icon-name="utility:close"
+                                        variant="border-filled"
+                                        size="small"
+                                        style="position: absolute; right: -7px; top: -10px;"
+                                        onclick={handleRemoveAttendee}
+                                        data-fundraiser-id={attendee.id}
+                                        data-fundraiser-idx={idx}
+                                    ></lightning-button-icon>
+                                </div>
+                            </template>
+                            <div style="padding: var(--lwc-spacingMedium); border: var(--lwc-borderWidthThin) dashed var(--slds-g-color-border-base-1, var(--lwc-colorBorder)); border-radius: var(--lwc-borderRadiusMedium);">
+                                <lightning-button-icon 
+                                    icon-name="utility:add"
+                                    onclick={showAddAttendeeModal}
+                                    title="Add Attendee"
+                                    variant="base"
+                                ></lightning-button-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </lightning-card>
+    <div>
+        <template if:true={showAttendeeModal}>
+            <div class="slds-modal slds-fade-in-open slds-backdrop slds-modal_medium">
+                <div class="slds-modal__container">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-border-filled"
+                        onclick={handleCloseAddAttendee}>
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Cancel and close</span>
+                    </button>
+                    <div class="slds-modal__content slds-p-around_medium slds-is-relative">
+                        <lightning-flow flow-api-name="Add_Attendee_Screen" flow-input-variables={inputVariables}
+                            onstatuschange={handleStatusChange}></lightning-flow>
+                    </div>
+                </div>
+            </div>
+
+        </template>
+    </div>
+</template>

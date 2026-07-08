@@ -1,0 +1,2532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Batch_Error_Notifications</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Batch Error Notifications</shortDescription>
+        <value>005U1000007B5egIAC</value>
+    </labels>
+    <labels>
+        <fullName>Default_PRM_For_Pledge</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Default PRM For Pledge</shortDescription>
+        <value>005U1000000YZ3mIAG</value>
+    </labels>
+    <labels>
+        <fullName>HAM</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myService</shortDescription>
+        <value>My Service</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Actioned</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Actioned</shortDescription>
+        <value>Actioned</value>
+    </labels>
+    <labels>
+        <fullName>HAM_AddressChangeDesc</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_AddressChangeDesc</shortDescription>
+        <value>The address was changed for the constituent. Please review the updated address for</value>
+    </labels>
+    <labels>
+        <fullName>HAM_AddressChangeSubject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_AddressChangeSubject</shortDescription>
+        <value>Review address change for</value>
+    </labels>
+    <labels>
+        <fullName>HAM_AlumniPrivacyPortalId</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_AlumniPrivacyPortalId</shortDescription>
+        <value>SIV_VIS_ALUMNI_PRIVACY</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Blocked_Profiles</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Blocked Profiles</shortDescription>
+        <value>Blocked Profiles</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Bookmark_Msg</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Bookmark Msg</shortDescription>
+        <value>No Bookmarks found. Alumni can be searched and bookmarked under &quot;Search Directory&quot; or &quot;My Connections&quot; tab</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Bookmarked_Profiles</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Bookmarked Profiles</shortDescription>
+        <value>Bookmarked Profiles</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Build_Comm_Msg</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Build Comm Msg</shortDescription>
+        <value>Try to search with a name or apply the filters to see Alumni profiles</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Build_Community</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Build Community</shortDescription>
+        <value>Search Directory</value>
+    </labels>
+    <labels>
+        <fullName>HAM_No_Search_Results</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM No Search Results</shortDescription>
+        <value>No alumni profiles match your current search or filters. Try refining your search or removing some filters.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_CC_Notification_Ids</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM CC Notification Ids</shortDescription>
+        <value>005U1000007B5egIAC,005VG00000LrQN3YAN</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Cancel_Request</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Cancel Request</shortDescription>
+        <value>Cancel Request</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Conn_Msg</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Conn Msg</shortDescription>
+        <value>No Connections found. Alumni can be searched under &quot;Search Directory&quot; tab</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Connected</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Connected</shortDescription>
+        <value>Connected</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Connection</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Connection</shortDescription>
+        <value>Connection</value>
+    </labels>
+    <labels>
+        <fullName>HAM_EmployerChangeDesc</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_EmployerChangeDesc</shortDescription>
+        <value>Employer has been modified for the constituent with the name</value>
+    </labels>
+    <labels>
+        <fullName>HAM_EmployerChangeSubject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_EmployerChangeSubject</shortDescription>
+        <value>The employer information has been modified for</value>
+    </labels>
+    <labels>
+        <fullName>HAM_FacultyStaffDirectory</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Faculty Staff Directory Button Label</shortDescription>
+        <value>Faculty/Staff Directory</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Feedback</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Feedback</shortDescription>
+        <value>Feedback</value>
+    </labels>
+    <labels>
+        <fullName>HAM_FeedbackLink</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_FeedbackLink</shortDescription>
+        <value>https://form.asana.com/?k=6LoxLI6cw_9sNMybxHG_uw&amp;d=940410193405385</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Happy_Birthday</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Happy_Birthday</shortDescription>
+        <value>Happy Birthday,</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Inn_Pending_ALDC</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Inn Pending ALDC</shortDescription>
+        <value>No invitations pending.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Internal_Notification_Id</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Internal Notification Id</shortDescription>
+        <value>0MLVG0000002EN34AM</value>
+    </labels>
+    <labels>
+        <fullName>HAM_JEDI_Feedback_Link</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM JEDI Feedback Link</shortDescription>
+        <value>https://form.asana.com/?k=rm8bsjTWH2aAUE3ESj8dfA&amp;d=940410193405385</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Manage_Invitations</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Manage Invitations</shortDescription>
+        <value>Manage Invitations</value>
+    </labels>
+    <labels>
+        <fullName>HAM_My_Connections</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM My Connections</shortDescription>
+        <value>My Connections</value>
+    </labels>
+    <labels>
+        <fullName>HAM_No_Blocked_Profiles</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM No Blocked Profiles</shortDescription>
+        <value>No Blocked Profiles Found</value>
+    </labels>
+    <labels>
+        <fullName>HAM_No_Sent_Requests</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM No Sent Requests</shortDescription>
+        <value>No sent requests.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Personal_Mess</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Personal Mess</shortDescription>
+        <value>Add a personalized message.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Primary_Btn</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Primary Button</shortDescription>
+        <value>Send Request</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Primary_Button_RBM</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Primary Button RBM</shortDescription>
+        <value>Remove Bookmark</value>
+    </labels>
+    <labels>
+        <fullName>HAM_ProfileOverview_AddDetail</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM ProfileOverview AddDetail</shortDescription>
+        <value>Address Details</value>
+    </labels>
+    <labels>
+        <fullName>HAM_ProfileOverview_CamLife</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM ProfileOverview CamLife</shortDescription>
+        <value>Campus Life</value>
+    </labels>
+    <labels>
+        <fullName>HAM_ProfileOverview_PerInfo</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM ProfileOverview PerInfo</shortDescription>
+        <value>Personal Information</value>
+    </labels>
+    <labels>
+        <fullName>HAM_ProfilePicChangeDesc</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_ProfilePicChangeDesc</shortDescription>
+        <value>Constituent&apos;s profile picture has been updated. The uploaded image will be available under the constituent record. File Name:</value>
+    </labels>
+    <labels>
+        <fullName>HAM_ProfilePicChangeSubject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_ProfilePicChangeSubject</shortDescription>
+        <value>Profile picture has been updated for</value>
+    </labels>
+    <labels>
+        <fullName>HAM_ProfilePicPrivacyPortalId</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_ProfilePicPrivacyPortalId</shortDescription>
+        <value>SIV_VIS_PROFILE_PIC</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Rejected</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Rejected</shortDescription>
+        <value>Rejected</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Remove_Bookmark</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Remove Bookmark</shortDescription>
+        <value>Remove Bookmark</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Remove_Bookmark_Header</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Remove Bookmark Header</shortDescription>
+        <value>Are you sure you want to remove bookmark?</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Remove_Conn</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Remove Conn</shortDescription>
+        <value>Are you sure you want to remove this connection?</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Remove_Connection</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Remove Connection</shortDescription>
+        <value>Remove Connection</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Secondary_Button</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Secondary Button</shortDescription>
+        <value>Send Request Without A Note</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Secondry_Button</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Secondry Button</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Send_Request</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Send Request</shortDescription>
+        <value>Send Request</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Sender_Name</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Sender_Name</shortDescription>
+        <value>Unknown User</value>
+    </labels>
+    <labels>
+        <fullName>HAM_TaskDueDuration</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_TaskDueDuration</shortDescription>
+        <value>10</value>
+    </labels>
+    <labels>
+        <fullName>HAM_TaskOwnerId</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_TaskOwnerId</shortDescription>
+        <value>005U1000007B5egIAC</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Title_Notification</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Title_Notification</shortDescription>
+        <value>has sent you a connection request</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Unblock_Profile</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Unblock Profile</shortDescription>
+        <value>Unblock</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Unblock_Profile_Button</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Unblock Profile Button</shortDescription>
+        <value>Unblock Profile</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Unblock_Profile_Header</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM Unblock Profile Header</shortDescription>
+        <value>Are you sure you want to unblock this profile?</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Welcome_Back</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Welcome_Back</shortDescription>
+        <value>Welcome Back,</value>
+    </labels>
+    <labels>
+        <fullName>HAM_acceptHoverText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_acceptHoverText</shortDescription>
+        <value>Accepting connection request will add user into your connection list.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_bookmarkHoverText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_bookmarkHoverText</shortDescription>
+        <value>Person will be added in your bookmarked alumni list.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_cancelRequestHoverText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_cancelRequestHoverText</shortDescription>
+        <value>Request sent will be revoked</value>
+    </labels>
+    <labels>
+        <fullName>HAM_favoriteHoverText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_favoriteHoverText</shortDescription>
+        <value>Person will be added in your favorite connection list</value>
+    </labels>
+    <labels>
+        <fullName>HAM_rejectHoverText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_rejectHoverText</shortDescription>
+        <value>Rejecting connection request will not add user to your connection list.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_removeConnectionHoverText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_removeConnectionHoverText</shortDescription>
+        <value>Connection will be removed from your connection list.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_removeFavoriteHoverText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_removeFavoriteHoverText</shortDescription>
+        <value>User will be removed from favorite connection list.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_sendRequestHoverText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_sendRequestHoverText</shortDescription>
+        <value>A connection request will be sent to the user.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_unblockHoverText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_unblockHoverText</shortDescription>
+        <value>User will be removed from your blocked list.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_viewProfileHoverText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_viewProfileHoverText</shortDescription>
+        <value>Click to view the detailed profile of alumni.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_volOppInfoText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_volOppInfoText</shortDescription>
+        <value>For questions or updates please reach out to</value>
+    </labels>
+    <labels>
+        <fullName>HAM_volOppInfoText_Email</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_volOppInfoText_Email</shortDescription>
+        <value>hamily@hamilton.edu</value>
+    </labels>
+    <labels>
+        <fullName>HamAlumniDirectoryMaxConnections</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_Alumni_Directory_Max_Connections</shortDescription>
+        <value>3</value>
+    </labels>
+    <labels>
+        <fullName>Ham_Alumni_Directory_Max_Connections</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_AlumniDirectoryMaxConnections</shortDescription>
+        <value>10</value>
+    </labels>
+    <labels>
+        <fullName>Ham_BlackThornWhereClause</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_BlackThornWhereClause</shortDescription>
+        <value>HAM_Private_Event__c = FALSE</value>
+    </labels>
+    <labels>
+        <fullName>Ham_CventsWhereClause</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_CventsWhereClause</shortDescription>
+        <value>ADVPublicPrivate__c = &apos;Public&apos;  AND CventEvents__pkg_Status__c NOT IN (&apos;Pending&apos;,&apos;Cancelled&apos;,&apos;Deleted&apos;)</value>
+    </labels>
+    <labels>
+        <fullName>Ham_IsBlackthornActive</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_IsBlackthornActive</shortDescription>
+        <value>TRUE</value>
+    </labels>
+    <labels>
+        <fullName>Ham_IsCventsActive</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_IsCventsActive</shortDescription>
+        <value>TRUE</value>
+    </labels>
+    <labels>
+        <fullName>Ham_Myaffinity_Section1</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham Myaffinity Section1</shortDescription>
+        <value>NCAA Participation</value>
+    </labels>
+    <labels>
+        <fullName>Ham_Myaffinity_Section2</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham Myaffinity Section2</shortDescription>
+        <value>My Current Interests</value>
+    </labels>
+    <labels>
+        <fullName>Ham_Myaffinity_Section3</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham Myaffinity Section3</shortDescription>
+        <value>My Student Organizations</value>
+    </labels>
+    <labels>
+        <fullName>Ham_Myaffinity_Section_Title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_Myaffinity_Section_Title</shortDescription>
+        <value>My Undergraduate Activities</value>
+    </labels>
+    <labels>
+        <fullName>Ham_NoRecordsFound</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_NoRecordsFound</shortDescription>
+        <value>No Alumni Found</value>
+    </labels>
+    <labels>
+        <fullName>ham_Address</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Address</shortDescription>
+        <value>198 College Hill Road, Clinton, NY 13323</value>
+    </labels>
+    <labels>
+        <fullName>ham_AddressDetails</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_AddressDetails</shortDescription>
+        <value>Address Details</value>
+    </labels>
+    <labels>
+        <fullName>ham_AddressLink</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_AddressLink</shortDescription>
+        <value>https://www.google.com/maps/place/?q=place_id:ChIJ515-9xlp2YkRlZiUeiygm3w</value>
+    </labels>
+    <labels>
+        <fullName>ham_AllTime</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_AllTime</shortDescription>
+        <value>All Time</value>
+    </labels>
+    <labels>
+        <fullName>ham_AlumniDefaultFilter</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_AlumniDefaultFilter</shortDescription>
+        <value>ucinn_ascendv2__Primary_Contact_Type__c != &apos;Spouse of Alumni or Trustee&apos; AND ucinn_ascendv2__Primary_Contact_Type__c != &apos;Friend&apos; AND ucinn_ascendv2__Primary_Contact_Type__c != &apos;Tribute Donor&apos; AND ucinn_ascendv2__Primary_Contact_Type__c != &apos;Incoming Parent&apos; AND ucinn_ascendv2__Primary_Contact_Type__c != &apos;Former Incoming Parent&apos; AND ucinn_ascendv2__Primary_Contact_Type__c != &apos;Organization Contact&apos; AND ucinn_ascendv2__Primary_Contact_Type__c != &apos;Former Employee&apos; AND ucinn_ascendv2__Primary_Contact_Type__c != &apos;Grandparent&apos; AND ( HAM_Is_Active__c = true OR ucinn_ascendv2__Is_Deceased__c = true )</value>
+    </labels>
+    <labels>
+        <fullName>ham_AlumniDefaultFilterLinked</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_AlumniDefaultFilterLinked</shortDescription>
+        <value>HAM_Linked_Constituent__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Spouse of Alumni or Trustee&apos; AND HAM_Linked_Constituent__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Friend&apos; AND HAM_Linked_Constituent__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Tribute Donor&apos; AND HAM_Linked_Constituent__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Incoming Parent&apos;  AND HAM_Linked_Constituent__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Former Incoming Parent&apos;  AND HAM_Linked_Constituent__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Organization Contact&apos;  AND HAM_Linked_Constituent__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Former Employee&apos; AND HAM_Linked_Constituent__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Grandparent&apos; AND HAM_Linked_Constituent__r.HAM_Is_Active__c = true AND HAM_Portal_User__c = :portalConstituentId</value>
+    </labels>
+    <labels>
+        <fullName>ham_AlumniDefaultFilterPortal</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_AlumniDefaultFilterPortal</shortDescription>
+        <value>HAM_Portal_User__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Spouse of Alumni or Trustee&apos; AND HAM_Portal_User__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Friend&apos; AND HAM_Portal_User__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Tribute Donor&apos; AND HAM_Portal_User__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Incoming Parent&apos; AND HAM_Portal_User__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Former Incoming Parent&apos; AND HAM_Portal_User__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Organization Contact&apos; AND
+HAM_Portal_User__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Former Employee&apos; AND HAM_Portal_User__r.ucinn_ascendv2__Primary_Contact_Type__c != &apos;Grandparent&apos; AND
+HAM_Portal_User__r.HAM_Is_Active__c = true AND HAM_Linked_Constituent__c = :portalConstituentId</value>
+    </labels>
+    <labels>
+        <fullName>ham_AlumniDirectory</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_AlumniDirectory</shortDescription>
+        <value>Directory</value>
+    </labels>
+    <labels>
+        <fullName>ham_AlumniSearchPlaceHolder</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_AlumniSearchPlaceHolder</shortDescription>
+        <value>Search by name or use filters below</value>
+    </labels>
+    <labels>
+        <fullName>ham_Apply</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Apply</shortDescription>
+        <value>Apply</value>
+    </labels>
+    <labels>
+        <fullName>ham_BecauseHamiltonFund</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_BecauseHamiltonFund</shortDescription>
+        <value>Because Hamilton Campaign</value>
+    </labels>
+    <labels>
+        <fullName>ham_BuildAlumniCommunity</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_BuildAlumniCommunity</shortDescription>
+        <value>Build Your Alumni Community</value>
+    </labels>
+    <labels>
+        <fullName>ham_Cancel</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Cancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>ham_CopyRight</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_CopyRight</shortDescription>
+        <value>&amp;copy; 2025 Hamilton College. All Rights Reserved.</value>
+    </labels>
+    <labels>
+        <fullName>ham_CurrentFiscalYearGiving</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_CurrentFiscalYearGiving</shortDescription>
+        <value>Current Fiscal Year Giving</value>
+    </labels>
+    <labels>
+        <fullName>ham_CurrentNews</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_CurrentNews</shortDescription>
+        <value>Trending News</value>
+    </labels>
+    <labels>
+        <fullName>ham_CustomRange</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_CustomRange</shortDescription>
+        <value>Custom Range</value>
+    </labels>
+    <labels>
+        <fullName>ham_DeeperDiveIntoMyPhilanthrophy</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_DeeperDiveIntoMyPhilanthrophy</shortDescription>
+        <value>Full Philanthropy Details</value>
+    </labels>
+    <labels>
+        <fullName>ham_Degree</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Degree</shortDescription>
+        <value>Degree:</value>
+    </labels>
+    <labels>
+        <fullName>ham_Directory_Menu</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham Directory Menu</shortDescription>
+        <value>Menu</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfCity</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfCity</shortDescription>
+        <value>City:</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfCountry</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfCountry</shortDescription>
+        <value>Country:</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfCounty</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfCounty</shortDescription>
+        <value>County:</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfEmail</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfEmail</shortDescription>
+        <value>Email:</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfEmailErrorLabel</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfEmailErrorLabel</shortDescription>
+        <value>is not valid. Please enter a valid email address</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfEmailTooltip</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfEmailTooltip</shortDescription>
+        <value>Please enter a valid email address.</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfEmployer</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfEmployer</shortDescription>
+        <value>Employer:</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfEyeHideTooltip</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfEyeHideTooltip</shortDescription>
+        <value>Click to show this field in the directory</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfEyeShowTooltip</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfEyeShowTooltip</shortDescription>
+        <value>Click to hide this field from the directory</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfFirstName</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfFirstName</shortDescription>
+        <value>Personal Information 
+            Control visibility of your personal details</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfJobTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfJobTitle</shortDescription>
+        <value>Job Title:</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfLastName</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfLastName</shortDescription>
+        <value>Last Name:</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfLinkedinURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfLinkedinURL</shortDescription>
+        <value>LinkedIn URL:</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfPhone</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfPhone</shortDescription>
+        <value>Phone:</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfPhoneErrorLabel</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfPhoneErrorLabel</shortDescription>
+        <value>- The phone number you entered is invalid or includes invalid characters. Please enter a 10 to 13 digit phone number using only numbers — no letters, spaces, or special characters (such as (), –, or .).</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfPhoneTooltip</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfPhoneTooltip</shortDescription>
+        <value>Please enter a 10 to 13 digit phone number using only numbers — no letters, spaces, or special characters (such as (), –, or .).</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfPostalCode</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfPostalCode</shortDescription>
+        <value>Postal Code:</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfState</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfState</shortDescription>
+        <value>State:</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfStreet</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfStreet</shortDescription>
+        <value>Street:</value>
+    </labels>
+    <labels>
+        <fullName>ham_EditProfile</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EditProfile</shortDescription>
+        <value>Profile &amp; Privacy</value>
+    </labels>
+    <labels>
+        <fullName>ham_Events</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Events</shortDescription>
+        <value>Events</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsDesc_Mobile</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EventsDesc_Mobile</shortDescription>
+        <value>See events you&apos;re attending and discover new ones.</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsHostBtn1</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham EventsHostBtn1</shortDescription>
+        <value>Yes</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsHostBtn2</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham EventsHostBtn2</shortDescription>
+        <value>No</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsHostSubText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham EventsHostSubText</shortDescription>
+        <value>By submitting this request, you&apos;re expressing interest in hosting an event.</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsHostanEventTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham EventsHostanEventTitle</shortDescription>
+        <value>Can you confirm your interest in hosting an event?</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsInfobox</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham EventsInfobox</shortDescription>
+        <value>By confirming, you agree to be contacted by the Events team to discuss your event hosting request. The team will reach out to gather more details and help you plan your event.</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsInterestValueName</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham EventsInterestValueName</shortDescription>
+        <value>Host an Event</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsMainTab1</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EventsMainTab1</shortDescription>
+        <value>Upcoming Events</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsMainTab1SubTab1</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EventsMainTab1SubTab1</shortDescription>
+        <value>My Events</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsMainTab1SubTab2</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EventsMainTab1SubTab2</shortDescription>
+        <value>Other Events</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsMainTab2</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EventsMainTab2</shortDescription>
+        <value>Past Events</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsMainTab2SubTab1</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EventsMainTab2SubTab1</shortDescription>
+        <value>My Events</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsMainTab2SubTab2</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EventsMainTab2SubTab2</shortDescription>
+        <value>Other Events</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsModifyRegistration</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EventsModifyRegistration</shortDescription>
+        <value>Modify Registration</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsRegister</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EventsRegister</shortDescription>
+        <value>Register</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsRequestRecording</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EventsRequestRecording</shortDescription>
+        <value>Request Recording</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventsTabHeading</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EventsTabHeading</shortDescription>
+        <value>My Events</value>
+    </labels>
+    <labels>
+        <fullName>ham_Events_Mobile</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Events_Mobile</shortDescription>
+        <value>Events</value>
+    </labels>
+    <labels>
+        <fullName>ham_Events_Title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Events_Title</shortDescription>
+        <value>Upcoming Events</value>
+    </labels>
+    <labels>
+        <fullName>ham_Facebook</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Facebook</shortDescription>
+        <value>My Class Facebook Page</value>
+    </labels>
+    <labels>
+        <fullName>ham_GivingDayPlaceholder</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_GivingDayPlaceholder</shortDescription>
+        <value>Goal: To Be Determined</value>
+    </labels>
+    <labels>
+        <fullName>ham_GridView</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_GridView</shortDescription>
+        <value>Grid View</value>
+    </labels>
+    <labels>
+        <fullName>ham_Groups</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Groups</shortDescription>
+        <value>Groups</value>
+    </labels>
+    <labels>
+        <fullName>ham_Home</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Home</shortDescription>
+        <value>Home</value>
+    </labels>
+    <labels>
+        <fullName>ham_HostEventButton</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_HostEventButton</shortDescription>
+        <value>Host an Event</value>
+    </labels>
+    <labels>
+        <fullName>ham_ImInterested</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_ImInterested</shortDescription>
+        <value>Raise a hand</value>
+    </labels>
+    <labels>
+        <fullName>ham_InvitationExist</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_InvitationExist</shortDescription>
+        <value>There is an existing invitation for this connection. Please check Manage Invitation tab</value>
+    </labels>
+    <labels>
+        <fullName>ham_LifetimeImpact</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_LifetimeImpact</shortDescription>
+        <value>Lifetime Giving Impact</value>
+    </labels>
+    <labels>
+        <fullName>ham_LinkedinProfile</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_LinkedinProfile</shortDescription>
+        <value>Linkedin Profile</value>
+    </labels>
+    <labels>
+        <fullName>ham_ListView</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_ListView</shortDescription>
+        <value>List View</value>
+    </labels>
+    <labels>
+        <fullName>ham_LoadMore</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_LoadMore</shortDescription>
+        <value>Load More</value>
+    </labels>
+    <labels>
+        <fullName>ham_LoadMoreMobile</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_LoadMoreMobile</shortDescription>
+        <value>Load More</value>
+    </labels>
+    <labels>
+        <fullName>ham_LogoutLabel</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_LogoutLabel</shortDescription>
+        <value>Log Out</value>
+    </labels>
+    <labels>
+        <fullName>ham_LogoutLink</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_LogoutLink</shortDescription>
+        <value>https://hamiltoncollege--advdev.sandbox.my.site.com/HamiltonPortal/secur/logout.jsp</value>
+    </labels>
+    <labels>
+        <fullName>ham_Major</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Major</shortDescription>
+        <value>Major:</value>
+    </labels>
+    <labels>
+        <fullName>ham_MakeAConnection</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_MakeAConnection</shortDescription>
+        <value>Make A Connection</value>
+    </labels>
+    <labels>
+        <fullName>ham_MakeAGift</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_MakeAGift</shortDescription>
+        <value>Give</value>
+    </labels>
+    <labels>
+        <fullName>ham_MakeAGiftLink</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_MakeAGiftLink</shortDescription>
+        <value>https://www.hamilton.edu/makeagift</value>
+    </labels>
+    <labels>
+        <fullName>ham_ManageSubscription</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_ManageSubscription</shortDescription>
+        <value>Preferences</value>
+    </labels>
+    <labels>
+        <fullName>ham_ManageSubscriptionLink</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_ManageSubscriptionLink</shortDescription>
+        <value>https://cloud.contact.hamilton.edu/ManagePreferences</value>
+    </labels>
+    <labels>
+        <fullName>ham_Minor</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Minor</shortDescription>
+        <value>Minor:</value>
+    </labels>
+    <labels>
+        <fullName>ham_MobileImpact</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_MobileImpact</shortDescription>
+        <value>Impact</value>
+    </labels>
+    <labels>
+        <fullName>ham_MyClassContact</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_MyClassContact</shortDescription>
+        <value>Class Contact</value>
+    </labels>
+    <labels>
+        <fullName>ham_MyConnection</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_MyConnection</shortDescription>
+        <value>Connections</value>
+    </labels>
+    <labels>
+        <fullName>ham_MyHamiltonDegree</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_MyHamiltonDegree</shortDescription>
+        <value>Hamilton Degree</value>
+    </labels>
+    <labels>
+        <fullName>ham_MyImpact</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_MyImpact</shortDescription>
+        <value>My Impact</value>
+    </labels>
+    <labels>
+        <fullName>ham_MyLinkedinProfile</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_MyLinkedinProfile</shortDescription>
+        <value>My Linkedin Profile</value>
+    </labels>
+    <labels>
+        <fullName>ham_Myimpact_Menu</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham Myimpact Menu</shortDescription>
+        <value>Menu</value>
+    </labels>
+    <labels>
+        <fullName>ham_NewPic</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_NewPic</shortDescription>
+        <value>New Pic:</value>
+    </labels>
+    <labels>
+        <fullName>ham_News</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_News</shortDescription>
+        <value>News</value>
+    </labels>
+    <labels>
+        <fullName>ham_NewsDesc_Mobile</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_NewsDesc_Mobile</shortDescription>
+        <value>Catch up on stories shaping your community.</value>
+    </labels>
+    <labels>
+        <fullName>ham_News_Mobile</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_News_Mobile</shortDescription>
+        <value>News</value>
+    </labels>
+    <labels>
+        <fullName>ham_News_Title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_News_Title</shortDescription>
+        <value>Latest News</value>
+    </labels>
+    <labels>
+        <fullName>ham_NoEventAttendees</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_NoEventAttendees</shortDescription>
+        <value>No Attendees</value>
+    </labels>
+    <labels>
+        <fullName>ham_NoEvents</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_NoEvents</shortDescription>
+        <value>No events found</value>
+    </labels>
+    <labels>
+        <fullName>ham_NoRecordsMsg</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_NoRecordsMsg</shortDescription>
+        <value>No records to display.</value>
+    </labels>
+    <labels>
+        <fullName>ham_NumberOfYearsGiving</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_NumberOfYearsGiving</shortDescription>
+        <value>Number of Years Giving</value>
+    </labels>
+    <labels>
+        <fullName>ham_OlderNews</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_OlderNews</shortDescription>
+        <value>Older News</value>
+    </labels>
+    <labels>
+        <fullName>ham_OrgWideFromAddr</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_OrgWideFromAddr</shortDescription>
+        <value>hamily@hamilton.edu</value>
+    </labels>
+    <labels>
+        <fullName>ham_PhilanthropyTableFetchLimit</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_PhilanthropyTableFetchLimit</shortDescription>
+        <value>250</value>
+    </labels>
+    <labels>
+        <fullName>ham_PhoneNo</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_PhoneNo</shortDescription>
+        <value>315-859-4011</value>
+    </labels>
+    <labels>
+        <fullName>ham_ReadMore</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_ReadMore</shortDescription>
+        <value>Read More</value>
+    </labels>
+    <labels>
+        <fullName>ham_Reset_Filters</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Reset Filters</shortDescription>
+        <value>Reset Filters</value>
+    </labels>
+    <labels>
+        <fullName>ham_Results</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Results</shortDescription>
+        <value>Results</value>
+    </labels>
+    <labels>
+        <fullName>ham_Save</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Save</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>ham_Search</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Search</shortDescription>
+        <value>Search</value>
+    </labels>
+    <labels>
+        <fullName>ham_SeeMore</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_SeeMore</shortDescription>
+        <value>See More</value>
+    </labels>
+    <labels>
+        <fullName>ham_SubAddressFieldsLabel</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham SubAddressFieldsLabel</shortDescription>
+        <value>SIV_VIS_ADDR_STREET, SIV_VIS_ADDR_CITY, SIV_VIS_ADDR_STATE, SIV_VIS_ADDR_ZPCODE,  SIV_VIS_ADDR_COUNTRY</value>
+    </labels>
+    <labels>
+        <fullName>ham_TaskOwnerName</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_TaskOwnerName</shortDescription>
+        <value>Ameya Wadke</value>
+    </labels>
+    <labels>
+        <fullName>ham_ToastMessage_Block</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham ToastMessage Block</shortDescription>
+        <value>Block Profile</value>
+    </labels>
+    <labels>
+        <fullName>ham_ToastMessage_Bookmarked</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham ToastMessage Bookmarked</shortDescription>
+        <value>Bookmark has been updated</value>
+    </labels>
+    <labels>
+        <fullName>ham_ToastMessage_CancelReq</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham ToastMessage CancelReq</shortDescription>
+        <value>Request has been cancelled</value>
+    </labels>
+    <labels>
+        <fullName>ham_ToastMessage_Favorite</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham ToastMessage Favorite</shortDescription>
+        <value>Favorite has been updated</value>
+    </labels>
+    <labels>
+        <fullName>ham_ToastMessage_RemoveFavorite</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham ToastMessage RemoveFavorite</shortDescription>
+        <value>Removed from favorites</value>
+    </labels>
+    <labels>
+        <fullName>ham_ToastMessage_Removed_Bookmarked</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham ToastMessage Removed Bookmarked</shortDescription>
+        <value>Bookmark has been removed</value>
+    </labels>
+    <labels>
+        <fullName>ham_ToastMessage_ReqSend</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham ToastMessage ReqSend</shortDescription>
+        <value>Request has been sent</value>
+    </labels>
+    <labels>
+        <fullName>ham_ToastMessage_Unblock</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham ToastMessage Unblock</shortDescription>
+        <value>Unblock Profile</value>
+    </labels>
+    <labels>
+        <fullName>ham_TriviaAnsweredRight</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_TriviaAnsweredRight</shortDescription>
+        <value>That&apos;s correct. Nicely done!</value>
+    </labels>
+    <labels>
+        <fullName>ham_TriviaAnsweredWrong</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_TriviaAnsweredWrong</shortDescription>
+        <value>That&apos;s Incorrect. Better Luck Next Time</value>
+    </labels>
+    <labels>
+        <fullName>ham_TriviaHeading</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_TriviaHeading</shortDescription>
+        <value>Hamilton Daily Trivia</value>
+    </labels>
+    <labels>
+        <fullName>ham_TriviaSubHeading</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_TriviaSubHeading</shortDescription>
+        <value>Trivia questions update daily</value>
+    </labels>
+    <labels>
+        <fullName>ham_TriviaNoOptionSelected</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_TriviaNoOptionSelected</shortDescription>
+        <value>Please select an option</value>
+    </labels>
+    <labels>
+        <fullName>ham_TriviaPoints</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_TriviaPoints</shortDescription>
+        <value>Your Points:</value>
+    </labels>
+    <labels>
+        <fullName>ham_VolunteerOpp_Committees</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_VolunteerOpp_Committees</shortDescription>
+        <value>Committees</value>
+    </labels>
+    <labels>
+        <fullName>ham_VolunteerOpp_Current</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_VolunteerOpp_Current</shortDescription>
+        <value>Current</value>
+    </labels>
+    <labels>
+        <fullName>ham_VolunteerOpp_Upcoming</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_VolunteerOpp_Upcoming</shortDescription>
+        <value>Upcoming</value>
+    </labels>
+    <labels>
+        <fullName>ham_blockHoverText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_blockHoverText</shortDescription>
+        <value>The user will be blocked from viewing your profile or sending you connection requests.</value>
+    </labels>
+    <labels>
+        <fullName>ham_blockProfile</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_blockProfile</shortDescription>
+        <value>Block Profile</value>
+    </labels>
+    <labels>
+        <fullName>ham_boardOfTrusteeLabel</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_boardOfTrusteeLabel</shortDescription>
+        <value>Board of Trustee Website</value>
+    </labels>
+    <labels>
+        <fullName>ham_boardOfTrusteeLink</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_boardOfTrusteeLink</shortDescription>
+        <value>https://www.hamilton.edu/board-book/board-of-trustees</value>
+    </labels>
+    <labels>
+        <fullName>ham_bookmarkedConnections</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_bookmarkedConnections</shortDescription>
+        <value>Bookmarked Connections</value>
+    </labels>
+    <labels>
+        <fullName>ham_clearFilter</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_clearFilter</shortDescription>
+        <value>Clear Filter</value>
+    </labels>
+    <labels>
+        <fullName>ham_clearSearchResult</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_clearSearchResult</shortDescription>
+        <value>Clear Search Results?</value>
+    </labels>
+    <labels>
+        <fullName>ham_comPrefHelpText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_comPrefHelpText</shortDescription>
+        <value>Your preferences apply to marketing communications from the College, which include events, news, fundraising, and other updates. You may still receive individual outreach regarding your specific records or inquiries.</value>
+    </labels>
+    <labels>
+        <fullName>ham_comPrefTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_comPrefTitle</shortDescription>
+        <value>Contact Methods</value>
+    </labels>
+    <labels>
+        <fullName>ham_connectionAttending</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_connectionAttending</shortDescription>
+        <value>from your connections are attending</value>
+    </labels>
+    <labels>
+        <fullName>ham_contactOptOutMsg</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_contactOptOutMsg</shortDescription>
+        <value>Are you sure you want to opt out of all communications from the College?</value>
+    </labels>
+    <labels>
+        <fullName>ham_currentActivity</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_currentActivity</shortDescription>
+        <value>Current</value>
+    </labels>
+    <labels>
+        <fullName>ham_directoryVisibilityToggle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_directoryVisibilityToggle</shortDescription>
+        <value>Are you sure you want to be hidden from the directory even for your class mates and your friends?</value>
+    </labels>
+    <labels>
+        <fullName>ham_directoryWidget</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_directoryWidget</shortDescription>
+        <value>Directory</value>
+    </labels>
+    <labels>
+        <fullName>ham_directoryWidget_Book</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_directoryWidget_Book</shortDescription>
+        <value>My Bookmarked Alumni</value>
+    </labels>
+    <labels>
+        <fullName>ham_directoryWidget_Class</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_directoryWidget_Class</shortDescription>
+        <value>My Classmates</value>
+    </labels>
+    <labels>
+        <fullName>ham_directoryWidget_Con</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_directoryWidget_Con</shortDescription>
+        <value>Connections</value>
+    </labels>
+    <labels>
+        <fullName>ham_donationHistory</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_donationHistory</shortDescription>
+        <value>Donation History</value>
+    </labels>
+    <labels>
+        <fullName>ham_donationHistoryContent</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_donationHistoryContent</shortDescription>
+        <value>For more information please contact your campus connect on the below phone/email</value>
+    </labels>
+    <labels>
+        <fullName>ham_editprofile_button1</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham editprofile button1</shortDescription>
+        <value>Preview Profile</value>
+    </labels>
+    <labels>
+        <fullName>ham_editprofile_button2</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham editprofile button2</shortDescription>
+        <value>Save Settings</value>
+    </labels>
+    <labels>
+        <fullName>ham_editprofile_cancel</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham editprofile cancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>ham_editprofile_directoryPS</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham editprofile directoryPS</shortDescription>
+        <value>Directory Privacy Settings</value>
+    </labels>
+    <labels>
+        <fullName>ham_editprofile_info</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham editprofile info</shortDescription>
+        <value>Please contact your HR to update your personal information.</value>
+    </labels>
+    <labels>
+        <fullName>ham_editprofile_picture</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_editprofile_picture</shortDescription>
+        <value>Edit Profile Picture</value>
+    </labels>
+    <labels>
+        <fullName>ham_editprofile_privacy_banner</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham editprofile privacy banner</shortDescription>
+        <value>Hide Me From Directory</value>
+    </labels>
+    <labels>
+        <fullName>ham_editprofile_privacy_desc</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham editprofile privacy desc</shortDescription>
+        <value>Toggle off to completely hide your profile from the directory. When enabled, none of your information will be visible to other users.</value>
+    </labels>
+    <labels>
+        <fullName>ham_editprofile_title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham editprofile title</shortDescription>
+        <value>My Profile</value>
+    </labels>
+    <labels>
+        <fullName>ham_editprofile_visibility_desc</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham editprofile visibility desc</shortDescription>
+        <value>Control what information is visible in the alumni directory.</value>
+    </labels>
+    <labels>
+        <fullName>ham_EmployerUpdateHelpText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham Employer Update Help Text</shortDescription>
+        <value>Success! Your profile has been updated. Please note that some changes may take a short time to appear in the portal while they are being reviewed by our internal team.</value>
+    </labels>
+    <labels>
+        <fullName>ham_educationhistory</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_educationhistory</shortDescription>
+        <value>Education History</value>
+    </labels>
+    <labels>
+        <fullName>ham_emailPrefHelpText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_emailPrefHelpText</shortDescription>
+        <value>Let us know which topics you would like the College to send you.</value>
+    </labels>
+    <labels>
+        <fullName>ham_emailPrefSubheader</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_emailPrefSubheader</shortDescription>
+        <value>I want to receive:</value>
+    </labels>
+    <labels>
+        <fullName>ham_emailPrefTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_emailPrefTitle</shortDescription>
+        <value>Email</value>
+    </labels>
+    <labels>
+        <fullName>ham_favoriteConnections</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_favoriteConnections</shortDescription>
+        <value>Favorite Connections</value>
+    </labels>
+    <labels>
+        <fullName>ham_findConnections</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_findConnections</shortDescription>
+        <value>Search Directory</value>
+    </labels>
+    <labels>
+        <fullName>ham_gallery</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_gallery</shortDescription>
+        <value>Gallery</value>
+    </labels>
+    <labels>
+        <fullName>ham_gallerySlideDelay</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_gallerySlideDelay</shortDescription>
+        <value>5000</value>
+    </labels>
+    <labels>
+        <fullName>ham_inactiveUserMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_inactiveUserMessage</shortDescription>
+        <value>This person is not yet active on the portal and cannot receive connection requests at this time.</value>
+    </labels>
+    <labels>
+        <fullName>ham_isTestEnvironment</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_isTestEnvironment</shortDescription>
+        <value>TRUE</value>
+    </labels>
+    <labels>
+        <fullName>ham_marPrefHelpText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_marPrefHelpText</shortDescription>
+        <value>Let us know which publications you would like the College to send you.</value>
+    </labels>
+    <labels>
+        <fullName>ham_marPrefSubHeader</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_marPrefSubHeader</shortDescription>
+        <value>Save a tree! Opt me out of…:</value>
+    </labels>
+    <labels>
+        <fullName>ham_marPrefSupportText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_marPrefSupportText</shortDescription>
+        <value>If you have questions about what publications you are eligible for please reach out to</value>
+    </labels>
+    <labels>
+        <fullName>ham_marPrefTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_marPrefTitle</shortDescription>
+        <value>Publications</value>
+    </labels>
+    <labels>
+        <fullName>ham_myAffinities</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myAffinities</shortDescription>
+        <value>Affinities and Athletics</value>
+    </labels>
+    <labels>
+        <fullName>ham_myAffinity_ButtonPlayedTeam</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myAffinity_ButtonPlayedTeam</shortDescription>
+        <value>Update</value>
+    </labels>
+    <labels>
+        <fullName>ham_myAffinity_ButtonTeamIFollow</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myAffinity_ButtonTeamIFollow</shortDescription>
+        <value>Update</value>
+    </labels>
+    <labels>
+        <fullName>ham_myAffinity_ButtonUnderGOrg</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myAffinity_ButtonUnderGOrg</shortDescription>
+        <value>Update</value>
+    </labels>
+    <labels>
+        <fullName>ham_myAffinity_TeamsIFollow</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myAffinity_TeamsIFollow</shortDescription>
+        <value>My Current Interests</value>
+    </labels>
+    <labels>
+        <fullName>ham_myAffinity_TeamsIPlayed</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myAffinity_TeamsIPlayed</shortDescription>
+        <value>NCAA Participation</value>
+    </labels>
+    <labels>
+        <fullName>ham_myAffinity_UnderGradOrg</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myAffinity_UnderGradOrg</shortDescription>
+        <value>My Student Organizations</value>
+    </labels>
+    <labels>
+        <fullName>ham_myCampusContact</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myCampusContact</shortDescription>
+        <value>My Contacts</value>
+    </labels>
+    <labels>
+        <fullName>ham_myCampusContactDefaultEmail</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myCampusContactDefaultEmail</shortDescription>
+        <value>hamily@hamilton.edu</value>
+    </labels>
+    <labels>
+        <fullName>ham_myCampusContactDefaultPhone</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myCampusContactDefaultPhone</shortDescription>
+        <value>315-859-4412</value>
+    </labels>
+    <labels>
+        <fullName>ham_myContactToVolunteer</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myContactToVolunteer</shortDescription>
+        <value>My Contact To Volunteer</value>
+    </labels>
+    <labels>
+        <fullName>ham_myPhilanthropy</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myPhilanthropy</shortDescription>
+        <value>Philanthropy</value>
+    </labels>
+    <labels>
+        <fullName>ham_myPhilanthropyHighlights</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myPhilanthropyHighlights</shortDescription>
+        <value>Philanthropy Overview</value>
+    </labels>
+    <labels>
+        <fullName>ham_myService</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myService</shortDescription>
+        <value>Volunteer Service</value>
+    </labels>
+    <labels>
+        <fullName>ham_myVolunteerActivityTab</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_myVolunteerActivityTab</shortDescription>
+        <value>Volunteer Service</value>
+    </labels>
+    <labels>
+        <fullName>ham_necrologyHelpText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_necrologyHelpText</shortDescription>
+        <value>Clicking on button will redirect you to the Necrology Page.</value>
+    </labels>
+    <labels>
+        <fullName>ham_necrologyLink</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_necrologyLink</shortDescription>
+        <value>https://www.hamilton.edu/alumni/necrology</value>
+    </labels>
+    <labels>
+        <fullName>ham_nonVolunteerMsg</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_nonVolunteerMsg</shortDescription>
+        <value>Interested in volunteering? Explore opportunities to serve the community.</value>
+    </labels>
+    <labels>
+        <fullName>ham_necrologyTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_necrologyTitle</shortDescription>
+        <value>Necrology</value>
+    </labels>
+    <labels>
+        <fullName>ham_noCurrentNews</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_noCurrentNews</shortDescription>
+        <value>No new updates this week. Check out the Past News tab.</value>
+    </labels>
+    <labels>
+        <fullName>ham_no_news_available</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_NoOlderNewsAvailable</shortDescription>
+        <value>No older news available.</value>
+    </labels>
+    <labels>
+        <fullName>ham_pastActivities</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_pastActivities</shortDescription>
+        <value>Past</value>
+    </labels>
+    <labels>
+        <fullName>ham_prefOptOut</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_prefOptOut</shortDescription>
+        <value>Are you sure you want to opt out of all</value>
+    </labels>
+    <labels>
+        <fullName>ham_recordingRequestTaskSubject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_recordingRequestTaskSubject</shortDescription>
+        <value>Event Recording Request</value>
+    </labels>
+    <labels>
+        <fullName>ham_recordingRequested</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_recordingRequested</shortDescription>
+        <value>Recording Requested</value>
+    </labels>
+    <labels>
+        <fullName>ham_removeBookmarkHoverText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_removeBookmarkHoverText</shortDescription>
+        <value>User will be removed from your bookmarked list.</value>
+    </labels>
+    <labels>
+        <fullName>ham_saveAppliedFilters</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_saveAppliedFilters</shortDescription>
+        <value>Save applied filters?</value>
+    </labels>
+    <labels>
+        <fullName>ham_searchAndMakeConnections</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_searchAndMakeConnections</shortDescription>
+        <value>Search and Make Connections</value>
+    </labels>
+    <labels>
+        <fullName>ham_seeAllConnections</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_seeAllConnections</shortDescription>
+        <value>See My Connections</value>
+    </labels>
+    <labels>
+        <fullName>ham_showAllAttendees</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_showAllAttendees</shortDescription>
+        <value>Show All Attendees</value>
+    </labels>
+    <labels>
+        <fullName>ham_socialSignOnUrl</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_socialSignOnUrl</shortDescription>
+        <value>https://hamiltoncollege--advdev.sandbox.my.site.com/HamiltonPortalvforcesite/services/auth/sso/</value>
+    </labels>
+    <labels>
+        <fullName>ham_androidAppUrl</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_androidAppUrl</shortDescription>
+        <value>https://play.google.com/store/apps/details?id=com.mysalesforce.mycommunity.C00D3t000005Ydd0EAC.A0OTU10000007zWcOAI</value>
+    </labels>
+    <labels>
+        <fullName>ham_appleAppUrl</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_appleAppUrl</shortDescription>
+        <value>https://apps.apple.com/us/app</value>
+    </labels>
+    <labels>
+        <fullName>ham_taskRecordingRequestSent</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_taskRecordingRequestSent</shortDescription>
+        <value>Recording Request Sent!</value>
+    </labels>
+    <labels>
+        <fullName>ham_taxReceipt</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_taxReceipt</shortDescription>
+        <value>Tax Receipt</value>
+    </labels>
+    <labels>
+        <fullName>ham_taxReceiptContent</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_taxReceiptContent</shortDescription>
+        <value>For more information please contact your campus connect on the below phone/email</value>
+    </labels>
+    <labels>
+        <fullName>ham_trending_news</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_TrendingNews</shortDescription>
+        <value>Latest News</value>
+    </labels>
+    <labels>
+        <fullName>ham_upcomingActivity</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_upcomingActivity</shortDescription>
+        <value>Upcoming</value>
+    </labels>
+    <labels>
+        <fullName>ham_viewProfile</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_viewProfile</shortDescription>
+        <value>View Profile</value>
+    </labels>
+    <labels>
+        <fullName>ham_volOppInterestDesc</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_volOppInterestDesc</shortDescription>
+        <value>Are you okay with the Hamilton team reaching out to you regarding</value>
+    </labels>
+    <labels>
+        <fullName>ham_volOppInterestTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_volOppInterestTitle</shortDescription>
+        <value>Confirm Your Interest</value>
+    </labels>
+    <labels>
+        <fullName>ham_volOppWithdrawDesc</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_volOppWithdrawDesc</shortDescription>
+        <value>Are you sure you want to step back from volunteering for</value>
+    </labels>
+    <labels>
+        <fullName>ham_volOppWithdrawTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_volOppWithdrawTitle</shortDescription>
+        <value>Step Back from Volunteering?</value>
+    </labels>
+    <labels>
+        <fullName>ham_volunteerOppTab</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_volunteerOppTab</shortDescription>
+        <value>Volunteer Opportunities</value>
+    </labels>
+    <labels>
+        <fullName>ham_volunteerOpportunity</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_volunteerOpportunity</shortDescription>
+        <value>Volunteer</value>
+    </labels>
+    <labels>
+        <fullName>ham_volunteerLeadershipTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_volunteerLeadershipTitle</shortDescription>
+        <value>Your Volunteer Leadership</value>
+    </labels>
+    <labels>
+        <fullName>ham_volunteerThankYouMsg</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_volunteerThankYouMsg</shortDescription>
+        <value>Thank you for your spending your generous time and effort serving for the community.</value>
+    </labels>
+    <labels>
+        <fullName>ham_viewMyVolunteerRoles</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_viewMyVolunteerRoles</shortDescription>
+        <value>View my volunteer roles.</value>
+    </labels>
+    <labels>
+        <fullName>ham_withdrawButton</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_withdrawButton</shortDescription>
+        <value>Take a break</value>
+    </labels>
+    <labels>
+        <fullName>ham_EventRecording_FromAddress</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_EventRecording_FromAddress</shortDescription>
+        <value>hamily@hamilton.edu</value>
+    </labels>
+    <labels>
+        <fullName>ham_hostanEventConfirmReq</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_hostanEventConfirmReq</shortDescription>
+        <value>Your interest has been received by our team and we will reach out shortly</value>
+    </labels>
+    <labels>
+        <fullName>ham_RecordingReqToAddr</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_RecordingReqToAddr</shortDescription>
+        <value>hamily@hamilton.edu</value>
+    </labels>
+    <labels>
+        <fullName>ham_past_noConnections</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_past_noConnections</shortDescription>
+        <value>No attendees from your connections</value>
+    </labels>
+    <labels>
+        <fullName>ham_upcoming_noConnections</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_upcoming_noConnections</shortDescription>
+        <value>No attendees from your connections yet</value>
+    </labels>
+    <labels>
+        <fullName>ham_Receipt_File_Keyword</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Receipt_File_Keyword</shortDescription>
+        <value>LetterHead</value>
+    </labels>
+    <labels>
+        <fullName>ham_Receipt_Footer_Message</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_Receipt_Footer_Message</shortDescription>
+        <value>Please note tax receipts are only issued for donations over $10. 
+If you have any questions, please contact &lt;a href=&quot;mailto:giving@hamilton.edu&quot;&gt;giving@hamilton.edu&lt;/a&gt;.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Cancel_Request_Header</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Cancel_Request_Header</shortDescription>
+        <value>Are you sure you want to cancel this connection request?</value>
+    </labels>
+    <labels>
+        <fullName>ham_connectionsAttended</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_connectionsAttended</shortDescription>
+        <value>from your connections attended</value>
+    </labels>
+    <labels>
+        <fullName>ham_homeEvents_Categories</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_homeEvents_Categories</shortDescription>
+        <value>Reunion,Homecoming</value>
+    </labels>
+    <labels>
+        <fullName>ham_pastEvents_helpText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_pastEvents_helpText</shortDescription>
+        <value>For information on events that occurred over 3 months ago, please contact</value>
+    </labels>
+    <labels>
+        <fullName>ham_homeEventsModifyRegister</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_homeEventsModifyRegister</shortDescription>
+        <value>Modify Registration</value>
+    </labels>
+    <labels>
+        <fullName>ham_homeEventsRegister</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_homeEventsRegister</shortDescription>
+        <value>Learn More/Register</value>
+    </labels>
+    <labels>
+        <fullName>ham_LoginLink</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_LoginLink</shortDescription>
+        <value>https://hamiltoncollege--advdev.sandbox.my.site.com/HamiltonPortal</value>
+    </labels>
+    <labels>
+        <fullName>ham_directoryWidgetMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham directoryWidgetMessage</shortDescription>
+        <value>No connections or classmates are currently available.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_AltLoginDesc</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alternative Login Description</shortDescription>
+        <value>Log into your alumni portal dashboard instantly using a single-use access code.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_AltLoginTitle</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alternative Login Title</shortDescription>
+        <value>Alternative Login via Code</value>
+    </labels>
+    <labels>
+        <fullName>Ham_BackBtnLabel</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Screen Return Navigation Button Label</shortDescription>
+        <value>Back</value>
+    </labels>
+    <labels>
+        <fullName>Ham_CaptchaInputLabel</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Captcha Input Field Label</shortDescription>
+        <value>Type the characters shown above</value>
+    </labels>
+    <labels>
+        <fullName>Ham_CaptchaLabel</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Captcha Section Header Label</shortDescription>
+        <value>Security Verification Check</value>
+    </labels>
+    <labels>
+        <fullName>Ham_CaptchaPlaceholder</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Captcha Input Field Placeholder</shortDescription>
+        <value>Enter security code</value>
+    </labels>
+    <labels>
+        <fullName>Ham_EmailInputLabel</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Email Input Field Label</shortDescription>
+        <value>Registered Email Address</value>
+    </labels>
+    <labels>
+        <fullName>Ham_EmailPlaceholder</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Email Input Placeholder text</shortDescription>
+        <value>name@domain.com</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ErrCaptchaMismatch</fullName>
+        <categories>Alumni Portal Login Errors</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Validation Error Captcha Content Typo</shortDescription>
+        <value>The security code entered does not match. Please check your spelling and try again.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ErrCaptchaRequired</fullName>
+        <categories>Alumni Portal Login Errors</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Validation Error Captcha Code Missing</shortDescription>
+        <value>Security verification check rejected. Please refresh and try again.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ErrEmailRequired</fullName>
+        <categories>Alumni Portal Login Errors</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Validation Error Empty Email Input</shortDescription>
+        <value>Email address is required to proceed.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ErrInvalidEmailFormat</fullName>
+        <categories>Alumni Portal Login Errors</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Validation Error Invalid Email Format</shortDescription>
+        <value>Please enter a valid email address format (e.g., name@domain.com).</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ErrOtpCriteriaIncomplete</fullName>
+        <categories>Alumni Portal Login Errors</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Validation Error OTP Length Boundaries Violated</shortDescription>
+        <value>Verification criteria incomplete. Please input your 6-digit code.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ErrOtpInvalid</fullName>
+        <categories>Alumni Portal Login Errors</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Validation Error OTP Code Value Rejected</shortDescription>
+        <value>The verification code entered is incorrect or has expired.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ErrRateLimitExceeded</fullName>
+        <categories>Alumni Portal Login Errors</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Validation Error Hourly OTP Rate Limit Exceeded</shortDescription>
+        <value>For security purposes, maximum login code requests are limited to 3 per hour. You have reached this threshold, and your requests have been locked for the next hour. Please check your inbox for previously issued codes, or contact Alumni Support if you require immediate assistance.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ErrUnexpectedState</fullName>
+        <categories>Alumni Portal Login Errors</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>System Exception Fallback Warning Message</shortDescription>
+        <value>An unexpected system variance occurred. Please try again later or contact support.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ErrVerificationFailed</fullName>
+        <categories>Alumni Portal Login Errors</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>System Exception Server Validation Processing Failure</shortDescription>
+        <value>An error occurred during verification processing:</value>
+    </labels>
+    <labels>
+        <fullName>Ham_OtpDesc</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OTP Screen General Instructions</shortDescription>
+        <value>If this email address is registered in our system, you will receive a 6-digit verification code shortly. Please check your inbox.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_OtpInputLabel</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OTP Entry Code Input Label</shortDescription>
+        <value>Enter 6-Digit Verification Code</value>
+    </labels>
+    <labels>
+        <fullName>Ham_OtpPlaceholder</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OTP Entry Field Placeholder</shortDescription>
+        <value>000000</value>
+    </labels>
+    <labels>
+        <fullName>Ham_OtpTitle</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OTP Screen Title</shortDescription>
+        <value>Identity Check</value>
+    </labels>
+    <labels>
+        <fullName>Ham_RequestBtnLabel</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Request OTP Action Button Label</shortDescription>
+        <value>Request Verification Code</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ResendBtnLabel</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Resend OTP Action Button Label</shortDescription>
+        <value>Resend Verification Code</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ResendLockText</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Pacing Cooldown Timer Message</shortDescription>
+        <value>Resend Code available in {0} seconds</value>
+    </labels>
+    <labels>
+        <fullName>Ham_VerifyBtnLabel</fullName>
+        <categories>Alumni Portal Login</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Login Execution Button Label</shortDescription>
+        <value>Verify &amp; Login</value>
+    </labels>
+    <labels>
+        <fullName>ham_CaseOwnerName</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_CaseOwnerName</shortDescription>
+        <value>Ameya</value>
+    </labels>
+    <labels>
+        <fullName>ham_groupsDiscModal</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham groupsDiscModal</shortDescription>
+        <value>If you are interested in starting a new group, please contact the Alumni Relations team at</value>
+    </labels>
+    <labels>
+        <fullName>ham_groupsDiscModalEmail</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham_groupsDiscModalEmail</shortDescription>
+        <value>hamily@hamilton.edu</value>
+    </labels>
+    <labels>
+        <fullName>ham_requestNewGroupBtn</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ham requestNewGroupBtn</shortDescription>
+        <value>Request New Group</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ErrEmailUnverified</fullName>
+        <categories>Alumni Portal Login Errors</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Validation Error Email Address Unverified</shortDescription>
+        <value>A verification link has been sent to your email. Please verify your email and try logging in again.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ForgotPasswordBackToLogin</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Forgot Password Back to Login Label</shortDescription>
+        <value>Back to Login</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ForgotPasswordBtnLabel</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Forgot Password Action Button Label</shortDescription>
+        <value>Reset Password</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ForgotPasswordDesc</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Forgot Password Instructions Label</shortDescription>
+        <value>Enter the email address associated with your account, solve the captcha, and we&apos;ll send you a link to reset your password.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ForgotPasswordSuccessMsg</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Forgot Password Success Notification Message</shortDescription>
+        <value>If this email address is registered in our system, you will receive a reset password link. If you didn&apos;t request this, you can safely ignore it. Your account is not at risk.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_ForgotPasswordTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Forgot Password Title Label</shortDescription>
+        <value>Forgot Password</value>
+    </labels>
+    <labels>
+        <fullName>Ham_Linked_No_Student</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_Linked_No_Student</shortDescription>
+        <value>(NOT HAM_Linked_Constituent__r.ucinn_ascendv2__Primary_Contact_Type__c LIKE &apos;%Student%&apos;)</value>
+    </labels>
+    <labels>
+        <fullName>Ham_No_Students</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_No_Students</shortDescription>
+        <value>(NOT ucinn_ascendv2__Primary_Contact_Type__c LIKE &apos;%Student%&apos;)</value>
+    </labels>
+    <labels>
+        <fullName>Ham_Portal_No_Student</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_Portal_No_Student</shortDescription>
+        <value>(NOT HAM_Portal_User__r.ucinn_ascendv2__Primary_Contact_Type__c LIKE &apos;%Student%&apos;)</value>
+    </labels>
+    <labels>
+        <fullName>HAM_SocialMediaChangeDesc</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_SocialMediaChangeDesc</shortDescription>
+        <value>Social media information has been modified for the constituent.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_SocialMediaChangeSubject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_SocialMediaChangeSubject</shortDescription>
+        <value>Social Media has been modified for</value>
+    </labels>
+    <labels>
+        <fullName>Ham_Public_Directory_Search</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham_Public_Directory_Search</shortDescription>
+        <value>https://www.hamilton.edu/directories/public-directory-search</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Connection_Request_Default_Mobile_Body</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Connection_Request_Default_Mobile_Body</shortDescription>
+        <value>Log in to the Hamilton Quad to review and respond to this request. You can accept, decline, or ignore it from your Manage Invitations page.</value>
+    </labels>
+    <labels>
+        <fullName>Ham_Alumni_Directory_Display_Count</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ham Alumni Directory Display Count</shortDescription>
+        <value>4</value>
+    </labels>
+</CustomLabels>

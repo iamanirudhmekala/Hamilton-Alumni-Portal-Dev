@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Is_First_Time_Donor_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <formula>IF(IF(NOT(ISBLANK(ucinn_ascendv2__Date_of_Most_Recent_Pledge_Payment__c)),IF (MONTH(ucinn_ascendv2__Date_of_Most_Recent_Pledge_Payment__c) &gt;= 7 &amp;&amp; MONTH(ucinn_ascendv2__Date_of_Most_Recent_Pledge_Payment__c) &lt;= 12 ,YEAR(ucinn_ascendv2__Date_of_Most_Recent_Pledge_Payment__c)+1 , YEAR(ucinn_ascendv2__Date_of_Most_Recent_Pledge_Payment__c)),IF(MONTH(ucinn_ascendv2__Date_of_Most_Recent_Gift__c) &gt;= 7 &amp;&amp; MONTH(ucinn_ascendv2__Date_of_Most_Recent_Gift__c) &lt;= 12 ,YEAR(ucinn_ascendv2__Date_of_Most_Recent_Gift__c)+1 , YEAR(ucinn_ascendv2__Date_of_Most_Recent_Gift__c))) &lt; IF (MONTH( TODAY() ) &gt;= 7 &amp;&amp; MONTH(TODAY() ) &lt;= 12 ,YEAR(TODAY() )+1 , YEAR( TODAY() )) , FALSE,
+
+
+IF(AND( NOT(ISBLANK(ucinn_ascendv2__Date_of_Largest_Pledge_Payment__c)), NOT(ISBLANK(ucinn_ascendv2__Date_of_First_Pledge_Payment__c)),NOT(ISBLANK(ucinn_ascendv2__Date_of_Most_Recent_Pledge_Payment__c))),
+IF((ucinn_ascendv2__Amount_of_First_Pledge_Payment__c = ucinn_ascendv2__Amount_of_Most_Recent_Pledge_Payment__c),
+IF(ucinn_ascendv2__Date_of_First_Pledge_Payment__c =ucinn_ascendv2__Date_of_Most_Recent_Pledge_Payment__c,
+IF(ucinn_ascendv2__Designation_of_Largest_Pledge_Payment__c=ucinn_ascendv2__Designation_of_Most_Recent_Pledge_Paymt__c,IF(ISBLANK(ucinn_ascendv2__Date_of_First_Gift__c),IF(OR((ucinn_ascendv2__Date_of_Most_Recent_Pledge__c&lt;=ucinn_ascendv2__Date_of_First_Pledge_Payment__c),ISBLANK(ucinn_ascendv2__Date_of_Most_Recent_Pledge__c)),TRUE,FALSE), FALSE)
+,FALSE),FALSE),FALSE),
+
+IF((ucinn_ascendv2__Amount_of_First_Gift__c = ucinn_ascendv2__Amount_of_Most_Recent_Gift__c),
+IF(ucinn_ascendv2__Date_of_First_Gift__c =ucinn_ascendv2__Date_of_Most_Recent_Gift__c,
+IF(ucinn_ascendv2__Designation_of_First_Gift__c=ucinn_ascendv2__Designation_of_Most_Recent_Gift__c,IF(OR((ucinn_ascendv2__Date_of_Most_Recent_Pledge__c&lt;=ucinn_ascendv2__Date_of_First_Gift__c),ISBLANK(ucinn_ascendv2__Date_of_Most_Recent_Pledge__c)),TRUE,FALSE)
+,FALSE),FALSE),FALSE)
+))</formula>
+    <label>Is First Time Donor</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

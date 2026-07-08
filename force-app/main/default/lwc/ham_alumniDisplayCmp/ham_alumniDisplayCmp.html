@@ -1,0 +1,426 @@
+<template>
+    <template lwc:if={isMobileView}>
+        <div class={mobileWrapperClass}>
+
+            <!--Hamberger Start-->
+            <div class={tabContainerClassParent}>
+
+                <div class="header-row">
+                    <div class="tab-btn">
+                        <template lwc:if={isBuildAlumniCommunity}>
+                            <div class="nav-headertab">
+                                {label.buildCommunity} -<span> {alumnCommOrder} of {tabs.length}</span>
+                            </div>
+                        </template>
+                        <template lwc:elseif={isMyConnectionsTab}>
+                            <div class="nav-headertab">
+                                {label.myConnection} -<span> {myConnecOrder} of {tabs.length}</span>
+                            </div>
+                        </template>
+                        <template lwc:elseif={isBookmarksTab}>
+                            <div class="nav-headertab">
+                                {label.bookmarkedProfiles} -<span> {bookmarkOrder} of {tabs.length}</span>
+                            </div>
+                        </template>
+                        <template lwc:elseif={isManageInvitationTab}>
+                            <div class="nav-headertab">
+                                {label.manageInvitation} -<span> {manageInvitkOrder} of {tabs.length}</span>
+                            </div>
+                        </template>
+                        <template lwc:elseif={isBlockprofileTab}>
+                            <div class="nav-headertab">
+                                {blockedProfiles} -<span> {blockProfOrder} of {tabs.length}</span>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="hamburger">
+                        <template lwc:if={isOverride}>
+                            <img src={icons.hamburgerMobileGreen} class="hamburger-img" onclick={toggleMenu} />
+                        </template>
+                        <template lwc:else>
+                            <img src={icons.hamburgerMobile} class="hamburger-img" onclick={toggleMenu} />
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <div class={tabContainerClass}>
+                <div class={sidebarClass}>
+                    <div class="header-row">
+                        <div class="tab-menubtn"><strong>{menuText}</strong></div>
+                        <div class="hamberger-header">
+                             <template lwc:if={isOverride}>
+                            <img src={icons.hamburgerMobileGreen} class="hamburger-icon" onclick={toggleMenu} />
+                        </template>
+                        <template lwc:else>
+                            <img src={icons.hamburgerMobile} class="hamburger-icon" onclick={handleMenuClick} />
+                        </template>
+
+                        </div>
+                    </div>
+
+                    <template for:each={tabs} for:item="tab">
+                        <div key={tab.Id} class={tab.className} onclick={handleTabClick} data-tabname={tab.Label}>
+                            <span class="main-tab-heading">{tab.Label}</span>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!--Hamberger End-->
+
+
+            <!--
+        <div class="tab-wrapper">
+            <div class="tab-container">
+                <template for:each={tabs} for:item="tab">
+                    <div key={tab.Id} class={tab.className} onclick={handleTabClick} data-tabname={tab.Label}>
+                        <span class="main-tab-heading">{tab.Label}</span>
+                    </div>
+                </template>
+            </div>
+        </div>
+        -->
+
+            <div class="serach-container">
+                <div class="search-box">
+                    <input type="text" class="search-input" oninput={handleSearchInput} onkeydown={handleSearchKeydown}
+                        value={searchKey} placeholder={searchPlaceHolder} />
+                    <img src={icons.searchMobile} onclick={handleSearchClick} class="seacrh-icon" />
+                </div>
+                <template lwc:if={isBuildAlumniCommunity}>
+                <button class={bookmarkBtnClass} onclick={toggleBookmark} title="Save filters">
+                    <img src={currentMobileBookmarkIcon} alt="Bookmark Filters" class={bookmarkIconClass} />
+                </button>
+                </template>
+            </div>
+            
+            <div class="filter-link-row">
+                <template lwc:if={isBuildAlumniCommunity}>
+                <a href={publicDirectorySearch}
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="faculty-staff-link-btn">{facultyStaffDirectory}</a>
+                </template>
+            </div>
+
+            <!-- Mobile Received / Sent pill toggles for Manage Invitations tab -->
+            <template lwc:if={isManageInvitationTab}>
+                <div class="filters-left-group">
+                    <button class={receivedSubTabClass} data-subtab="Received" onclick={handleInvitationSubTabToggle}
+                        type="button" title="Received Invitations">
+                        <span class="tab-toggle-label">Received</span>
+                    </button>
+                    <button class={sentSubTabClass} data-subtab="Sent" onclick={handleInvitationSubTabToggle}
+                        type="button" title="Sent Invitations">
+                        <span class="tab-toggle-label">Sent</span>
+                    </button>
+                </div>
+            </template>
+
+
+            <!--Selected fileters from mobile Pill-->
+            <template lwc:if={isBuildAlumniCommunity}>
+            <template lwc:if={activeFilterPills.length}>
+                <div class="active-filters-container">
+                    <template for:each={activeFilterPills} for:item="pill">
+                        <div key={pill.id} class="filter-pill-badge">
+                            <strong>{pill.category}:</strong> {pill.value}
+                            <button class="badge-remove-btn"
+                                    data-placeholder={pill.category}
+                                    onclick={handleRemoveFilterPill}
+                                    title="Remove filter">✕
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            </template>
+
+
+            <!--invitation-sub-tab drives Received vs Sent UI in the mobile child -->
+            <c-ham_alumni-grid-display-cmp alumni-list={filteredData} tab={activeTabName}
+                onrefreshdata={handleChildRefresh} user-contact-id={contactId} onviewprofile={handleProfileSelect}
+                label={label} search-key-to-apex={searchKeyToApex} saved-filters={savedFilters}
+                primary-key-set={primarykeyset} secondary-key-set={secondarykeyset} records-to-skip={recordsToSkip}
+                invitation-sub-tab={invitationSubTab} is-override={isOverride} is-logined-portal-con-privacy-open={_protalLogedUserPrivacy}
+                initial-directory-filters={initialDirectoryFilters} user-has-modified-filters={userHasModifiedFilters}
+                ongotodirectorytab={handleGoToDirectoryTab}></c-ham_alumni-grid-display-cmp>
+            <!-- Pagination Component -->
+            <div class="pagination-mobile">
+                <c-ham_-pagination-util total-records={totalRecordsForChild} page-size={pageSizeForChild}
+                    current-page={currentPage} result-label="Records" is-override={isOverride}
+                    onpagechange={handlePageChange}>
+                </c-ham_-pagination-util>
+            </div>
+            <!-- Mobile Filter Modal Overlay -->
+            <template lwc:if={isBuildAlumniCommunity}>
+            <div class={mobileFilterContainerClass}>
+                <div class="mobile-filter-overlay">
+                    <c-ham_alumni-search-filter-cmp lwc:ref="mobileFilter" filters={filters} contact-id={contactId}
+                        saved-filters={savedFilters} onfilterchange={handleFilterChange}
+                        onsearchresult={handleSearchResult} onclosemobilefilters={handleCloseMobileFilters}
+                        is-override={isOverride}>
+                    </c-ham_alumni-search-filter-cmp>
+                </div>
+            </div>
+            </template>
+
+            <!--Spinner-->
+            <template lwc:if={isLoading}>
+                <div class="spinner-fixed" style="height: 15rem">
+                    <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- FAB Button -->
+            <template lwc:if={isBuildAlumniCommunity}>
+            <button class={malFabBtnClass} onclick={handleFilterClick}>
+                <img src={icons.filter} alt="filter" />
+            </button>
+            </template>
+
+        </div>
+    </template>
+    <template lwc:if={isDesktopView}>
+        <div class={desktopWrapperClass}>
+            <div class="directory-content">
+
+                <h1 class="page-title">{BuildAlumniCommunity}</h1>
+
+                <!-- Tabs -->
+                <div class="component-container-main">
+                    <div class="component-container-tabset">
+                        <template for:each={tabs} for:item="tab">
+                            <div key={tab.Id} class={tab.className} onclick={handleTabClick} data-tabname={tab.Label}>
+                                <span class="main-tab-heading">{tab.Label}</span>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="main-tab-line"></div><br />
+
+
+                    <div class="filters-row">
+                        <!-- Search -->
+                        <div class="search-row">
+                            <input type="text" class="search-input" oninput={handleSearchInput}
+                                onkeydown={handleSearchKeydown} value={searchKey} placeholder={searchPlaceHolder} />
+                            <button class="search-btn" onclick={handleSearchClick} title="Search">
+                                <lightning-icon icon-name="utility:search" size="x-small" class="seacrh-icon"
+                                    title="Search"></lightning-icon>
+                            </button>
+                            <template lwc:if={isBuildAlumniCommunity}>
+                            <button class={bookmarkBtnClass} onclick={toggleBookmark} title="Save filters">
+                                <img src={currentDesktopBookmarkIcon} alt="Bookmark Filters"
+                                    class={bookmarkIconClass} />
+                            </button>
+                            </template>
+                            <template lwc:if={isBuildAlumniCommunity}>
+                            <button class="search-btn" onclick={handleClearSearchResults} title="Clear Search Results">
+                                <img src={icons.resetIcon} alt="Clear Search Results" class="clear-icon" />
+                            </button>
+                            </template>
+                            <template lwc:if={isBuildAlumniCommunity}>
+                            <a href={publicDirectorySearch}
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="faculty-staff-link-btn">{facultyStaffDirectory}</a>
+                            </template>
+                            <template lwc:if={isMyConnectionsTab}>
+                                <button class={favButtonClass} onclick={handleFavIconToggle} type="button"
+                                    title="Favorite Connections">
+                                    <img src={currentFavIcon} alt="Favorite Connections" class="tab-toggle-icon" />
+                                    <span class="tab-toggle-label">{label.favoriteConnections}</span>
+                                </button>
+                            </template>
+                            <template lwc:if={isBookmarksTab}>
+                                <button class={bookmarkButtonClass} onclick={handleBookmarkIconToggle} type="button"
+                                    title="Bookmarked Connections">
+                                    <img src={currentBoomarkIcon} alt="Bookmarked Connections"
+                                        class="tab-toggle-icon bookmark-icon" />
+                                    <span class="tab-toggle-label">{label.bookmarkedConnections}</span>
+                                </button>
+                            </template>
+                            <template lwc:if={isManageInvitationTab}>
+                                <button class={receivedSubTabClass} data-subtab="Received"
+                                    onclick={handleInvitationSubTabToggle} type="button" title="Received Invitations">
+                                    <span class="tab-toggle-label">Received</span>
+                                </button>
+                                <button class={sentSubTabClass} data-subtab="Sent"
+                                    onclick={handleInvitationSubTabToggle} type="button" title="Sent Invitations">
+                                    <span class="tab-toggle-label">Sent</span>
+                                </button>
+                            </template>
+                        </div>
+                        <!--View Toggles-->
+                        <div class="view-toggle">
+                            <button class={listViewClass} data-view="list" onclick={handleViewToggle} title="List View">
+                                <template lwc:if={isListView}>
+                                    <img src={icons.viewCheckIcon} class="check-icon" />
+                                </template>
+                                <img src={icons.listViewIcon} alt="List view" />
+                            </button>
+
+                            <button class={gridViewClass} data-view="grid" onclick={handleViewToggle} title="Grid View">
+                                <template lwc:if={isGridView}>
+                                    <img src={icons.viewCheckIcon} class="check-icon" />
+                                </template>
+                                <img src={icons.gridViewIcon} alt="Grid view" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <!--Filters-->
+                    <template lwc:if={isBuildAlumniCommunity}>
+                    <strong class="advance-filter">
+                        <p>Advanced Search</p>
+                    </strong>
+                    </template>
+                    <div class="filters-row">
+                        <div class="filters-left-group">
+                            <!-- Filters child component -->
+                            <template lwc:if={isBuildAlumniCommunity}>
+                            <c-ham_alumni-search-filter-cmp lwc:ref="desktopFilter" filters={filters}
+                                contact-id={contactId} saved-filters={savedFilters} onfilterchange={handleFilterChange}
+                                onsearchresult={handleSearchResult} is-override={isOverride}>
+                            </c-ham_alumni-search-filter-cmp>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Desktop active filter badges -->
+                    <template lwc:if={isBuildAlumniCommunity}>
+                    <template lwc:if={desktopFilterBadges.length}>
+                        <div class="desktop-filter-badges">
+                            <template for:each={desktopFilterBadges} for:item="badge">
+                                <div key={badge.uniqueId} class="desktop-badge-pill">
+                                    <strong>{badge.category}:</strong> {badge.value}
+                                    <button class="badge-remove-btn"
+                                            data-placeholder={badge.category}
+                                            onclick={handleRemoveFilterPill}
+                                            title="Remove filter">✕
+                                    </button>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    </template><br />
+
+                    <!--show alumni based on view -->
+                    <template lwc:if={isListView}>
+                        <!-- [v1.4 - Anirudh] invitation-sub-tab drives Received vs Sent UI in the child -->
+                        <c-ham_alumni-list-display-cmp alumni-list={filteredData} tab={activeTabName}
+                            onrefreshdata={handleChildRefresh} user-contact-id={contactId}
+                            onviewprofile={handleProfileSelect} label={label} search-key-to-apex={searchKeyToApex}
+                            saved-filters={savedFilters} primary-key-set={primarykeyset}
+                            secondary-key-set={secondarykeyset} records-to-skip={recordsToSkip} view={view}
+                            invitation-sub-tab={invitationSubTab} is-override={isOverride}
+                            initial-directory-filters={initialDirectoryFilters}
+                            user-has-modified-filters={userHasModifiedFilters}
+                            is-parent-loading={isLoading} is-logined-portal-con-privacy-open={_protalLogedUserPrivacy}
+                            ongotodirectorytab={handleGoToDirectoryTab}>
+                        </c-ham_alumni-list-display-cmp>
+                    </template>
+                    <template lwc:if={isGridView}>
+                        <!-- [v1.4 - Anirudh] invitation-sub-tab drives Received vs Sent UI in the child -->
+                        <c-ham_alumni-grid-display-cmp alumni-list={filteredData} tab={activeTabName}
+                            onrefreshdata={handleChildRefresh} user-contact-id={contactId}
+                            onviewprofile={handleProfileSelect} label={label} search-key-to-apex={searchKeyToApex}
+                            saved-filters={savedFilters} primary-key-set={primarykeyset}
+                            secondary-key-set={secondarykeyset} records-to-skip={recordsToSkip} view={view}
+                            invitation-sub-tab={invitationSubTab} is-override={isOverride}
+                            initial-directory-filters={initialDirectoryFilters}
+                            user-has-modified-filters={userHasModifiedFilters}
+                            is-parent-loading={isLoading} is-logined-portal-con-privacy-open={_protalLogedUserPrivacy}
+                            ongotodirectorytab={handleGoToDirectoryTab}></c-ham_alumni-grid-display-cmp>
+                    </template>
+
+                    <!--Spinner-->
+                    <template lwc:if={isLoading}>
+                        <div class="spinner-fixed" style="height: 15rem">
+                            <lightning-spinner alternative-text="Loading" size="medium"
+                                variant="brand"></lightning-spinner>
+                        </div>
+                    </template>
+
+                    <!-- Pagination Component -->
+                    <c-ham_-pagination-util total-records={totalRecordsForChild} page-size={pageSizeForChild}
+                        current-page={currentPage} result-label="Records" is-override={isOverride}
+                        onpagechange={handlePageChange}>
+                    </c-ham_-pagination-util>
+                </div>
+
+            </div>
+        </div>
+    </template>
+
+
+    <template lwc:if={showCustomToast}>
+        <c-ham_custom-toast-cmp title={toastTitle} message={toastMessage} variant={toastVariant}
+            duration={toastDuration} onclose={handleToastClose}>
+        </c-ham_custom-toast-cmp>
+    </template>
+
+    <!--Filter Save Confirmation -->
+    <template lwc:if={allowBookmark}>
+        <!-- Backdrop -->
+        <div class="custom-backdrop" onclick={handleCancelBokmarksave}></div>
+
+        <!-- Modal Card -->
+        <section class="custom-modal" role="dialog" aria-modal="true">
+            <div class="custom-modal-container" onclick={stopPropagation}>
+
+                <!-- Close icon -->
+                <button class="modal-close-btn" onclick={handleCancelBokmarksave} title="Close"><b>✕</b></button>
+
+                <!-- Body -->
+                <div class="custom-modal-body">
+                    <p class="custom-modal-text">{label.saveAppliedFilter}</p>
+                </div>
+
+                <!-- Footer -->
+                <footer class="modal-actions">
+                    <button class={cancelBtnClass} onclick={handleCancelBokmarksave}>
+                        Cancel
+                    </button>
+                    <button class={saveBtnClass} onclick={handleSaveBookmark}>
+                        Yes
+                    </button>
+                </footer>
+
+            </div>
+        </section>
+    </template>
+
+    <!--Clear Search Result Confirmation -->
+    <template lwc:if={clearSearch}>
+        <!-- Backdrop -->
+        <div class="custom-backdrop" onclick={handleCloseClearSearch}></div>
+
+        <!-- Modal Card -->
+        <section class="custom-modal" role="dialog" aria-modal="true">
+            <div class="custom-modal-container" onclick={stopPropagation}>
+
+                <!-- Close icon -->
+                <button class="modal-close-btn" onclick={handleCloseClearSearch} title="Close"><b>✕</b></button>
+
+                <!-- Body -->
+                <div class="custom-modal-body">
+                    <p class="custom-modal-text">{label.clearSearchResult}</p>
+                </div>
+
+                <!-- Footer -->
+                <footer class="modal-actions">
+                    <button class={cancelBtnClass} onclick={handleCloseClearSearch}>
+                        Cancel
+                    </button>
+                    <button class={saveBtnClass} onclick={clearSearchResultData}>
+                        Yes
+                    </button>
+                </footer>
+
+            </div>
+        </section>
+    </template>
+
+</template>

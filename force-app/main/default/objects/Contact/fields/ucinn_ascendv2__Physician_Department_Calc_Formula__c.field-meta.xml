@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Physician_Department_Calc_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>IF (ISBLANK( ucinn_ascendv2__Phy_Echo_Department_1__c ), IF (ISBLANK( ucinn_ascendv2__Phy_Echo_Department_3__c), IF (ISBLANK(ucinn_ascendv2__Phy_Echo_Department_2__c), IF (ISBLANK(ucinn_ascendv2__Hospital_Physician_CMM_Group_Description__c), IF (ISBLANK(ucinn_ascendv2__Cancer_Center_Physician_CMM_Description__c), IF (ISBLANK(ucinn_ascendv2__Phy_Echo_Speciality__c), IF (ISBLANK(ucinn_ascendv2__Phy_Echo_Board_Speciality_1__c), IF (ISBLANK(ucinn_ascendv2__Phy_Echo_Board_Speciality_2__c), IF (ISBLANK(ucinn_ascendv2__Phy_Echo_Board_Speciality_3__c), ucinn_ascendv2__Phy_Med_Service__c,ucinn_ascendv2__Phy_Echo_Board_Speciality_3__c), ucinn_ascendv2__Phy_Echo_Board_Speciality_2__c), ucinn_ascendv2__Phy_Echo_Board_Speciality_1__c), ucinn_ascendv2__Phy_Echo_Speciality__c), ucinn_ascendv2__Cancer_Center_Physician_CMM_Description__c), ucinn_ascendv2__Hospital_Physician_CMM_Group_Description__c), ucinn_ascendv2__Phy_Echo_Department_2__c),ucinn_ascendv2__Phy_Echo_Department_3__c), ucinn_ascendv2__Phy_Echo_Department_1__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Physician Department Calc</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

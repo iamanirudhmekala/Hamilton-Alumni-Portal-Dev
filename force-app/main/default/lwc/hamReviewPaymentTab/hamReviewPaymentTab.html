@@ -1,0 +1,75 @@
+<template>
+    <div class="ham-payment-tab">
+        <button class="ham-back-btn" onclick={handleBack}>← Back</button>
+
+        <!-- Summary Box -->
+        <div class="ham-payment-summary">
+            <div class="ham-summary-label">Payment Summary</div>
+            <div class="ham-summary-to">{donationToName}</div>
+            <div class="ham-summary-amount">{paymentAmountFormatted}</div>
+            <template lwc:if={isPledgePath}>
+                <div class="ham-summary-tag">Pledge Payment</div>
+            </template>
+            <template lwc:else>
+                <div class="ham-summary-tag">One-Time Gift</div>
+            </template>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="ham-section-label">YOUR INFORMATION</div>
+        <div class="ham-field-group">
+            <label class="ham-field-label" for="payerName">Full Name</label>
+            <input
+                id="payerName"
+                type="text"
+                class="ham-text-input"
+                value={personName}
+                oninput={handleNameInput}
+                placeholder="Your full name"
+                required
+            />
+        </div>
+        <div class="ham-field-group">
+            <label class="ham-field-label" for="payerEmail">Email Address</label>
+            <input
+                id="payerEmail"
+                type="email"
+                class="ham-text-input"
+                value={personEmail}
+                oninput={handleEmailInput}
+                placeholder="your@email.com"
+                required
+            />
+        </div>
+
+        <!-- Error Message -->
+        <template lwc:if={errorMessage}>
+            <div class="ham-error-box">{errorMessage}</div>
+        </template>
+
+        <!-- Payment In Progress -->
+        <template lwc:if={paymentInProgress}>
+            <div class="ham-inprogress-box">
+                <lightning-spinner alternative-text="Waiting for payment" size="small"></lightning-spinner>
+                <div class="ham-inprogress-text">
+                    Waiting for payment confirmation. Complete your payment in the Stripe window.
+                </div>
+            </div>
+        </template>
+
+        <!-- Stripe Info -->
+        <div class="ham-stripe-info">
+            <div class="ham-stripe-info-title">Secure Payment via Stripe</div>
+            <div class="ham-stripe-info-text">
+                Clicking "Proceed to Payment" will open a secure Stripe checkout window.
+                Your payment information is never stored on Hamilton's servers.
+            </div>
+        </div>
+
+        <!-- Pay Button -->
+        <button class="ham-primary-btn" disabled={payBtnDisabled} onclick={handlePayment}>
+            <template lwc:if={paymentInProgress}>Waiting for Payment...</template>
+            <template lwc:else>Proceed to Payment →</template>
+        </button>
+    </div>
+</template>

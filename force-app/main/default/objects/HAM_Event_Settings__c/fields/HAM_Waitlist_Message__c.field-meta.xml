@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Waitlist_Message__c</fullName>
+    <description>Message displayed to waitlisted attendees.</description>
+    <inlineHelpText>Custom HTML message shown to attendees placed on the waitlist.</inlineHelpText>
+    <label>Waitlist Message</label>
+    <length>5000</length>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

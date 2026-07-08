@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Bequest_must_be_Deceased</fullName>
+    <active>false</active>
+    <errorConditionFormula>IF( ISBLANK(ucinn_ascendv2__Contact__c), FALSE,
+  AND(NOT(ucinn_ascendv2__Contact__r.ucinn_ascendv2__Is_Deceased__c),
+    RecordType.Name = &quot;Pledge&quot;,
+    OR(ISPICKVAL(Type,&quot;PGBEQ (Revocable Bequest)&quot;),
+      ISPICKVAL(Type,&quot;PGIREV (Irrevocable Bequest)&quot;)
+    )
+  )
+)</errorConditionFormula>
+    <errorMessage>A constituent associated with a bequest must be deceased.</errorMessage>
+</ValidationRule>

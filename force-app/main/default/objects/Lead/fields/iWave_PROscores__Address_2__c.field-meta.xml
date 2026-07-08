@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>iWave_PROscores__Address_2__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>IF(CONTAINS( Street, SUBSTITUTE($Label.iWave_PROscores__NewLine,&quot;-&quot;, &quot;&quot;) ),
+RIGHT(Street,
+LEN(Street) -
+FIND( SUBSTITUTE($Label.iWave_PROscores__NewLine,&quot;-&quot;, &quot;&quot;) ,
+Street)
+),&quot;&quot;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Address 2</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

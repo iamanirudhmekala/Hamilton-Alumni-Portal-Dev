@@ -1,0 +1,137 @@
+<template>
+    <div class={wrapperClass}>
+        <div class="ham-container">
+
+            <section class="ham-section">
+                <h1 class="ham-card-title">Privacy Controls</h1>
+                <p class="ham-card-subtitle">Control your privacy settings and data sharing</p>
+
+                <template for:each={privacyConfigs} for:item="config">
+                    <div key={config.name} class="ham-pref-row">
+                        <div class="ham-pref-content">
+                            <div class="ham-pref-title">{config.name}</div>
+                            <div class="ham-pref-desc">{config.description}</div>
+                        </div>
+                        <label class="custom-toggle-wrapper">
+                            <input type="checkbox"
+                                class="custom-toggle-input"
+                                checked={config.checked}
+                                data-id={config.id}
+                                onchange={handleToggleChange}
+                                disabled={isSaving} />
+                            <span class="custom-toggle-track"></span>
+                            <span class="custom-toggle-label-active">Yes</span>
+                            <span class="custom-toggle-label-inactive">No</span>
+                        </label>
+                    </div>
+                </template>
+            </section>
+              
+            <template if:false={isStudent}>
+            <div class="preferences-header">
+               <h1 class="ham-page-title pref-text">Preferences</h1>
+               <div class="ham-save-bar-top">
+                    <button class={savePrefBtnClass} onclick={handleSave} disabled={isSaveDisabled} type="button">{saveButtonLabel}</button>
+                </div>
+            </div>
+
+            <section class="ham-section">
+                <div class="ham-accordion-container">
+                    <template for:each={accordions} for:item="acc">
+                        <div key={acc.name} class="ham-accordion-item">
+                            
+                            <button class="ham-accordion-header" onclick={handleAccordionClick} data-name={acc.name}>
+                                <span class="ham-accordion-title">{acc.label}</span>
+                                <span class={acc.iconClass}>▼</span>
+                            </button>
+
+                            <template if:true={acc.isOpen}>
+                                <div class="ham-accordion-content">
+                                    <template if:true={acc.helpText}>
+                                        <p class="ham-card-subtitle pref-section-subtitle">{acc.helpText}</p>
+                                    </template>
+                                    <template if:true={acc.subHeader}>
+                                        <h3 class="ham-pref-subheader">{acc.subHeader}</h3>
+                                    </template>
+
+                                    <template for:each={acc.configs} for:item="config">
+                                        <div key={config.name} class="ham-pref-row">
+                                            <div class="ham-pref-content">
+                                                <div class="ham-pref-title">{config.name}</div>
+                                                <div class="ham-pref-desc">{config.description}</div>
+                                            </div>
+                                            <label class="custom-toggle-wrapper">
+                            <input type="checkbox"
+                                class="custom-toggle-input"
+                                checked={config.checked}
+                                data-id={config.id}
+                                onchange={handleToggleChange}
+                                disabled={isSaving} />
+                            <span class="custom-toggle-track"></span>
+                            <span class="custom-toggle-label-active">Yes</span>
+                            <span class="custom-toggle-label-inactive">No</span>
+                        </label>
+                                        </div>
+                                        <template if:true={acc.isMarketing}>
+                                            <template if:true={config.isLast}>
+                                                <div key={config.id} class="custom-info-banner">
+                                                    <lightning-icon icon-name="utility:info" size="x-small" class="info-icon"></lightning-icon>
+                                                    <span>{label.marPrefSupportText} &nbsp;<a href={emailHref} >{label.volunteerInfoTextEmail}</a></span>
+                                                </div>
+                                            </template>
+                                        </template>
+                                    </template>
+                                    
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </section>
+            </template><!-- end if:false={isStudent} -->
+
+            <div class="ham-save-bar-top">
+                    <button class={savePrefBtnClass} onclick={handleSave} disabled={isSaveDisabled} type="button">{saveButtonLabel}</button>
+            </div>
+
+        </div>
+
+    <template if:true={showOptOutModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="max-width: 500px; width: 80%;">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleModalCancel}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <div class="slds-modal__content slds-p-around_large slds-text-align_center custom-modal-body">
+                    <p class="modal-text">{modalMessage}</p>
+                    <div class="modal-buttons slds-m-top_large">
+                        <button class="custom-btn custom-btn-outline" onclick={handleModalCancel}>No</button>
+                        <button class="custom-btn custom-btn-brand" onclick={handleModalConfirm}>Yes</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showDependencyModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="max-width: 500px; width: 80%;">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeDependencyModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <div class="slds-modal__content slds-p-around_large slds-text-align_center custom-modal-body">
+                    <p class="modal-text">{dependencyMessage}</p>
+                    <div class="modal-buttons slds-m-top_large">
+                        <button class="custom-btn custom-btn-brand" onclick={closeDependencyModal}>OK</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    </div>
+</template>

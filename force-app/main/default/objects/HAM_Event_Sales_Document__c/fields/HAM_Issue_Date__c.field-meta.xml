@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Issue_Date__c</fullName>
+    <description>Date the invoice was issued. Migrated from bt_stripe__Issue_Date__c on bt_stripe__Sales_Document__c.</description>
+    <inlineHelpText>The date this invoice was issued in the Blackthorn system.</inlineHelpText>
+    <label>Issue Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

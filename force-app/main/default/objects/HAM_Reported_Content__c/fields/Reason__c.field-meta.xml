@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reason__c</fullName>
+    <label>Reason</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Inappropriate Message</fullName>
+                <default>false</default>
+                <label>Inappropriate Message</label>
+            </value>
+            <value>
+                <fullName>Aggressive Tone</fullName>
+                <default>false</default>
+                <label>Aggressive Tone</label>
+            </value>
+            <value>
+                <fullName>Spam</fullName>
+                <default>false</default>
+                <label>Spam</label>
+            </value>
+            <value>
+                <fullName>Bad Behavior (In Group)</fullName>
+                <default>false</default>
+                <label>Bad Behavior (In Group)</label>
+            </value>
+            <value>
+                <fullName>Bad Behavior (Outside Group)</fullName>
+                <default>false</default>
+                <label>Bad Behavior (Outside Group)</label>
+            </value>
+            <value>
+                <fullName>Harassment</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Harassment</label>
+            </value>
+            <value>
+                <fullName>Inappropriate Tone</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Inappropriate Tone</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

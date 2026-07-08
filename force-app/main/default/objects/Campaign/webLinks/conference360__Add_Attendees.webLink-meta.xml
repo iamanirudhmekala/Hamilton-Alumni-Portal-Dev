@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>conference360__Add_Attendees</fullName>
+    <availability>online</availability>
+    <description>Related campaign members with the status of &quot;Sent&quot; will be added as attendees with the registrations status of &quot;To Invite&quot; to the related event.</description>
+    <displayType>button</displayType>
+    <height>600</height>
+    <linkType>page</linkType>
+    <masterLabel>Add Attendees</masterLabel>
+    <openType>sidebar</openType>
+    <page>conference360__Campaign_SyncWithEvent</page>
+    <protected>false</protected>
+</WebLink>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Object_Type__c</fullName>
+    <description>The API name of the Salesforce object being migrated (e.g. CventEvents__Event__c). Populated automatically during migration.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The object type that was being processed when this error occurred.</inlineHelpText>
+    <label>Object Type</label>
+    <length>100</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

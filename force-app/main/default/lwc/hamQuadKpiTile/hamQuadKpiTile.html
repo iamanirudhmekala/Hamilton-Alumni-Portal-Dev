@@ -1,0 +1,9 @@
+<template>
+    <div class="kpi-tile">
+        <div class="kpi-label">{label}</div>
+        <div class={valueClass} style={valueStyle}>{formattedValue}</div>
+        <template if:true={sub}>
+            <div class="kpi-sub">{sub}</div>
+        </template>
+    </div>
+</template>

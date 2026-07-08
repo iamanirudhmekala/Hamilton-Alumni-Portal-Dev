@@ -1,0 +1,252 @@
+<template>
+    <!-- Philantropy Details Accordion -->
+    <div class={wrapperClass}>
+        <template lwc:if={showPhilDetails}>
+            <div class="card-phildet">
+                <div class="card-header-phildet" onclick={togglePhilDetails}>
+                    <span>▲</span> {label.myphilanthropy}
+                </div>
+                <div class="card-body-phildet">
+                    <template for:each={philanthropySections} for:item="section">
+                        <div key={section.name} class="info-section">
+                            <div class="heading-row">
+                                <h3 class="section-subtitle">{section.label}</h3>
+                            </div>
+                            <div class="row">
+                                <template for:each={section.fields} for:item="field">
+                                    <div key={field.label} class="field-label">
+                                        <label>{field.label}:</label>
+                                        <span>{field.value}</span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <!-- Accordion Sections -->
+            <div class="card-phildet card-phildet-acc-container">
+                <section class="section-tinted-bg">
+                    <button class={openPledgesClass} onclick={toggleSection} data-id="openPledges">
+                    {openPledgesDirection} {openPledgesData.tableName}
+                    </button>
+                    <div lwc:if={isOpenPledges}>
+                        <div class="desktop-only">
+                            <c-ham_philanthropy-data-table-cmp
+                                table-data={openPledgesData}
+                                is-override={isOverride}
+                                onsortaction={handleSort}
+                                onloadmoreaction={handleLoadMore}
+                                data-section={openPledgesData.tableName}>
+                            </c-ham_philanthropy-data-table-cmp>
+                        </div>
+                        <div class="mobile-only">
+                            <c-ham_philanthropy-card-cmp
+                                table-data={openPledgesData}
+                                onloadmoreaction={handleLoadMore}
+                                is-override={isOverride}
+                                data-section={openPledgesData.tableName}>
+                            </c-ham_philanthropy-card-cmp>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-tinted-bg">
+                    <button class={givingLifetimeClass} onclick={toggleSection} data-id="givingLifetime">
+                    {givingLifetimeDirection} {givingLifetimeData.tableName}
+                    </button>
+                    <div lwc:if={isGivingLifetime}>
+                        <div class="desktop-only">
+                            <c-ham_philanthropy-data-table-cmp
+                                table-data={givingLifetimeData}
+                                is-override={isOverride}
+                                onsortaction={handleSort}
+                                onloadmoreaction={handleLoadMore}
+                                data-section={givingLifetimeData.tableName}>
+                            </c-ham_philanthropy-data-table-cmp>
+                        </div>
+                        <div class="mobile-only">
+                            <c-ham_philanthropy-card-cmp
+                                table-data={givingLifetimeData}
+                                onloadmoreaction={handleLoadMore}
+                                is-override={isOverride}
+                                data-section={givingLifetimeData.tableName}>
+                            </c-ham_philanthropy-card-cmp>
+                        </div>
+                    </div>
+                </section>
+
+                <template lwc:if={showReceiptsTable}>
+                    <section class="section-tinted-bg">
+                        <button class={receiptsClass} onclick={toggleSection} data-id="receipts">
+                            {receiptsDirection} {receiptsData.tableName}
+                        </button>
+                        <div lwc:if={isReceipts}>
+                            <div class="desktop-only">
+                                <c-ham_philanthropy-data-table-cmp
+                                    table-data={receiptsData}
+                                    is-override={isOverride}
+                                    onsortaction={handleSort}
+                                    onloadmoreaction={handleLoadMore}
+                                    onfilteraction={handleFilterAction}
+                                    data-section={receiptsData.tableName}>
+                                </c-ham_philanthropy-data-table-cmp>
+                            </div>
+                            <div class="mobile-only">
+                                <c-ham_philanthropy-card-cmp
+                                    table-data={receiptsData}
+                                    onloadmoreaction={handleLoadMore}
+                                    onfilteraction={handleFilterAction}
+                                    is-override={isOverride}
+                                    data-section={receiptsData.tableName}>
+                                </c-ham_philanthropy-card-cmp>
+                            </div>
+                        </div>
+                    </section>
+                </template>
+
+                <section class="section-tinted-bg">
+                    <button class={givingPastDirectionClass} onclick={toggleSection} data-id="givingPast">
+                    {givingPastDirection} {givingPastData.tableName}
+                    </button>
+                    <div lwc:if={isGivingPast}>
+                        <div class="desktop-only">
+                            <c-ham_philanthropy-data-table-cmp
+                                table-data={givingPastData}
+                                is-override={isOverride}
+                                onsortaction={handleSort}
+                                onloadmoreaction={handleLoadMore}
+                                data-section={givingPastData.tableName}>
+                            </c-ham_philanthropy-data-table-cmp>
+                        </div>
+                        <div class="mobile-only">
+                            <c-ham_philanthropy-card-cmp
+                                table-data={givingPastData}
+                                onloadmoreaction={handleLoadMore}
+                                is-override={isOverride}
+                                data-section={givingPastData.tableName}>
+                            </c-ham_philanthropy-card-cmp>
+                        </div>
+                        <div class="button-group">
+                            <button class="action-button" onclick={openConnectionPopUp} data-name="taxReceipt">{label.taxreceipt}</button>
+                            <button class="action-button" onclick={openConnectionPopUp} data-name="donationHistory">{label.donationhistory}</button>                            
+                        </div>
+                        <div>
+                            <template lwc:if={isTaxPopupVisible}>
+                                <template lwc:if={isDesktopView}>
+                                    <div class="slds-popover popup-local">
+                                        <div class="slds-popover__close slds-float_right" onclick={closeConnectionPopUp}>×</div>
+                                        <div class="popup-item">{label.taxreceiptcontent}</div>
+                                        <div class="popup-item">
+                                            <lightning-icon icon-name="utility:call" size="x-small" class="popup-icon"></lightning-icon>
+                                            <a href={campusContact.phone}>{campusContact.phoneLabel}</a>
+                                        </div>
+                                        <div class="popup-item">
+                                            <lightning-icon icon-name="utility:email" size="x-small" class="popup-icon"></lightning-icon>
+                                            <a href={campusContact.email}>{campusContact.emailLabel}</a>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <template lwc:if={isMobileView}>
+                                    <div aria-label="Dialog title" aria-describedby="popover-body-id" class="slds-popover">
+                                        <div class="slds-popover__close slds-float_right" onclick={closeConnectionPopUp}>×</div>
+                                        <div id="popover-body-id" class="slds-popover__body">
+                                            <div class="popup-item">{label.taxreceiptcontent}</div>
+                                            <div class="popup-item"><lightning-icon icon-name="utility:call" size="x-small" class="popup-icon"></lightning-icon>
+                                            <a href={campusContact.phone}>{campusContact.phoneLabel}</a></div>                                           
+                                            <div class="popup-item"><lightning-icon icon-name="utility:email" size="x-small" class="popup-icon"></lightning-icon>
+                                            <a href={campusContact.email}>{campusContact.emailLabel}</a></div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+
+                             <template lwc:if={isDonationPopupVisible}>
+                                <template lwc:if={isDesktopView}>
+                                    <div class="slds-popover popup-local">
+                                        <div class="slds-popover__close slds-float_right" onclick={closeConnectionPopUp}>×</div>
+                                        <div class="popup-item">{label.donationhistorycontent}</div>
+                                        <div class="popup-item"><lightning-icon icon-name="utility:call" size="x-small" class="popup-icon"></lightning-icon>
+                                            <a href={campusContact.phone}>{campusContact.phoneLabel}</a></div>
+                                        <div class="popup-item"><lightning-icon icon-name="utility:email" size="x-small" class="popup-icon"></lightning-icon>
+                                            <a href={campusContact.email}>{campusContact.emailLabel}</a></div>
+                                    </div>
+                                </template>
+
+                                <template lwc:if={isMobileView}>
+                                    <div aria-label="Dialog title" class="slds-popover">
+                                        <div class="slds-popover__close slds-float_right" onclick={closeConnectionPopUp}>×</div>
+                                        <div class="slds-popover__body">
+                                            <div class="popup-item">{label.donationhistorycontent}</div>
+                                            <div class="popup-item"><lightning-icon icon-name="utility:call" size="x-small" class="popup-icon"></lightning-icon>
+                                                <a href={campusContact.phone}>{campusContact.phoneLabel}</a></div>
+                                            <div class="popup-item"><lightning-icon icon-name="utility:email" size="x-small" class="popup-icon"></lightning-icon>
+                                                <a href={campusContact.email}>{campusContact.emailLabel}</a></div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-tinted-bg">
+                    <button class={campaignDirectionClass} onclick={toggleSection} data-id="campaign">
+                    {campaignDirection} {campaignData.tableName}
+                    </button>
+                    <div lwc:if={isCampaign}>
+                        <div class="desktop-only">
+                            <c-ham_philanthropy-data-table-cmp
+                                table-data={campaignData}
+                                is-override={isOverride}
+                                onsortaction={handleSort}
+                                onloadmoreaction={handleLoadMore}
+                                data-section={campaignData.tableName}>
+                            </c-ham_philanthropy-data-table-cmp>
+                        </div>
+                        <div class="mobile-only">
+                            <c-ham_philanthropy-card-cmp
+                                table-data={campaignData}
+                                onloadmoreaction={handleLoadMore}
+                                is-override={isOverride}
+                                data-section={campaignData.tableName}>
+                            </c-ham_philanthropy-card-cmp>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-tinted-bg">
+                    <button class={endowedDirectionClass} onclick={toggleSection} data-id="endowed">
+                    {endowedDirection} {endowedData.tableName}
+                    </button>
+                    <div lwc:if={isEndowed}>
+                        <div class="desktop-only">
+                            <c-ham_philanthropy-data-table-cmp
+                                table-data={endowedData}
+                                is-override={isOverride}
+                                onsortaction={handleSort}
+                                onloadmoreaction={handleLoadMore}
+                                data-section={endowedData.tableName}>
+                            </c-ham_philanthropy-data-table-cmp>
+                        </div>
+                        <div class="mobile-only">
+                            <c-ham_philanthropy-card-cmp
+                                table-data={endowedData}
+                                onloadmoreaction={handleLoadMore}
+                                is-override={isOverride}
+                                data-section={endowedData.tableName}>
+                            </c-ham_philanthropy-card-cmp>
+                        </div>
+                    </div>
+                </section>               
+
+            </div>
+        </template>
+        <template if:false={showPhilDetails}>
+          <div class="card-phildet collapsed-phildet" onclick={togglePhilDetails}>
+            <div class="card-header-phildet collapsed"><span>▶</span> {label.myphilanthropy}</div>
+          </div>
+        </template>
+    </div>
+</template>

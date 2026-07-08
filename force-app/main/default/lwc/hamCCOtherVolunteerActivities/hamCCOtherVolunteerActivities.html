@@ -1,0 +1,135 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <!-- Green box with standard icon -->
+                    <span class="slds-icon_container slds-icon-standard-users" style="background-color: #baba09;">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                            <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#users"></use>
+                        </svg>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span><strong>Other Volunteer Activities & Roles</strong></span>
+                    </h2>
+                </div>
+                <div class="slds-no-flex">
+                    <!-- Expand/Collapse button -->
+                    <button class="slds-button slds-button_icon slds-button_icon-border-filled slds-m-left_x-small" onclick={handleToggleExpand} aria-expanded={isExpanded}>
+                        <lightning-icon icon-name={expandIcon} size="x-small"></lightning-icon>
+                        <span class="slds-assistive-text">Toggle Volunteer Activities</span>
+                    </button>
+                </div>
+            </header>
+        </div>
+        <template if:true={isExpanded}>
+            <div class="slds-card__body">
+                <!-- Summary Stats -->
+                <div class="slds-grid slds-wrap slds-gutters_small slds-m-bottom_medium">
+                    <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-2">
+                        <div class="slds-box slds-box_x-small slds-text-align_center" style="background-color: #f3f3f3;">
+                            <div class="slds-text-color_weak slds-text-body_small">Current Involvements</div>
+                            <div class="slds-text-heading_medium slds-m-top_small">{currentInvolvementsCount}</div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-2">
+                        <div class="slds-box slds-box_x-small slds-text-align_center" style="background-color: #f3f3f3;">
+                            <div class="slds-text-color_weak slds-text-body_small">Former Involvements</div>
+                            <div class="slds-text-heading_medium slds-m-top_small">{formerInvolvementsCount}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <template if:true={hasData}>
+                    <!-- Desktop: datatable -->
+                    <template if:false={isMobile}>
+                        <lightning-datatable
+                            data={pagedVolunteerActivities}
+                            columns={columns}
+                            key-field="id"
+                            hide-checkbox-column
+                            onsort={handleSort}
+                            sorted-by={sortedBy}
+                            sorted-direction={sortedDirection}>
+                        </lightning-datatable>
+                    </template>
+
+                    <!-- Mobile: sort bar + cards -->
+                    <template if:true={isMobile}>
+                        <div class="mobile-sort-bar">
+                            <lightning-combobox
+                                label="Sort by"
+                                value={sortedBy}
+                                options={mobileSortOptions}
+                                onchange={handleMobileSortChange}
+                                class="mobile-sort-combo">
+                            </lightning-combobox>
+                            <lightning-button-icon
+                                icon-name={mobileSortDirectionIcon}
+                                alternative-text={mobileSortDirectionLabel}
+                                title={mobileSortDirectionLabel}
+                                onclick={toggleMobileSortDirection}
+                                class="slds-var-m-left_x-small">
+                            </lightning-button-icon>
+                        </div>
+
+                        <div class="mobile-card-container">
+                            <template for:each={pagedVolunteerActivities} for:item="activity">
+                                <div key={activity.id} class="mobile-card">
+                                    <div class="card-header">
+                                        <a href={activity.involvementCodeLink} class="card-title-link">{activity.involvementCode}</a>
+                                    </div>
+                                    <div class="card-row">
+                                        <span class="card-label">Status</span>
+                                        <span class="card-value-bold">{activity.status}</span>
+                                    </div>
+                                    <div class="card-row">
+                                        <span class="card-label">Category</span>
+                                        <span>{activity.category}</span>
+                                    </div>
+                                    <div class="card-divider"></div>
+                                    <div class="card-row">
+                                        <span class="card-label">Start Date</span>
+                                        <span class="card-value-bold">{activity.startDate}</span>
+                                    </div>
+                                    <div class="card-row">
+                                        <span class="card-label">End Date</span>
+                                        <span class="card-value-bold">{activity.endDate}</span>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </template>
+                <template if:false={hasData}>
+                    <p>No volunteer activities found.</p>
+                </template>
+                
+                <!-- Pagination Controls -->
+                <template if:true={showPagination}>
+                    <div class="slds-m-top_small">
+                        <div class="slds-grid slds-grid_vertical-align-center">
+                            <div class="slds-col">
+                                <span class="slds-text-body_small slds-text-color_weak">
+                                    Showing {paginationInfo.startIndex}-{paginationInfo.endIndex} of {recordsCount}
+                                </span>
+                            </div>
+                            <div class="slds-col slds-no-flex">
+                                <div class="slds-button-group" role="group">
+                                    <button class="slds-button slds-button_neutral" disabled={previousDisabled} onclick={handlePrevious}>
+                                        Previous
+                                    </button>
+                                    <button class="slds-button slds-button_neutral" disabled={nextDisabled} onclick={handleNext}>
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </article>
+</template>

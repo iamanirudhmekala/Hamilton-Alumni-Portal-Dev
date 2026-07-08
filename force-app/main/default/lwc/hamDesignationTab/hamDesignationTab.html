@@ -1,0 +1,106 @@
+<template>
+    <template if:true={displayToast}>
+        <c-ham-giving-toast-util toast-title={toastTitle} toast-message={toastMessage} toast-variant={toastVariant} onclose={handleCloseToast}></c-ham-giving-toast-util>
+    </template>
+    <section class="form-section-compact gift-module" style="border: 2px solid #e5e7eb;">
+            <button type="button" class="back-button" onclick={handleBackToAmount}>
+                <lightning-icon icon-name="utility:back"
+                    class="slds-m-right_x-small back-button-icon"
+                    alternative-text="Back"
+                    title="Back"
+                    size="x-small"
+                    variant="inverse">
+                </lightning-icon>
+            Back to Amount
+        </button>
+        <div class="designation-tab">
+            <button class="designation-tab__button designation-tab__button--active" data-btn="fund"
+                onclick={tabClicked}>Hamilton Fund</button>
+            <button class={otherDesignationCss} data-btn="designation"
+                onclick={tabClicked} disabled={disabledOtherDesignation}>Other Designations</button>
+        </div>
+
+        <template lwc:if={hasSelectedDesignations}>
+            <div class="selected-designations">
+                <h4>Selected Designations</h4>
+                <template for:each={selectedDesignations} for:item="selectedDesignation">
+                    <c-ham-selected-designation key={selectedDesignation.id} designation={selectedDesignation}
+                        onremove={removeSelected} onamtchange={handleAmtChange}></c-ham-selected-designation>
+                </template>
+                <div class="banner"><strong>Total Gift: ${formattedAmount}</strong></div>
+            </div>
+        </template>
+
+        <template lwc:if={isHamiltonFund}>
+            <template if:false={hasSelectedDesignations}>
+                <div class="banner">
+                    Click "Add" on any Hamilton Fund below to start your gift
+                </div>
+            </template>
+            <div class="designations">
+                <template for:each={hamiltonFunds} for:item="designation">
+                    <c-ham-designation-item key={designation.id} designation={designation}
+                        onselect={handleSelectDesignation}></c-ham-designation-item>
+                </template>
+            </div>
+        </template>
+        <template lwc:else>
+            <template if:false={hasSelectedDesignations}>
+                <div class="banner">
+                    Click "Add" on any designation below to start building your gift
+                </div>
+            </template>
+
+            <div class="search-wrapper slds-var-m-top_xx-large">
+                <lightning-icon icon-name="utility:search" alternative-text="Connected" size="small"
+                    class="search-icon"></lightning-icon>
+                <input type="search" name="search-designation" id="search-designation" value={searchString}
+                    placeholder="Search designations..." oninput={searchOtherDesignations}>
+            </div>
+
+            <template lwc:if={isSearching}>
+                <template lwc:if={hasSearchResult}>
+                    <div class="designations">
+                        <template for:each={otherDesignations} for:item="designation">
+                            <c-ham-designation-item key={designation.id} designation={designation}
+                                onselect={handleSelectDesignation}>
+                                <span class="designation-item__badge">{designation.fundGrpName}</span>
+                            </c-ham-designation-item>
+                        </template>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="no-search-result">
+                        <p>No designations found matching "{searchString}"</p>
+                        <button type="button" onclick={clearSearchString}>Clear Search</button>
+                    </div>
+                </template>
+            </template>
+            <template lwc:else>
+                <div class="search-instruction">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-search" aria-hidden="true">
+                        <path d="m21 21-4.34-4.34"></path>
+                        <circle cx="11" cy="11" r="8"></circle>
+                    </svg>
+                    <p>Start typing to search for designations</p>
+                    <p>Try searching for: athletics, library, archives, scholarship, faculty development</p>
+                </div>
+            </template>
+
+
+        </template>
+
+        <hr>
+
+        <c-ham-in-honor form-data={formData}></c-ham-in-honor>
+
+    </section>
+
+    <div class="form-submit" style="margin-top: 1.5rem;">
+        <button class="btn btn-primary btn-large" onclick={handleContinueToPayment}>
+            Continue to Payment →
+        </button>
+    </div>
+</template>

@@ -1,0 +1,16 @@
+<template>
+    <div class="slds-var-m-around_large make-this-gift">
+        <input id="makethisgift" type="checkbox" class="slds-var-m-right_medium" checked={showGiftInHonorForm} onchange={handleCheck}>
+        <label for="makethisgift" class="slds-text-heading_small">Make this gift in honor or memory of someone special</label>
+    </div>
+
+    <div class="options" lwc:if={showGiftInHonorForm}>
+        <button class="options__btn options__btn--inactive" onclick={optionSelect}>In Honor Of <span>*</span></button>
+        <button class="options__btn options__btn--inactive" onclick={optionSelect}>In Memory Of <span>*</span></button>
+    </div>
+
+    <div class="name-input-wrapper slds-grow" lwc:if={showGiftInHonorForm}>
+        <input type="text" placeholder="Enter name *" class="custom-input slds-grow" value={inHonorOrMemoryOf} oninput={handleNameChange}>
+    </div>
+
+</template>

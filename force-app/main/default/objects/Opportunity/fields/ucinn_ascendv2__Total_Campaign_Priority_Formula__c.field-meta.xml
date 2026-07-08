@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Total_Campaign_Priority_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <formula>(ucinn_ascendv2__Faculty_Research_Endowment__c + ucinn_ascendv2__Scholarship_Endowment__c + ucinn_ascendv2__Capital_Projects__c  + ucinn_ascendv2__Academic_Support__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Total Campaign Priority</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

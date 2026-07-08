@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Public</cacheControl>
+    <contentType>application/javascript</contentType>
+    <description>Chart.js v4.5.0 (UMD, minified) for the Hamilton Quad Ops Dashboard. Kept separate from the org&apos;s 2.x resources (ChartJS, chartjs_2_7_3_min_js) to avoid breaking existing components.</description>
+</StaticResource>

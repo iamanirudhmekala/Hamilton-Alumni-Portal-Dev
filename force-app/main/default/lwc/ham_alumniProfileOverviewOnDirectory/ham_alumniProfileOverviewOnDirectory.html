@@ -1,0 +1,67 @@
+<template>
+
+    <!--DO NOT USE-->
+    <!--DO NOT USE-->
+    <!--DO NOT USE-->
+    <!--DO NOT USE-->
+    
+    <div class="profile-page">
+
+        <!-- Back -->
+        <div class="back-row" onclick={handleBack}>
+            <span class="back-icon">‹</span>
+            <span class="back-text">Back</span>
+        </div>
+
+        <!-- Centered Card -->
+        <div class="profile-card">
+            <div class="left">
+              <template lwc:if={profile.photoUrl}>
+                <img src={profile.photoUrl} alt="Profile" class="profile-photo"/>
+              </template>
+              <template lwc:else>
+                <lightning-icon icon-name="standard:user" size="medium"></lightning-icon>
+              </template>
+                <div class="social-icons">
+                    <span class="social">in</span>
+                    <span class="social">ig</span>
+                    <span class="social">f</span>
+                    <span class="social">x</span>
+                </div>
+            </div>
+            <div class="right">
+                <h1>{profile.name}</h1>
+                <p class="class-year">Class of {profile.graduationYear}</p>
+
+                <hr />
+
+                <section>
+                    <h3>Personal Information</h3>
+                    <div class="row">
+                        <span class="label">Industry</span>
+                        <span class="value">{profile.industry}</span>
+                    </div>
+                </section>
+
+                <hr />
+
+                <section>
+                    <h3>Campus Life</h3>
+                    <div class="row">
+                        <span class="label">Graduation Year</span>
+                        <span class="value">{profile.graduationYear}</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">Industry</span>
+                        <span class="value">{profile.industry}</span>
+                    </div>
+                </section>
+
+                <button class="primary-btn">
+                    👤 Send Request
+                </button>
+            </div>
+        </div>
+
+    </div>
+</template>

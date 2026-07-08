@@ -1,0 +1,31 @@
+.prospectBadge{
+    background-color: rgb(1, 118, 211); 
+    color: white;
+}
+.engageBadge{
+   background-color: #4bca81; 
+   color: #ffffff;
+}
+.ccVolunteerBadge{
+    background-color: #1ab9ff; 
+    color: #ffffff;
+}
+.impactBadge{
+    background-color: rgb(127, 141, 225); 
+    color: white;
+}
+.circle-photo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+}
+
+.icon-image-small {
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}

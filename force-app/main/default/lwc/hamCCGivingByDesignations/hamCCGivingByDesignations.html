@@ -1,0 +1,128 @@
+<template>
+    <div class="slds-card">
+<div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <!-- Green box with standard icon -->
+                    <span class="slds-icon_container slds-icon-standard-currency" style="background-color: #276dc3;">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                            <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#currency"></use>
+                        </svg>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span><strong>Giving by Designations</strong></span>
+                    </h2>
+                </div>
+<div class="slds-no-flex">
+                    <!-- Inline expand/collapse icon button to toggle accordion visibility -->
+                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick={handleAccordionToggle} aria-expanded={isExpanded}>
+                        <lightning-icon icon-name={activeSectionIcon} size="x-small"></lightning-icon>
+                        <span class="slds-assistive-text">Toggle Recent Gifts</span>
+                    </button>
+                </div>
+            </header>
+        </div>
+        <div class="slds-card__body">
+            <!-- Summary Stats -->
+            <!-- Summary Stats (match Giving Summary UI) -->
+            <div class="slds-m-top_medium">
+                <h3 class="slds-text-title_caps slds-m-bottom_x-small">Summary</h3>
+
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <!-- LEFT PANEL -->
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <div class="slds-box slds-theme_shade slds-m-bottom_small">
+                            <div class="slds-text-heading_small">Total Pledged</div>
+                            <div
+                                class="slds-text-heading_medium slds-font-weight_bold"
+                                style="color: #0070d2;"
+                            >
+                                <lightning-formatted-number
+                                    value={totalPledged}
+                                    format-style="currency"
+                                    currency-code="USD"
+                                ></lightning-formatted-number>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT PANEL -->
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <div class="slds-box slds-theme_shade slds-m-bottom_small">
+                            <div class="slds-text-heading_small">Total Paid</div>
+                            <div
+                                class="slds-text-heading_medium slds-font-weight_bold"
+                                style="color: #00994d;"
+                            >
+                                <lightning-formatted-number
+                                    value={totalPaid}
+                                    format-style="currency"
+                                    currency-code="USD"
+                                ></lightning-formatted-number>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+<!-- Giving by Designations Table -->
+            <template if:true={isExpanded}>
+                <template if:true={hasData}>
+                    <lightning-datatable
+                        data={paginatedData}
+                        columns={columns}
+                        key-field="id"
+                        hide-checkbox-column
+                        onsort={handleSort}
+                        sorted-by={sortedBy}
+                        sorted-direction={sortedDirection}
+                    >
+                    </lightning-datatable>
+                    <!-- Pagination Controls -->
+                    <div class="slds-m-top_medium slds-text-align_center">
+                        <lightning-button-icon
+                            icon-name="utility:chevronleft"
+                            variant="border-filled"
+                            size="small"
+                            disabled={isFirstPage}
+                            onclick={handleFirst}
+                            title="First Page"
+                        ></lightning-button-icon>
+                        <lightning-button-icon
+                            icon-name="utility:arrowleft"
+                            variant="border-filled"
+                            size="small"
+                            disabled={isFirstPage}
+                            onclick={handlePrevious}
+                            title="Previous Page"
+                        ></lightning-button-icon>
+                        <span class="slds-m-horizontal_small">Page {currentPage} of {totalPages}</span>
+                        <lightning-button-icon
+                            icon-name="utility:arrowright"
+                            variant="border-filled"
+                            size="small"
+                            disabled={isLastPage}
+                            onclick={handleNext}
+                            title="Next Page"
+                        ></lightning-button-icon>
+                        <lightning-button-icon
+                            icon-name="utility:chevronright"
+                            variant="border-filled"
+                            size="small"
+                            disabled={isLastPage}
+                            onclick={handleLast}
+                            title="Last Page"
+                        ></lightning-button-icon>
+                    </div>
+                </template>
+                <template if:false={hasData}>
+                    <p>No giving by designations found.</p>
+                </template>
+            </template>
+        </div>
+    </div>
+</template>

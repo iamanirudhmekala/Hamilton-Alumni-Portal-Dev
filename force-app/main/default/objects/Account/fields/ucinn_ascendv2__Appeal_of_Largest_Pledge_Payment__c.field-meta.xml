@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Appeal_of_Largest_Pledge_Payment__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <label>Appeal of Largest Pledge Payment</label>
+    <referenceTo>Campaign</referenceTo>
+    <relationshipLabel>Organizations (Appeal of Largest Pledge Payment)</relationshipLabel>
+    <relationshipName>Organizations_Appeal_of_Lrgst_Pldg_Pymt</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

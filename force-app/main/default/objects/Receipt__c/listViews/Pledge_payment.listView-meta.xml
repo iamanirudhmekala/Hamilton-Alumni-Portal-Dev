@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pledge_payment</fullName>
+    <columns>NAME</columns>
+    <columns>HAM_Constituent__c</columns>
+    <columns>HAM_Is_Processed__c</columns>
+    <columns>Receipt_Date__c</columns>
+    <columns>PRM_Name__c</columns>
+    <columns>HAM_Credit_Line_Ids__c</columns>
+    <columns>HAM_Phone__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>HAM_Receipt_Type__c</field>
+        <operation>equals</operation>
+        <value>Pledge Reminder</value>
+    </filters>
+    <filters>
+        <field>PRM_Name__c</field>
+        <operation>contains</operation>
+        <value>ross</value>
+    </filters>
+    <label>Pledge Reminder</label>
+</ListView>

@@ -1,0 +1,89 @@
+/* ── Header overflow prevention ───────────── */
+.slds-card__header {
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.slds-media__body {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.slds-card__header-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Mobile sort bar ───────────────────────── */
+.mobile-sort-bar {
+    display: flex;
+    align-items: flex-end;
+    padding: 0.5rem 0.75rem 0.25rem;
+}
+
+.mobile-sort-combo {
+    flex: 1;
+}
+
+/* ── Card container ────────────────────────── */
+.mobile-card-container {
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* ── Individual card — yellow/olive left border ────── */
+.mobile-card {
+    background: #ffffff;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    border-left: 4px solid #baba09;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Card header: title link ───────────────── */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.card-title-link {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #baba09;
+    text-decoration: none;
+    flex: 1;
+}
+
+.card-title-link:hover {
+    text-decoration: underline;
+}
+
+/* ── Card rows ─────────────────────────────── */
+.card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.2rem 0;
+    font-size: 0.8rem;
+}
+
+.card-label {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.75rem;
+}
+
+.card-value-bold {
+    font-weight: 700;
+}
+
+.card-divider {
+    border-top: 1px solid #e8e8e8;
+    margin: 0.4rem 0;
+}

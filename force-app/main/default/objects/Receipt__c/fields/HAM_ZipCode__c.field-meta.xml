@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_ZipCode__c</fullName>
+    <description>Stores the postal code associated with the mailing address.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Enter the ZIP or postal code for the address. For U.S. addresses, use either the 5-digit ZIP (e.g., 13057) or ZIP+4 format (e.g., 13057-1234).</inlineHelpText>
+    <label>ZipCode</label>
+    <length>11</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,390 @@
+<template>
+    <div class="main-container">
+
+        <!-- ===== SEARCH SECTION ===== -->
+        <div class="section-card">
+            <div class="search-section">
+                <!-- City Name -->
+                <div class="search-row">
+                    <div class="city-input-wrap">
+                        <lightning-input
+                            type="search"
+                            label="City Name"
+                            required
+                            placeholder="Enter city name to search..."
+                            value={citySearch}
+                            onchange={handleCityChange}
+                            onkeyup={handleSearchKeyUp}>
+                        </lightning-input>
+                    </div>
+                </div>
+
+                <!-- Search Radius Slider -->
+                <div class="radius-row">
+                    <div class="radius-slider-wrap">
+                        <div class="radius-header">
+                            <span class="radius-label">Search Radius</span>
+                            <span class="radius-value">{radiusLabel}</span>
+                        </div>
+                        <lightning-slider
+                            label=""
+                            min="5"
+                            max="100"
+                            step="5"
+                            value={searchRadius}
+                            onchange={handleRadiusChange}>
+                        </lightning-slider>
+                        <span class="slds-text-body_small slds-text-color_weak">Minimum radius: 5 miles</span>
+                    </div>
+                </div>
+
+                <!-- Search Button -->
+                <div class="search-btn-row">
+                    <lightning-button
+                        variant="brand"
+                        label="Search"
+                        icon-name="utility:search"
+                        disabled={isSearchDisabled}
+                        onclick={handleSearch}>
+                    </lightning-button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== MAP ===== -->
+        <template lwc:if={hasResults}>
+            <div class="section-card map-section">
+                <lightning-map
+                    map-markers={mapMarkers}
+                    list-view="visible"
+                    show-footer
+                    zoom-level="4"
+                    onmarkerselect={handleMarkerSelect}>
+                </lightning-map>
+            </div>
+        </template>
+
+        <!-- ===== ADD FILTERS ACCORDION ===== -->
+        <template lwc:if={hasSearched}>
+            <div class="section-card filters-section">
+                <div class="filter-header" onclick={toggleFilters}>
+                    <span class="filter-title">Add Filters</span>
+                    <lightning-icon
+                        icon-name={filterIconName}
+                        size="small"
+                        alternative-text="Toggle filters">
+                    </lightning-icon>
+                </div>
+
+                <template lwc:if={showFilters}>
+                    <div class="filter-body">
+                        <!-- Row 1 -->
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 filter-field">
+                                <lightning-combobox
+                                    label="Class Year"
+                                    value={filterClassYear}
+                                    options={classYearOptions}
+                                    data-field="classYear"
+                                    onchange={handleFilterChange}>
+                                </lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 filter-field">
+                                <lightning-combobox
+                                    label="Student Organization"
+                                    placeholder="--None--"
+                                    disabled>
+                                </lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 filter-field">
+                                <lightning-combobox
+                                    label="Sport Organization"
+                                    placeholder="--None--"
+                                    disabled>
+                                </lightning-combobox>
+                            </div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 filter-field">
+                                <lightning-input
+                                    type="toggle"
+                                    label="1812"
+                                    message-toggle-active="Yes"
+                                    message-toggle-inactive="No"
+                                    data-field="1812"
+                                    disabled>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 filter-field">
+                                <lightning-combobox
+                                    label="Constituent Type"
+                                    value={filterConstituentType}
+                                    options={constituentTypeOptions}
+                                    data-field="constituentType"
+                                    onchange={handleFilterChange}>
+                                </lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 filter-field">
+                                <lightning-input
+                                    type="search"
+                                    label="PRM (User Lookup)"
+                                    placeholder="Search users..."
+                                    disabled>
+                                </lightning-input>
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 filter-field">
+                                <lightning-combobox
+                                    label="Address Type"
+                                    value={filterAddressType}
+                                    options={addressTypeOptions}
+                                    data-field="addressType"
+                                    onchange={handleFilterChange}>
+                                </lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 filter-field">
+                                <lightning-combobox
+                                    label="Gift Rating"
+                                    value={filterGiftRating}
+                                    options={giftRatingOptions}
+                                    data-field="giftRating"
+                                    onchange={handleFilterChange}>
+                                </lightning-combobox>
+                            </div>
+                        </div>
+
+                        <!-- Row 4: Lifetime / Consecutive -->
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 filter-field">
+                                <label class="compound-label">Life Time Committed</label>
+                                <div class="compound-field">
+                                    <lightning-combobox
+                                        variant="label-hidden"
+                                        label="Operator"
+                                        value={filterLifetimeOp}
+                                        options={lifetimeOperatorOptions}
+                                        data-field="lifetimeOp"
+                                        onchange={handleFilterChange}>
+                                    </lightning-combobox>
+                                    <lightning-input
+                                        type="number"
+                                        variant="label-hidden"
+                                        label="Amount"
+                                        placeholder="Amount"
+                                        data-field="lifetimeAmt"
+                                        formatter="currency"
+                                        step="1000"
+                                        onchange={handleFilterChange}>
+                                    </lightning-input>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 filter-field">
+                                <label class="compound-label">Consecutive Years of Giving</label>
+                                <div class="compound-field">
+                                    <lightning-combobox
+                                        variant="label-hidden"
+                                        label="Operator"
+                                        value={filterConsYearsOp}
+                                        options={lifetimeOperatorOptions}
+                                        data-field="consYearsOp"
+                                        onchange={handleFilterChange}>
+                                    </lightning-combobox>
+                                    <lightning-input
+                                        type="number"
+                                        variant="label-hidden"
+                                        label="Years"
+                                        placeholder="Years"
+                                        data-field="consYears"
+                                        onchange={handleFilterChange}>
+                                    </lightning-input>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Show My Prospects Only -->
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-1 filter-field">
+                                <lightning-input
+                                    type="checkbox"
+                                    label="Show My Prospects Only"
+                                    checked={filterMyProspectsOnly}
+                                    data-field="myProspectsOnly"
+                                    onchange={handleFilterChange}>
+                                </lightning-input>
+                            </div>
+                        </div>
+
+                        <!-- Clear Button -->
+                        <div class="filter-actions">
+                            <lightning-button
+                                label="Clear"
+                                onclick={handleClearFilters}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- ===== MY PROSPECTS RESULTS ===== -->
+        <template lwc:if={hasResults}>
+            <div class="section-card prospects-section">
+                <!-- Header Row -->
+                <div class="prospects-header">
+                    <h2 class="prospects-title">{prospectCountLabel}</h2>
+                    <div class="prospects-actions">
+                        <lightning-button
+                            label="View Audit Trail"
+                            icon-name="utility:description"
+                            onclick={handleViewAuditTrail}>
+                        </lightning-button>
+                        <lightning-button
+                            variant="brand"
+                            label={exportLabel}
+                            icon-name="utility:download"
+                            disabled={isExportDisabled}
+                            onclick={handleExport}>
+                        </lightning-button>
+                        <lightning-button-group>
+                            <lightning-button
+                                label="Cards"
+                                icon-name="utility:kanban"
+                                variant={cardsVariant}
+                                onclick={handleCardsView}>
+                            </lightning-button>
+                            <lightning-button
+                                label="List"
+                                icon-name="utility:list"
+                                variant={listVariant}
+                                onclick={handleListView}>
+                            </lightning-button>
+                        </lightning-button-group>
+                    </div>
+                </div>
+
+                <!-- Select All -->
+                <div class="select-all-row">
+                    <lightning-input
+                        type="checkbox"
+                        label={selectAllLabel}
+                        checked={selectAll}
+                        onchange={handleSelectAll}>
+                    </lightning-input>
+                </div>
+
+                <!-- Cards View -->
+                <template lwc:if={isCardsView}>
+                    <div class="cards-grid">
+                        <template for:each={displayProspects} for:item="prospect">
+                            <div key={prospect.id} class="prospect-card" data-id={prospect.id} onclick={handleCardSelect}>
+                                <!-- Card Header -->
+                                <div class="card-top">
+                                    <div class="card-name-row">
+                                        <span class="card-name">{prospect.name}</span>
+                                        <span class={prospect.badgeClass}>{prospect.badge}</span>
+                                    </div>
+                                    <lightning-input
+                                        type="checkbox"
+                                        variant="label-hidden"
+                                        label="Select"
+                                        checked={prospect.isSelected}
+                                        data-id={prospect.id}
+                                        onclick={handleCardSelect}>
+                                    </lightning-input>
+                                </div>
+                                <span class="card-id">{prospect.constituentId}</span>
+
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="card-row">
+                                        <lightning-icon icon-name="utility:location" size="xx-small" alternative-text="Location"></lightning-icon>
+                                        <span>{prospect.locationLabel}</span>
+                                    </div>
+                                    <div class="card-row">
+                                        <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon>
+                                        <span class="email-link">{prospect.email}</span>
+                                    </div>
+                                    <div class="card-row">
+                                        <lightning-icon icon-name="utility:call" size="xx-small" alternative-text="Phone"></lightning-icon>
+                                        <span>{prospect.phone}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Card Footer -->
+                                <div class="card-footer">
+                                    <div class="card-giving">
+                                        <lightning-icon icon-name="utility:moneybag" size="xx-small" alternative-text="Giving"></lightning-icon>
+                                        <span class="giving-amount">{prospect.givingFormatted}</span>
+                                    </div>
+                                    <span class="card-type">{prospect.type}</span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- List View -->
+                <template lwc:if={isListView}>
+                    <div class="list-view">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Location</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Phone</th>
+                                    <th scope="col">Giving</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Rating</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={displayProspects} for:item="prospect">
+                                    <tr key={prospect.id}>
+                                        <td>
+                                            <lightning-input
+                                                type="checkbox"
+                                                variant="label-hidden"
+                                                label="Select"
+                                                checked={prospect.isSelected}
+                                                data-id={prospect.id}
+                                                onclick={handleCardSelect}>
+                                            </lightning-input>
+                                        </td>
+                                        <td class="card-name">{prospect.name}</td>
+                                        <td>{prospect.constituentId}</td>
+                                        <td>{prospect.locationLabel}</td>
+                                        <td>{prospect.email}</td>
+                                        <td>{prospect.phone}</td>
+                                        <td>{prospect.givingFormatted}</td>
+                                        <td>{prospect.type}</td>
+                                        <td><span class={prospect.badgeClass}>{prospect.badge}</span></td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- ===== NO RESULTS ===== -->
+        <template lwc:if={noResults}>
+            <div class="section-card no-results-section">
+                <div class="no-results">
+                    <lightning-icon icon-name="utility:search" size="large" alternative-text="No results"></lightning-icon>
+                    <p class="slds-text-heading_small slds-var-m-top_small">No prospects found near &ldquo;{citySearch}&rdquo;</p>
+                    <p class="slds-text-color_weak">Try a different city or increase the search radius.</p>
+                </div>
+            </div>
+        </template>
+
+    </div>
+</template>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Events List LWC</label>
+    <protected>false</protected>
+    <values>
+        <field>CMP_Key__c</field>
+        <value xsi:type="xsd:string">EventsListLWC</value>
+    </values>
+    <values>
+        <field>CMP_Type__c</field>
+        <value xsi:type="xsd:string">Events</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Max_Records__c</field>
+        <value xsi:type="xsd:double">6.0</value>
+    </values>
+    <values>
+        <field>Sort_Field__c</field>
+        <value xsi:type="xsd:string">HAM_Display_Order__c</value>
+    </values>
+    <values>
+        <field>Source_Object__c</field>
+        <value xsi:type="xsd:string">HAM_Listing__c</value>
+    </values>
+    <values>
+        <field>WHERE_Clause__c</field>
+        <value xsi:type="xsd:string">HAM_Category__c = &apos;Events&apos; AND HAM_Is_Active__c = TRUE AND HAM_Is_Trending__c = TRUE AND HAM_Image_URL__c  != &apos;&apos;</value>
+    </values>
+</CustomMetadata>

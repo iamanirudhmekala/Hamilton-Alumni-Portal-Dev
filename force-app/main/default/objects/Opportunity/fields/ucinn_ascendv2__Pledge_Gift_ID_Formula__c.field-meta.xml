@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Pledge_Gift_ID_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Record Type Change, we can use Record Type names to differentiate rather than using Gift/Pledge Types</description>
+    <externalId>false</externalId>
+    <formula>IF(AND(NOT(ISBLANK(ucinn_ascendv2__Session__c)), ISBLANK(ucinn_ascendv2__Adjustment_Session__c)),
+    IF(RecordType.Name = &quot;Matching Gift&quot;,
+        &quot;M&quot; &amp; ucinn_ascendv2__Original_Proposal_ID__c,
+        IF(RecordType.Name = &quot;Pledge&quot;,
+            &quot;P&quot; &amp; ucinn_ascendv2__Original_Proposal_ID__c,
+            IF(RecordType.Name = &quot;Recurring Gift&quot;,
+                &quot;R&quot; &amp; ucinn_ascendv2__Original_Proposal_ID__c,
+                IF(RecordType.Name = &quot;Gift&quot;,
+                    &quot;G&quot; &amp; ucinn_ascendv2__Original_Proposal_ID__c,
+                    IF(RecordType.Name = &quot;One-Time Membership&quot;,
+                         &quot;O&quot; &amp; ucinn_ascendv2__Original_Proposal_ID__c,
+                         IF(RecordType.Name = &quot;Auto Renewing Membership&quot;,
+                              &quot;A&quot; &amp; ucinn_ascendv2__Original_Proposal_ID__c,
+                              IF(RecordType.Name = &quot;Installment Based Membership&quot;,
+                                   &quot;I&quot; &amp; ucinn_ascendv2__Original_Proposal_ID__c,
+                                   IF(RecordType.Name = &quot;One-Time POS&quot;,
+                                        &quot;OP&quot; &amp; ucinn_ascendv2__Original_Proposal_ID__c,
+                                        IF(RecordType.Name = &quot;Installment Based POS&quot;,
+                                             &quot;IP&quot; &amp; ucinn_ascendv2__Original_Proposal_ID__c,
+                                             IF(RecordType.Name = &quot;Auto Renewing POS&quot;,
+                                                  &quot;AP&quot; &amp; ucinn_ascendv2__Original_Proposal_ID__c,
+                                                  IF(RecordType.Name = &quot;Partial Payment POS&quot;,
+                                                       &quot;PP&quot; &amp; ucinn_ascendv2__Original_Proposal_ID__c,
+&quot;&quot;))))))))))),
+        IF(OR(TEXT(StageName) = &quot;Written-off&quot;, TEXT(StageName) = &quot;Cancelled&quot;), Name, &quot;&quot;
+))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Pledge / Gift ID</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

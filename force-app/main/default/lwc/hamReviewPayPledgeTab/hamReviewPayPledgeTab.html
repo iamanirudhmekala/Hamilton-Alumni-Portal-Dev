@@ -1,0 +1,75 @@
+<template>
+    <div class="ham-pledge-tab">
+        <button class="ham-back-btn" onclick={handleBack}>← Back</button>
+
+        <template lwc:if={hasPledges}>
+            <div class="ham-pledge-hint">Select one or more pledges to pay. Total remaining balance will be charged.</div>
+
+            <div class="ham-pledge-list">
+                <template for:each={enrichedPledges} for:item="pledge">
+                    <div key={pledge.id} class={pledge.cardClass} data-id={pledge.id} onclick={handlePledgeClick}>
+                        <div class="ham-pledge-header">
+                            <div class="ham-pledge-check">
+                                <template lwc:if={pledge.isSelected}>✓</template>
+                            </div>
+                            <div class="ham-pledge-name">{pledge.designationName}</div>
+                        </div>
+
+                        <div class="ham-pledge-amounts">
+                            <div class="ham-pledge-amount-row">
+                                <span class="ham-pledge-label">Pledge Total</span>
+                                <span class="ham-pledge-value">{pledge.formattedAmount}</span>
+                            </div>
+                            <div class="ham-pledge-amount-row">
+                                <span class="ham-pledge-label">Paid to Date</span>
+                                <span class="ham-pledge-value ham-pledge-paid">{pledge.formattedPaid}</span>
+                            </div>
+                            <div class="ham-pledge-amount-row">
+                                <span class="ham-pledge-label">Remaining</span>
+                                <span class="ham-pledge-value ham-pledge-remaining">{pledge.formattedRemaining}</span>
+                            </div>
+                        </div>
+
+                        <div class="ham-pledge-input-wrap">
+                            <label class="ham-pledge-label">Amount to Pay</label>
+                            <lightning-input
+                                type="number"
+                                class="ham-pledge-amount-input"
+                                label="Amount to pay"
+                                value={pledge.defaultPayAmount}
+                                data-id={pledge.id}
+                                aria-label={pledge.ariaLabel}
+                                onchange={handleAmountInput}
+                                step="0.01"
+                                formatter="currency"
+                            ></lightning-input>
+                            <div class="ham-pledge-remaining-note">Remaining: {pledge.formattedRemaining}</div>
+                        </div>
+
+                        <template lwc:if={pledge.description}>
+                            <div class="ham-pledge-description">{pledge.description}</div>
+                        </template>
+                    </div>
+                </template>
+            </div>
+
+            <template lwc:if={hasSelection}>
+                <div class="ham-pledge-total-box">
+                    Total Payment: ${selectedTotal}
+                </div>
+            </template>
+
+            <button class="ham-primary-btn" disabled={continueDisabled} onclick={handleContinue}>
+                Continue to Payment →
+            </button>
+        </template>
+
+        <template lwc:else>
+            <div class="ham-empty-state">
+                <div class="ham-empty-icon">📋</div>
+                <div class="ham-empty-title">No Active Pledges</div>
+                <p class="ham-empty-text">You don&apos;t have any active pledges at this time.</p>
+            </div>
+        </template>
+    </div>
+</template>

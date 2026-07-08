@@ -1,0 +1,29 @@
+<template>
+    <div class={wrapperClass} if:true={showPagination}>
+        <!-- Record count display -->
+        <span class="results-info">{resultLabel}: {startCount} - {endCount} of {totalRecords}</span>
+        
+        <!-- Page navigation buttons -->
+        <div class="pagination">
+            <button class={firstPageClass} onclick={handlePreviousPage} disabled={isFirstPage}>←</button>
+            
+            <template for:each={pages} for:item="page">
+                <!-- Ellipsis for skipped pages -->
+                <template if:true={page.isEllipsis}>
+                    <span key={page.number}>...</span>
+                </template>
+                <!-- Page number buttons -->
+                <template if:false={page.isEllipsis}>
+                    <button key={page.number} 
+                            data-page={page.number} 
+                            onclick={handlePageChange}
+                            class={page.class}>
+                        {page.number}
+                    </button>
+                </template>
+            </template>
+            
+            <button class={lastPageClass} onclick={handleNextPage} disabled={isLastPage}>→</button>
+        </div>
+    </div>
+</template>

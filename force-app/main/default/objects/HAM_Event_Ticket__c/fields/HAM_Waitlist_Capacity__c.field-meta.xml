@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Waitlist_Capacity__c</fullName>
+    <description>Maximum number of registrants that can be placed on the waitlist for this ticket type.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Maximum waitlist capacity for this ticket type.</inlineHelpText>
+    <label>Waitlist Capacity</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
+    <consumerKey>nPX0zI1VSE1a535QmlAYgP9Xo</consumerKey>
+    <consumerSecret>Placeholder_Value</consumerSecret>
+    <executionUser>c84user@hamiltoncollege.com</executionUser>
+    <friendlyName>Login with Twitter</friendlyName>
+    <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
+    <isPkceEnabled>false</isPkceEnabled>
+    <providerType>Twitter</providerType>
+    <registrationHandler>HAM_SocialSignOnRegistrationHandler</registrationHandler>
+    <requireMfa>false</requireMfa>
+    <sendAccessTokenInHeader>false</sendAccessTokenInHeader>
+    <sendClientCredentialsInHeader>false</sendClientCredentialsInHeader>
+    <sendSecretInApis>true</sendSecretInApis>
+</AuthProvider>

@@ -1,0 +1,858 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__New_Corporations_and_Organizations</fullName>
+    <active>true</active>
+    <compactLayoutAssignment>ucinn_ascendv2__Account_Mobile_CL</compactLayoutAssignment>
+    <description>The record type that is used for creating a new Corporation and Organization</description>
+    <label>Corporations and Organizations</label>
+    <picklistValues>
+        <picklist>AccountSource</picklist>
+        <values>
+            <fullName>Advertisement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Employee Referral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>External Referral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trade Show</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>HAM_Employer_Engagement_Status__c</picklist>
+        <values>
+            <fullName>Engaged</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Highly Engaged</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Impact</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>HAM_Estate_Status__c</picklist>
+        <values>
+            <fullName>Claim Filed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Distribution Pending</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Distribution Received</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Open</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Industry</picklist>
+        <values>
+            <fullName>Accounting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Actuarial %2F Mathematics %2F Statistics</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Advertising</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Advocacy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Allied Health</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Alternative Medicine</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Animal Science %2F Zoology %2F Marine Science</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Anthropology %2F Archaeology</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Architecture</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Art %26 Entertainment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Art %2F Design</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Arts Administration</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Associations</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Audiology %2F Speech Pathology</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Banking</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bioinformatics %2F Biostatistics</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Biotechnology %2F Pharmaceuticals</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Botany %2F Forestry %2F Horticulture %2F Agriculture</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Broadcasting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Business</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chemistry</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chiropractic</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Communications</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Computer Science</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Consulting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Consumer Goods</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Corporate Finance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Data Science</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dentistry</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Digital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Education %26 Nonprofit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Education Administration</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Engineering</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Entrepreneurship</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Environmental</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Event Planning</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fashion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Finance %26 Consulting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Forensic Science</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Genetic Counseling</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Genetics %2F Microbiology</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Geosciences %2F Physics %2F Astronomy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerontology %26 Aging</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Government %26 Law</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Healthcare</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Higher Education</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Human Medicine</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Human Resources</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Law</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Library%2F Information Services</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lobbying</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Local%2C State%2C and Federal Government</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Manufacturing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mental Health</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Military</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Movie %2F Theater Production</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Museum</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Music</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Neuroscience</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nursing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nutrition %26 Dietetics</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Occupational Therapy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Operations</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Optometry</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Paralegal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pharmacy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Physical Therapy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Physician Assistant</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Podiatric Medicine</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy Research</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Politics</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Primary %2F Secondary Teaching</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Private Equity %2F Venture Capital %2F Investing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Public Health</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Public Relations</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Publishing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Real Estate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recreation %2F Sports</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recruiting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retail</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Social Entrepreneurship %2F Corporate Responsibility</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Social Work %26 Mental Health</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sports Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sports Medicine</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Technology</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Travel %2F Hospitality</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Veterinary Medicine</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Volunteer Programs</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wealth Management</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Ownership</picklist>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Private</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Public</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Subsidiary</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Rating</picklist>
+        <values>
+            <fullName>Cold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hot</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Warm</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Academic Organization</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Campus Organization</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Corporation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Donor-Advised Fund</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Foundation - Corporate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Foundation - Independent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Foundation - Personal%2FFamily</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hamilton Donor-Advised Fund</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Organization</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other Organization</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Religious Organization</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trust - Alumni</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trust - Parent</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>bt_stripe__Subscription_Status__c</picklist>
+        <values>
+            <fullName>Active</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Canceled</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>See Subscriptions</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trialing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unpaid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>past_due</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ucinn_ascendv2__Double_the_Donation_Matching_Status__c</picklist>
+        <values>
+            <fullName>Confirmed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suggested Match</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ucinn_ascendv2__Preferred_Address_Type__c</picklist>
+        <values>
+            <fullName>Billing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Business</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Seasonal</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ucinn_ascendv2__Preferred_Email_Type__c</picklist>
+        <values>
+            <fullName>Admission</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Business</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ucinn_ascendv2__Preferred_Phone_Type__c</picklist>
+        <values>
+            <fullName>Cell</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fax</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ucinn_ascendv2__Source_Unit__c</picklist>
+        <values>
+            <fullName>Alumni Association</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Athletic Department</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>College of Letters%2C Arts %26 Sciences</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cultural Relations and University Events</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Office of the President</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Office of the Provost</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School for Communications</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Accounting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Architecture</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Art and Design</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Business</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Cinematic Arts</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Dance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Dentistry</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Dramatic Arts</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Education</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Engineering</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Gerontology</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Law</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Medicine</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Music</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Pharmacy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Public Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Social Work</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>University Advancement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>University Hospital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>University Libraries</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>University Radio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>University Relations</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ucinn_ascendv2__Top_25_Prospect__c</picklist>
+        <values>
+            <fullName>Athletic Department</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Corporations Top 25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Foundations Top 25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Libraries</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Office of the Provost</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School for Communications</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Accounting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Architecture</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Art and Design</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Business</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Cinematic Arts</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Dance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Dentistry</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Dramatic Arts</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Education</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Engineering</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Gerontology</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Law</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Letters%2C Arts %26 Sciences</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Music</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Pharmacy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Public Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>School of Social Work</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>University Advancement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>University Advancement%3A NY Top 25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>University Advancement%3A Parents Top 25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>University Advancement%3A SF Top 25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>University Hospital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>University Relations</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Relate_to_Only_Constitutent_Or_Org</fullName>
+    <active>true</active>
+    <description>Proposal may only be related to either a constituent or organization.</description>
+    <errorConditionFormula>$Setup.ucinn_ascendv2__Bypass_Settings__c.ucinn_ascendv2__Bypass_Validation_Rules__c &lt;&gt; TRUE &amp;&amp; Account.Name &lt;&gt; null &amp;&amp; ucinn_ascendv2__Contact__c &lt;&gt; null &amp;&amp; RecordType.DeveloperName = &quot;Proposal&quot; &amp;&amp;
+RecordType.NamespacePrefix = &apos;ucinn_ascendv2&apos;</errorConditionFormula>
+    <errorMessage>A proposal may only be related to either a constituent or an organization.</errorMessage>
+</ValidationRule>

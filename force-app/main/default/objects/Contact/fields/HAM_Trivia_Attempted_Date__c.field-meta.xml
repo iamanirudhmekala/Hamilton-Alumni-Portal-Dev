@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Trivia_Attempted_Date__c</fullName>
+    <description>Captures the date when an user attempts the Hamilton Trivia in the Alumni Portal</description>
+    <inlineHelpText>Captures the date when an user attempts the Hamilton Trivia in the Alumni Portal</inlineHelpText>
+    <label>HAM Trivia Attempted Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

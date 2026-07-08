@@ -1,0 +1,45 @@
+<template>
+    <div class="full-width-wrapper">
+        <div class="directory-content">
+
+            <h1 class="page-title">{BuildAlumniCommunity}</h1>
+
+            <!-- Search -->
+            <div class="search-row">
+                <input type="text" class="search-input" placeholder="Search Connections..."/>
+                <button class="search-btn">
+                    <lightning-icon icon-name="utility:search" size="x-small" variant="inverse"></lightning-icon>
+                </button>
+            </div>
+
+            <!-- Tabs + Filters wrapper -->
+            <div class="component-container-main">
+                <div class="component-container-tabset">
+                    <template for:each={tabs} for:item="tab">
+                        <div key={tab.Id} class={tab.className} onclick={handleTabClick} data-tabname={tab.Label}>
+                            <span class="main-tab-heading">{tab.Label}</span>
+                        </div>
+                    </template>
+                </div>
+                <div class="main-tab-line"></div><br/>
+                <!-- Filters row -->
+                <div class="filters-row">
+                    <c-ham-directory-filters filters={filters}></c-ham-directory-filters>
+                </div><br/>
+                <template lwc:if={BuildYourCommunityTab}>
+                    <c-ham-overall-alumni-data alumnilist={directoryData}></c-ham-overall-alumni-data>
+                </template>
+                <template lwc:elseif={MyConnectionsTab}>
+                    <!---->
+                </template>
+                <template lwc:elseif={BookmarkedProfilesTab}>
+                    <!---->
+                </template>
+                <template lwc:if={ManageInvitationsTab}>                
+                    <!---->
+                </template>
+            </div>
+
+        </div>
+    </div>
+</template>

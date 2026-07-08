@@ -1,0 +1,114 @@
+<template>
+    <div class="tab-content">
+        <div class="section-header">
+            <div>
+                <div class="eyebrow">ucinn_ascendv2__Service_Indicator__c</div>
+                <h2 class="section-title">Partner-user activity only</h2>
+            </div>
+            <lightning-button
+                variant="neutral"
+                label="Refresh"
+                icon-name="utility:refresh"
+                onclick={handleRefresh}
+                disabled={isLoading}
+            ></lightning-button>
+        </div>
+        <div class="card-subnote" style="margin-bottom:16px;text-align:right;">
+            Filtered to User.UserType = PowerPartner (Hamilton Quad license) on either Created By or Last Modified By. Internal staff and batch activity are excluded.
+        </div>
+
+        <template if:true={hasError}>
+            <div class="error-banner">{errorMessage}</div>
+        </template>
+
+        <div class="kpi-row">
+            <template for:each={kpiTiles} for:item="tile">
+                <c-ham-quad-kpi-tile
+                    key={tile.label}
+                    label={tile.label}
+                    value={tile.value}
+                    sub={tile.sub}
+                    tone={tile.tone}
+                    big={tile.big}
+                ></c-ham-quad-kpi-tile>
+            </template>
+            <c-ham-quad-kpi-tile
+                label="Distinct indicator types touched"
+                value={distinctIndicatorCount}
+                tone="slate"
+            ></c-ham-quad-kpi-tile>
+        </div>
+
+        <div class="card" style="margin-bottom:20px;">
+            <div class="card-title">Activity by indicator type, last 30 days</div>
+            <div class="card-subnote">
+                Every one of these is a "Do Not Display / No Contact" style privacy preference — alumni managing their own
+                visibility settings on Hamilton Quad, not communication-log activity.
+            </div>
+            <div class="chart-wrap-tall">
+                <canvas lwc:ref="activityCanvas"></canvas>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom:20px;">
+            <div class="card-title">Top 10 indicator types per week</div>
+            <div class="card-subnote">Rolling 7-day windows, most recent week first.</div>
+
+            <template for:each={weeklyTopIndicators} for:item="week">
+                <div class="week-block" key={week.key}>
+                    <div class="week-block-title">{week.weekLabel}</div>
+                    <table class="status-table">
+                        <thead>
+                            <tr style="border-bottom:2px solid #0A2E5C;">
+                                <th style="text-align:left;padding:6px 8px;width:36px;">#</th>
+                                <th style="text-align:left;padding:6px 8px;">Indicator type</th>
+                                <th style="text-align:right;padding:6px 8px;">Created</th>
+                                <th style="text-align:right;padding:6px 8px;">Modified</th>
+                                <th style="text-align:right;padding:6px 8px;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={week.topIndicators} for:item="row">
+                                <tr key={row.key}>
+                                    <td style="padding:6px 8px;color:#5B6472;">{row.rank}</td>
+                                    <td style="padding:6px 8px;">{row.name}</td>
+                                    <td style="padding:6px 8px;text-align:right;">{row.created}</td>
+                                    <td style="padding:6px 8px;text-align:right;">{row.modified}</td>
+                                    <td style="padding:6px 8px;text-align:right;font-weight:700;color:#0A2E5C;">{row.total}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Latest activity (most recent 10 touches)</div>
+            <div class="card-subnote">
+                Type and action only — the specific alumni record touched is intentionally not shown here, to keep this an
+                analysis view rather than a record-level feed.
+            </div>
+            <table class="status-table">
+                <thead>
+                    <tr style="border-bottom:2px solid #0A2E5C;">
+                        <th style="text-align:left;padding:6px 8px;">Indicator type</th>
+                        <th style="text-align:left;padding:6px 8px;">Action</th>
+                        <th style="text-align:left;padding:6px 8px;">Date</th>
+                        <th style="text-align:left;padding:6px 8px;">Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={latestActivity} for:item="row">
+                        <tr key={row.key}>
+                            <td style="padding:7px 8px;">{row.indicatorName}</td>
+                            <td style="padding:7px 8px;"><span class={row.actionPillClass}>{row.action}</span></td>
+                            <td style="padding:7px 8px;color:#5B6472;">{row.activityDate}</td>
+                            <td style="padding:7px 8px;color:#5B6472;">{row.activityTimeOfDay}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

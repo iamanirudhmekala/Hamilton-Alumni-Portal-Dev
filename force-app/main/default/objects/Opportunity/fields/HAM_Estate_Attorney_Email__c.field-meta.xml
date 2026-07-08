@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Estate_Attorney_Email__c</fullName>
+    <description>Email address for the attorney representing the estate in legal and administrative matters.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Email address for the attorney handling the estate.</inlineHelpText>
+    <label>Estate Attorney Email</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Email</type>
+    <unique>false</unique>
+</CustomField>

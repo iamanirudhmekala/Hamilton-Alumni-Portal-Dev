@@ -1,0 +1,200 @@
+<template>
+    <div class={wrapperClass}>
+        <template lwc:if={showAffinities}>
+            <div class="card-service">
+                <div class="card-header-service" onclick={toggleAffinities}>
+                    <span>▲</span> {label.myAffinities}
+                </div>
+                <div class="card-body-service">
+                    <!-- Heading for affinities-->
+                    <h1 class="section-Titlelabel">{label.myaffinitySectinTitle}</h1>
+                    <template for:each={myAffinities} for:item="item">
+                        
+                        <div key={item.order} class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread slds-m-bottom_xx-small">
+                            <p class="section-label slds-m-bottom_none">{item.displaylabel}</p>
+                            
+                            <template lwc:if={item.showManageButton}>
+                                <button 
+                                    class="view-buttom" 
+                                    onclick={handleOpenModal}
+                                    data-type="Teams I Follow">
+                                    {label.affinityButtonTeamIFollow}
+                                </button>
+                            </template>
+
+                            <template lwc:if={item.teamsIPlayedOnButton}>
+                                <button 
+                                    class="view-buttom" 
+                                    onclick={handleOpenModal}
+                                    data-type="Teams I Played On">
+                                    {label.affinityButtonPlayedTeam}
+                                </button>
+                            </template>
+
+                            <template lwc:if={item.underGradOrgButton}>
+                                <button 
+                                    class="view-buttom" 
+                                    onclick={handleOpenModal}
+                                    data-type="My Undergraduate Organizations">
+                                    {label.affinityButtonUnderGOrg}
+                                </button>
+                            </template>
+                            
+                        </div>
+                        
+                        <!--Desktop Template -->
+                        <template lwc:if={isDesktopView}>
+                            <template lwc:if={item.displayValueList}>
+                                <ul key={item.order}>
+                                    <template for:each={item.displayValueList} for:item="value">
+                                        <li class="accordian-text-new" key={value}>{value}</li>
+                                    </template>
+                                </ul>
+                            </template>
+                            <template lwc:else>
+                                <p key={item.order} class="accordian-text-new">{item.displayValueText}</p>
+                            </template>
+                        </template>
+                        <!--Mobile Template -->
+                        <template lwc:if={isMobileView}>
+                            <template lwc:if={item.displayValueList}>
+                                <ul key={item.order}>
+                                    <template for:each={item.displayValueList} for:item="value">
+                                        <li class="accordian-text-new" key={value}>{value}</li>
+                                    </template>
+                                </ul>
+                            </template>
+                            <template lwc:else>
+                                <p key={item.order} class="accordian-text-new">{item.displayValueText}</p>
+                            </template>
+                            
+                        </template>
+
+                    </template>
+                </div>
+            </div>
+        </template>
+        <template lwc:else>
+            <div class="card-service collapsed-service" onclick={toggleAffinities}>
+                <div class="card-header-service"><span>▶</span> {label.myAffinities}</div>
+            </div>
+        </template>
+   
+   
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container modal">
+                
+                <header class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                    <h2 class="slds-text-align_center slds-text-heading_small"><Strong>{label.affinityTeamsIFollow}</Strong></h2>
+                    
+                    <button class="slds-button slds-button_icon slds-button_icon-inverse slds-button_icon-border-filled" title="Close" onclick={handleCloseModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium scrollable-modal-body" id="modal-content-id-1">
+                    <template lwc:if={isLoading}>
+                        <div class="slds-is-relative slds-p-around_large">
+                            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                    
+                    <div class="slds-grid slds-wrap">
+                        
+                        <!--Intrest search input-->
+                         <div class="search-container">
+                        <lightning-input 
+                            type="search"
+                            label=" "
+                            placeholder="Search..."
+                            onchange={handleInterestSearch}>
+                        </lightning-input>
+                         </div>
+
+                        <template for:each={interests} for:item="interest">
+                            <div key={interest.foundationInterestId} class="slds-col slds-size_1-of-1 slds-p-bottom_small">
+                                <div class="affinity-checkbox-row">
+                                    <input type="checkbox" class="affinity-checkbox" checked={interest.isChecked} name={interest.foundationInterestId} onchange={handleCheckboxChange} />
+                                    <label>{interest.foundationInterestName}</label>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    </template>
+                </div>
+
+                <footer class="slds-modal__footer slds-text-align_right">
+                    <button 
+                        class="view-buttom" 
+                        onclick={handleSave}>
+                    Done
+                    </button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+   <!-- Involment Modal-->
+    <template if:true={isPlayedTeamModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container modal">
+                
+                <header class="slds-modal__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                    <h2 class="slds-text-align_center slds-text-heading_small"><Strong>{dynamicModalTitle} </Strong></h2>
+                    
+                    <button class="slds-button slds-button_icon slds-button_icon-inverse slds-button_icon-border-filled" title="Close" onclick={handleCloseModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium scrollable-modal-body" id="modal-content-id-2">
+                    <template lwc:if={isLoading}>
+                        <div class="slds-is-relative slds-p-around_large">
+                            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                    
+                    <div class="slds-grid slds-wrap">
+
+                        <lightning-input 
+                            type="search"
+                            label=" "
+                            placeholder="Search..."
+                            onchange={handleSearch}>
+                        </lightning-input>
+                      
+                        <template lwc:if={involments.length}>
+                        <template for:each={involments} for:item="interest">
+                            <div key={interest.foundationInterestId} class="slds-col slds-size_1-of-1 slds-p-bottom_small">
+                                <div class="affinity-checkbox-row">
+                                    <input type="checkbox" class="affinity-checkbox" checked={interest.isChecked} name={interest.foundationInterestId} onchange={handleCheckboxChangeInvol} />
+                                    <label>{interest.foundationInterestName}</label>
+                                </div>
+                            </div>
+                        </template>
+                        </template>
+                        
+                    </div>
+                    </template>
+                </div>
+
+                <footer class="slds-modal__footer slds-text-align_right">
+                    <button 
+                        class="view-buttom" 
+                        onclick={handleSaveInvol}>
+                    Done
+                    </button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    </div>
+</template>

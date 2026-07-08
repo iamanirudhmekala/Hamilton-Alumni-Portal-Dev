@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Opp_Open_Stage__c</fullName>
+    <description>Stage name for newly created Opportunities.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The Opportunity stage name used when creating new Opportunities from registration (e.g. &apos;Value&apos;).</inlineHelpText>
+    <label>Opportunity Open Stage Name</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,57 @@
+<template>
+    <div class="ham-designation-step">
+        <button class="ham-back-btn" onclick={handleBack}>← Back to Amount</button>
+
+        <!-- Selected Summary -->
+        <template lwc:if={hasSelectedDesignations}>
+            <div class="ham-selected-box">
+                <div class="ham-selected-title">Selected Designations</div>
+                <div class="ham-selected-divider"></div>
+                <template for:each={_selectedDesignations} for:item="d">
+                    <div key={d.id} class="ham-selected-row">
+                        <span class="ham-selected-name">{d.name}</span>
+                        <span class="ham-selected-amount">${d.amount}</span>
+                    </div>
+                </template>
+            </div>
+            <div class="ham-total-box">Total gift: ${formattedTotal}</div>
+        </template>
+
+        <!-- Tabs -->
+        <div class="ham-tabs">
+            <button class={hamiltonTabClass} data-tab="hamilton" onclick={handleTabClick}>Hamilton Fund</button>
+            <button class={otherTabClass} data-tab="other" onclick={handleTabClick}>Other Designations</button>
+        </div>
+
+        <!-- Info — now shows live count and a warning when capped -->
+        <div class="ham-info-box">
+            {_selectedDesignations.length}/5 designations selected. Amounts split equally and are editable.
+            <template lwc:if={isMaxReached}> Maximum reached — remove one to add another.</template>
+        </div>
+
+        <!-- Tab Content -->
+        <template lwc:if={isHamiltonTab}>
+            <c-ham-review-hamilton-fund-tab
+                designations={_hamiltonDesignations}
+                selected-designations={_selectedDesignations}
+                is-max-reached={isMaxReached}
+                ondesignationselect={handleDesignationSelect}
+                onamountchange={handleAmountChange}>
+            </c-ham-review-hamilton-fund-tab>
+        </template>
+
+        <template lwc:if={isOtherTab}>
+            <c-ham-review-other-designations-tab
+                selected-designations={_selectedDesignations}
+                is-max-reached={isMaxReached}
+                ondesignationselect={handleDesignationSelect}
+                onamountchange={handleAmountChange}>
+            </c-ham-review-other-designations-tab>
+        </template>
+
+        <!-- Continue -->
+        <button class="ham-primary-btn" disabled={continueDisabled} onclick={handleContinue}>
+            Continue to Payment →
+        </button>
+    </div>
+</template>

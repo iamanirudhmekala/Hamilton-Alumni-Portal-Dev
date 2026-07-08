@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Content_Visibility__c</fullName>
+    <description>Controls content section visibility on event page.</description>
+    <inlineHelpText>Determines when the Content tab/section is visible on the event registration page.</inlineHelpText>
+    <label>Content Visibility</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Always</fullName>
+                <default>false</default>
+                <label>Always</label>
+            </value>
+            <value>
+                <fullName>Hide</fullName>
+                <default>false</default>
+                <label>Hide</label>
+            </value>
+            <value>
+                <fullName>Post-Registration</fullName>
+                <default>false</default>
+                <label>Post-Registration</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

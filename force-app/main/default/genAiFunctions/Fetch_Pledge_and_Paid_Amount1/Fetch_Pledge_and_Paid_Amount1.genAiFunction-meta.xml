@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Flow Updated with Messaging Id</description>
+    <developerName>Fetch_Pledge_and_Paid_Amount1</developerName>
+    <invocationTarget>Fetch_Pledge_and_Paid_Amount</invocationTarget>
+    <invocationTargetType>flow</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Fetch_Pledge_and_Paid_Amount1</localDeveloperName>
+    <masterLabel>Fetch Pledge and Paid Amount</masterLabel>
+    <progressIndicatorMessage>Getting Information about Fund details</progressIndicatorMessage>
+</GenAiFunction>

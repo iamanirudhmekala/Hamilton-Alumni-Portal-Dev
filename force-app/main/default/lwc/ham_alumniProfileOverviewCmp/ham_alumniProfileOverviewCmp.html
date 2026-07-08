@@ -1,0 +1,463 @@
+<template>
+    <div class={wrapperClass}>
+
+    <template lwc:if={isDesktopView}>
+        <div class="profile-page">
+
+            <div class="back-container" onclick={handleBack}>
+                <span class="back-arrow">‹</span>
+                <span class="back-text">Back</span>
+            </div>
+
+
+            <template lwc:if={profileOverviewData}>
+                <template for:each={profileOverviewData} for:item="alumni">
+                    <div class="profile-card" key={alumni.contactId}>
+
+                        <div class="profile-card-left-section">
+
+                            <template lwc:if={alumni.profilePictureUrl}>
+                                <img src={alumni.profilePictureUrl} class="profile-image" alt="Profile Picture" />
+                            </template>
+                            <template lwc:else>
+                                <div class="profile-icon-container">
+                                    <img src={hamicons.profileIcon} alt="user" />
+                                </div>
+                            </template>
+                            <!-- LEFT  -->
+                            <div class="social-icons">
+                                <a href="javascript:void(0);" onclick={handleSocialClick}
+                                    data-url={alumni.contactlinkedInUrl} class={linkedinClass}>
+                                    <!-- <img src={images.linkedinIcon} alt="LinkedIn" /> -->
+                                    <img src={hamicons.linkedin} alt="LinkedIn" />
+                                </a>
+
+                                <a href="javascript:void(0);" onclick={handleSocialClick} data-url={alumni.instagramUrl}
+                                    class={instaClass}>
+                                    <!-- <img src={images.lnstaIcon} alt="Instagram" /> -->
+                                    <img src={hamicons.instagram} alt="Instagram" />
+                                </a>
+
+                                <a href="javascript:void(0);" onclick={handleSocialClick} data-url={alumni.facebookUrl}
+                                    class={facebookClass}>
+                                    <!-- <img src={images.faceIcon} alt="Facebook" /> -->
+                                    <img src={hamicons.facebook} alt="Facebook" />
+                                </a>
+
+                                <a href="javascript:void(0);" onclick={handleSocialClick} data-url={alumni.twitterUrl}
+                                    class={twitterClass}>
+                                    <!-- <img src={images.twitterIcon} alt="Twitter" /> -->
+                                    <img src={hamicons.twitter} alt="Twitter" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="profile-card-right-section">
+                            <div class="info-section">
+                                <div class="header">
+                                    <div class="profile-info">
+                                        <h1 class="name name-with-badge">
+                                            <span class="name-text">
+                                                {alumni.contactName}
+                                                <template lwc:if={alumni.isKirklandAlumnae}>
+                                                    <img src={hamicons.kirklandLogo} alt="Kirkland Alumnae"
+                                                        title="Kirkland Alumnae" class="kirkland-badge profile-badge" />
+                                                </template>
+                                            </span>
+                                        </h1>
+                                        <template lwc:if={alumni.showClassOf}>
+                                            <p class="class-year">Class of <strong>{alumni.classYear}</strong></p>
+                                        </template>
+                                    </div>
+                                    
+                                    <template lwc:if={alumni.isDeseasedAlumnae}>
+                                        <button class="btn active"
+                                            onclick={handleNecrologyClick}
+                                            title={localLabel.necrologyHelpText}>
+                                            {localLabel.necrologyTitle}
+                                        </button>
+                                    </template>
+                                    <template lwc:else>
+                                        <template lwc:if={isNotCurrentUser}>
+                                            <template lwc:if={isIncomingRequest}>
+                                                <div class="request-buttons">
+                                                    <button class="btn active" data-name="Accept" onclick={handleButtonClick} title={buttonHover}>
+                                                    Accept
+                                                    </button>
+                                                    <button class="btn inactive" data-name="Reject" onclick={handleButtonClick} title={buttonHover}>
+                                                    Ignore
+                                                    </button>
+                                                </div>
+                                            </template>
+                                            <template lwc:else>
+                                                <template lwc:if={showConnectionButton}>
+                                                    <button class={computedButtonClass} data-name={buttonState} onclick={handleButtonClick}
+                                                        title={buttonHover} disabled={isButtonDisabled}>
+                                                        <template lwc:if={isSendIcon}>
+                                                            <img src={hamicons.person} />
+                                                        </template>
+                                                        {buttonState}
+                                                    </button>
+                                                </template>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </div>
+
+                                <hr class="horizontal-line" />
+
+                                <!-- Degree SECTIONS  -->
+                                <h3 class="my-content-title">{label.profileoverEduhistory}</h3>
+                                <!-- </strong> -->
+                                <template lwc:if={alumni.degreesfields}>
+                                    <template for:each={alumni.degreesfields} for:item="section">
+                                        <section key={section.label}>
+                                            <div class="row">
+                                                <span class="label">{section.label}</span>
+                                                <span class="value">{section.value}</span>
+                                            </div>
+
+                                        </section>
+                                    </template>
+                                </template>
+
+                                <hr class="horizontal-line" />
+
+                                <!-- SECTIONS  -->
+
+                                <h3 class="my-content-title">{label.personalinfo}</h3>
+
+                                <template lwc:if={alumni.personalInfofields}>
+                                    <template for:each={alumni.personalInfofields} for:item="section">
+                                        <template if:true={section.showField}>
+                                        <section key={section.label}>
+                                            <div class="row">
+                                                <!-- Email redirection tag -->
+                                                <template lwc:if={section.isEmail}>
+                                                     <span class="label">{section.label}</span>
+                                                     <span class="value">
+                                                        <a href={emailHref} >
+                                                            {section.value}
+                                                        </a>
+                                                    </span>
+                                                    
+                                                </template>
+                                                <template lwc:else>  
+                                                     <span class="label">{section.label}</span>
+                                                     <span class="value">{section.value}</span>
+                                                </template>
+                                                
+                                            </div>
+
+                                        </section>
+                                        </template>
+                                    </template>
+                                </template>
+
+                                <hr class="horizontal-line" />
+
+                                <!-- Address Details SECTIONS  -->
+                                <template if:false={alumni.isDeseasedAlumnae}>
+                                    <h3 class="my-content-title">{label.addressdetails}</h3>
+                                    <template lwc:if={alumni.addressDetailsfields}>
+                                        <template for:each={alumni.addressDetailsfields} for:item="section">
+                                            <section key={section.label}>
+                                                <div class="row">
+                                                    <span class="label">{section.label}</span>
+                                                    <span class="value">{section.value}</span>
+                                                </div>
+
+                                            </section>
+                                        </template>
+                                    </template>
+
+                                    <hr class="horizontal-line" />
+                                </template>
+
+
+                                <!-- Campus Life SECTIONS  -->
+                                <h3 class="my-content-title">{label.campuslife}</h3>
+                                <template lwc:if={alumni.campusLifefields}>
+                                    <template for:each={alumni.campusLifefields} for:item="section">
+                                       <template if:true={section.showField}>
+                                        <section key={section.label}>
+                                            <div class="row">
+                                                <span class="label">{section.label}</span>
+                                                <span class="value">{section.value}</span>
+                                            </div>
+
+                                        </section>
+                                        </template>
+                                    </template>
+                                </template>
+
+                            </div>
+                        </div>
+
+                        <!-- </div> -->
+
+                        <!-- </div>  -->
+                    </div>
+                </template>
+            </template>
+            <template lwc:else>
+                <div class="before-loading-empty-container"></div>
+            </template>
+        </div>
+    </template>
+
+    <template lwc:if={isMobileView}>
+
+        <div class="mobilepage">
+            <div class="back-container" onclick={handleBack}>
+                <span class="back-arrow">‹</span>
+                <span class="back-text">Back</span>
+            </div>
+
+            <template for:each={profileOverviewData} for:item="alumni">
+                <div key={alumni.contactId}>
+
+                    <!-- Profile Header -->
+                    <div class="mobile-profile-header">
+                        <div class="mobile-social-icons">
+                            <div>
+                                <template lwc:if={alumni.profilePictureUrl}>
+                                    <img src={alumni.profilePictureUrl} alt="Profile Picture" class="mobile-avatar" />
+                                </template>
+                                <template lwc:else>
+                                    <!-- <lightning-icon class="mobile-avatar" icon-name="standard:user"
+                                        size="large"></lightning-icon> -->
+                                    <div class="profile-icon-container">
+                                        <img src={hamicons.profileIcon} alt="user" />
+                                    </div>
+                                </template>
+                            </div>
+                                <div class="social-icons">
+                                <a href="javascript:void(0);" onclick={handleSocialClick}
+                                    data-url={alumni.contactlinkedInUrl} class={linkedinClass}>
+                                    <!-- <img src={images.linkedinIcon} alt="LinkedIn" /> -->
+                                    <img src={hamicons.linkedin} alt="LinkedIn" />
+                                </a>
+
+                                <a href="javascript:void(0);" onclick={handleSocialClick} data-url={alumni.instagramUrl}
+                                    class={instaClass}>
+                                    <!-- <img src={images.lnstaIcon} alt="Instagram" /> -->
+                                    <img src={hamicons.instagram} alt="Instagram" />
+                                </a>
+
+                                <a href="javascript:void(0);" onclick={handleSocialClick} data-url={alumni.facebookUrl}
+                                    class={facebookClass}>
+                                    <!-- <img src={images.faceIcon} alt="Facebook" /> -->
+                                    <img src={hamicons.facebook} alt="Facebook" />
+                                </a>
+
+                                <a href="javascript:void(0);" onclick={handleSocialClick} data-url={alumni.twitterUrl}
+                                    class={twitterClass}>
+                                    <!-- <img src={images.twitterIcon} alt="Twitter" /> -->
+                                    <img src={hamicons.twitter} alt="Twitter" />
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="mobile-header-text">
+
+                            <h1 class="mobile-name name-with-badge">
+                                <span class="name-text">
+                                    {alumni.contactName}
+                                    <template lwc:if={alumni.isKirklandAlumnae}>
+                                        <img src={hamicons.kirklandLogo} alt="Kirkland Alumnae" title="Kirkland Alumnae"
+                                            class="kirkland-badge profile-badge" />
+                                    </template>
+                                </span>
+                            </h1>
+                             <template lwc:if={alumni.showClassOf}>
+                                <p class="mobile-class">Class of <span>{alumni.classYear}</span></p>
+                             </template>
+                        </div>
+                    </div>
+
+                    
+
+                    <!-- Degree SECTIONS  -->
+                    <h3 class="my-content-title">{label.profileoverEduhistory}</h3>
+                    <!-- </strong> -->
+                    <template lwc:if={alumni.degreesfields}>
+                        <template for:each={alumni.degreesfields} for:item="section">
+                            <section key={section.label}>
+                                <div class="row">
+                                    <span class="label">{section.label}</span>
+                                    <span class="value">{section.value}</span>
+                                </div>
+
+                            </section>
+                        </template>
+                    </template>
+
+                    <hr class="horizontal-line" />
+
+                    <!-- Personal Information SECTIONS  -->
+                    <h3 class="my-content-title">{label.personalinfo}</h3>
+                    <template lwc:if={alumni.personalInfofields}>
+                        <template for:each={alumni.personalInfofields} for:item="section">
+                             <template if:true={section.showField}>
+                            <section key={section.label}>
+                                <div class="row">
+
+                                     <!-- Email redirection tag -->
+                                                <template lwc:if={section.isEmail}>
+                                                     <span class="label">{section.label}</span>
+                                                     <span class="value">
+                                                        <a href={emailHref} >
+                                                            {section.value}
+                                                        </a>
+                                                    </span>
+                                                    
+                                                </template>
+                                                <template lwc:else>
+                                                   <span class="label">{section.label}</span>
+                                                   <span class="value">{section.value}</span>
+                                                </template>
+                                    
+                                </div>
+
+                            </section>
+                             </template>
+                        </template>
+                    </template>
+
+                    <hr class="horizontal-line" />
+
+                    <!-- Address Details SECTIONS  -->
+                    <template if:false={alumni.isDeseasedAlumnae}>
+                        <h3 class="my-content-title">{label.addressdetails}</h3>
+                        <template lwc:if={alumni.addressDetailsfields}>
+                            <template for:each={alumni.addressDetailsfields} for:item="section">
+                                <section key={section.label}>
+                                    <div class="row">
+                                        <span class="label">{section.label}</span>
+                                        <span class="value">{section.value}</span>
+                                    </div>
+
+                                </section>
+                            </template>
+                        </template>
+
+                        <hr class="horizontal-line" />
+                    </template>
+
+                    <!-- Campus Life SECTIONS  -->
+                    <h3 class="my-content-title">{label.campuslife}</h3>
+                    <template lwc:if={alumni.campusLifefields}>
+                        <template for:each={alumni.campusLifefields} for:item="section">
+                             <template if:true={section.showField}>
+                            <section key={section.label}>
+                                <div class="row">
+                                    <span class="label">{section.label}</span>
+                                    <span class="value">{section.value}</span>
+                                </div>
+
+                            </section>
+                             </template>
+                        </template>
+                    </template>
+
+                    <!-- Bottom Action Buttons -->
+                    <div class="mobile-actions">
+                        <template lwc:if={alumni.isDeseasedAlumnae}>
+                            <button class="btn active"
+                                onclick={handleNecrologyClick}
+                                title={localLabel.necrologyHelpText}>
+                                {localLabel.necrologyTitle}
+                            </button>
+                        </template>
+                        <template lwc:else>
+                            <template lwc:if={isNotCurrentUser}>
+                                <template lwc:if={isIncomingRequest}>
+                                    <div class="request-buttons">
+                                        <button class="btn active" data-name="Accept" onclick={handleButtonClick} title={localLabel.acceptHoverText}>
+                                        Accept
+                                        </button>
+                                        <button class="btn inactive" data-name="Reject" onclick={handleButtonClick} title={localLabel.rejectHoverText}>
+                                        Ignore
+                                        </button>
+                                    </div>
+                                </template>
+                                <template lwc:else>
+                                    <template lwc:if={showConnectionButton}>
+                                        <button class={computedButtonClass} data-name={buttonState} onclick={handleButtonClick}
+                                            title={buttonHover} disabled={isButtonDisabled}>
+                                            <template lwc:if={isSendIcon}>
+                                                <img src={hamicons.person} />
+                                            </template>
+                                            {buttonState}
+                                        </button>
+                                    </template>
+                                </template>
+                            </template>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            
+        </div>
+    </template>
+
+    <!-- ADD PERSONALIZED MESSAGE MODAL -->
+    <template lwc:if={showRequestModal}>
+        <div class="modal-backdrop" onclick={closeRequestModal}></div>
+        <div class="modal-wrapper">
+            <div class="modal-container">
+                <!-- Close Button -->
+                <template lwc:if={isRequestModal}>
+                    <button class="close-button" onclick={closeRequestModal}>
+                        <img src={hamicons.close} alt="close" />
+                    </button>
+                </template>
+
+                <!-- Modal Title -->
+                <h2 class="modal-title">{modalHeader}</h2>
+
+                <!-- Text Area -->
+                <template lwc:if={isRequestModal}>
+                    <div class="textarea-wrapper">
+                        <textarea class="message-textarea" value={personalizedMessage} onchange={handleMessageChange}
+                            rows="4">
+                        </textarea>
+                    </div>
+                </template>
+                <template lwc:if={isInactiveUser}>
+                    <div class="custom-info-banner">
+                        <lightning-icon icon-name="utility:info" size="x-small" class="info-icon"></lightning-icon>
+                        <span>{localLabel.inActiveUserMessage}</span>
+                    </div>
+                </template>
+
+
+                <!-- Modal Footer Buttons -->
+                <div class="button-group">
+                    <template lwc:if={showPrimaryButton}>
+                        <button disabled={isInactiveUser} class={primaryButtonClass} onclick={handleRequest}
+                            data-name={modalPrimaryButton}>
+                            <template lwc:if={isRequestModal}>
+                                <img src={hamicons.person} alt="add" />
+                            </template>
+                            <span>{modalPrimaryButton}</span>
+                        </button>
+                    </template>
+
+                    <button disabled={isInactiveUser} class={secondaryButtonClass} onclick={handleRequest}
+                        data-name={modalSecondaryButton}>
+                        {modalSecondaryButton}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template lwc:if={showCustomToast}>
+        <c-ham_custom-toast-cmp title={toastTitle} message={toastMessage} variant={toastVariant}
+            duration={toastDuration} onclose={handleToastClose}>
+        </c-ham_custom-toast-cmp>
+    </template>
+
+    </div>
+</template>

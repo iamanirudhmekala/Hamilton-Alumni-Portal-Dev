@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active_Estates</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>ucinn_ascendv2__Contact__c</columns>
+    <columns>ucinn_ascendv2__Pledge_Gift_Account__c</columns>
+    <columns>HAM_Estate_Status__c</columns>
+    <columns>OPPORTUNITY.AMOUNT</columns>
+    <columns>HAM_Expected_Amount__c</columns>
+    <columns>HAM_Date_Notice_of_Death_Received__c</columns>
+    <columns>HAM_Date_Claim_Filed__c</columns>
+    <columns>HAM_Date_Distribution_Received__c</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>CORE.USERS.FULL_NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>notEqual</operation>
+        <value>Funded</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>notEqual</operation>
+        <value>Cancelled</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>notEqual</operation>
+        <value>Withdrawn</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>notEqual</operation>
+        <value>Written Off</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.Estate_Administration</value>
+    </filters>
+    <label>Active Estates</label>
+</ListView>

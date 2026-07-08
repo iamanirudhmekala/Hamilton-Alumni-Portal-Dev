@@ -1,0 +1,12 @@
+<template>
+    <div class="gift-amount-content">
+        <div class="custom-amount-engaging">
+            <div class="custom-amount-header">
+                <h3>Your Gift Amount</h3>
+            </div>
+            <div class="amount-input-wrapper-large"><span class="currency-symbol-large">$</span>
+                <input type="number" id="customAmount" min="5" placeholder="0" value={amount} oninput={handleAmountChange} max="999999"></div>
+        </div>
+        <div class="selected-amount-compact">Total: <strong>${formattedAmount}</strong></div>
+    </div>
+</template>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Pledge_Reminder_Preference__c</fullName>
+    <deprecated>false</deprecated>
+    <description>How the donor wishes to be reminded of the pledge</description>
+    <inlineHelpText>How the donor wishes to be reminded of the pledge</inlineHelpText>
+    <label>Pledge Reminder Preference</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Email</fullName>
+                <default>false</default>
+                <label>Email</label>
+            </value>
+            <value>
+                <fullName>Email and Mail</fullName>
+                <default>false</default>
+                <label>Email and Mail</label>
+            </value>
+            <value>
+                <fullName>Mail</fullName>
+                <default>false</default>
+                <label>Mail</label>
+            </value>
+            <value>
+                <fullName>Phone</fullName>
+                <default>false</default>
+                <label>Phone</label>
+            </value>
+            <value>
+                <fullName>Personal Visit</fullName>
+                <default>false</default>
+                <label>Personal Visit</label>
+            </value>
+            <value>
+                <fullName>Send to Third Party</fullName>
+                <default>false</default>
+                <label>Send to Third Party</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

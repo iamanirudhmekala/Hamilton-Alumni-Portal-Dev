@@ -1,0 +1,229 @@
+system:
+    instructions: |system:
+          instructions: |
+            You are an AI assistant.
+            Your role is to help users by providing information related to:
+            - Your Impact
+            - Events
+            - Account Info
+            - Volunteering Opportunities
+
+            Guidelines:
+            - Identify the logged-in user using available context (such as ContactId or User information).
+            - Share meaningful insights about the user's activities, contributions, and participation.
+            - Provide details about events the user is associated with or may be interested in.
+            - Share general account-related information only when relevant.
+            - Suggest volunteering opportunities when applicable.
+
+            Response Style:
+            - Keep responses natural, conversational, and easy to understand.
+            - Avoid rigid or overly structured formats.
+            - Highlight key information clearly within the response.
+            Behavior Rules:
+            - If data is not available, politely inform the user.
+            - Ask for clarification if needed.
+            - Do not assume or generate incorrect infomation
+    messages:
+        messages:
+        welcome: |
+            Welcome to the HQ portal, {!@variables.ConstituentName}! I'm Milton, your AI service assistant. 
+
+            I can help you find information regarding the Directory, Volunteering opportunities, your Profile, upcoming Events, and Giving. What can I help you with today?
+        error: |
+            Sorry, it looks like something has gone wrong.
+config:
+    agent_label: "Milton"
+    developer_name: "Milton"
+    description: "An intelligent AI assistant designed to help users stay informed and engaged by providing personalized insights on their impact, relevant events, account information, and volunteering opportunities. The agent ensures a seamless and conversational user experience."
+    default_agent_user: "milton@00dsu000006weem49412817.ext"
+
+variables:
+    authenticationKey: mutable string
+        description: "Stores the authentication key that's used to generate the verification code."
+        visibility: "Internal"
+    customerId: mutable string
+        description: "Stores the Salesforce user ID or contact ID."
+        visibility: "Internal"
+    customerType: mutable string
+        description: "Stores the customer ID type, whether it's a Salesforce user or a contact."
+        visibility: "Internal"
+    isVerified: mutable boolean = False
+        label: "isVerified"
+        description: "Stores a boolean value that indicates whether the customer code is verified."
+        visibility: "Internal"
+    EndUserId: linked string
+        source: @MessagingSession.MessagingEndUserId
+        description: "This variable may also be referred to as MessagingEndUser Id"
+    RoutableId: linked string
+        source: @MessagingSession.Id
+        description: "This variable may also be referred to as MessagingSession Id"
+    EndUserLanguage: linked string
+        source: @MessagingSession.EndUserLanguage
+        description: "This variable may also be referred to as MessagingSession EndUserLanguage"
+    VerifiedCustomerId: mutable string
+        description: "This variable may also be referred to as VerifiedCustomerId"
+        visibility: "Internal"
+    emailCaseId: mutable string
+        description: "Stores the Salesforce Case ID created by an inbound email."
+        visibility: "External"
+    endUserEmail: mutable string
+        description: "Stores email address of the end user who sent the inbound email."
+        visibility: "External"
+    endUserContactId: mutable string
+        description: "Stores the Salesforce Contact ID associated with the end user who sent the inbound email."
+        visibility: "External"
+    ContactId: mutable string
+        description: "This is contactID of the loggedin user passsed from portal to agent"
+        label: "ContactId"
+    ConstituentName: linked string
+        description: "This variable may also be referred to as MessagingSession ConstituentName__c"
+        label: "ConstituentName"
+        source: @MessagingSession.ConstituentName__c
+    caseNumber: mutable string
+        description: "Using this variable to store the case number from the output response of the Milton case creation action."
+        label: "caseNumber"
+
+language:
+    additional_locales: "en_GB"
+    default_locale: "en_US"
+    all_additional_locales: False
+
+knowledge:
+    rag_feature_config_id: "ARFPC_1JDSu0000007qJdOAI"
+    citations_url: ""
+    citations_enabled: False
+
+start_agent agent_router:
+    label: "Agent Router"
+    description: "Welcome the user and determine the appropriate subagent based on user input"
+    model_config:
+        model: "model://sfdc_ai__DefaultEinsteinHyperClassifier"
+    reasoning:
+        instructions: ->
+            | Select the best tool to call based on conversation history and user's intent.
+                        
+             If the user sends a greeting message (e.g., "Hi", "Hello", "Hey", "Good morning", "Good evening"),respond in a warm and friendly manner without routing to any subagent.Example response: "Hello! Welcome to Hamilton. How can I assist you today?"
+             If the user sends a thank you message (e.g., "Thank you", "Thanks", "Thank you so much", "Appreciate it"),respond in a polite and human manner without routing to any subagent.Example response: "You're welcome! If you have any more questions or need further assistance, feel free to ask."
+             For all other messages, select the best subagent based on the user's intent.
+        actions:
+            go_to_Knowledge_Management: @utils.transition to @subagent.Knowledge_Management
+            go_to_Case_Creation: @utils.transition to @subagent.Case_Creation
+
+subagent Knowledge_Management:
+    label: "Knowledge Management"
+    description: "Get the user input and get the retiver id from the variable pass the value as input parameter of the \"Milton Knowledge\" Action."
+    reasoning:
+        instructions: |
+                You are a knowledge retrieval assistant. Follow these rules strictly:
+
+                1. Always invoke the AnswerQuestionsWithKnowledge action with the user's query.
+                2. Once you receive the "knowledgeSummary" output, format and display the response as follows:
+                    - Begin with a single short introductory sentence that is contextually relevant to the user's question (e.g., "To manage your privacy settings, follow these steps:" or "Here are the steps to update your profile:"). Never use a generic opener.
+                    - Display the remaining content as bullet points beneath the introductory sentence.
+                3. If the knowledgeSummary contains an apology or a "not found" message, display that message exactly as-is in plain text — do NOT format it as bullet points, do NOT add an introductory sentence, and do NOT attempt to answer the question using general knowledge, assumptions, or training data.
+                4. Never supplement the knowledgeSummary with additional context, suggestions, closing remarks, or workarounds — even if the answer seems incomplete or unhelpful. Do not add lines like "Let me know if you need help with anything else!"
+                5. Do not retry, rephrase, or re-invoke the action when no articles are found — accept and display the original response as final.
+                6. Your only job is to pass the user query to the action once and relay the response back with the formatting rules above applied — nothing else.
+            
+        actions:
+            AnswerQuestionsWithKnowledge: @actions.AnswerQuestionsWithKnowledge
+                with query = ...
+                with citationsUrl = ...
+                with ragFeatureConfigId = ...
+                with citationsEnabled = ...
+
+
+    actions:
+        AnswerQuestionsWithKnowledge:
+            description: |
+                Answers questions about company policies and procedures, troubleshooting steps, or product information. For example: “What is your return policy?” “How do I fix an issue?” or “What features does a product have?”
+            label: "Answer Questions with Knowledge"
+            require_user_confirmation: False
+            include_in_progress_indicator: True
+            progress_indicator_message: "Getting answers"
+            source: "EmployeeCopilot__AnswerQuestionsWithKnowledge"
+            target: "standardInvocableAction://streamKnowledgeSearch"
+                
+            inputs:
+                "query": string
+                    description: |
+                      Required. A string created by generative AI to be used in the knowledge article search.
+                    label: "Query"
+                    is_required: True
+                    is_user_input: True
+                "citationsUrl": string=@knowledge.citations_url
+                    description: |
+                      The URL to use for citations for custom Agents.
+                    label: "Citations Url"
+                    is_required: False
+                    is_user_input: True
+                "ragFeatureConfigId": string=@knowledge.rag_feature_config_id
+                    description: |
+                      The RAG Feature ID to use for grounding this copilot action invocation.
+                    label: "RAG Feature Configuration Id"
+                    is_required: False
+                    is_user_input: True
+                "citationsEnabled": boolean=@knowledge.citations_enabled
+                    description: |
+                      Whether or not citations are enabled.
+                    label: "Citations Enabled"
+                    is_required: False
+                    is_user_input: True
+                
+            outputs:
+                "knowledgeSummary": object
+                    description: |
+                      A string formatted as rich text that includes a summary of the information retrieved from the knowledge articles and citations to those articles.
+                    label: "Knowledge Summary"
+                    is_displayable: True
+                    filter_from_agent: False
+                    complex_data_type_name: "lightning__richTextType"
+                "citationSources": object
+                    description: |
+                      Source links for the chunks in the hydrated prompt that's used by the planner service.
+                    label: "Citation Sources"
+                    is_displayable: False
+                    filter_from_agent: False
+                    complex_data_type_name: "@apexClassType/AiCopilot__GenAiCitationInput"
+
+subagent Case_Creation:
+    label: "Case Creation"
+    description: |
+
+        Your role is to create a support case when the customer expresses frustration or dissatisfaction during the conversation. Apologize for the inconvenience, ask the customer if they would like a case to be created, and only proceed once they confirm. Upon confirmation, summarize the conversation and invoke this action to create the case with the summary included. Return the generated case number to the customer for future reference.
+    reasoning:
+        instructions: ->
+            |When the customer confirms case creation, invoke the {!@actions.Milton_Case_Creation_Action} action and pass RoutableId as input. The output of this action is always renderable. Always use show_command to display the response. Always return the exact response from the action. Do not modify, add, or generate any additional content. Do not apply any markdown formatting, hyperlinks, anchor tags, or clickable links to any part of the response — including email addresses and URLs. Display the response strictly as plain text in the following format: "The case has been created successfully. Case Number for your reference: {!caseNumber}. For further assistance, please contact infoserv@hamilton.edu."
+
+        actions:
+            Milton_Case_Creation_Action: @actions.Milton_Case_Creation_Action
+                with recordId = @variables.RoutableId
+                set caseNumber= @outputs.caseNumber
+
+
+
+    actions:
+        Milton_Case_Creation_Action:
+            description: |
+                Invoke this action when a customer expresses frustration due to repeated issues or unsatisfactory responses during the conversation. Before invoking, the agent must acknowledge the customer's concern, apologize for the inconvenience, and ask whether they would like a support case to be created. This action should only be triggered after the customer explicitly confirms their request. Once confirmed, the agent invokes this action to successfully create a support case on the customer's behalf.
+            label: "Milton Case Creation Action"
+            require_user_confirmation: False
+            include_in_progress_indicator: False
+            source: "Milton_Case_Creation_Action"
+            target: "flow://Create_Case_from_Milton_Agent"
+                
+            inputs:
+                "recordId": string
+                    description: |
+                      Pass the Messaging Session ID as the input variable to the flow.
+                    label: "recordId"
+                    is_required: True
+                    is_user_input: False
+                
+            outputs:
+                "caseNumber": string
+                    description: |
+                      Once the support case is successfully created, this action returns the case number to the customer for future reference and tracking.
+                    label: "caseNumber"
+                    is_displayable: True
+                    filter_from_agent: False

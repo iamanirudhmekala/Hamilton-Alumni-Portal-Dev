@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_BT_Form_Submission_Answer__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Traceability lookup to the original Blackthorn form submission answer this record was migrated from. Will be empty once Blackthorn is decommissioned.</description>
+    <inlineHelpText>The original Blackthorn form submission answer this record was migrated from. Used for migration QC and validation only.</inlineHelpText>
+    <label>BT Form Submission Answer</label>
+    <referenceTo>conference360__Form_Submission_Answer__c</referenceTo>
+    <relationshipLabel>HAM Event Form Submission Answers</relationshipLabel>
+    <relationshipName>HAM_Event_Form_Submission_Answers_BT</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

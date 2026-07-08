@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Is_Trustee_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <formula>IF(
+OR(
+INCLUDES(ucinn_ascendv2__Contact_Type__c, &apos;Former Trustee&apos;),
+INCLUDES(ucinn_ascendv2__Contact_Type__c, &apos;Honorary Trustee&apos;),
+INCLUDES(ucinn_ascendv2__Contact_Type__c, &apos;Life Trustee&apos;),
+INCLUDES(ucinn_ascendv2__Contact_Type__c, &apos;Trustee Spouse&apos;),
+INCLUDES(ucinn_ascendv2__Contact_Type__c, &apos;Trustee Widow/er Spouse&apos;),
+INCLUDES(ucinn_ascendv2__Contact_Type__c, &apos;Voting Trustee&apos;)
+)
+,true,false)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Is Trustee</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

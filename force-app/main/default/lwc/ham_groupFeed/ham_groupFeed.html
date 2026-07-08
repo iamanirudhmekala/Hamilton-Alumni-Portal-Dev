@@ -1,0 +1,392 @@
+<template>
+    <div class={feedRootClass}>
+        <template lwc:if={showFilter}>
+        <!-- Search & Filter Bar -->
+        <div class="feed-filter-bar">
+            <div class="search-wrapper">
+                <input type="text" class="search-input" placeholder="Search posts..."
+                       value={searchTerm} oninput={handleSearchInput} onkeydown={handleSearchKeydown} />
+                <button type="button" class="search-btn" onclick={handleSearchClick} title="Search">
+                    <lightning-icon icon-name="utility:search" size="x-small" class="search-icon"></lightning-icon>
+                </button>
+            </div>
+
+            <div class="filter-controls">
+                <!-- Date Range Filter -->
+                <div class="filter-popover-wrapper">
+                    <button type="button" class={dateFilterButtonClass} onclick={toggleDatePopover}>
+                        <lightning-icon icon-name="utility:date_input" size="x-small" class="filter-btn-icon"></lightning-icon>
+                        <span>{dateRangeLabel}</span>
+                    </button>
+                    <template lwc:if={isDatePopoverOpen}>
+                        <div class="filter-popover date-popover" onclick={handlePopoverClick}>
+                            <div class="popover-field">
+                                <label>From</label>
+                                <input type="date" value={draftStartDate} onchange={handleDraftStartDateChange} />
+                            </div>
+                            <div class="popover-field">
+                                <label>To</label>
+                                <input type="date" value={draftEndDate} onchange={handleDraftEndDateChange} />
+                            </div>
+                            <div class="popover-actions">
+                                <button type="button" class="popover-btn-secondary" onclick={clearDateFilter}>Clear</button>
+                                <button type="button" class="popover-btn-primary" onclick={applyDateFilter}>Apply</button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- People (Author) Filter -->
+                <div class="filter-popover-wrapper">
+                    <button type="button" class={peopleFilterButtonClass} onclick={togglePeoplePopover}>
+                        <lightning-icon icon-name="utility:people" size="x-small" class="filter-btn-icon"></lightning-icon>
+                        <span>{peopleLabel}</span>
+                    </button>
+                    <template lwc:if={isPeoplePopoverOpen}>
+                        <div class="filter-popover people-popover" onclick={handlePopoverClick}>
+                            <button type="button" class="people-option" data-id="" data-name="" onclick={handleSelectAuthor}>
+                                All Members
+                            </button>
+                            <template lwc:if={hasPostAuthors}>
+                                <template for:each={postAuthors} for:item="author">
+                                    <button key={author.contactId} type="button" class="people-option"
+                                            data-id={author.contactId} data-name={author.name} onclick={handleSelectAuthor}>
+                                        {author.name}
+                                    </button>
+                                </template>
+                            </template>
+                            <template lwc:else>
+                                <p class="people-empty">No one has posted yet.</p>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Bookmarked Filter -->
+                <button type="button" class={bookmarkFilterButtonClass} onclick={toggleBookmarkFilter} title="Show bookmarked posts only">
+                    <lightning-icon icon-name="utility:bookmark" size="x-small" class="filter-btn-icon"></lightning-icon>
+                </button>
+            </div>
+        </div>
+        </template>
+
+        <template lwc:if={hasActiveFilters}>
+            <div class="active-filters-row">
+                <button type="button" class="clear-all-filters-btn" onclick={clearAllFilters}>Clear all filters</button>
+            </div>
+        </template>
+
+        <!-- Empty State -->
+        <template lwc:if={showEmptyState}>
+            <div class="feed-empty-state">No posts match your search or filters.</div>
+        </template>
+
+        <!-- Feed Post List -->
+        <template for:each={posts} for:item="post">
+            <article key={post.id} data-id={post.id} class={post.cssClass}>
+                
+                <!-- Flagged banner overlay for moderator deep links -->
+                <template lwc:if={isModeratorMode}>
+                    <template lwc:if={post.isTargeted}>
+                        <div class="moderator-flag-banner slds-p-horizontal_small slds-p-vertical_xx-small">
+                            <span class="flag-icon">⚠️</span> Flagged Content Under Review
+                        </div>
+                    </template>
+                </template>
+
+                <!-- Post Header -->
+                <div class="post-header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                    <div class="author slds-grid slds-grid_vertical-align-center">
+                        <template lwc:if={post.authorPhotoUrl}>
+                            <img src={post.authorPhotoUrl} alt={post.authorName} class="author-avatar" />
+                        </template>
+                        <template lwc:else>
+                            <div class="author-avatar author-avatar-fallback">
+                                <lightning-icon icon-name="standard:person_account" size="small"></lightning-icon>
+                            </div>
+                        </template>
+                        <div class="author-info slds-m-left_small">
+                            <h4 class="author-name">{post.authorName}</h4>
+                            <span class="post-time">{post.relativeTime}</span>
+                        </div>
+                    </div>
+                    <div class="actions slds-grid slds-grid_vertical-align-center">
+                        <!-- Pinned Indicator -->
+                        <template lwc:if={post.isPinned}>
+                            <span class="badge badge-pinned slds-m-right_small">
+                                <lightning-icon icon-name="utility:pin" size="x-small" class="badge-icon"></lightning-icon>
+                                Pinned
+                            </span>
+                        </template>
+                        <!-- Amplified Indicator -->
+                        <template lwc:if={post.isAmplified}>
+                            <span class="badge badge-amplified slds-m-right_small">
+                                <lightning-icon icon-name="utility:announcement" size="x-small" class="badge-icon"></lightning-icon>
+                                Featured
+                            </span>
+                        </template>
+                        <!-- Three-dot / Post Actions Menu -->
+                        <div class="kebab-wrapper">
+                            <button type="button" class="action-btn report-btn" data-post-id={post.id} onclick={toggleActionMenu} title="More Actions">
+                                <lightning-icon icon-name="utility:threedots_vertical" size="x-small"></lightning-icon>
+                            </button>
+                            <template lwc:if={post.isMenuOpen}>
+                                <div class="action-menu">
+                                    <template lwc:if={post.isOwnPost}>
+                                        <button type="button" class="action-menu-item" data-post-id={post.id} onclick={handleEditPost}>
+                                            <lightning-icon icon-name="utility:edit" size="x-small" class="menu-icon"></lightning-icon>
+                                            Edit Post
+                                        </button>
+                                    </template>
+                                    <button type="button" class="action-menu-item" data-post-id={post.id} onclick={openReportPostModal}>
+                                        <lightning-icon icon-name="utility:warning" size="x-small" class="menu-icon"></lightning-icon>
+                                        Report Message
+                                    </button>
+                                    <button type="button" class="action-menu-item" data-post-id={post.id} onclick={handleReportUser}>
+                                        <lightning-icon icon-name="utility:warning" size="x-small" class="menu-icon"></lightning-icon>
+                                        Report User
+                                    </button>
+                                    <template lwc:if={isAdmin}>
+                                        <button type="button" class="action-menu-item" data-post-id={post.id} onclick={handlePinPost}>
+                                            <lightning-icon icon-name="utility:pin" size="x-small" class="menu-icon"></lightning-icon>
+                                            {post.pinLabel}
+                                        </button>
+                                    </template>
+                                    <template lwc:if={isAdmin}>
+                                        <button type="button" class="action-menu-item" data-post-id={post.id} onclick={handleAmplifyPost}>
+                                            <lightning-icon icon-name="utility:announcement" size="x-small" class="menu-icon"></lightning-icon>
+                                            Amplify Post
+                                        </button>
+                                    </template>
+                                    <template lwc:if={post.canDelete}>
+                                        <button type="button" class="action-menu-item" data-post-id={post.id} onclick={handleDeletePost}>
+                                            <lightning-icon icon-name="utility:delete" size="x-small" class="menu-icon"></lightning-icon>
+                                            Delete Post
+                                        </button>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tags list -->
+                <template lwc:if={post.tags.length}>
+                    <div class="tags-container slds-m-top_small">
+                        <template for:each={post.tags} for:item="tag">
+                            <span key={tag} class="tag-badge">#{tag}</span>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- Post Body with Parsed Inline Media Links -->
+                <div class="post-body slds-m-vertical_medium">
+                    <template for:each={post.bodySegments} for:item="segment">
+                        <template lwc:if={segment.isText}>
+                            <p key={segment.content} class="body-text">{segment.content}</p>
+                        </template>
+                        <template lwc:if={segment.isVideo}>
+                            <div key={segment.embedUrl} class="video-wrapper slds-m-vertical_small">
+                                <iframe
+                                    src={segment.embedUrl}
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen
+                                    class="video-iframe">
+                                </iframe>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+
+                <!-- Post Actions Bar -->
+                <div class="post-actions-bar slds-grid slds-p-top_small border-top">
+                    <button type="button" class="interaction-btn" data-post-id={post.id} onclick={toggleComments}>
+                        <lightning-icon icon-name="utility:comments" size="x-small" class="btn-icon"></lightning-icon>
+                        {post.replyLabel}
+                    </button>
+                    <button type="button" class="interaction-btn bookmark-btn" data-post-id={post.id} onclick={toggleBookmark} title="Save Post">
+                        <lightning-icon
+                            icon-name={post.bookmarkIcon}
+                            size="x-small"
+                            class={post.bookmarkClass}>
+                        </lightning-icon>
+                        Bookmark
+                    </button>
+                </div>
+
+                <!-- Comments Drawer Section -->
+                <template lwc:if={post.isCommentsOpen}>
+                    <div class="comments-drawer slds-m-top_medium slds-p-around_small">
+                        <template lwc:if={post.isCommentsLoading}>
+                            <div class="comments-spinner slds-p-around_small slds-grid slds-grid_align-center">
+                                <lightning-spinner alternative-text="Loading Comments" size="small"></lightning-spinner>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                            <!-- List of Comments -->
+                            <div class="comments-list">
+                                <template for:each={post.comments} for:item="cmt">
+                                    <div key={cmt.commentId} data-comment-id={cmt.commentId} class={cmt.cssClass}>
+                                        <div class="comment-header slds-grid slds-grid_align-spread">
+                                            <div class="comment-author slds-grid slds-grid_vertical-align-center">
+                                                <template lwc:if={cmt.authorPhotoUrl}>
+                                                    <img src={cmt.authorPhotoUrl} alt={cmt.authorName} class="comment-avatar" />
+                                                </template>
+                                                <template lwc:else>
+                                                    <div class="comment-avatar comment-avatar-fallback">
+                                                        <lightning-icon icon-name="standard:person_account" size="xx-small"></lightning-icon>
+                                                    </div>
+                                                </template>
+                                                <span class="comment-author-name slds-m-left_x-small">{cmt.authorName}</span>
+                                            </div>
+                                            <div class="comment-meta slds-grid slds-grid_vertical-align-center">
+                                                <span class="comment-time slds-m-right_x-small">
+                                                    <lightning-formatted-date-time 
+                                                        value={cmt.createdDate} 
+                                                        month="short" 
+                                                        day="numeric" 
+                                                        hour="2-digit" 
+                                                        minute="2-digit">
+                                                    </lightning-formatted-date-time>
+                                                </span>
+                                                <!-- Edit Reply Button (own replies only) -->
+                                                <template lwc:if={cmt.isOwnComment}>
+                                                    <button type="button" class="action-btn-small action-btn-small-edit" data-comment-id={cmt.commentId} data-post-id={post.id} onclick={handleEditComment} title="Edit Reply">
+                                                        <lightning-icon icon-name="utility:edit" size="xx-small"></lightning-icon>
+                                                    </button>
+                                                </template>
+                                                <!-- Report Comment Button -->
+                                                <button type="button" class="action-btn-small" data-comment-id={cmt.commentId} onclick={openReportCommentModal} title="Report Comment">
+                                                    <lightning-icon icon-name="utility:flag" size="xx-small"></lightning-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="comment-body slds-m-top_xx-small">
+                                            <p class="comment-text">{cmt.body}</p>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                            
+                            <!-- Comment Input Form -->
+                            <div class="comment-composer slds-m-top_small slds-grid slds-grid_vertical-align-center">
+                                <textarea
+                                    class="comment-input"
+                                    placeholder="Write a reply... (Press Enter to post)"
+                                    data-post-id={post.id}
+                                    onkeydown={handleAddComment}
+                                    oninput={handleCommentInput}
+                                    rows="1">
+                                </textarea>
+                                <!-- @Mention suggestions while typing "@Name" in the reply box -->
+                                <template lwc:if={post.showMentionPopover}>
+                                    <ul class="mentionbox__list" role="listbox">
+                                        <template for:each={post.mentionSuggestions} for:item="sug">
+                                            <li key={sug.contactId}
+                                                class="mentionbox__option"
+                                                role="option"
+                                                data-post-id={post.id}
+                                                data-contact-id={sug.contactId}
+                                                data-name={sug.name}
+                                                onclick={handleSelectCommentMentionSuggestion}>
+                                                <span class="mentionbox__at">@</span>{sug.name}
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </article>
+        </template>
+
+        <!-- Keyset Pagination Load More -->
+        <template if:true={hasMore}>
+            <div class="load-more-container slds-grid slds-grid_align-center slds-m-top_medium">
+                <button class="btn-load-more" onclick={handleLoadMore} disabled={isLoading}>
+                    <template if:true={isLoading}>Loading...</template>
+                    <template if:false={isLoading}>Show More Activity</template>
+                </button>
+            </div>
+        </template>
+    </div>
+
+    <!-- Flag Content Moderation Report Modal -->
+    <template if:true={showReportModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open report-modal">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeReportModal}>
+                        <lightning-icon icon-name="utility:close" size="small" variant="inverse"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-modal__title slds-hyphenate">Report Inappropriate Content</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium report-modal-content">
+                    <p class="slds-m-bottom_medium modal-instructions">Please select the category that best describes why this content violates the community guidelines.</p>
+                    <lightning-combobox 
+                        name="reason" 
+                        label="Reason for reporting" 
+                        value={reportReason} 
+                        options={reportReasons} 
+                        onchange={handleReasonChange}>
+                    </lightning-combobox>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeReportModal}>Cancel</button>
+                    <button class="slds-button slds-button_brand btn-submit-report" onclick={submitReport}>Submit Report</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Edit Post / Edit Reply Modal -->
+    <template if:true={showEditModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open edit-modal">
+            <div class="slds-modal__container edit-modal-container">
+                <header class="edit-modal-header">
+                    <h2 class="edit-modal-title">{editModalTitle}</h2>
+                    <button type="button" class="edit-modal-close" title="Close" onclick={closeEditModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
+                </header>
+                <div class="edit-modal-body">
+                    <label class="edit-field-label" for="editContentField">Content</label>
+                    <textarea id="editContentField" class="edit-content-textarea" oninput={handleEditBodyChange} rows="6">{editBody}</textarea>
+
+                    <template lwc:if={isEditingPost}>
+                        <label class="edit-field-label" for="editTagsField">Tags (comma separated)</label>
+                        <input id="editTagsField" type="text" class="edit-tags-input" value={editTags} oninput={handleEditTagsChange} />
+                    </template>
+                </div>
+                <footer class="edit-modal-footer">
+                    <button type="button" class="edit-btn-cancel" onclick={closeEditModal} disabled={isSavingEdit}>Cancel</button>
+                    <button type="button" class="edit-btn-save" onclick={saveEdit} disabled={isSavingEdit}>{saveEditLabel}</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Delete Post Confirmation Modal -->
+    <template if:true={showDeleteConfirm}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open delete-confirm-modal">
+            <div class="slds-modal__container delete-confirm-container">
+                <header class="delete-confirm-header">
+                    <h2 class="delete-confirm-title">Delete Post?</h2>
+                </header>
+                <div class="delete-confirm-body">
+                    <p class="delete-confirm-text">Are you sure you want to delete this post? This action cannot be undone and the author will be notified.</p>
+                </div>
+                <footer class="delete-confirm-footer">
+                    <button type="button" class="edit-btn-cancel" onclick={closeDeleteConfirm}>Cancel</button>
+                    <button type="button" class="delete-confirm-btn" onclick={confirmDeletePost}>Delete Post</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

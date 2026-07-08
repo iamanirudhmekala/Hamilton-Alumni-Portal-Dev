@@ -1,0 +1,1158 @@
+.filters-bar {
+    display: flex;
+    align-items: center;
+    width: auto;
+}
+
+.filters-row {
+    width: 100%;
+}
+
+.filters-left {
+    flex: 0 0 auto;
+}
+
+/* Filters stay left */
+.filters-container {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;              
+}
+
+/* Toggle container */
+.view-toggle {
+    display: flex;
+    margin-left: auto;
+    background: #ffffff;
+    border: 1px solid #d8dde6;
+    border-radius: 12px;
+    padding: 4px;
+    gap: 4px;
+}
+
+.view-toggle button {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: width 0.25s ease, background-color 0.25s ease;
+}
+
+/* ICON size */
+.view-toggle button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* ACTIVE */
+.view-toggle .active {
+    width: 64px;           
+    background: #002f86;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* White icons on active */
+.view-toggle .active img {
+    filter: brightness(0) invert(1);
+}
+
+/* Check icon */
+.check-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    transform: scale(0.7);    
+    transform-origin: center;
+}
+
+.view-toggle img,
+.check-icon {
+    flex-shrink: 0;
+}
+
+/* Pill */
+.filter-pill {
+    position: relative;
+    display: inline-flex;      
+    /* flex: 0 0 auto;           
+    width: fit-content; */
+}
+
+/* Input pill */
+.pill-wrapper {
+    position: relative;
+    display: inline-flex;       
+}
+
+.pill-input {
+    height: 34px;               
+    padding: 0 22px 0 12px;    
+
+    border-radius: 999px;
+    border: 1px solid #cfd7e3;
+    background-color: #ffffff;
+
+    font-size: 1rem;
+    font-weight: 400;
+    color: #1f2937;
+
+    cursor: pointer;
+
+    width: 180px;
+}
+
+
+
+/* Hover */
+.pill-input:hover {
+    background: #f4f6f9;
+}
+
+.filters-container .pill-input {
+    height: 34px;
+    padding: 0 22px 0 12px;
+
+    /* width: auto;
+    min-width: max-content; */
+    white-space: nowrap;
+}
+
+.modal-filters-grid .pill-input {
+    height: 44px;              
+    padding: 0 44px 0 16px;
+
+    border-radius: 999px;
+    border: 1px solid #cfd7e3;
+    background: #ffffff;
+
+    /* font-size: 14px; */
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+/* Icon wrapper */
+.icon-wrapper {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Dropdown icon layering */
+.outer-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.inner-icon {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+}
+
+/* Dropdown */
+.dropdown {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    min-width: 240px;
+    max-height: 260px;
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid #d8dde6;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.16);
+    z-index: 1000;
+}
+
+/* Dropdown items */
+.dropdown-item {
+    padding: 10px 14px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background: #f4f6f9;
+}
+
+.dropdown-empty {
+    padding: 12px;
+    color: #888;
+    font-size: 13px;
+}
+
+.dropdown-search {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.dropdown-search input {
+    width: 100%;
+    height: 32px;
+    padding: 0 10px;
+    font-size: 13px;
+    border-radius: 6px;
+    border: 1px solid #d8dde6;
+}
+
+/* Spinner */
+.spinner {
+    height: 12rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ================= MORE FILTERS MODAL ================= */
+
+.more-filters-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.more-filters-modal {
+    background: #ffffff;
+    width: 640px;
+    max-width: 90%;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+}
+
+/* Header */
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f4f4f4;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Grid */
+.modal-filters-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.modal-filters-grid .pill-input {
+    width: 100%;
+}
+
+/* Footer */
+.modal-actions {
+    display: flex;
+    gap: 16px;
+}
+
+.apply-btn {
+    flex: 1;
+    height: 44px;
+    border-radius: 10px;
+    background: #002f86;
+    color: #ffffff;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.clear-btn {
+    flex: 1;
+    height: 44px;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #002f86;
+    border: 2px solid #002f86;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.checkbox-item input {
+    margin-top: 4px;
+    cursor: pointer;
+}
+
+.checkbox-item span {
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+.modal-filters-grid .filter-pill {
+    display: block !important;
+    width: 100% !important;
+}
+
+/* ==========================================
+   MOBILE FILTER STYLES - Full Screen with Slide Up
+   Only applies to screens smaller than 1024px
+   ========================================== */
+
+@media (max-width: 1024px) {
+
+    /* Custom Checkbox for Mobile View */
+    .mobile-checkbox-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        cursor: pointer;
+        border-bottom: 1px solid #e5e5e5;
+        transition: background-color 0.15s ease;
+    }
+
+    .mobile-checkbox-item:hover {
+        background-color: #f5f5f5;
+    }
+
+    .mobile-checkbox-item:active {
+        background-color: #e8e8e8;
+    }
+
+    .custom-checkbox {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        border: 2px solid #767676;
+        border-radius: 4px;
+        margin-right: 12px;
+        background-color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        color: transparent;
+        transition: all 0.15s ease;
+    }
+
+    .custom-checkbox.checked {
+        background-color: #0176d3;
+        border-color: #0176d3;
+        color: #fff;
+    }
+
+    .mobile-checkbox-label {
+        flex: 1;
+        font-size: 14px;
+        color: #181818;
+        line-height: 1.4;
+        word-break: break-word;
+    }
+
+    /* Year Chips Container */
+    .year-chips-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px;
+    }
+
+    .year-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 16px;
+        border: 1px solid #d8d8d8;
+        border-radius: 20px;
+        background-color: #fff;
+        font-size: 14px;
+        color: #181818;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        min-width: 60px;
+    }
+
+    .year-chip:hover {
+        border-color: #0176d3;
+        background-color: #f0f7ff;
+    }
+
+    .year-chip-selected {
+        background-color: #0176d3;
+        border-color: #0176d3;
+        color: #fff;
+    }
+
+    .year-chip-selected:hover {
+        background-color: #014486;
+        border-color: #014486;
+    }
+
+    /* Mobile Filter Options List */
+    .mobile-options-list {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .mobile-no-options {
+        padding: 24px;
+        text-align: center;
+        color: #706e6b;
+        font-size: 14px;
+    }
+
+    /* Mobile Search Box */
+    .mobile-search-box {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-bottom: 1px solid #e5e5e5;
+        background-color: #f7f7f7;
+    }
+
+    .mobile-search-icon {
+        margin-right: 8px;
+        color: #706e6b;
+    }
+
+    .mobile-search-input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: 14px;
+        outline: none;
+        padding: 8px 0;
+    }
+
+    .mobile-search-input::placeholder {
+        color: #706e6b;
+    }
+
+    /* Mobile Filter Sidebar */
+    .mobile-filter-sidebar {
+        width: 140px;
+        min-width: 140px;
+        background-color: #f7f7f7;
+        border-right: 1px solid #e5e5e5;
+        overflow-y: auto;
+    }
+
+    .sidebar-filter-item {
+        padding: 14px 12px;
+        font-size: 13px;
+        color: #444;
+        cursor: pointer;
+        border-bottom: 1px solid #e5e5e5;
+        transition: background-color 0.15s ease;
+    }
+
+    .sidebar-filter-item:hover {
+        background-color: #eee;
+    }
+
+    .sidebar-filter-item.active {
+        background-color: #fff;
+        color: #0176d3;
+        font-weight: 600;
+        border-right: 3px solid #0176d3;
+    }
+
+    .sidebar-filter-label {
+        display: block;
+        line-height: 1.3;
+    }
+
+    /* Mobile Filter Container */
+    .mobile-filter-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background-color: #fff;
+    }
+
+    .mobile-filter-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        border-bottom: 1px solid #e5e5e5;
+        background-color: #1b3a5c;
+    }
+
+    .mobile-filter-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #fff;
+        margin: 0;
+    }
+
+    .mobile-close-btn {
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        color: #fff;
+        cursor: pointer;
+        padding: 4px 8px;
+    }
+
+    .mobile-filter-body {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    .mobile-filter-options {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .mobile-filter-footer {
+        display: flex;
+        gap: 12px;
+        padding: 16px;
+        border-top: 1px solid #e5e5e5;
+        background-color: #fff;
+    }
+
+    .mobile-clear-btn {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #d8d8d8;
+        border-radius: 4px;
+        background-color: #fff;
+        color: #181818;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .mobile-apply-btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        background-color: #0176d3;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .mobile-apply-btn:hover {
+        background-color: #014486;
+    }
+
+    .mobile-select-prompt {
+        padding: 24px;
+        text-align: center;
+        color: #706e6b;
+        font-size: 14px;
+    }
+    
+    /* Loading Overlay */
+    .mobile-filter-loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10001;
+    }
+
+    /* Spinner */
+    .mobile-filter-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #e5e5e5;
+        border-top-color: #002D72;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Mobile Filter Container - Full Screen */
+    .mobile-filter-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        background-color: #ffffff;
+        z-index: 10000;
+        overflow: hidden;
+    }
+
+    /* Slide Up Animation */
+    .mobile-filter-slide-up {
+        animation: slideUpIn 0.3s ease-out forwards;
+    }
+
+    @keyframes slideUpIn {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Slide Down Animation for closing */
+    .mobile-filter-slide-down {
+        animation: slideDownOut 0.3s ease-in forwards;
+    }
+
+    @keyframes slideDownOut {
+        from {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+    }
+
+    /* Mobile Header */
+    .mobile-filter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        border-bottom: 1px solid #e5e5e5;
+        background-color: #ffffff;
+        flex-shrink: 0;
+    }
+
+    .mobile-filter-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin: 0;
+    }
+
+    .mobile-close-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
+        background-color: #002D72;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+        padding: 0;
+    }
+
+    .mobile-close-btn:hover {
+        background-color: #001f4f;
+    }
+
+    .mobile-close-btn:focus {
+        outline: 2px solid #002D72;
+        outline-offset: 2px;
+    }
+
+    .mobile-close-btn .close-icon {
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 1;
+    }
+
+    /* Mobile Body - Split Panel Layout */
+    .mobile-filter-body {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    /* Left Sidebar - Filter Categories */
+    .mobile-filter-sidebar {
+        width: 35%;
+        max-width: 140px;
+        min-width: 100px;
+        background-color: #f8f9fa;
+        border-right: 1px solid #e5e5e5;
+        overflow-y: auto;
+        flex-shrink: 0;
+    }
+
+    .sidebar-filter-item {
+        padding: 14px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #333333;
+        cursor: pointer;
+        border-left: 3px solid transparent;
+        transition: all 0.2s ease;
+        word-wrap: break-word;
+        line-height: 1.3;
+        background-color: transparent;
+    }
+
+    .sidebar-filter-item:hover {
+        background-color: #e9ecef;
+    }
+
+    .sidebar-filter-item.active {
+        background-color: #ffffff;
+        border-left-color: #002D72;
+        color: #002D72;
+        font-weight: 600;
+    }
+
+    .sidebar-filter-label {
+        display: block;
+    }
+
+    /* Right Panel - Filter Options */
+    .mobile-filter-options {
+        flex: 1;
+        padding: 12px 16px;
+        overflow-y: auto;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Mobile Search Box */
+    .mobile-search-box {
+        display: flex;
+        align-items: center;
+        background-color: #f5f5f5;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 8px 12px;
+        margin-bottom: 12px;
+        flex-shrink: 0;
+    }
+
+    .mobile-search-icon {
+        flex-shrink: 0;
+        margin-right: 8px;
+        --lwc-colorTextIconDefault: #6b7280;
+    }
+
+    .mobile-search-input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: 14px;
+        outline: none;
+        color: #333;
+    }
+
+    .mobile-search-input::placeholder {
+        color: #9ca3af;
+    }
+
+    /* Options List */
+    .mobile-options-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    /* Checkbox Items */
+    .mobile-checkbox-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 8px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.15s ease;
+    }
+
+    .mobile-checkbox-item:hover {
+        background-color: #f3f4f6;
+    }
+
+    .mobile-checkbox {
+        width: 18px;
+        height: 18px;
+        margin-right: 12px;
+        cursor: pointer;
+        accent-color: #002D72;
+        flex-shrink: 0;
+    }
+
+    .mobile-checkbox-label {
+        font-size: 14px;
+        color: #374151;
+        line-height: 1.4;
+        word-break: break-word;
+    }
+
+    /* ==========================================
+       YEAR CHIPS STYLES
+       ========================================== */
+
+    .year-chips-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 4px 0;
+    }
+
+    .year-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 52px;
+        padding: 8px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #002D72;
+        background-color: #ffffff;
+        border: 1.5px solid #002D72;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none;
+    }
+
+    .year-chip:hover {
+        background-color: #f0f4ff;
+    }
+
+    .year-chip-selected {
+        color: #ffffff;
+        background-color: #002D72;
+        border-color: #002D72;
+    }
+
+    .year-chip-selected:hover {
+        background-color: #001f4f;
+        border-color: #001f4f;
+    }
+
+    /* Empty/Prompt States */
+    .mobile-no-options,
+    .mobile-select-prompt {
+        padding: 20px;
+        text-align: center;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    /* More Options Hint */
+    .mobile-more-options-hint {
+        padding: 12px 8px;
+        text-align: center;
+        color: #6b7280;
+        font-size: 12px;
+        font-style: italic;
+        border-top: 1px dashed #e5e5e5;
+        margin-top: 8px;
+    }
+
+    /* Mobile Footer */
+    .mobile-filter-footer {
+        display: flex;
+        gap: 12px;
+        padding: 16px 20px;
+        border-top: 1px solid #e5e5e5;
+        background-color: #ffffff;
+        flex-shrink: 0;
+    }
+
+    .mobile-clear-btn {
+        flex: 1;
+        padding: 12px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #002D72;
+        background-color: #ffffff;
+        border: 2px solid #002D72;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .mobile-clear-btn:hover {
+        background-color: #f0f4ff;
+    }
+
+    .mobile-clear-btn:focus {
+        outline: 2px solid #002D72;
+        outline-offset: 2px;
+    }
+
+    .mobile-apply-btn {
+        flex: 1;
+        padding: 12px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #ffffff;
+        background-color: #002D72;
+        border: 2px solid #002D72;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .mobile-apply-btn:hover {
+        background-color: #001f4f;
+        border-color: #001f4f;
+    }
+
+    .mobile-apply-btn:focus {
+        outline: 2px solid #002D72;
+        outline-offset: 2px;
+    }
+
+    /* Scrollbar Styling for Mobile */
+    .mobile-filter-sidebar::-webkit-scrollbar,
+    .mobile-filter-options::-webkit-scrollbar,
+    .mobile-options-list::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .mobile-filter-sidebar::-webkit-scrollbar-track,
+    .mobile-filter-options::-webkit-scrollbar-track,
+    .mobile-options-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .mobile-filter-sidebar::-webkit-scrollbar-thumb,
+    .mobile-filter-options::-webkit-scrollbar-thumb,
+    .mobile-options-list::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 2px;
+    }
+
+    .mobile-filter-sidebar::-webkit-scrollbar-thumb:hover,
+    .mobile-filter-options::-webkit-scrollbar-thumb:hover,
+    .mobile-options-list::-webkit-scrollbar-thumb:hover {
+        background: #a1a1a1;
+    }
+
+}
+
+/* Extra small screens - inside main media query */
+@media (max-width: 360px) {
+    .mobile-filter-sidebar {
+        width: 30%;
+        max-width: 100px;
+        min-width: 80px;
+    }
+    
+    .sidebar-filter-item {
+        padding: 12px 8px;
+        font-size: 11px;
+    }
+    
+    .mobile-checkbox-label {
+        font-size: 13px;
+    }
+    
+    .mobile-filter-footer {
+        padding: 12px 16px;
+        gap: 8px;
+    }
+    
+    .mobile-clear-btn,
+    .mobile-apply-btn {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .year-chip {
+        min-width: 46px;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+/* Landscape mobile */
+@media (max-width: 1024px) and (max-height: 500px) and (orientation: landscape) {
+    .mobile-filter-header {
+        padding: 10px 16px;
+    }
+    
+    .mobile-filter-footer {
+        padding: 10px 16px;
+    }
+    
+    .sidebar-filter-item {
+        padding: 10px 10px;
+    }
+}
+
+
+.selected-badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem; /* Space between pills */
+    padding: 0.5rem 0;
+}
+
+.selected-badge-pill {
+    display: flex;
+    align-items: center;
+    background-color: #E3F2FD; /* Light blue background matching Figma */
+    color: #003366; /* Dark blue text */
+    padding: 0.25rem 0.75rem;
+    border-radius: 16px; /* Pill shape */
+    font-size: 13px;
+    font-family: inherit;
+}
+
+.selected-badge-pill strong {
+    font-weight: 700;
+    margin-right: 4px;
+}
+
+.badge-close-btn {
+    background: transparent;
+    border: none;
+    color: #003366;
+    margin-left: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.badge-close-btn:hover {
+    opacity: 0.7;
+}
+
+
+/* Base styles from before */
+.selected-badges-row {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+.selected-badge-pill {
+    display: flex;
+    align-items: center;
+    background-color: #E3F2FD;
+    color: #003366;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px; /* More rounded to match the new Figma */
+    font-size: 13px;
+    /*white-space: nowrap; /* Prevents text inside the pill from wrapping */
+}
+
+.selected-badge-pill strong {
+    font-weight: 700;
+    margin-right: 4px;
+}
+
+/* ── Kirkland Override ───────────────────────────────────────── */
+/* Desktop */
+.kirkland-override input[type="checkbox"] {
+accent-color: #166837 !important;
+}
+.kirkland-override .apply-btn { background: #166837 !important; }
+.kirkland-override .clear-btn { color: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .selected-badge-pill { background-color: #EDFCF3 !important; color: #166837 !important; }
+.kirkland-override .badge-close-btn { color: #166837 !important; }
+/* Mobile */
+.kirkland-override .custom-checkbox.checked { background-color: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .year-chip { color: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .year-chip:hover { border-color: #166837 !important; background-color: #EDFCF3 !important; }
+.kirkland-override .year-chip-selected { background-color: #166837 !important; border-color: #166837 !important; color: #fff !important; }
+.kirkland-override .sidebar-filter-item.active { color: #166837 !important; border-left-color: #166837 !important; border-right-color: #166837 !important; }
+.kirkland-override .mobile-close-btn { background-color: #166837 !important; }
+.kirkland-override .mobile-close-btn:hover { background-color: #12592c !important; }
+.kirkland-override .mobile-apply-btn { background-color: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .mobile-apply-btn:hover { background-color: #12592c !important; border-color: #12592c !important; }
+.kirkland-override .mobile-clear-btn { color: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .mobile-checkbox { accent-color: #166837; }
+
+/* Mobile-Specific Overrides */
+@media screen and (max-width: 1023px) {
+    .mobile-badges-row {
+        /* This allows the pills to scroll horizontally on phones */
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        
+        /* Hides the scrollbar for a cleaner look but keeps functionality */
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    
+.kirkland-override .year-chip:hover { border-color: #166837 !important; background-color: #166837 !important; }
+    
+    .mobile-badges-row::-webkit-scrollbar {
+        display: none; /* Chrome, Safari and Opera */
+    }
+}
+
+.sidebar-filter-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.kirkland-override .sidebar-filter-count {
+    background: #1a7f37 !important;   /* match your Apply/green theme */
+}
+.sidebar-filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    margin-left: 6px;
+    border-radius: 9px;
+    background: #002D72;   /* match your Apply/green theme */
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1;
+    flex-shrink: 0;
+}

@@ -1,0 +1,139 @@
+<template>
+    <div class="dashboard-wrapper">
+
+        <!-- Toolbar -->
+        <div class="dashboard-toolbar">
+            <template lwc:if={isEditMode}>
+                <div class="toolbar-edit">
+                    <span class="toolbar-title">Customize Dashboard</span>
+                    <div class="toolbar-actions">
+                        <lightning-button label="Reset to Default" onclick={handleResetDefault}></lightning-button>
+                        <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+                        <lightning-button label="Save" variant="brand" onclick={handleSave}></lightning-button>
+                    </div>
+                </div>
+            </template>
+            <template lwc:else>
+                <lightning-button-icon
+                    icon-name="utility:settings"
+                    alternative-text="Customize Dashboard"
+                    title="Customize Dashboard"
+                    variant="border-filled"
+                    onclick={handleCustomize}>
+                </lightning-button-icon>
+            </template>
+        </div>
+
+        <div class={dashboardContainerClass}>
+
+            <!-- Widget grid -->
+            <div class="widgets-grid">
+                <template for:each={visibleWidgets} for:item="widget">
+                    <div
+                        key={widget.id}
+                        class={widget.cardClass}
+                        data-id={widget.id}
+                        draggable={draggableStr}
+                        ondragstart={handleDragStart}
+                        ondragover={handleDragOver}
+                        ondrop={handleDrop}
+                        ondragend={handleDragEnd}
+                        ondragleave={handleDragLeave}>
+
+                        <!-- Widget header -->
+                        <div class={widget.headerClass}>
+
+                            <!-- Edit mode: order badge + drag handle -->
+                            <template lwc:if={isEditMode}>
+                                <span class="order-badge">{widget.orderNum}</span>
+                                <lightning-icon icon-name="utility:drag_and_drop" size="x-small" class="drag-handle"></lightning-icon>
+                            </template>
+
+                            <span class="widget-header-title">{widget.label}</span>
+
+                            <!-- Edit mode: size toggle + remove + collapse toggle -->
+                            <template lwc:if={isEditMode}>
+                                <div class="size-toggle">
+                                    <button class={widget.sizeQuarterClass}  data-id={widget.id} data-size="quarter"   title="25%"  onclick={handleResize}>¼</button>
+                                    <button class={widget.sizeHalfClass}     data-id={widget.id} data-size="half"      title="50%"  onclick={handleResize}>½</button>
+                                    <button class={widget.sizeThreeQtrClass} data-id={widget.id} data-size="three-qtr" title="75%"  onclick={handleResize}>¾</button>
+                                    <button class={widget.sizeFullClass}     data-id={widget.id} data-size="full"      title="100%" onclick={handleResize}>■</button>
+                                </div>
+                                <lightning-button-icon
+                                    icon-name="utility:close"
+                                    size="x-small"
+                                    alternative-text="Remove"
+                                    variant="bare"
+                                    data-id={widget.id}
+                                    onclick={handleRemove}>
+                                </lightning-button-icon>
+                                <lightning-input
+                                    type="toggle"
+                                    label=""
+                                    checked={widget.collapsed}
+                                    message-toggle-active="Collapsed"
+                                    message-toggle-inactive="Expanded"
+                                    data-id={widget.id}
+                                    onchange={handleToggleCollapse}
+                                    class="collapse-toggle">
+                                </lightning-input>
+                            </template>
+                        </div>
+
+                        <!-- Widget body -->
+                        <template lwc:if={widget.isExpanded}>
+                            <div class="widget-body">
+                                <template lwc:if={widget.isBioData}>
+                                    <c-ham-prospect-bio-data record-id={recordId}></c-ham-prospect-bio-data>
+                                </template>
+                                <template lwc:if={widget.isGivingOverview}>
+                                    <c-ham-prospect-giving-overview record-id={recordId}></c-ham-prospect-giving-overview>
+                                </template>
+                                <template lwc:if={widget.isEducation}>
+                                    <c-ham-prospect-education record-id={recordId}></c-ham-prospect-education>
+                                </template>
+                                <template lwc:if={widget.isServiceIndicator}>
+                                    <c-ham-j-e-d-i-service-indicator record-id={recordId}></c-ham-j-e-d-i-service-indicator>
+                                </template>
+                                <template lwc:if={widget.isPledgeBalance}>
+                                    <c-h-a-m-jedi-pledge-balance-config-table record-id={recordId} table-name="Open Pledge"></c-h-a-m-jedi-pledge-balance-config-table>
+                                </template>
+                            </div>
+                        </template>
+
+                    </div>
+                </template>
+            </div>
+
+            <!-- Available widgets panel (edit mode only) -->
+            <template lwc:if={isEditMode}>
+                <div class="available-widgets-panel">
+                    <div class="panel-header">
+                        <lightning-icon icon-name="utility:add" size="x-small"></lightning-icon>
+                        <span class="panel-title">Available Widgets</span>
+                    </div>
+                    <template lwc:if={hasHiddenWidgets}>
+                        <template for:each={hiddenWidgets} for:item="widget">
+                            <div key={widget.id} class="available-widget-item">
+                                <lightning-icon icon-name={widget.icon} size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                <span class="available-widget-label">{widget.label}</span>
+                                <lightning-button-icon
+                                    icon-name="utility:add"
+                                    size="x-small"
+                                    alternative-text="Add"
+                                    variant="brand"
+                                    data-id={widget.id}
+                                    onclick={handleAdd}>
+                                </lightning-button-icon>
+                            </div>
+                        </template>
+                    </template>
+                    <template lwc:else>
+                        <p class="all-visible-msg">All widgets are visible</p>
+                    </template>
+                </div>
+            </template>
+
+        </div>
+    </div>
+</template>

@@ -1,0 +1,96 @@
+<template>
+    <div class={wrapperClass}>
+        
+        <div class="bell-wrapper" onclick={toggleDropdown}>
+            <template lwc:if={isOverride}>
+                <img src={images.notifcationBellGreen} class="header-icon" alt="Notifications">
+            </template>
+            <template lwc:else>
+                <img src={images.notifcationBellBlue} class="header-icon" alt="Notifications">
+            </template>
+            <!--lightning-icon icon-name="utility:notification" variant="bare" size="small" alternative-text="Notifications" class="header-icon">
+            </lightning-icon-->
+            
+            <template lwc:if={hasUnread}>
+                <span class="badge">{unreadCount}</span>
+            </template>
+        </div>
+
+        <template lwc:if={isDropdownOpen}>
+            <section class="dropdown-menu">
+                <header class="dropdown-header">
+                    <h3>Notifications</h3>
+                    <template lwc:if={hasUnread}>
+                        <button class="mark-read-btn" onclick={handleMarkAllRead}>Mark all as read</button>
+                    </template>
+                </header>
+                
+                <div class="list-container scroller">
+                    <template lwc:if={hasNotifications}>                      
+                            <template for:each={notifications} for:item="notif">
+                                <div key={notif.Id} class="notification-item">
+                                    <lightning-avatar
+                                        variant="circle"
+                                        src={notif.senderPhoto}
+                                        fallback-icon-name="standard:avatar"
+                                        size="small">
+                                    </lightning-avatar>
+                                    
+                                    <div class="notif-content">
+                                        <p class="title">{notif.senderName} <span>{notif.HAM_Title__c}</span></p>
+                                        
+                                        <template lwc:if={notif.HAM_Body__c}> 
+                                            <p class="body">{notif.HAM_Body__c}</p>
+                                        </template>
+                                        
+                                        <!-- <template lwc:if={notif.isConnectionRequest}> 
+                                            <div class="actions">
+                                                <lightning-button class="slds-m-right_x-small" label="Accept" variant="brand" data-id={notif.HAM_Source_Object_ID__c} onclick={handleApprove}>
+                                                </lightning-button>
+                                                <lightning-button label="Ignore" variant="neutral" data-id={notif.HAM_Source_Object_ID__c} onclick={handleReject}>
+                                                </lightning-button>
+                                            </div>
+                                        </template> -->
+
+                                        <template lwc:if={notif.isConnectionRequest}>
+    <div class="actions">
+        <button
+            class="btn btn-neutral"
+            data-id={notif.HAM_Source_Object_ID__c}
+            onclick={handleReject}
+        >
+            Ignore
+        </button>
+        
+        <button
+            class="btn btn-brand"
+            data-id={notif.HAM_Source_Object_ID__c}
+            onclick={handleApprove}
+        >
+            Accept
+        </button>
+
+    </div>
+</template>
+
+
+                                        <p class="timestamp"><lightning-formatted-date-time value={notif.CreatedDate} hour="2-digit" minute="2-digit" day="2-digit" month="short"></lightning-formatted-date-time></p>
+                                        
+                                    </div>
+                                </div>
+                            </template>
+                    </template>
+                    <template lwc:else>
+                        <div class="empty-state">
+                            <p>No new notifications.</p>
+                        </div>
+                    </template>
+                </div>
+            </section>
+        </template>
+        
+        <template lwc:if={isDropdownOpen}>
+            <div class="backdrop" onclick={toggleDropdown}></div>
+        </template>
+    </div>
+</template>

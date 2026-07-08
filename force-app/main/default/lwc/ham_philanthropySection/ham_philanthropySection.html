@@ -1,0 +1,72 @@
+<template>
+    <div class={wrapperClass}>        
+        <template lwc:if={pageflag}>
+            <div class="title-row">
+            <h2 class="section-title-home">{myimpact}</h2>
+
+            <template lwc:if={isDesktopView}>
+                <a class="rounded-btn" onclick={handleMyImpactNavigation} >
+                    <template lwc:if={isOverride}>
+                        <img src={images.widgetRedirectGreen} height="20px" width="20px"/>
+                    </template>
+                    <template lwc:else>
+                    <img src={images.widgetRedirect} height="20px" width="20px"/>
+                    </template>
+                </a>
+            </template>
+        </div>
+        </template> <!--newly added code for LWR site-->
+        <template lwc:else><h2 class="section-title" lwc-else>{label.myphilanthropyhiglights}</h2></template>
+        
+       <template if:false={pageflag}>
+        <div class="icon-row">
+            <template for:each={dynamicBadges} for:item="badge">
+                <div key={badge.label} class="icon-label" style={mobileIconContainerStyle} >
+                    <span class="icon" style={mobileIconStyle}><img src={badge.imageUrl} alt={badge.label}></img></span>
+                    <p>{badge.label}</p>
+                </div>
+            </template>
+        </div>
+        </template>
+
+        <template for:each={dynamicPhilanthropyData} for:item="section">
+            <div key={section.name} class={infoSectionClass}>
+                <div class="heading-row">
+                    <h3 class="section-subtitle">{section.label}</h3>
+                    <!-- <template lwc:if={section.isShowGift}>
+                        <a onclick={handleMakeGiftClick} target="_blank" class="slds-button slds-button_brand gift-button">
+                            <span><img src={images.makeaGiftImage} alt="" width="18px" height="18px"></img></span>
+                            <span class="slds-m-left_x-small">{label.makeagift}</span>
+                        </a>
+                    </template> -->
+                </div>
+                <div class="row">
+                    <template for:each={section.fields} for:item="field">
+                        <div key={field.label} class={field.fieldLabelCss} style={computeFieldLabelStyle}>
+                            <label>{field.label}:</label>
+                            <div class={field.fieldValueCss}>
+                                <span>{field.value}</span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:if={ispageflagFalse}> <!--Added conditional rendering for reusing in homepage-->
+            <div class="button-container">
+                <button class="deep-dive-button" onclick={handleButtonClick} >{label.deeperdiveintomyphilanthropy}</button>
+            </div>
+        </template>
+        <template lwc:else>
+            <template lwc:if={isMobileView}>
+                <div class="button-wrapper">
+                    <a  class="navigate-button"
+                        onclick={handleMyImpactNavigation}>
+                    See Full Impact
+                    </a>
+                </div>
+            </template>
+        </template>
+    </div>
+</template>

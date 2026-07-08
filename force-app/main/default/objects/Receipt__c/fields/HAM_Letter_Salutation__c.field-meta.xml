@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Letter_Salutation__c</fullName>
+    <description>Stores the salutation to be used in correspondence related to this record.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Enter the greeting that should appear at the beginning of letters or receipts (e.g., “Dear John,” or “Dear Mr. and Mrs. Smith,”). This value will be used during document generation.</inlineHelpText>
+    <label>HAM Letter Salutation</label>
+    <length>255</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

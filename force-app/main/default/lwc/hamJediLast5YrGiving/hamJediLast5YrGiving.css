@@ -1,0 +1,292 @@
+/* ── Shell ── */
+.component-shell {
+    background: white;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+
+/* ── Datatable row hover ── */
+:host .slds-hint-parent:hover {
+    background-color: #f0f4fd !important;
+    cursor: pointer;
+}
+
+/* ── Section label ── */
+.section-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: #2d73c3;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 8px 14px 4px;
+}
+
+/* ── Desktop split layout ── */
+.body-area {
+    display: flex;
+    align-items: flex-start;
+}
+
+.left-pane {
+    transition: width 0.25s ease;
+    overflow: hidden;
+    min-width: 0;
+}
+.left-pane.full  { width: 100%; border-right: none; }
+.left-pane.split { width: 57%; border-right: 0.5px solid #DDDDDD; }
+
+.right-pane {
+    transition: width 0.25s ease;
+    overflow: hidden;
+    width: 0;
+}
+.right-pane.open {
+    width: 43%;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* ── Toolbar ── */
+.toolbar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 14px 8px;
+}
+
+.year-select {
+    font-size: 12px;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    padding: 3px 8px;
+    color: #16325c;
+    background: white;
+    cursor: pointer;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+/* ── Pagination ── */
+.pagination-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 8px 14px;
+}
+.page-info {
+    font-size: 12px;
+    color: #555;
+}
+
+/* ── Right panel ── */
+.panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 12px 14px 8px;
+    border-bottom: 1px solid #EEEEEE;
+}
+.panel-fy-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2d73c3;
+}
+.panel-subtitle {
+    font-size: 11px;
+    color: #666;
+    margin-top: 2px;
+}
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #666;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 2px;
+}
+.close-btn:hover { color: #2d73c3; }
+
+/* ── 2×2 summary grid ── */
+.summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    padding: 9px 13px;
+}
+.summary-card {
+    background: #F4F6FB;
+    border-radius: 5px;
+    padding: 7px 9px;
+}
+.summary-card .s-label {
+    font-size: 9px;
+    color: #666;
+    margin-bottom: 1px;
+}
+.summary-card .s-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2d73c3;
+}
+
+/* ── Tab content ── */
+.panel-tab-content {
+    overflow-y: auto;
+    flex: 1;
+    padding: 0;
+}
+
+
+.tabular-num { font-variant-numeric: tabular-nums; }
+
+/* ── Individual gifts ── */
+.gifts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 13px;
+}
+.gift-card {
+    background: white;
+    border-radius: 5px;
+    padding: 8px 10px;
+}
+.gift-purpose {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d73c3;
+    margin-bottom: 4px;
+}
+.gift-amounts { display: flex; flex-direction: column; gap: 2px; }
+.gift-amount-row { display: flex; justify-content: space-between; font-size: 14px; }
+.gift-lbl { color: #666; }
+.gift-val { color: #16325c; font-weight: 500; }
+
+/* ── Empty state ── */
+.empty-msg {
+    padding: 20px 14px;
+    font-size: 12px;
+    color: #888;
+    text-align: center;
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* MOBILE                                                       */
+/* ═══════════════════════════════════════════════════════════ */
+.mobile-shell {
+    padding: 0 0 16px;
+}
+
+.mobile-card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 8px 12px;
+}
+
+.mobile-fy-group {
+    border: 1px solid #DDDDDD;
+    border-left: 4px solid #2d73c3;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.mobile-fy-card {
+    padding: 12px 14px;
+    background: white;
+    cursor: pointer;
+}
+.mobile-fy-card:active { background: #F4F6FB; }
+
+.mobile-inline-detail {
+    border-top: 1px solid #EEEEEE;
+    background: #FAFBFE;
+    padding-bottom: 8px;
+}
+
+.mobile-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+.mobile-fy-badge {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2d73c3;
+}
+.mobile-chevron {
+    font-size: 18px;
+    color: #999;
+}
+.mobile-card-purpose {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 8px;
+}
+.mobile-card-amounts {
+    display: flex;
+    gap: 16px;
+}
+.mobile-amount-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.mobile-amount-lbl {
+    font-size: 10px;
+    color: #888;
+}
+.mobile-amount-val {
+    font-size: 13px;
+    font-weight: 600;
+    color: #16325c;
+}
+
+/* Mobile detail header */
+.mobile-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #EEEEEE;
+}
+.mobile-back-btn {
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: #2d73c3;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+}
+.mobile-detail-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #2d73c3;
+}
+
+/* Mobile designation cards */
+.mobile-desig-card {
+    border: 1px solid #EEEEEE;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin: 6px 12px;
+    background: white;
+}
+.mobile-desig-purpose {
+    font-size: 13px;
+    font-weight: 600;
+    color: #16325c;
+    margin-bottom: 4px;
+}
+.mobile-desig-amounts {
+    display: flex;
+    gap: 14px;
+    margin: 6px 0;
+}

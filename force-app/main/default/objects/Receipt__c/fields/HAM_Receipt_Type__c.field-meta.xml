@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Receipt_Type__c</fullName>
+    <description>Specifies how receipts are generated and delivered for this transaction or constituent.</description>
+    <inlineHelpText>Select the preferred receipt format:
+
+Single Entry – One receipt per transaction
+Merged Multiple – One receipt covering multiple transactions
+Annual Tax Summary – One consolidated receipt for the calendar year</inlineHelpText>
+    <label>HAM Receipt Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Annual Tax Summary</fullName>
+                <default>false</default>
+                <label>Annual Tax Summary</label>
+            </value>
+            <value>
+                <fullName>Hard Credit</fullName>
+                <default>false</default>
+                <label>Hard Credit</label>
+            </value>
+            <value>
+                <fullName>Soft Credit</fullName>
+                <default>false</default>
+                <label>Soft Credit</label>
+            </value>
+            <value>
+                <fullName>IRA</fullName>
+                <default>false</default>
+                <label>IRA</label>
+            </value>
+            <value>
+                <fullName>Pledge Reminder</fullName>
+                <default>false</default>
+                <label>Pledge Reminder</label>
+            </value>
+            <value>
+                <fullName>Annual Tax</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Annual Tax</label>
+            </value>
+            <value>
+                <fullName>Merged Multiple</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Merged Multiple</label>
+            </value>
+            <value>
+                <fullName>Single Entry</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Single Entry</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

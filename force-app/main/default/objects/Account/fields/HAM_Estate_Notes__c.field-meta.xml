@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Estate_Notes__c</fullName>
+    <description>General free-form notes about the estate administration</description>
+    <inlineHelpText>Use this field for any general notes related to this estate&apos;s administration, milestones, or communications.</inlineHelpText>
+    <label>Estate Notes</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>6</visibleLines>
+</CustomField>

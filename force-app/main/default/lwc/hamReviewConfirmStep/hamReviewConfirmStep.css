@@ -1,0 +1,140 @@
+.ham-confirm-step {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    text-align: center;
+    padding: 8px 0;
+}
+
+.ham-success-icon-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.ham-success-icon {
+    width: 64px;
+    height: 64px;
+    background: #059669;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+.ham-confirm-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #00205B;
+    margin-bottom: 8px;
+}
+
+.ham-confirm-subtitle {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 24px;
+}
+
+.ham-confirm-card {
+    background: #FFFFFF;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.ham-confirm-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 0.5px solid #F3F4F6;
+}
+
+.ham-confirm-row:last-child {
+    border-bottom: none;
+}
+
+.ham-confirm-label {
+    font-size: 12px;
+    color: #6B7280;
+}
+
+.ham-confirm-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.ham-confirm-amount {
+    color: #00205B;
+    font-size: 15px;
+}
+
+.ham-confirm-divider {
+    height: 1px;
+    background: #E5E7EB;
+    margin: 8px 0;
+}
+
+.ham-confirm-designations-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #6B7280;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.ham-confirm-designation-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 0.5px solid #F3F4F6;
+}
+
+.ham-confirm-designation-row:last-child {
+    border-bottom: none;
+}
+
+.ham-confirm-designation-name {
+    font-size: 12px;
+    color: #111827;
+    font-weight: 500;
+}
+
+.ham-confirm-designation-amount {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0056B3;
+}
+
+.ham-receipt-note {
+    background: #ECFDF5;
+    border: 1px solid #86EFAC;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: #065F46;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.ham-secondary-btn {
+    width: 100%;
+    background: #FFFFFF;
+    color: #00205B;
+    border: 2px solid #00205B;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ham-secondary-btn:hover {
+    background: #E8F1F8;
+}

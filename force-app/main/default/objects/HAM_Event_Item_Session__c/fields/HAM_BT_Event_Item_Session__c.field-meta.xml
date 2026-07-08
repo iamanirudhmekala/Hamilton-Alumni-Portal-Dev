@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_BT_Event_Item_Session__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Traceability lookup to the original Blackthorn event item session this record was migrated from. Will be empty once Blackthorn is decommissioned.</description>
+    <inlineHelpText>The original Blackthorn event item session this record was migrated from. Used for migration QC and validation only.</inlineHelpText>
+    <label>BT Event Item Session</label>
+    <referenceTo>conference360__Event_Item_Session__c</referenceTo>
+    <relationshipLabel>HAM Event Item Sessions</relationshipLabel>
+    <relationshipName>HAM_Event_Item_Sessions_BT</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

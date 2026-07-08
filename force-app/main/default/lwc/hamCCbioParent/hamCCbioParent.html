@@ -1,0 +1,11 @@
+<template>
+    <div class="profile-container">
+        <template lwc:if={isAlumni}>
+            <c-ham-c-c-alumni-bio record-id={recordId}></c-ham-c-c-alumni-bio>
+        </template>
+
+        <template lwc:else>
+            <c-ham-c-c-employer-bio record-id={recordId}></c-ham-c-c-employer-bio>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,233 @@
+<template>
+    <div class={wrapperClass}>
+
+        <template lwc:if={isDesktopView}>
+            <div class="opp-header">
+                <h1 class="opp-main-title">{label.volOppTab}</h1>
+                <a class="rounded-btn" onclick={handleMyImpactNavigation}>
+                    <template lwc:if={isOverride}>
+                        <img src={images.widgetRedirectGreen} height="20px" width="20px" />
+                    </template>
+                    <template lwc:else>
+                        <img src={images.widgetRedirect} height="20px" width="20px"/>
+                    </template>
+                </a>
+            </div>
+
+            <div class="opp-cards-row">
+                <template for:each={dynamicOpportunityList} for:item="opp">
+                    <div key={opp.id} class="opp-card">
+                        <!-- Image Section -->
+                        <template for:each={opp.displayItems} for:item="item">
+                            <template lwc:if={item.isImage}>
+                                <div key={item.key} class="opp-card-image">
+                                    <img src={opp.imageUrl} alt={opp.title} />
+                                </div>
+                            </template>
+                        </template>
+
+                        <!-- Content Section (Title, Description, Button) -->
+                        <div class="opp-card-content">
+                            <template for:each={opp.displayItems} for:item="item">
+                                <!-- Title Component -->
+                                <template lwc:if={item.isTitle}>
+                                    <h3 key={item.key} class="opp-card-title">{item.value}</h3>
+                                </template>
+
+                                <!-- Description Component -->
+                                <template lwc:if={item.isDescription}>
+                                    <p key={item.key} class="opp-card-description">{item.value}</p>
+                                </template>
+
+                                <!-- Link/Button Component -->
+                                <template lwc:if={item.isLink}>
+                                    <button
+                                        key={item.key}
+                                        class={opp.buttonClass}
+                                        data-id={opp.id}
+                                        data-opp-name={opp.title}
+                                        data-is-interested={opp.isInterested}
+                                        data-interest-id={opp.activeInterestId}
+                                        onclick={openInterestedModal}
+                                        disabled={opp.disableButton}>
+                                        <template lwc:if={opp.isProcessing}>
+                                            <lightning-spinner size="small" alternative-text="Processing"></lightning-spinner>
+                                        </template>
+                                        <template lwc:else>
+                                            {opp.buttonLabel}
+                                        </template>
+                                    </button>
+                                </template>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- Mobile Carousel View -->
+        <template lwc:else>
+                <div class="opp-header-mobile">
+                    <h1 class="opp-main-title">{label.volOppTab}</h1>
+                    <template lwc:if={isOverride}>
+                      <img src={icons.arrowRightGreen} height="24" width="24" alt="Previous" class="carousel-arrow-top right-arrow-green" data-name={label.volunteerOpportunity} onclick={handleVolunteerClick}/>
+                    </template>
+                    <template lwc:else>
+                      <img src={images.arrowRight} height="24" width="24" alt="Previous" class="carousel-arrow-top" data-name={label.volunteerOpportunity} onclick={handleVolunteerClick}/>
+                    </template>
+                </div>
+            <div class="carousel-container">
+                <!-- Left Arrow -->
+                <button class="carousel-arrow carousel-arrow-left" onclick={handlePrevSlide}>
+                    <template lwc:if={isOverride}>
+                    <img src={icons.arrowLeftGreen} height="24" width="24" alt="Previous"/>
+                    </template>
+                    <template lwc:else>
+                    <img src={images.arrowLeft} height="24" width="24" alt="Previous"/>
+                    </template>
+                </button>
+
+                <!-- Carousel Slides -->
+                <div class="carousel-track-container">
+
+
+                    <div class="carousel-track" style={carouselTransform} onmouseenter={stopAutoSlide}
+                        onmouseleave={startAutoSlide} ontouchstart={handleTouchStart} ontouchmove={handleTouchMove}
+                        ontouchend={handleTouchEnd}>
+                        <!--div class="carousel-track" style={carouselTransform}-->
+                        <template for:each={dynamicOpportunityList} for:item="opp" for:index="index">
+                            <div key={opp.id} class="carousel-slide">
+                                <div class="opp-card-mobile">
+                                    <!-- Content Section -->
+                                    <div class="opp-card-content-mobile">
+                                        <template for:each={opp.displayItems} for:item="item">
+                                            <template lwc:if={item.isImage}>
+                                                <div key={item.key} class="opp-card-image-mobile">
+                                                    <img src={opp.imageUrl} alt={opp.title} />
+                                                </div>
+                                            </template>
+                                            <template lwc:if={item.isTitle}>
+                                                <h3 key={item.key} class="opp-card-title-mobile">{item.value}</h3>
+                                            </template>
+
+                                            <template lwc:if={item.isDescription}>
+                                                <p key={item.key} class="opp-card-description-mobile">{item.value}
+                                                </p>
+                                            </template>
+
+                                            <template lwc:if={item.isLink}>
+                                                <button
+                                                    key={item.key}
+                                                    class={opp.buttonClassMobile}
+                                                    data-id={opp.id}
+                                                    data-opp-name={opp.title}
+                                                    data-is-interested={opp.isInterested}
+                                                    data-interest-id={opp.activeInterestId}
+                                                    onclick={openInterestedModal}
+                                                    disabled={opp.disableButton}>
+                                                    <template lwc:if={opp.isProcessing}>
+                                                        <lightning-spinner size="small" alternative-text="Processing"></lightning-spinner>
+                                                    </template>
+                                                    <template lwc:else>
+                                                        {opp.buttonLabel}
+                                                    </template>
+                                                </button>
+                                            </template>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <!--/div-->
+                    </div>
+                </div>
+
+                <!-- Right Arrow -->
+                <button class="carousel-arrow carousel-arrow-right" onclick={handleNextSlide}>
+                     <template lwc:if={isOverride}>
+                    <img src={icons.arrowRightGreen} height="24" width="24" alt="Previous"/>
+                    </template>
+                    <template lwc:else>
+                    <img src={images.arrowRight} height="24" width="24" alt="Previous"/>
+                    </template>
+                </button>
+            </div>
+
+            <!-- Pagination Dots -->
+            <div class="carousel-dots">
+                <template for:each={dynamicOpportunityList} for:item="opp" for:index="index">
+                    <span key={opp.id} data-index={index} class="carousel-dot" onclick={handleDotClick}>
+                    </span>
+                </template>
+            </div>
+
+            <div class="button-container">
+                <button class="btn primary" data-name={label.volActTab} onclick={handleVolunteerClick}>
+                    {label.volActTab}
+                </button>
+
+                <button class="btn outline" data-name={label.volunteerOpportunity} onclick={handleVolunteerClick}>
+                    {label.volOppTab}
+                </button>
+            </div>
+        </template>
+
+    <!-- CONFIRM INTEREST MODAL -->
+    <template lwc:if={showInterestedModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="interested-modal-heading"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container custom-modal-container">
+                <div class="slds-modal__content slds-p-around_large slds-text-align_center custom-modal-content">
+                    <!-- Close Button -->
+                    <button class="slds-button slds-button_icon custom-close-button" onclick={closeInterestedModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="Close" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                    <!-- Icon (Checkmark for Interest, Warning for Withdraw) -->
+                    <div class="slds-m-bottom_medium">
+                        <span class={modalIconWrapperClass}>
+                        <img 
+                            src={images.volPopupIcon} 
+                            alternative-text={modalIconAlt} 
+                            class={modalIconClass}
+                        />
+                    </span>
+                    </div>
+                    <!-- Modal Title -->
+                    <h2 id="interested-modal-heading" class="slds-text-heading_medium slds-m-bottom_medium">
+                        {modalTitle}
+                    </h2>
+                    <!-- Modal Body with HTML support for bold text -->
+                    <div class="slds-text-body_regular slds-m-bottom_large">
+                        <lightning-formatted-rich-text value={modalMessage}></lightning-formatted-rich-text>
+                    </div>
+                    <!-- Modal Footer Buttons - Order changes based on action type -->
+                    <template lwc:if={isWithdrawAction}>
+                        <!-- For Withdraw: No (primary) on left, Yes (secondary) on right -->
+                        <div class="slds-grid slds-grid_align-center slds-gutters_small">
+                            <div class="slds-col">
+                                <button class="slds-button slds-button_brand modal-button" onclick={closeInterestedModal}>No</button>
+                            </div>
+                            <div class="slds-col">
+                                <button class="slds-button slds-button_outline-brand modal-button" onclick={confirmAction}>Yes</button>
+                            </div>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <!-- For Interest: Yes (primary) on left, No (secondary) on right -->
+                        <div class="slds-grid slds-grid_align-center slds-gutters_small">
+                            <div class="slds-col">
+                                <button class="slds-button slds-button_brand modal-button" onclick={confirmAction}>Yes</button>
+                            </div>
+                            <div class="slds-col">
+                                <button class="slds-button slds-button_outline-brand modal-button" onclick={closeInterestedModal}>No</button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" onclick={closeInterestedModal}></div>
+    </template>
+</div>
+</template>

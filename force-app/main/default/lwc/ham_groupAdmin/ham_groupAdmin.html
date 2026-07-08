@@ -1,0 +1,239 @@
+<template>
+    <div class={rootClass}>
+        <!-- Spinner -->
+        <template if:true={isLoading}>
+            <div class="spinner-overlay">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Segmented Control for Mobile Viewport (hidden in preview mode) -->
+        <template if:false={isPreview}>
+            <template if:true={isMobileView}>
+                <div class="segmented-control slds-m-bottom_medium">
+                    <button type="button" class={mobileReportsClass} data-tab="reports" onclick={handleMobileTabChange}>
+                        Reports Queue ({reportsDashboard.pendingCount})
+                    </button>
+                    <button type="button" class={mobileRequestsClass} data-tab="requests" onclick={handleMobileTabChange}>
+                        Join Requests ({pendingMembers.length})
+                    </button>
+                </div>
+            </template>
+        </template>
+
+        <!-- Layout Wrapper -->
+        <div class="admin-layout slds-grid slds-wrap slds-gutters">
+            
+            <!-- ── Column 1: Moderation / Flagged Reports ───────────────── -->
+            <template if:true={isReportsTab}>
+                <div class={reportsColumnClass}>
+                    <div class="card-section slds-p-around_medium">
+                        
+                        <template if:false={isPreview}>
+                            <div class="section-header slds-m-bottom_medium">
+                                <h3 class="section-title">Flagged Content Governance</h3>
+                                <p class="section-desc">Review content reported by group members for policy violations.</p>
+                            </div>
+                        </template>
+
+                        <!-- Mini Stats Panel (Matches Figma layout exactly) -->
+                        <div class="stats-panel slds-grid slds-wrap slds-m-bottom_medium" style="display: flex; gap: 8px;">
+                            <div class="slds-col slds-size_1-of-3" style="padding: 0; flex: 1;">
+                                <div class="stat-box stat-box-total slds-p-around_small">
+                                    <span class="stat-num">{reportsDashboard.totalReports}</span>
+                                    <span class="stat-label">Total Reports</span>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-3" style="padding: 0; flex: 1;">
+                                <div class="stat-box stat-box-resolved slds-p-around_small">
+                                    <span class="stat-num">{reportsDashboard.resolvedCount}</span>
+                                    <span class="stat-label">Resolved</span>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-3" style="padding: 0; flex: 1;">
+                                <div class="stat-box stat-box-pending slds-p-around_small">
+                                    <span class="stat-num">{reportsDashboard.pendingCount}</span>
+                                    <span class="stat-label">Pending Action</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pending Reports List (Matches Figma design exactly) -->
+                        <template lwc:if={reportsDashboard.pendingReports.length}>
+                            <div class="reports-list">
+                                <template for:each={reportsDashboard.pendingReports} for:item="rep">
+                                    <div key={rep.reportId} class="report-card slds-p-around_medium slds-m-bottom_medium">
+                                        <!-- Header row of the card -->
+                                        <div class="report-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                            <span class={rep.reportTypeClass}>{rep.reportTypeLabel}</span>
+                                            <span class="badge-active-flag">Active Flag</span>
+                                        </div>
+                                        
+                                        <!-- Meta and Timestamp Row -->
+                                        <div class="report-card-middle slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                            <div class="report-meta">
+                                                <p class="meta-row"><strong>Reported user:</strong> {rep.reportedUserName}</p>
+                                                <p class="meta-row"><strong>Reason:</strong> {rep.reason}</p>
+                                            </div>
+                                            <span class="report-date">{rep.timeAgo}</span>
+                                        </div>
+
+                                        <!-- Content Box -->
+                                        <div class="report-content-box slds-p-around_small slds-m-bottom_medium">
+                                            <p class="content-preview">{rep.contentBody}</p>
+                                        </div>
+
+                                        <!-- Actions Row -->
+                                        <div class="report-actions slds-grid slds-grid_align-start">
+                                            <button
+                                                type="button"
+                                                class="btn-admin btn-admin-action slds-m-right_small"
+                                                data-report-id={rep.reportId}
+                                                data-user={rep.reportedUserName}
+                                                onclick={openTakeActionModal}>
+                                                Take Action
+                                            </button>
+                                            <button 
+                                                type="button" 
+                                                class="btn-admin btn-admin-view slds-m-right_small" 
+                                                data-post-id={rep.postId} 
+                                                data-comment-id={rep.commentId} 
+                                                onclick={handleViewContent}>
+                                                View Content
+                                            </button>
+                                            <button 
+                                                type="button" 
+                                                class="btn-admin btn-admin-dismiss" 
+                                                data-report-id={rep.reportId} 
+                                                data-action="Dismiss" 
+                                                onclick={handleResolveReport}>
+                                                Dismiss
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                            <div class="empty-admin-state slds-p-around_large slds-text-align_center">
+                                <lightning-icon icon-name="utility:success" size="medium" class="success-icon"></lightning-icon>
+                                <p class="empty-admin-text slds-m-top_small">Queue is empty. No pending flags!</p>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+
+            <!-- ── Column 2: Membership Join Requests ───────────────────── -->
+            <template if:true={isRequestsTab}>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 admin-col">
+                    <div class="card-section slds-p-around_medium">
+                        
+                        <div class="section-header slds-m-bottom_medium">
+                            <h3 class="section-title">Pending Access Requests</h3>
+                            <p class="section-desc">Approve or ignore requests to join this private group.</p>
+                        </div>
+
+                        <!-- Requests List -->
+                        <template lwc:if={pendingMembers.length}>
+                            <div class="requests-list">
+                                <template for:each={pendingMembers} for:item="member">
+                                    <div key={member.memberRecordId} class="request-card slds-p-around_medium slds-m-bottom_small slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                        <div class="member-detail slds-grid slds-grid_vertical-align-center">
+                                            <template if:true={member.photoUrl}>
+                                                <img src={member.photoUrl} alt={member.name} class="request-avatar" />
+                                            </template>
+                                            <template if:false={member.photoUrl}>
+                                                <div class="request-avatar request-avatar-fallback">
+                                                    <lightning-icon icon-name="standard:person_account" size="small"></lightning-icon>
+                                                </div>
+                                            </template>
+                                            <span class="member-name slds-m-left_small">{member.name}</span>
+                                        </div>
+                                        <div class="request-actions slds-grid">
+                                            <button 
+                                                type="button" 
+                                                class="btn-req btn-req-approve slds-m-right_x-small" 
+                                                data-member-id={member.memberRecordId} 
+                                                onclick={handleApproveMember}
+                                                aria-label="Accept Request">
+                                                Accept
+                                            </button>
+                                            <button 
+                                                type="button" 
+                                                class="btn-req btn-req-ignore" 
+                                                data-member-id={member.memberRecordId} 
+                                                onclick={handleRejectMember}
+                                                aria-label="Ignore Request">
+                                                Ignore
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                            <div class="empty-admin-state slds-p-around_large slds-text-align_center">
+                                <lightning-icon icon-name="utility:people" size="medium" class="people-icon"></lightning-icon>
+                                <p class="empty-admin-text slds-m-top_small">No pending membership requests.</p>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+
+        <!-- Take Action Modal (2-step: choose action → review/edit message) -->
+        <template if:true={showTakeActionModal}>
+            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open take-action-modal">
+                <div class="slds-modal__container take-action-modal-container">
+                    <div class="slds-modal__content take-action-modal-content slds-p-around_large">
+
+                        <template if:true={isTakeActionStepOne}>
+                            <h2 class="take-action-title">Take Action</h2>
+                            <p class="take-action-subtitle">Select an action to take for the report on {activeReport.userName}.</p>
+
+                            <div class="action-options slds-m-top_medium">
+                                <template for:each={takeActionOptions} for:item="opt">
+                                    <button type="button" key={opt.code} class={opt.cardClass} data-code={opt.code} onclick={selectAction}>
+                                        <lightning-icon icon-name={opt.icon} size="small" class="action-option-icon"></lightning-icon>
+                                        <span class="action-option-text">
+                                            <span class="action-option-title">{opt.title}</span>
+                                            <span class="action-option-desc">{opt.description}</span>
+                                        </span>
+                                    </button>
+                                </template>
+                            </div>
+
+                            <div class="take-action-footer slds-m-top_large">
+                                <button type="button" class="btn-modal-secondary" onclick={closeTakeActionModal}>Cancel</button>
+                                <button type="button" class={continueBtnClass} onclick={handleContinueToMessage} disabled={isContinueDisabled}>Continue</button>
+                            </div>
+                        </template>
+
+                        <template if:true={isTakeActionStepTwo}>
+                            <h2 class="take-action-title">{selectedAction.title}</h2>
+                            <p class="take-action-subtitle">Review or edit the message below before sending it to {activeReport.userName}.</p>
+
+                            <lightning-textarea
+                                label="Message to send"
+                                value={actionMessage}
+                                onchange={handleActionMessageChange}
+                                max-length="1000"
+                                class="slds-m-top_medium action-message-textarea">
+                            </lightning-textarea>
+
+                            <div class="take-action-footer slds-m-top_large">
+                                <button type="button" class="btn-modal-secondary" onclick={handleBackToOptions} disabled={isSubmittingAction}>Back</button>
+                                <button type="button" class="btn-modal-primary" onclick={confirmTakeAction} disabled={isSubmittingAction}>Confirm Action</button>
+                            </div>
+                        </template>
+
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+</template>

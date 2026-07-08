@@ -1,0 +1,374 @@
+<template>
+    <div class="dashboard-root">
+        <!-- ── Header ──────────────────────────────────────────────────────── -->
+        <div class="dashboard-header">
+            <div class="header-flex">
+                <div>
+                    <div class="header-eyebrow">Hamilton College · Advancement Information Systems</div>
+                    <div class="header-title">Hamilton Quad — Ops Dashboard</div>
+                    <div class="header-sub">Last refreshed: {lastRefreshedLabel}</div>
+                </div>
+                <div class="header-controls">
+                    <label class="toggle-label">
+                        <input type="checkbox" onchange={handleAutoRefreshToggle} />
+                        Auto-refresh (5 min)
+                    </label>
+                    <lightning-button
+                        variant="neutral"
+                        label="Refresh now"
+                        icon-name="utility:refresh"
+                        onclick={handleManualRefresh}
+                    ></lightning-button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Custom tab bar ─────────────────────────────────────────────── -->
+        <div class="tab-bar">
+            <button class={connTabBtnClass} onclick={handleConnTab}>Connections</button>
+            <button class={loginTabBtnClass} onclick={handleLoginTab}>Login History</button>
+            <button class={fundTabBtnClass} onclick={handleFundTab}>Funding Interest</button>
+            <button class={svcTabBtnClass} onclick={handleSvcTab}>Service Indicators</button>
+        </div>
+
+        <!-- ── Tab panels — all always in DOM ────────────────────────────── -->
+        <div class="tabs-container">
+
+            <!-- ── Panel: Connections ─────────────────────────────────────── -->
+            <div class={connPanelClass}>
+                <div class="tab-content">
+                    <div class="section-header">
+                        <div>
+                            <div class="eyebrow">HAM_Connection__c · Data Source = Portal User</div>
+                            <h2 class="section-title">Connections, bookmarks, favorites &amp; blocks</h2>
+                        </div>
+                        <lightning-button
+                            variant="neutral"
+                            label="Refresh"
+                            icon-name="utility:refresh"
+                            onclick={handleConnRefresh}
+                            disabled={connIsLoading}
+                        ></lightning-button>
+                    </div>
+
+                    <template if:true={connHasError}>
+                        <div class="error-banner">{connErrorMessage}</div>
+                    </template>
+
+                    <div class="kpi-row">
+                        <template for:each={connKpiTiles} for:item="tile">
+                            <div key={tile.label} class="kpi-tile">
+                                <div class="kpi-label">{tile.label}</div>
+                                <div class={tile.valueClass} style={tile.valueStyle}>{tile.formattedValue}</div>
+                                <template if:true={tile.sub}><div class="kpi-sub">{tile.sub}</div></template>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="grid-two">
+                        <div class="card">
+                            <div class="card-title">Daily new records (last 14 days, Portal User only)</div>
+                            <div class="chart-wrap">
+                                <canvas class="conn-daily-canvas"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-title">New records by status (30 days, Portal User)</div>
+                            <table class="status-table">
+                                <tbody>
+                                    <template for:each={connStatusBreakdown} for:item="row">
+                                        <tr key={row.name}>
+                                            <td class="status-name">{row.name}</td>
+                                            <td class="status-value">{row.formattedValue}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+
+                            <div class="all-time-block">
+                                <div class="all-time-title">All-time totals (Portal User only)</div>
+                                <div class="all-time-row">Total records: <b>{connFormattedAllTimeTotal}</b></div>
+                                <div class="all-time-row">Bookmarked: <b>{connFormattedBookmarked}</b></div>
+                                <div class="all-time-row">Favorited (ever): <b>{connFormattedFavorited}</b></div>
+                                <div class="all-time-row">Blocked (ever): <b>{connFormattedBlocked}</b></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Panel: Login History ───────────────────────────────────── -->
+            <div class={loginPanelClass}>
+                <div class="tab-content">
+                    <div class="section-header">
+                        <div>
+                            <div class="eyebrow">User + LoginHistory</div>
+                            <h2 class="section-title">Portal &amp; staff login activity</h2>
+                        </div>
+                        <lightning-button
+                            variant="neutral"
+                            label="Refresh"
+                            icon-name="utility:refresh"
+                            onclick={handleLoginRefresh}
+                            disabled={loginIsLoading}
+                        ></lightning-button>
+                    </div>
+
+                    <template if:true={loginHasError}>
+                        <div class="error-banner">{loginErrorMessage}</div>
+                    </template>
+
+                    <div class="kpi-row">
+                        <template for:each={loginKpiTiles} for:item="tile">
+                            <div key={tile.label} class="kpi-tile">
+                                <div class="kpi-label">{tile.label}</div>
+                                <div class={tile.valueClass} style={tile.valueStyle}>{tile.formattedValue}</div>
+                                <template if:true={tile.sub}><div class="kpi-sub">{tile.sub}</div></template>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="grid-two">
+                        <div class="card">
+                            <div class="card-title">Daily unique logins (last 31 days)</div>
+                            <div class="chart-wrap">
+                                <canvas class="login-daily-canvas"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-title">Weekly logins (rolling 7-day)</div>
+                            <div class="chart-wrap">
+                                <canvas class="login-weekly-canvas"></canvas>
+                            </div>
+                            <div class="footnote">* Most recent week is partial (through today).</div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:16px;">
+                        <div class="card-title">Login outcomes, last 30 days ({loginFormattedTotal30} total attempts)</div>
+                        <div class="chart-wrap-tall">
+                            <canvas class="login-status-canvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Who&#39;s currently facing a login issue</div>
+                        <div class="card-subnote">
+                            Last {loginLookbackDays} days. A user only appears here if they have <b>not yet had a successful login that calendar day</b> —
+                            once they get in, earlier failures from that day drop off the list. Sorted latest to oldest.
+                        </div>
+
+                        <div style="overflow-x:auto;">
+                            <table class="status-table">
+                                <thead>
+                                    <tr style="border-bottom:2px solid #0A2E5C;">
+                                        <th style="text-align:left;padding:6px 8px;">User</th>
+                                        <th style="text-align:left;padding:6px 8px;">Role</th>
+                                        <th style="text-align:left;padding:6px 8px;">Issue</th>
+                                        <th style="text-align:left;padding:6px 8px;">Date</th>
+                                        <th style="text-align:left;padding:6px 8px;">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={loginIssuePage.records} for:item="row">
+                                        <tr key={row.rowKey}>
+                                            <td style="padding:7px 8px;">
+                                                <div style="font-weight:600;">{row.userName}</div>
+                                                <div style="color:#5B6472;font-size:11px;">{row.email}</div>
+                                            </td>
+                                            <td style="padding:7px 8px;color:#5B6472;">{row.profileName}</td>
+                                            <td style="padding:7px 8px;"><span class={row.statusPillClass}>{row.status}</span></td>
+                                            <td style="padding:7px 8px;color:#5B6472;">{row.loginDate}</td>
+                                            <td style="padding:7px 8px;color:#5B6472;">{row.loginTimeOfDay}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="pagination-bar">
+                            <span>{loginPaginationLabel}</span>
+                            <div class="pagination-controls">
+                                <lightning-button
+                                    label="Previous"
+                                    variant="neutral"
+                                    onclick={handleLoginPrevPage}
+                                    disabled={loginIsPrevDisabled}
+                                ></lightning-button>
+                                <lightning-button
+                                    label="Next"
+                                    variant="neutral"
+                                    onclick={handleLoginNextPage}
+                                    disabled={loginIsNextDisabled}
+                                ></lightning-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Panel: Funding Interest ────────────────────────────────── -->
+            <div class={fundPanelClass}>
+                <div class="tab-content">
+                    <div class="section-header">
+                        <div>
+                            <div class="eyebrow">ucinn_ascendv2__Funding_Interest__c</div>
+                            <h2 class="section-title">New interest records added</h2>
+                        </div>
+                        <lightning-button
+                            variant="neutral"
+                            label="Refresh"
+                            icon-name="utility:refresh"
+                            onclick={handleFundRefresh}
+                            disabled={fundIsLoading}
+                        ></lightning-button>
+                    </div>
+
+                    <template if:true={fundHasError}>
+                        <div class="error-banner">{fundErrorMessage}</div>
+                    </template>
+
+                    <div class="kpi-row">
+                        <template for:each={fundKpiTiles} for:item="tile">
+                            <div key={tile.label} class="kpi-tile">
+                                <div class="kpi-label">{tile.label}</div>
+                                <div class={tile.valueClass} style={tile.valueStyle}>{tile.formattedValue}</div>
+                                <template if:true={tile.sub}><div class="kpi-sub">{tile.sub}</div></template>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="grid-two-even">
+                        <div class="card">
+                            <div class="card-title">New by category (30 days)</div>
+                            <div class="chart-wrap">
+                                <canvas class="fund-new-by-cat-canvas"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-title">All-time by category</div>
+                            <div class="chart-wrap">
+                                <canvas class="fund-all-time-by-cat-canvas"></canvas>
+                            </div>
+                            <div class="footnote">{fundFormattedNoCategoryCount} additional all-time records have no Category set (excluded from this chart).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Panel: Service Indicators ─────────────────────────────── -->
+            <div class={svcPanelClass}>
+                <div class="tab-content">
+                    <div class="section-header">
+                        <div>
+                            <div class="eyebrow">ucinn_ascendv2__Service_Indicator__c</div>
+                            <h2 class="section-title">Partner-user activity only</h2>
+                        </div>
+                        <lightning-button
+                            variant="neutral"
+                            label="Refresh"
+                            icon-name="utility:refresh"
+                            onclick={handleSvcRefresh}
+                            disabled={svcIsLoading}
+                        ></lightning-button>
+                    </div>
+                    <div class="card-subnote" style="margin-bottom:16px;text-align:right;">
+                        Filtered to User.UserType = PowerPartner (Hamilton Quad license) on either Created By or Last Modified By. Internal staff and batch activity are excluded.
+                    </div>
+
+                    <template if:true={svcHasError}>
+                        <div class="error-banner">{svcErrorMessage}</div>
+                    </template>
+
+                    <div class="kpi-row">
+                        <template for:each={svcKpiTiles} for:item="tile">
+                            <div key={tile.label} class="kpi-tile">
+                                <div class="kpi-label">{tile.label}</div>
+                                <div class={tile.valueClass} style={tile.valueStyle}>{tile.formattedValue}</div>
+                                <template if:true={tile.sub}><div class="kpi-sub">{tile.sub}</div></template>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="card" style="margin-bottom:20px;">
+                        <div class="card-title">Activity by indicator type, last 30 days</div>
+                        <div class="card-subnote">
+                            Every one of these is a "Do Not Display / No Contact" style privacy preference — alumni managing their own
+                            visibility settings on Hamilton Quad, not communication-log activity.
+                        </div>
+                        <div class="chart-wrap-tall">
+                            <canvas class="svc-activity-canvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:20px;">
+                        <div class="card-title">Top 10 indicator types per week</div>
+                        <div class="card-subnote">Rolling 7-day windows, most recent week first.</div>
+
+                        <template for:each={svcWeeklyTopIndicators} for:item="week">
+                            <div class="week-block" key={week.key}>
+                                <div class="week-block-title">{week.weekLabel}</div>
+                                <table class="status-table">
+                                    <thead>
+                                        <tr style="border-bottom:2px solid #0A2E5C;">
+                                            <th style="text-align:left;padding:6px 8px;width:36px;">#</th>
+                                            <th style="text-align:left;padding:6px 8px;">Indicator type</th>
+                                            <th style="text-align:right;padding:6px 8px;">Created</th>
+                                            <th style="text-align:right;padding:6px 8px;">Modified</th>
+                                            <th style="text-align:right;padding:6px 8px;">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={week.topIndicators} for:item="row">
+                                            <tr key={row.key}>
+                                                <td style="padding:6px 8px;color:#5B6472;">{row.rank}</td>
+                                                <td style="padding:6px 8px;">{row.name}</td>
+                                                <td style="padding:6px 8px;text-align:right;">{row.created}</td>
+                                                <td style="padding:6px 8px;text-align:right;">{row.modified}</td>
+                                                <td style="padding:6px 8px;text-align:right;font-weight:700;color:#0A2E5C;">{row.total}</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Latest activity (most recent 10 touches)</div>
+                        <div class="card-subnote">
+                            Type and action only — the specific alumni record touched is intentionally not shown here, to keep this an
+                            analysis view rather than a record-level feed.
+                        </div>
+                        <table class="status-table">
+                            <thead>
+                                <tr style="border-bottom:2px solid #0A2E5C;">
+                                    <th style="text-align:left;padding:6px 8px;">Indicator type</th>
+                                    <th style="text-align:left;padding:6px 8px;">Action</th>
+                                    <th style="text-align:left;padding:6px 8px;">Date</th>
+                                    <th style="text-align:left;padding:6px 8px;">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={svcLatestActivity} for:item="row">
+                                    <tr key={row.key}>
+                                        <td style="padding:7px 8px;">{row.indicatorName}</td>
+                                        <td style="padding:7px 8px;"><span class={row.actionPillClass}>{row.action}</span></td>
+                                        <td style="padding:7px 8px;color:#5B6472;">{row.activityDate}</td>
+                                        <td style="padding:7px 8px;color:#5B6472;">{row.activityTimeOfDay}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /tabs-container -->
+
+        <div class="footer-note">Hamilton Quad Ops Dashboard · Advancement Information Systems · Data refreshes on page load or manual refresh.</div>
+    </div>
+</template>

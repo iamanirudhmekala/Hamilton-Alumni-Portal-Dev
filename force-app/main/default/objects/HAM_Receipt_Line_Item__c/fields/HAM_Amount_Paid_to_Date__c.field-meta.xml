@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Amount_Paid_to_Date__c</fullName>
+    <description>The total monetary amount paid to date for this record.</description>
+    <inlineHelpText>Enter the amount that has been paid so far. This value may be used to calculate totals on the parent record and excludes any pending or future payments.</inlineHelpText>
+    <label>Amount Paid to Date</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

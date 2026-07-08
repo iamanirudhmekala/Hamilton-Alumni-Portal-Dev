@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Hard_and_Soft_Credit__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Links this record to the associated Hard or Soft Credit record for attribution purposes.</description>
+    <inlineHelpText>Select the related Hard and Soft Credit record to associate credit attribution with this transaction or receipt. This relationship supports donor recognition, reporting, and credit allocation tracking.</inlineHelpText>
+    <label>Hard and Soft Credit</label>
+    <referenceTo>ucinn_ascendv2__Hard_and_Soft_Credit__c</referenceTo>
+    <relationshipLabel>Receipt Line Items</relationshipLabel>
+    <relationshipName>Receipt_Line_Items</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

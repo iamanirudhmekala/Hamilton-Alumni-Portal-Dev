@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Committed__c</fullName>
+    <description>The total committed gift amount for this designation in the fiscal year.</description>
+    <inlineHelpText>Enter the total amount pledged or committed for this designation.</inlineHelpText>
+    <label>Committed</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

@@ -1,0 +1,324 @@
+<template>
+
+<template lwc:if={isDesktopView}>
+   
+    <div class={containerClass}>
+
+       
+        <div class="slds-grid slds-grid_align-spread slds-m-bottom_medium ">
+            <div class="slds-button-group" role="group">
+                <button class={myGroupsClass} onclick={handleTabChange} data-tab="MyGroups">My Groups</button>
+                <button class={allGroupsClass} onclick={handleTabChange} data-tab="AllGroups">All Groups</button>
+            </div>
+            <div>
+                 <!-- Request New Group button -->
+                <button class="requestnewgroup-btn" onclick={handleOpenModal}>
+                    {label.requestNewGroupBtn}
+                </button>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-gutters slds-m-bottom_large search-bar-container">
+            <div class="slds-col slds-size_2-of-3 search-bar-wrapper" >
+           
+                    <!-- Search Input -->
+                    <input type="text" class="search-input" value={searchValue} placeholder='Search Groups ...'
+                     oninput={handleInputChange} onkeydown={handleSearchKeydown} />
+
+                    <!-- Search Icon -->
+                    <button class="search-btn" onclick={handleSearch} title="Search">
+                        <lightning-icon icon-name="utility:search" size="x-small" class="search-icon">
+                        </lightning-icon>
+                    </button>
+
+            </div>
+            <div class="slds-col slds-size_1-of-3">
+              
+                <div class="custom-combobox" onclick={toggleDropdown}>
+    
+                    <!-- Selected Value -->
+                    <div class="combobox-input">
+                        <span>{selectedLabel}</span>
+                        <span class="arrow">
+                            <img src={images.groupFilter} height="20px" width="20px"/>
+                        </span>
+                    </div>
+
+                    <!-- Dropdown -->
+                    <template if:true={isOpen}>
+                        <div class="dropdown">
+                            <template for:each={options} for:item="item">
+                                <div 
+                                    key={item.value} 
+                                    class="dropdown-item"
+                                    data-value={item.value}
+                                    onclick={handleCategoryChange}>
+                                    {item.label}
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="slds-grid slds-wrap slds-gutters">
+            <template if:true={groups}>
+                <template for:each={groups} for:item="group">
+                  <!-- Card Grid View  -->  
+                  <template lwc:if={isGridView}>
+                    <div class="slds-col slds-size_1-of-3 slds-m-bottom_medium" key={group.groupId}>
+                        <div class="card" data-id={group.groupId} onclick={handleViewGroup}>
+                            <div class="card-header">
+                                <template lwc:if={group.bannerUrl}>
+                                    <img src={group.bannerUrl} class="event-image" />
+                                </template>
+                                <template lwc:else>
+                                    <img src={defaultImageUrl} class="event-image" />
+                                </template>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="badges">
+                                    <template if:true={group.category}>
+                                        <span class="badge badge-blue">{group.category}</span>
+                                    </template>
+                                    
+                                    <template if:true={group.isAdmin}>
+                                        <span class="badge badge-orange">Admin</span>
+                                    </template>
+                                </div>
+                                
+                                <h3 class="card-title">{group.name}</h3>
+                                <p class={group.descClass}>{group.description}</p>
+                                
+                                <template lwc:if={group.isLongDescription}>
+                                    <button class="show-more-btn" onclick={handleToggleDescription} data-id={group.groupId}>
+                                        <template lwc:if={group.isExpanded}>Show Less</template>
+                                        <template lwc:else>Show More</template>
+                                    </button>
+                                </template>
+                                
+                                <div class="card-meta">
+                                   <img src={images.groupMembers} height="20px" width="20px"/>
+                                    <span>{group.memberCount} members</span>
+                                </div>
+                                
+                                <button class="btn-primary"   data-id={group.groupId} onclick={handleViewGroup} >View Group</button>
+                            </div>
+                        </div>
+                  
+                    </div> 
+                  </template>
+                   <!-- Card List View  -->  
+                  <template lwc:if={isListView}>
+                      <div class="slds-col slds-size_3-of-3 slds-m-bottom_medium" key={group.groupId}>
+                          
+                            <div class="network-card" data-id={group.groupId} onclick={handleViewGroup}>
+                                <div class="card-graphic">
+                                   <template lwc:if={group.bannerUrl}>
+                                        <img src={group.bannerUrl} class="event-image" />
+                                    </template>
+                                    <template lwc:else>
+                                        <img src={defaultImageUrl} class="event-image" />
+                                    </template>
+                                </div>
+
+                                <div class="card-body">
+                                    
+                                    <div class="card-badges">
+                                       <template if:true={group.category}>
+                                            <span class="badge badge-blue">{group.category}</span>
+                                        </template>
+                                        
+                                        <template if:true={group.isAdmin}>
+                                            <span class="badge badge-orange">Admin</span>
+                                        </template>
+                                    </div>
+                                    
+                                    <h2 class="card-title">{group.name}</h2>
+                                    
+                                    <p class={group.listDescClass}>
+                                        {group.description}
+                                    </p>
+                                    
+                                    <template lwc:if={group.isLongDescription}>
+                                        <button class="show-more-btn" onclick={handleToggleDescription} data-id={group.groupId}>
+                                            <template lwc:if={group.isExpanded}>Show Less</template>
+                                            <template lwc:else>Show More</template>
+                                        </button>
+                                    </template>
+                                    
+                                    <div class="card-meta">
+                                        <img src={images.groupMembers} height="20px" width="20px"/>
+                                        <span>{group.memberCount} members</span>
+                                    </div>
+                                    
+                                    <button class="btn-primary"   data-id={group.groupId} onclick={handleViewGroup} >View Group</button>
+
+                                    
+                                </div>
+                            </div>
+
+
+                      </div>
+                            
+                  </template>
+                </template>
+                
+            </template>
+            <template if:true={showEmptyState}>
+                <div class="slds-align_absolute-center slds-m-top_large">
+                    <p>No groups found. Try adjusting your filters.</p>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- Request New Group Modal -->
+    <template if:true={showModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="modal-backdrop">
+            <div class="modal-card">
+                <h2 class="modal-title">Start a New Alumni Group</h2>
+                <p class="modal-text">
+                    {label.groupsDiscModal} <strong>{label.groupsDiscModalEmail}</strong>
+                </p>
+                <div class="modal-footer">
+                    <button class="close-btn" onclick={handleCloseModal}>Close</button>
+                </div>
+            </div>
+        </section>
+    </template>
+
+
+     <!-- Pagination -->
+    <c-ham_-pagination-util
+            total-records={totalGroups}
+            page-size={pageSize}
+            current-page={currentPage}
+            result-label="Records"
+            is-override={isOverride}
+            onpagechange={handlePageChange}>
+    </c-ham_-pagination-util>
+
+</template>
+
+<template lwc:if={isMobileView}>
+ 
+
+    <div class={mobileContainerClass}>
+        <!-- Header: tabs + add icon -->
+        <div class="mobile-header-row">
+            <div class="slds-button-group" role="group">
+                <button class={myGroupsClass} onclick={handleTabChange} data-tab="MyGroups">My Groups</button>
+                <button class={allGroupsClass} onclick={handleTabChange} data-tab="AllGroups">All Groups</button>
+            </div>
+            <button class="add-icon-btn" onclick={handleOpenModalMob} title="Request New Group">
+                 <img src={images.requestNewGroupMob} height="20px" width="20px"/>
+            </button>
+        </div>
+
+        <!-- Search + filter row -->
+        <div class="mobile-search-row">
+            <input type="text" class="mobile-search-input" value={searchValue} placeholder='Search Topics...'
+                   oninput={handleInputChange} onkeydown={handleSearchKeydown} />
+            <button class="search-btn" onclick={handleSearch} title="Search">
+                <lightning-icon icon-name="utility:search" size="x-small" class="search-icon"></lightning-icon>
+            </button>
+            <button class="mobile-filter-btn" onclick={toggleDropdown} title="Filter">
+               <img src={images.groupFilter} height="20px" width="20px"/>
+            </button>
+        </div>
+
+        <!-- Category dropdown (opens below filter) -->
+        <template if:true={isOpen}>
+            <div class="mobile-dropdown">
+                <template for:each={options} for:item="item">
+                    <div key={item.value} class="dropdown-item"
+                         data-value={item.value} onclick={handleCategoryChange}>
+                        {item.label}
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- Stacked cards -->
+        <div class="mobile-card-list">
+            <template if:true={groups}>
+                <template for:each={groups} for:item="group">
+                    <div class="mobile-card" key={group.groupId} onclick={handleViewGroup}>
+                        <div class="mobile-card-banner">
+                            <template lwc:if={group.bannerUrl}>
+                                <img src={group.bannerUrl} class="mobile-event-image" />
+                            </template>
+                            <template lwc:else>
+                                <img src={defaultImageUrl} class="mobile-event-image" />
+                            </template>
+                        </div>
+                        <div class="mobile-card-body">
+                            <div class="badges">
+                                <template if:true={group.category}>
+                                    <span class="badge badge-blue">{group.category}</span>
+                                </template>
+                                <template if:true={group.isAdmin}>
+                                    <span class="badge badge-orange">Admin</span>
+                                </template>
+                            </div>
+                            <h3 class="card-title">{group.name}</h3>
+                            <p class={group.descClass}>{group.description}</p>
+                            
+                            <template lwc:if={group.isLongDescription}>
+                                <button class="show-more-btn" onclick={handleToggleDescription} data-id={group.groupId}>
+                                    <template lwc:if={group.isExpanded}>Show Less</template>
+                                    <template lwc:else>Show More</template>
+                                </button>
+                            </template>
+                            <div class="card-meta">
+                                <img src={images.groupMembers} height="20px" width="20px"/>
+                                <span>{group.memberCount} members</span>
+                            </div>
+                            <button class="btn-primary" data-id={group.groupId} onclick={handleViewGroup}>View Group</button>
+                        </div>
+                    </div>
+                </template>
+            </template>
+            <template if:true={showEmptyState}>
+                <div class="slds-align_absolute-center slds-m-top_large">
+                    <p>No groups found. Try adjusting your filters.</p>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- Request New Group Modal (shared)  -->
+    <template if:true={showModalMob}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="mbl-modal-backdrop">
+            <div class="mbl-modal-card">
+                <h2 class="mbl-modal-title">Start a New Alumni Group</h2>
+                <p class="mbl-modal-text">
+                   {label.groupsDiscModal} <strong>{label.groupsDiscModalEmail}</strong>
+                </p>
+                <div class="mbl-modal-footer">
+                    <button class="mbl-close-btn" onclick={handleCloseModalMob}>Close</button>
+                </div>
+            </div>
+        </section>
+    </template>
+    
+
+    <c-ham_-pagination-util
+            total-records={totalGroups}
+            page-size={pageSize}
+            current-page={currentPage}
+            result-label="Records"
+            is-override={isOverride}
+            onpagechange={handlePageChange}>
+    </c-ham_-pagination-util>
+    
+</template>    
+
+    
+    
+</template>

@@ -1,0 +1,50 @@
+<template>
+    <div class="giving-app slds-is-relative">
+        <!-- Header -->
+        <template if:false={isCommunity}>
+            <header class="giving-header">
+                <div class="container">
+                    <h1>Hamilton</h1>
+                    <template if:true={donationData.isLoggedIn}>
+                        <div class="user-info">
+                            Welcome back, {userDisplayName}
+                        </div>
+                    </template>
+                </div>
+            </header>
+        </template>
+
+        <!-- Main Content -->
+        <main class="giving-main">
+            <div class="container">
+                <template if:false={showThankYou}>
+                    <c-hamilton-giving-form initial-data={donationData} oncomplete={handleComplete}
+                        is-salesforce-site={isSfSite} onloading={handleLoading}>
+                    </c-hamilton-giving-form>
+                </template>
+
+                <template if:true={showThankYou}>
+                    <c-hamilton-thank-you-page data={donationData} onreset={handleReset}>
+                    </c-hamilton-thank-you-page>
+                </template>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <template if:false={isCommunity}>
+            <footer class="giving-footer">
+                <div class="container">
+                    <p>&copy; 2025 Hamilton College. All rights reserved.</p>
+                </div>
+            </footer>
+        </template>
+
+        <template if:true={isLoading}>
+            <lightning-spinner 
+              alternative-text="Loading" 
+              size="medium"
+              variant="base"
+            ></lightning-spinner>
+        </template>
+    </div>
+</template>

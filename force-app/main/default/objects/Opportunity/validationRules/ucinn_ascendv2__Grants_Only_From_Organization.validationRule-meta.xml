@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Grants_Only_From_Organization</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(Type, &quot;Grant&quot;),
+OR(RecordType.Name = &quot;Gift&quot;, RecordType.Name = &quot;Pledge&quot;),
+OR(ISBLANK(AccountId), NOT(ISBLANK( ucinn_ascendv2__Contact__c )))
+)</errorConditionFormula>
+    <errorMessage>A grant must only be associated with an Organization.</errorMessage>
+</ValidationRule>

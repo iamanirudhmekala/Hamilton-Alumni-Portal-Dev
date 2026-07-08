@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>iWave_PROscores__isVerified__c</fullName>
+    <defaultValue>false</defaultValue>
+    <deprecated>false</deprecated>
+    <description>This iWave Score and Profile has been reviewed and marked as Verified by a user at iWave.com</description>
+    <inlineHelpText>This iWave Score and Profile has been reviewed and marked as Verified by a user at iWave.com</inlineHelpText>
+    <label>iWave Verified</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Total_Amount__c</fullName>
+    <description>Represents the total monetary amount associated with this record.</description>
+    <inlineHelpText>Automatically calculated as the sum of related Line Item amounts when Line Items are configured as a Master-Detail relationship. Otherwise, this value is calculated based on applicable business logic.</inlineHelpText>
+    <label>HAM Total Amount</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

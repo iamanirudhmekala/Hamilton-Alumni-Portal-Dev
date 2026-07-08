@@ -1,0 +1,251 @@
+<template>
+    <div class="component-shell">
+        <lightning-accordion allow-multiple-sections-open="true" active-section-name={activeBalanceSection} onsectiontoggle={handleBalanceSectionToggle}>
+            <lightning-accordion-section name="Last5YrGiving" label="Last 5 year giving">
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- DESKTOP                                                  -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <template if:false={isMobile}>
+            <div class="body-area">
+
+                <!-- LEFT PANE: Summary table -->
+                <div class={leftPaneClass}>
+
+                    <!-- Toolbar -->
+                    <div class="toolbar-row">
+                        <select class="year-select" onchange={handleYearFilterChange}>
+                            <template for:each={yearOptions} for:item="opt">
+                                <option key={opt.value} value={opt.value}>{opt.label}</option>
+                            </template>
+                        </select>
+                    </div>
+
+                    <!-- Datatable -->
+                    <div class="table-wrap">
+                        <lightning-datatable
+                            key-field="Id"
+                            data={filteredRows}
+                            columns={columns}
+                            sorted-by={sortedBy}
+                            sorted-direction={sortedDirection}
+                            onsort={handleSort}
+                            onrowaction={handleFyClick}
+                            selected-rows={selectedRowIds}
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                    </div>
+
+                    <!-- Pagination -->
+                    <template if:true={showPagination}>
+                        <div class="pagination-row">
+                            <lightning-button label="Prev" onclick={prevPage} disabled={isFirstPage}></lightning-button>
+                            <span class="page-info">Page {pageNumber} of {totalPages} · {totalRecords} total</span>
+                            <lightning-button label="Next" onclick={nextPage} disabled={isLastPage}></lightning-button>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- RIGHT PANE: Detail panel -->
+                <template if:true={splitOpen}>
+                    <div class={rightPaneClass}>
+
+                        <!-- Panel header -->
+                        <div class="panel-header">
+                            <div class="panel-header-text">
+                                <div class="panel-fy-label">{selectedRow.HAM_Fiscal_Year__c}</div>
+                                <div class="panel-subtitle">Giving by designation · {lineItemCount} designations</div>
+                            </div>
+                            <button class="close-btn" onclick={handleClosePanel} title="Close">×</button>
+                        </div>
+
+                        <!-- 2×2 Summary grid -->
+                        <div class="summary-grid">
+                            <div class="summary-card">
+                                <div class="s-label">Total Committed</div>
+                                <div class="s-value">{totalCommittedFormatted}</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="s-label">Total Paid</div>
+                                <div class="s-value">{totalPaidFormatted}</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="s-label">Designations</div>
+                                <div class="s-value">{lineItemCount}</div>
+                            </div>
+                        </div>
+
+                        <!-- Spinner while loading -->
+                        <template if:true={lineItemsLoading}>
+                            <lightning-spinner alternative-text="Loading..." size="small" variant="brand"></lightning-spinner>
+                        </template>
+
+                        <!-- Details -->
+                        <template if:false={lineItemsLoading}>
+                            <div class="panel-tab-content">
+                                <template if:true={lineItemsWithPct.length}>
+                                    <div class="gifts-list">
+                                        <template for:each={lineItemsWithPct} for:item="li">
+                                            <div key={li.Id} class="gift-card">
+                                                <div class="gift-purpose">{li.HAM_Purpose_Name__c}</div>
+                                                <div class="gift-amounts">
+                                                    <div class="gift-amount-row">
+                                                        <span class="gift-lbl">Committed</span>
+                                                        <span class="gift-val tabular-num">
+                                                            <lightning-formatted-number
+                                                                value={li.HAM_Committed__c}
+                                                                format-style="currency"
+                                                                currency-code="USD"
+                                                                minimum-fraction-digits="2"
+                                                                maximum-fraction-digits="2">
+                                                            </lightning-formatted-number>
+                                                        </span>
+                                                    </div>
+                                                    <div class="gift-amount-row">
+                                                        <span class="gift-lbl">Paid</span>
+                                                        <span class="gift-val tabular-num">
+                                                            <lightning-formatted-number
+                                                                value={li.HAM_Paid__c}
+                                                                format-style="currency"
+                                                                currency-code="USD"
+                                                                minimum-fraction-digits="2"
+                                                                maximum-fraction-digits="2">
+                                                            </lightning-formatted-number>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                                <template if:false={lineItemsWithPct.length}>
+                                    <div class="empty-msg">No details found.</div>
+                                </template>
+                            </div>
+                        </template>
+
+                    </div>
+                </template>
+
+            </div>
+        </template>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- MOBILE                                                   -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <template if:true={isMobile}>
+            <div class="mobile-shell">
+                <div class="mobile-card-container">
+                    <template for:each={mobileRows} for:item="row">
+                        <div key={row.Id} class="mobile-fy-group">
+
+                            <!-- Tappable card header -->
+                            <div class="mobile-fy-card" data-id={row.Id} onclick={handleMobileRowTap}>
+                                <div class="mobile-card-top">
+                                    <span class="mobile-fy-badge">{row.HAM_Fiscal_Year__c}</span>
+                                    <span class="mobile-chevron">{row._chevron}</span>
+                                </div>
+                                <div class="mobile-card-purpose">{row._purposeTrunc}</div>
+                                <div class="mobile-card-amounts">
+                                    <div class="mobile-amount-item">
+                                        <span class="mobile-amount-lbl">Committed</span>
+                                        <span class="mobile-amount-val tabular-num">{row._committedFormatted}</span>
+                                    </div>
+                                    <div class="mobile-amount-item">
+                                        <span class="mobile-amount-lbl">Paid</span>
+                                        <span class="mobile-amount-val tabular-num">{row._paidFormatted}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Inline expanded detail (only for the selected row) -->
+                            <template if:true={row._isExpanded}>
+                                <div class="mobile-inline-detail">
+
+                                    <template if:true={lineItemsLoading}>
+                                        <lightning-spinner alternative-text="Loading..." size="small" variant="brand"></lightning-spinner>
+                                    </template>
+
+                                    <template if:false={lineItemsLoading}>
+                                        <!-- 2×2 Summary -->
+                                        <div class="summary-grid">
+                                            <div class="summary-card">
+                                                <div class="s-label">Total Committed</div>
+                                                <div class="s-value">{totalCommittedFormatted}</div>
+                                            </div>
+                                            <div class="summary-card">
+                                                <div class="s-label">Total Paid</div>
+                                                <div class="s-value">{totalPaidFormatted}</div>
+                                            </div>
+                                            <div class="summary-card">
+                                                <div class="s-label">Designations</div>
+                                                <div class="s-value">{lineItemCount}</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Details -->
+                                        <div class="panel-tab-content">
+                                            <template if:true={lineItemsWithPct.length}>
+                                                <div class="gifts-list">
+                                                    <template for:each={lineItemsWithPct} for:item="li">
+                                                        <div key={li.Id} class="gift-card">
+                                                            <div class="gift-purpose">{li.HAM_Purpose_Name__c}</div>
+                                                            <div class="gift-amounts">
+                                                                <div class="gift-amount-row">
+                                                                    <span class="gift-lbl">Committed</span>
+                                                                    <span class="gift-val tabular-num">
+                                                                        <lightning-formatted-number
+                                                                            value={li.HAM_Committed__c}
+                                                                            format-style="currency"
+                                                                            currency-code="USD"
+                                                                            minimum-fraction-digits="2"
+                                                                            maximum-fraction-digits="2">
+                                                                        </lightning-formatted-number>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="gift-amount-row">
+                                                                    <span class="gift-lbl">Paid</span>
+                                                                    <span class="gift-val tabular-num">
+                                                                        <lightning-formatted-number
+                                                                            value={li.HAM_Paid__c}
+                                                                            format-style="currency"
+                                                                            currency-code="USD"
+                                                                            minimum-fraction-digits="2"
+                                                                            maximum-fraction-digits="2">
+                                                                        </lightning-formatted-number>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                            <template if:false={lineItemsWithPct.length}>
+                                                <div class="empty-msg">No details found.</div>
+                                            </template>
+                                        </div>
+                                    </template>
+
+                                </div>
+                            </template>
+
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Mobile pagination -->
+                <template if:true={showMobilePagination}>
+                    <div class="pagination-row">
+                        <lightning-button label="Prev" onclick={mobilePrevPage} disabled={isMobileFirstPage}></lightning-button>
+                        <span class="page-info">Page {mobilePageNumber} of {mobileTotalPages} · {totalRecords} total</span>
+                        <lightning-button label="Next" onclick={mobileNextPage} disabled={isMobileLastPage}></lightning-button>
+                    </div>
+                </template>
+
+            </div>
+        </template>
+
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </div>
+</template>

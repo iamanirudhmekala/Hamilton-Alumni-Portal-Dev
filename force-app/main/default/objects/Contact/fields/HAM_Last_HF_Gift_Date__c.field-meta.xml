@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Last_HF_Gift_Date__c</fullName>
+    <description>This field will be populated by CRMA in upsert process based on the last Hamilton Fund Gift received.</description>
+    <inlineHelpText>This field will be populated by CRMA in daily upsert process based on the last Hamilton Fund Gift received.</inlineHelpText>
+    <label>HAM Last HF Gift Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

@@ -1,0 +1,291 @@
+.banner-container {
+    background:  #002F86 !important;
+    padding: 32px 20px;
+    border-radius: 16px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0, 47, 134, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+}
+
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+}
+
+.close-button:hover {
+    transform: scale(1.1);
+}
+
+.close-button:active {
+    transform: scale(0.95);
+}
+
+.close-icon {
+    width: 30px;
+    height: 30px;
+    display: block;
+}
+
+/* Row containers */
+.header-row,
+.metrics-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+}
+
+/* Title styles */
+.title-wrapper {
+    flex: 1;
+    min-width: 0;
+}
+
+.title {
+    color: #FFFFFF;
+    font-size: 32px;
+    font-weight: 700;
+    font-family: 'Mallory', sans-serif;
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Button styles */
+.button-wrapper {
+    flex-shrink: 0;
+}
+
+.gift-button {
+    background-color: #FFFFFF !important;
+    color: #002F86 !important;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 26px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+    white-space: nowrap;
+    text-decoration: none !important;
+}
+
+.gift-button:hover {
+    background-color: #0EA5E9 !important;
+    color: white !important;
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); */
+    text-decoration: none !important;
+}
+
+.button-text {
+    display: inline;
+}
+
+/* Metric wrappers */
+.raised-wrapper {
+    flex: 1;
+    min-width: 0;
+}
+
+.goal-wrapper {
+    flex-shrink: 0;
+}
+
+/* Amount Section */
+.amount-section {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.amount-raised {
+    color: #FFFFFF;
+    font-size: 32px;
+    font-family: 'Mallory-main', sans-serif;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.amount-goal {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Mallory-main', sans-serif;
+    margin-bottom: 10px;
+}
+
+/* Goal Percentage */
+.goal-percentage {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.amount-raised-placeholder{
+    color: #FFFFFF;
+    font-size: 28px;
+    font-family: 'Mallory-main', sans-serif;
+    font-weight: 700;   
+}
+
+.percentage {
+    color: #FFFFFF;
+    font-size: 32px;
+    font-weight: 700;
+    font-family: 'Mallory-main', sans-serif;
+    line-height: 39px;
+}
+
+.goal-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    font-weight: 400;
+    margin-left: 4px;
+    font-family: 'Mallory-main', sans-serif;
+    line-height:19px;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+    width: 100%;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    overflow: visible;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.progress-bar {
+    height: 18px;
+    background-color: #FFFFFF;
+    border-radius: 9px;
+    transition: width 0.3s ease;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+    position: relative;
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 1023px) {
+    .banner-container {
+        padding: 16px;
+        gap: 12px;
+        padding-bottom:20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .close-button {
+        top: -10px;
+        right: -10px;
+        width: 28px;
+        height: 28px;
+    }
+
+    .close-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .header-row,
+    .metrics-row {
+        gap: 8px;
+    }
+
+    .title {
+        font-size: 20px;
+        font-weight:400;
+        line-height: 21px;
+        letter-spacing: 0%;
+        font-family: 'Mallory-main', sans-serif;
+    }
+
+    .gift-button {
+        padding: 5px 5px;
+        font-size: 12px;
+        border-radius: 100%;
+        width: 30px; 
+        height: 30px;
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+    }
+
+    .gift-button img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .amount-raised-placeholder{
+        color: #FFFFFF;
+        font-size: 16px;
+        font-family: 'Mallory-main', sans-serif;
+        font-weight: 500;   
+    }
+
+    .amount-raised {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 20px;
+        letter-spacing: 0%;
+        font-family: 'Mallory-main', sans-serif;
+    }
+
+    .amount-goal {
+        font-size: 11px;
+        font-weight: 500;
+        line-height:17px;
+        letter-spacing: 0%;
+        font-family: 'Mallory-main', sans-serif;
+    }
+
+    .percentage {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 20px;
+        letter-spacing: 0%;
+        font-family: 'Mallory-main', sans-serif;
+    }
+
+    .goal-text {
+         font-size: 11px;
+        font-weight: 500;
+        line-height:17px;
+        letter-spacing: 0%;
+        font-family: 'Mallory-main', sans-serif;
+    }
+
+    .progress-bar-container {
+        height: 10px;
+        border-radius: 5px;
+    }
+
+    .progress-bar {
+        height: 16px;
+        border-radius: 8px;
+    }
+}

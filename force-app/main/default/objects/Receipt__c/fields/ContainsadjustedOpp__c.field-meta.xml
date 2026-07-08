@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ContainsadjustedOpp__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates whether the receipt includes adjusted opportunity records.</description>
+    <inlineHelpText>Indicates whether the receipt includes adjusted opportunity records.</inlineHelpText>
+    <label>HAM_contains_adjusted_opportunity</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

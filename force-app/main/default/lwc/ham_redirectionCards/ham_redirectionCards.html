@@ -1,0 +1,29 @@
+<template>
+    <div class={sectionClass}>
+
+        <!-- Left arrow -->
+        <button class={leftBtnClass} onclick={handlePrev} aria-label="Previous">
+            <img src={arrowLeftIcon} alt="Previous" class="arrow-icon" />
+        </button>
+
+        <!-- Scrollable card track -->
+        <div class="card-track-wrapper">
+            <div class="card-track">
+                <template for:each={cards} for:item="card">
+                    <div key={card.id} class={card.cardClass} style={card.backgroundStyle} data-id={card.id} onclick={handleCardClick}>
+                        <div class="card-overlay">
+                            <p class="card-explore">Explore</p>
+                            <h3 class="card-title">{card.title}</h3>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Right arrow -->
+        <button class={rightBtnClass} onclick={handleNext} aria-label="Next">
+            <img src={arrowRightIcon} alt="Next" class="arrow-icon" />
+        </button>
+
+    </div>
+</template>

@@ -1,0 +1,229 @@
+<template>
+    <div class={rootClass}>
+        <!-- Header Actions -->
+        <div class="header-container slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_medium">
+            <h2 class="title">Curated Resources</h2>
+            <template if:true={isAdmin}>
+                <button class="btn-add-resource" onclick={openAddModal}>
+                    <lightning-icon icon-name="utility:add" size="x-small" class="btn-icon"></lightning-icon>
+                    Add Resource
+                </button>
+            </template>
+        </div>
+
+        <!-- Search & Filter toolbar (full tab view only) -->
+        <template if:false={isPreviewMode}>
+            <div class="filters-row slds-m-bottom_medium">
+                <div class="search-box">
+                    <lightning-icon icon-name="utility:search" size="x-small" class="search-icon"></lightning-icon>
+                    <input type="search"
+                           class="search-input"
+                           placeholder="Search resources by name..."
+                           value={searchTerm}
+                           oninput={handleSearchChange} />
+                </div>
+                <select class="category-select" onchange={handleCategoryChange} title="Filter by category">
+                    <template for:each={categoryOptions} for:item="opt">
+                        <option key={opt.value} value={opt.value} selected={opt.selected}>{opt.label}</option>
+                    </template>
+                </select>
+                <button class={bookmarkFilterClass} onclick={toggleBookmarkFilter} title="Show bookmarked only">
+                    <lightning-icon icon-name="utility:bookmark" size="x-small" class="filter-bookmark-icon"></lightning-icon>
+                    Bookmarked
+                </button>
+            </div>
+        </template>
+
+        <!-- Resources Grid -->
+        <template if:true={isLoading}>
+            <div class="spinner-container slds-grid slds-grid_align-center slds-p-around_large">
+                <lightning-spinner alternative-text="Loading Resources" size="medium"></lightning-spinner>
+            </div>
+        </template>
+        <template if:false={isLoading}>
+            <template lwc:if={hasResources}>
+                <template lwc:if={hasResults}>
+                    <div class="resources-grid slds-grid slds-wrap slds-gutters">
+                        <template for:each={displayResources} for:item="res">
+                            <div key={res.id} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3 slds-m-bottom_medium">
+                                <div class={res.cardClass}>
+
+                                    <!-- Amplified flag -->
+                                    <template if:true={res.isAmplified}>
+                                        <span class="amplified-badge" title="Highlighted by a group admin">
+                                            <lightning-icon icon-name="utility:notification" size="xx-small" class="amplified-badge-icon"></lightning-icon>
+                                            Amplified
+                                        </span>
+                                    </template>
+
+                                    <!-- Image links to the resource -->
+                                    <a href={res.url} target="_blank" rel="noopener noreferrer" class="card-image-link">
+                                        <div class="card-image-wrap">
+                                            <template if:true={res.imageUrl}>
+                                                <img src={res.imageUrl} alt={res.title} class="card-image" loading="lazy" />
+                                            </template>
+                                            <template if:false={res.imageUrl}>
+                                                <div class="card-image-fallback">
+                                                    <lightning-icon icon-name="utility:link" size="large" class="resource-icon"></lightning-icon>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </a>
+
+                                    <div class="card-body">
+                                        <template if:true={res.category}>
+                                            <span class="card-category">{res.category}</span>
+                                        </template>
+
+                                        <div class="card-title-row">
+                                            <a href={res.url} target="_blank" rel="noopener noreferrer" class="resource-title-link">
+                                                <h3 class="resource-title">{res.title}</h3>
+                                            </a>
+
+                                            <!-- Bell / bookmark actions -->
+                                            <div class="card-actions">
+                                                <template if:true={isAdmin}>
+                                                    <button class="card-action-btn"
+                                                            data-id={res.id}
+                                                            onclick={handleAmplifyClick}
+                                                            title="Amplify this resource">
+                                                        <lightning-icon icon-name="utility:notification" size="x-small"></lightning-icon>
+                                                    </button>
+                                                </template>
+                                                <button class={res.bookmarkBtnClass}
+                                                        data-id={res.id}
+                                                        onclick={handleBookmarkClick}
+                                                        title={res.bookmarkTitle}>
+                                                    <lightning-icon icon-name="utility:bookmark" size="x-small"></lightning-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <template if:true={res.description}>
+                                            <p class="resource-description">{res.description}</p>
+                                        </template>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="empty-state slds-p-around_large slds-grid slds-grid_align-center slds-grid_vertical-align-center">
+                        <div class="slds-text-align_center">
+                            <lightning-icon icon-name="utility:search" size="large" class="empty-icon"></lightning-icon>
+                            <p class="empty-text slds-m-top_small">No resources match your filters.</p>
+                        </div>
+                    </div>
+                </template>
+            </template>
+            <template lwc:else>
+                <div class="empty-state slds-p-around_large slds-grid slds-grid_align-center slds-grid_vertical-align-center">
+                    <div class="slds-text-align_center">
+                        <lightning-icon icon-name="utility:info_alt" size="large" class="empty-icon"></lightning-icon>
+                        <p class="empty-text slds-m-top_small">No resource has been added to this group.</p>
+                    </div>
+                </div>
+            </template>
+        </template>
+
+        <!-- Amplify confirmation (admins) -->
+        <template if:true={amplifyTarget}>
+            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open amplify-modal">
+                <div class="slds-modal__container amplify-modal-container">
+                    <div class="slds-modal__content amplify-modal-content slds-p-around_large">
+                        <div class="amplify-header">
+                            <span class="amplify-bell-circle">
+                                <lightning-icon icon-name="utility:notification" size="small" class="amplify-bell-icon"></lightning-icon>
+                            </span>
+                            <div class="amplify-header-text">
+                                <h2 class="amplify-title">Amplify Resource?</h2>
+                                <p class="amplify-subtitle">This resource will be highlighted and all group members will receive a notification.</p>
+                            </div>
+                        </div>
+                        <div class="amplify-resource-box slds-m-top_medium">
+                            <p class="amplify-resource-label">Resource:</p>
+                            <p class="amplify-resource-name">{amplifyTarget.title}</p>
+                        </div>
+                        <div class="amplify-warning slds-m-top_medium">
+                            <lightning-icon icon-name="utility:warning" size="x-small" class="amplify-warning-icon"></lightning-icon>
+                            <span>{amplifyMemberWarning}</span>
+                        </div>
+                        <div class="amplify-footer slds-m-top_large">
+                            <button class="btn-amplify-cancel" onclick={closeAmplifyModal} disabled={isAmplifying}>Cancel</button>
+                            <button class="btn-amplify-confirm" onclick={confirmAmplify} disabled={isAmplifying}>Amplify &amp; Notify</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <!-- Admin Add Resource Modal -->
+        <template if:true={showAddModal}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open resource-modal">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeAddModal}>
+                            <lightning-icon icon-name="utility:close" size="small" variant="inverse"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 class="slds-modal__title slds-hyphenate">Add Curated Resource</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium resource-modal-content">
+                        <div class="slds-form slds-form_stacked">
+                            <lightning-input
+                                type="text"
+                                label="Resource Title"
+                                value={resourceTitle}
+                                onchange={handleTitleChange}
+                                required
+                                class="slds-m-bottom_small">
+                            </lightning-input>
+                            <lightning-input
+                                type="url"
+                                label="External Link (URL)"
+                                value={resourceUrl}
+                                onchange={handleUrlChange}
+                                required
+                                placeholder="https://example.com"
+                                class="slds-m-bottom_small">
+                            </lightning-input>
+                            <lightning-textarea
+                                label="Description"
+                                value={resourceDescription}
+                                onchange={handleDescriptionChange}
+                                max-length="255"
+                                class="slds-m-bottom_small">
+                            </lightning-textarea>
+                            <div class="slds-form-element slds-m-bottom_small">
+                                <label class="slds-form-element__label" for="res-category">Category</label>
+                                <div class="slds-form-element__control">
+                                    <select id="res-category" class="category-select category-select-full" onchange={handleCategoryInputChange}>
+                                        <template for:each={resourceCategoryChoices} for:item="opt">
+                                            <option key={opt.value} value={opt.value} selected={opt.selected}>{opt.label}</option>
+                                        </template>
+                                    </select>
+                                </div>
+                            </div>
+                            <lightning-input
+                                type="url"
+                                label="Image URL (optional)"
+                                value={resourceImageUrl}
+                                onchange={handleImageUrlChange}
+                                placeholder="https://example.com/image.png"
+                                class="slds-m-bottom_small">
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={closeAddModal}>Cancel</button>
+                        <button class="slds-button slds-button_brand btn-submit-resource" onclick={submitResource}>Add Resource</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+</template>

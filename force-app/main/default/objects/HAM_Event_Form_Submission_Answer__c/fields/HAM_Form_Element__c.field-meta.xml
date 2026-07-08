@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Form_Element__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Lookup to the form element (question) this answer corresponds to.</description>
+    <inlineHelpText>The form question or element that this answer is responding to.</inlineHelpText>
+    <label>Form Element</label>
+    <referenceTo>HAM_Event_Form_Element__c</referenceTo>
+    <relationshipLabel>HAM Event Form Submission Answers</relationshipLabel>
+    <relationshipName>HAM_Event_Form_Submission_Answers</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

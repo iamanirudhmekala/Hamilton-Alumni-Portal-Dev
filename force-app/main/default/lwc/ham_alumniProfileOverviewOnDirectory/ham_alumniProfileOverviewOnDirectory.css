@@ -1,0 +1,106 @@
+.profile-page {
+    background: #ffffff;
+    min-height: 100vh;
+    padding: 32px 48px;
+}
+
+/* Back */
+.back-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 32px;
+}
+
+.back-icon {
+    font-size: 20px;
+}
+
+/* Card */
+.profile-card {
+    background: #f6f5f4;
+    border-radius: 32px;
+    padding: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 48px;
+}
+
+/* Left */
+.profile-photo {
+    width: 260px;
+    height: 260px;
+    border-radius: 16px;
+    object-fit: cover;
+}
+
+.social-icons {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.social {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #002f86;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+/* Right */
+h1 {
+    margin: 0;
+}
+
+.class-year {
+    color: #666;
+    margin-bottom: 24px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 24px 0;
+}
+
+section h3 {
+    margin-bottom: 12px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    margin-bottom: 8px;
+}
+
+.label {
+    color: #444;
+}
+
+.value {
+    color: #002f86;
+    font-weight: 500;
+}
+
+/* Button */
+.primary-btn {
+    margin-top: 32px;
+    height: 36px;
+    padding: 0 18px;
+    background: #002f86;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}

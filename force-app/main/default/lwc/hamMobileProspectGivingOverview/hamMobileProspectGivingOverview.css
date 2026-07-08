@@ -1,0 +1,294 @@
+/* ================================================================
+   hamMobileProspectGivingOverview.css
+   v2.0 — Mobile-first card UI
+   Aligned with hamJediContactReports visual language
+   ================================================================ */
+
+/* ── Base ── */
+.backgroundWhite {
+    background-color: white;
+}
+
+/* ── Action buttons bar ── */
+.action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem 0.25rem;
+    justify-content: flex-end;
+}
+.action-btn {
+    flex-shrink: 0;
+}
+
+/* ── Badge row ── */
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+}
+.badge-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.badge-img {
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
+}
+
+/* ── Section card wrapper (replaces raw grids) ── */
+.section-card {
+    background: #fff;
+    border: 1px solid #e0e5ee;
+    border-radius: 6px;
+    margin: 0.5rem 0.5rem;
+    padding: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 47, 134, 0.06);
+}
+
+/* ── Section header (matches hamJediContactReports blue accent) ── */
+.section-header {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #002F86;
+    margin-bottom: 0.6rem;
+    border-bottom: 2px solid #002F86;
+    padding-bottom: 0.25rem;
+}
+
+/* ── Header row with sort controls ── */
+.section-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+    border-bottom: 2px solid #002F86;
+    padding-bottom: 0.25rem;
+}
+.section-header-row .section-header {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* ── Sort controls ── */
+.sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+.sort-label {
+    font-size: 0.7rem;
+    color: #6b6b6b;
+    white-space: nowrap;
+}
+.sort-btn {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.45rem;
+    border: 1px solid #c9d3e0;
+    border-radius: 3px;
+    background: #f4f6f9;
+    color: #3a3a3a;
+    cursor: pointer;
+    line-height: 1.4;
+    transition: background 0.15s, border-color 0.15s;
+}
+.sort-btn:hover {
+    background: #dce6f5;
+    border-color: #2d73c3;
+}
+.sort-btn--active {
+    background: #002F86;
+    border-color: #002F86;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* ── 2-column stat grid (summary stats) ── */
+.stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 0.75rem;
+}
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+.stat-item--full {
+    grid-column: 1 / -1;
+}
+.stat-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #2d73c3;
+    margin-bottom: 0.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+.stat-value {
+    font-size: 0.875rem;
+    color: #1a1a1a;
+}
+
+/* ── Named Funds list ── */
+.fund-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+.fund-list-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid #f0f2f6;
+}
+.fund-list-item:last-child {
+    border-bottom: none;
+}
+.fund-icon {
+    flex-shrink: 0;
+    color: #2d73c3;
+}
+.fund-link {
+    color: #2d73c3;
+    text-decoration: none;
+    font-weight: 500;
+    word-break: break-word;
+}
+.fund-link:hover {
+    text-decoration: underline;
+}
+
+/* ── Data cards (Giving by Designation / Campaign) — matches hamJediEvents mobile card UI ── */
+.data-card-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.data-card {
+    border: 1px solid #d8dde6;
+    border-left: 4px solid #2d73c3;
+    border-radius: 8px;
+    padding: 12px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+.card-header {
+    font-weight: 600;
+    font-size: 16px;
+    color: #2d73c3;
+    margin-bottom: 6px;
+    word-break: break-word;
+}
+.card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    font-size: 14px;
+}
+.card-label {
+    font-weight: 600;
+    color: #444;
+}
+.card-value {
+    color: #1a1a1a;
+}
+.card-divider {
+    border-top: 1px solid #e5e5e5;
+    margin: 4px 0;
+}
+
+/* ── Empty state ── */
+.empty-state {
+    font-size: 0.8rem;
+    color: #6b6b6b;
+    text-align: center;
+    padding: 0.75rem 0;
+    font-style: italic;
+}
+
+/* ── Pagination bar ── */
+.pagination-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.6rem;
+    gap: 0.5rem;
+}
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid #c9d3e0;
+    border-radius: 4px;
+    background: #f4f6f9;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s;
+}
+.pagination-btn:hover:not([disabled]) {
+    background: #dce6f5;
+    border-color: #2d73c3;
+}
+.pagination-btn[disabled] {
+    opacity: 0.4;
+    cursor: default;
+}
+.pagination-label {
+    font-size: 0.75rem;
+    color: #5a6e8c;
+    text-align: center;
+    flex: 1;
+}
+
+/* ================================================================
+   Responsive overrides — narrow mobile (<= 480px)
+   ================================================================ */
+@media only screen and (max-width: 480px) {
+
+    .action-bar {
+        justify-content: stretch;
+    }
+    .action-bar > * {
+        flex: 1 1 auto;
+    }
+
+    .stat-grid {
+        grid-template-columns: 1fr;
+    }
+    .stat-item--full {
+        grid-column: 1;
+    }
+
+    .section-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+    }
+
+    .sort-controls {
+        align-self: flex-end;
+    }
+
+    .badge-img {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}

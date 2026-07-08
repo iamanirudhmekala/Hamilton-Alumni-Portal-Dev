@@ -1,0 +1,351 @@
+.trivia-container {
+    /* background-color: #F4F4F4; 
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); */
+    padding: 1.5rem;
+    margin: 0 auto;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.2rem;
+}
+
+.points-badge span{
+    font-weight: 700;
+    margin-left: 5px;
+}
+.points-badge {
+    background: #002F86;
+    color: #fff;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 400;
+    font-size: 16px;
+    display: flex;          
+    align-items: center;
+    line-height: 1;  
+    font-family: 'Mallory', sans-serif; 
+         
+}
+
+
+
+.title {
+    /* font-size: 32px; */
+    font-size: 1.75rem;
+    margin: 0;              
+    line-height: 1.2;   
+    font-weight: 700;   
+    color: #000; 
+    font-family: 'Mallory', sans-serif;
+}
+
+.sub-title {
+    display: flex;
+    font-size: 1.0rem;
+    margin: 0;
+    font-weight: 400;
+    color: #000;
+    font-family: 'Mallory', sans-serif;
+}
+
+
+.question {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 20px;
+    font-family: 'Mallory', sans-serif;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* gap: 1rem 1.5rem; */
+    gap: 20px;
+    margin-bottom: 2rem;
+}
+
+.response-text{
+    font-size: 14px;
+    font-weight: 400;
+    color: #000;
+    font-family: 'Mallory', sans-serif; 
+}
+
+.error-text{
+    color: #d32f2f;
+}
+
+/* Mobile view */
+@media (max-width: 1024px) {
+    .options-grid {
+        grid-template-columns: 1fr; /* 1 option per row */
+        gap: 1rem;
+    }
+
+    .title {
+        font-size: 20px;
+        font-weight: 700;
+        font-family: 'Mallory', sans-serif; 
+    }
+
+    .trivia-container {
+    /* background-color: #F4F4F4; 
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); */
+    padding: 0.5rem;
+    margin: 0 auto;
+    }
+
+    .points-badge {
+    padding: 4px 6px;
+        border-radius: 6px;
+    font-weight: 700;
+    }
+
+    .question {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    font-family: 'Mallory', sans-serif; 
+}
+
+}
+
+.mobile-points {
+    margin-bottom: 1rem; /* ⬅ line break effect */
+}
+
+.option-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 10px 16px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #fff;
+}
+
+/* .option-card:hover {
+    background: #f5f5f5;
+} */
+
+.option-text{
+    font-family: 'Mallory', sans-serif; 
+    font-weight: 400;
+    font-size:1rem;
+    color: #231F20;
+}
+
+.option-label {
+    border: 1px solid #231F20;
+    padding: 5px;
+    border-radius: 6px;
+    font-family: 'Mallory', sans-serif; 
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.option-card input {
+    display: none;
+}
+
+.submit-btn {
+    background-color: #3FB3FF;
+    color: #002F86;
+    border: 1px solid #3FB3FF;
+    /* padding: 8px 12px; */
+    padding: 14px 30px;
+    font-family: 'Mallory-main', sans-serif;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    line-height: 1.2;
+    font-weight: 700; 
+}
+
+.submit-btn:hover {
+    border: 1px solid #002F86;
+    color: #FFFFFF;
+    background-color: #002F86;
+}
+
+/*.submit-btn:disabled {
+    background: #b0bec5;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.submit-btn:disabled:hover {
+    background: #b0bec5;
+}*/
+
+/* Correct answer */
+.option-card.correct {
+    border: 2px solid #2e7d32;
+    background-color: #e8f5e9;
+}
+
+/* Wrong selected answer */
+.option-card.wrong {
+    border: 2px solid #c62828;
+    background-color: #fdecea;
+}
+
+/* Optional: make correct label pop */
+.option-card.correct .option-label {
+    background: #2e7d32;
+    color: white;
+    border-color: #2e7d32;
+}
+
+.option-card.wrong .option-label {
+    background: #c62828;
+    color: white;
+    border-color: #c62828;
+}
+
+/* Selected option (before submit) */
+
+.option-card.selected {
+    border: 2px solid #002F86;
+    background-color: #002F86;
+}
+
+.option-card.selected .option-text{
+    color: #fff;
+}
+
+/* Optional: make label blue too */
+.option-card.selected .option-label {
+    background: #002F86;
+    color: white;
+    border-color: #fff;
+}
+
+.image-wrapper {
+    width: 100%;
+    padding-top: 56.25%; 
+    position: relative;
+    background-color: #f7f7f7;
+    border-radius: 20px; 
+}
+
+.image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.img-border {
+    border-radius: 10px;
+}
+
+/* ── Spinner & blur overlay ── */
+.trivia-wrapper {
+    position: relative;
+}
+
+.spinner-overlay {
+    position: absolute;
+    inset: 0;                         /* covers the full component */
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;               /* matches container rounding */
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(0px);       /* overlay itself is clear */
+}
+
+/* The element that gets blurred */
+.content-blurred {
+    filter: blur(3px);
+    pointer-events: none;
+    user-select: none;
+    transition: filter 0.2s ease;
+}
+
+.content-normal {
+    filter: none;
+    transition: filter 0.2s ease;
+}
+
+/* CSS-only ring spinner */
+.spinner-ring {
+    display: inline-block;
+    position: relative;
+    width: 52px;
+    height: 52px;
+}
+
+.spinner-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    margin: 5px;
+    border: 5px solid #002F86;
+    border-radius: 50%;
+    animation: spinner-ring 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #002F86 transparent transparent transparent;
+}
+
+.spinner-ring div:nth-child(1) { animation-delay: -0.30s; }
+.spinner-ring div:nth-child(2) { animation-delay: -0.20s; }
+.spinner-ring div:nth-child(3) { animation-delay: -0.10s; }
+
+@keyframes spinner-ring {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ── Kirkland Override ───────────────────────────────────────── */
+.kirkland-override .points-badge {
+    background: #166837 !important;
+}
+
+.kirkland-override .submit-btn {
+    /* background-color: #D4EDDA !important;
+    color: #166837 !important;
+    border: 1px solid #D4EDDA !important; */
+
+       background-color: #166837 !important;
+    border-color: #166837 !important;
+    color: #ffffff !important;
+}
+
+.kirkland-override .submit-btn:hover {
+    /* background-color: #166837 !important;
+    border-color: #166837 !important;
+    color: #ffffff !important; */
+
+     background-color: #fff !important;
+    border: 1px solid #166837 !important;
+    color: #166837 !important;
+}
+
+.kirkland-override .option-card.selected {
+    border: 2px solid #166837 !important;
+    background-color: #166837 !important;
+}
+
+.kirkland-override .option-card.selected .option-label {
+    background: #166837 !important;
+    border-color: #ffffff !important;
+}
+
+.kirkland-override .spinner-ring div {
+    border-color: #166837 transparent transparent transparent !important;
+}

@@ -1,0 +1,92 @@
+<template>
+    <div class="backgroundWhite">
+       <lightning-accordion allow-multiple-sections-open="true" active-section-name={activeEventSection} onsectiontoggle={handleEventSectionToggle}>
+            <lightning-accordion-section name="Events" label="Events">
+                <template if:true={loading}>
+                    <lightning-spinner
+                        alternative-text="Loading..."
+                        size="medium"
+                        variant="brand">
+                    </lightning-spinner>
+                </template>
+                <template lwc:if={pageEvents}>
+                    <!-- Events Record Table / Cards -->
+                    <div class="slds-p-around_small" style="width: 100%;">
+                        <div class="label slds-text-title_caps slds-text-color_brand">Events Registered / Attended</div>
+
+                        <!-- Desktop Table -->
+                        <template if:false={isMobile}>
+                            <div style="overflow-x: auto;">
+                                <lightning-datatable
+                                    key-field="Id"
+                                    data={pageEvents}
+                                    columns={eventsColumns}
+                                    hide-checkbox-column
+                                    sorted-by={sortedBy}
+                                    sorted-direction={sortedDirection}
+                                    onsort={handleEventSort}>
+                                </lightning-datatable>
+                            </div>
+                        </template>
+
+                        <!-- Mobile Cards -->
+                        <template if:true={isMobile}>
+                            <div class="mobile-sort-bar">
+                                <lightning-combobox
+                                    label="Sort by"
+                                    value={sortedBy}
+                                    options={mobileSortOptions}
+                                    onchange={handleMobileSortChange}
+                                    class="mobile-sort-combo">
+                                </lightning-combobox>
+                                <lightning-button-icon
+                                    icon-name={mobileSortDirectionIcon}
+                                    alternative-text={mobileSortDirectionLabel}
+                                    title={mobileSortDirectionLabel}
+                                    onclick={toggleMobileSortDirection}
+                                    class="slds-var-m-left_x-small">
+                                </lightning-button-icon>
+                            </div>
+                            <div class="mobile-card-container">
+                                <template for:each={mobilePageEvents} for:item="evt">
+                                    <div key={evt.Id} class="mobile-card">
+                                        <div class="card-header">
+                                            <a href={evt.recordLink} target="_blank">{evt.Name}</a>
+                                        </div>
+                                        <div class="card-row">
+                                            <span class="card-label">Event Name</span>
+                                            <span>{evt.conference360__Event_Name__c}</span>
+                                        </div>
+                                        <div class="card-divider"></div>
+                                        <div class="card-row">
+                                            <span class="card-label">Event Date</span>
+                                            <span class="card-value-bold">{evt.formattedDate}</span>
+                                        </div>
+                                        <div class="card-row">
+                                            <span class="card-label">Attendance Status</span>
+                                            <span>{evt.conference360__Attendance_Status__c}</span>
+                                        </div>
+                                        <div class="card-row">
+                                            <span class="card-label">Registration Status</span>
+                                            <span>{evt.conference360__Registration_Status__c}</span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <!-- Pagination Controls -->
+                        <div class="slds-m-top_small slds-grid slds-grid_align-spread slds-align_absolute-center">
+                            <lightning-button label="Prev" onclick={prevPage} disabled={isFirstPage}></lightning-button>
+                            <div class="slds-m-horizontal_small">
+                                Page {pageNumber} of {totalPages} · {totalRecords} total
+                            </div>
+                            <lightning-button label="Next" onclick={nextPage} disabled={isLastPage}></lightning-button>
+                        </div>
+                    </div>
+                </template>
+                <template lwc:else> No Events Found </template>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </div>
+</template>

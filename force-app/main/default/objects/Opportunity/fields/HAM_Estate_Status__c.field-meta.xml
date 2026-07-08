@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Estate_Status__c</fullName>
+    <description>Tracks the current stage of the estate gift process for this opportunity.</description>
+    <inlineHelpText>The current status of the estate gift process.</inlineHelpText>
+    <label>Estate Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Open</fullName>
+                <default>false</default>
+                <label>Open</label>
+            </value>
+            <value>
+                <fullName>Claim Filed</fullName>
+                <default>false</default>
+                <label>Claim Filed</label>
+            </value>
+            <value>
+                <fullName>Distribution Pending</fullName>
+                <default>false</default>
+                <label>Distribution Pending</label>
+            </value>
+            <value>
+                <fullName>Distribution Received</fullName>
+                <default>false</default>
+                <label>Distribution Received</label>
+            </value>
+            <value>
+                <fullName>Closed</fullName>
+                <default>false</default>
+                <label>Closed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

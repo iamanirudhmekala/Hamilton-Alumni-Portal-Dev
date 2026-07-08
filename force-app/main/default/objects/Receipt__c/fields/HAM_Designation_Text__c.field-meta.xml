@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Designation_Text__c</fullName>
+    <description>Stores formatted designation details for inclusion in receipt documentation.</description>
+    <inlineHelpText>Contains designation information that will appear on the receipt or acknowledgment letter.</inlineHelpText>
+    <label>HAM Designation Text</label>
+    <length>131072</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

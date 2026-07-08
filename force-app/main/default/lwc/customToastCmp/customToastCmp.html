@@ -1,0 +1,14 @@
+<template>
+<template if:true={visible}>
+    <div class={toastClass} role="alert">
+        <div class="toast-content">
+            <span class="toast-icon">{icon}</span>
+            <div class="toast-text">
+                <strong class="toast-title">{title}</strong>
+                <p class="toast-message">{message}</p>
+            </div>
+            <button class="close-btn" onclick={closeToast}>✕</button>
+        </div>
+    </div>
+</template>
+</template>

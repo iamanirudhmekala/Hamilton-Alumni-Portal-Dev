@@ -1,0 +1,314 @@
+<template>
+    <div class="dashboard-container">
+
+        <!-- ══════════════════════════════════════════════
+             LOADING STATE
+             ══════════════════════════════════════════════ -->
+        <template if:true={isLoading}>
+            <div class="loading-wrapper">
+                <lightning-spinner alternative-text="Loading dashboard..." size="medium"></lightning-spinner>
+                <p class="loading-label">Loading Career Center Dashboard…</p>
+            </div>
+        </template>
+
+        <!-- ══════════════════════════════════════════════
+             ERROR STATE
+             ══════════════════════════════════════════════ -->
+        <template if:true={hasError}>
+            <div class="error-card">
+                <lightning-icon icon-name="utility:error" size="small" variant="error"></lightning-icon>
+                <span class="error-text">{errorMessage}</span>
+            </div>
+        </template>
+
+        <!-- ══════════════════════════════════════════════
+             DASHBOARD — only rendered when data is ready
+             ══════════════════════════════════════════════ -->
+        <template if:true={showDashboard}>
+
+            <!-- FY Label banner -->
+            <div class="fy-banner">
+                <lightning-icon icon-name="utility:date_input" size="x-small"></lightning-icon>
+                <span class="fy-label">{data.fyLabel}</span>
+            </div>
+
+            <!-- ── TABS ───────────────────────────────────────────── -->
+            <lightning-tabset active-tab-value={activeTab} onselect={handleTabSelect} variant="scoped">
+
+                <!-- ════════════════════════════════════════════
+                     TAB 1 — ALUMNI & PARENTS
+                     ════════════════════════════════════════════ -->
+                <lightning-tab label="Alumni / Parents" value="alumni" class="tab-alumni">
+                    <div class="tab-content">
+
+                        <!-- Search Button (Top) -->
+                        <div style="margin-bottom: 1rem; text-align: right;">
+                            <lightning-button 
+                                variant="brand" 
+                                label="Search"
+                                icon-name="utility:search"
+                                onclick={handleSearchClick}>
+                            </lightning-button>
+                        </div>
+
+                        <!-- KPI Row -->
+                        <div class="kpi-row">
+                            <div class="kpi-card kpi-primary">
+                                <div class="kpi-value">{data.totalInvolvements}</div>
+                                <div class="kpi-label">Total Involvements</div>
+                                <div class="kpi-sub">FY to date</div>
+                            </div>
+                            <div class="kpi-card kpi-green">
+                                <div class="kpi-value">{data.uniqueVolunteers}</div>
+                                <div class="kpi-label">Unique Volunteers</div>
+                                <div class="kpi-sub">Distinct contacts</div>
+                            </div>
+                            <div class="kpi-card kpi-blue">
+                                <div class="kpi-value">{data.currentCount}</div>
+                                <div class="kpi-label">Current Status</div>
+                                <div class="kpi-sub">Active this FY</div>
+                            </div>
+                            <div class="kpi-card kpi-grey">
+                                <div class="kpi-value">{data.formerCount}</div>
+                                <div class="kpi-label">Former Status</div>
+                                <div class="kpi-sub">Past involvement</div>
+                            </div>
+                            <div class="kpi-card kpi-purple">
+                                <div class="kpi-value">{data.multiRoleCount}</div>
+                                <div class="kpi-label">Multi-Role</div>
+                                <div class="kpi-sub">2+ roles this FY</div>
+                            </div>
+                            <div class="kpi-card kpi-teal">
+                                <div class="kpi-value">{data.avgPerVolunteer}</div>
+                                <div class="kpi-label">Avg Roles / Volunteer</div>
+                                <div class="kpi-sub">FY average</div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Row -->
+                        <div class="charts-row">
+
+                            <!-- Monthly Trend Chart -->
+                            <div class="chart-card chart-wide">
+                                <div class="chart-header">
+                                    <span class="chart-title">Monthly Involvement Trend</span>
+                                    <span class="chart-sub">{data.fyLabel}</span>
+                                </div>
+                                <div class="chart-canvas-wrapper">
+                                    <canvas class="trend-chart-canvas"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Class Year Chart -->
+                            <div class="chart-card chart-narrow">
+                                <div class="chart-header">
+                                    <span class="chart-title">Involvements by Class Year</span>
+                                    <span class="chart-sub">Alumni only</span>
+                                </div>
+                                <div class="chart-canvas-wrapper">
+                                    <canvas class="class-year-chart-canvas"></canvas>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- By Involvement Code (horizontal bar) -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <span class="section-title">Involvements by Type</span>
+                                <span class="section-sub">All Career Center — top 10</span>
+                            </div>
+                            <div class="bar-list">
+                                <template for:each={data.byCode} for:item="row">
+                                    <div key={row.label} class="bar-row">
+                                        <div class="bar-label" title={row.label}>{row.label}</div>
+                                        <div class="bar-track">
+                                            <div class="bar-fill" style={row.barStyle}></div>
+                                        </div>
+                                        <div class="bar-count">{row.total}</div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Top Volunteers Table -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <span class="section-title">Top Volunteers This FY</span>
+                                <span class="section-sub">Ranked by involvement count</span>
+                            </div>
+                            <div class="volunteer-table-wrapper">
+                                <table class="volunteer-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-rank">#</th>
+                                            <th class="col-name">Name</th>
+                                            <th class="col-count">Involvements</th>
+                                            <th class="col-status">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={data.topVolunteers} for:item="vol">
+                                            <tr key={vol.contactId} class={vol.rowClass}>
+                                                <td class="col-rank">{vol.rank}</td>
+                                                <td class="col-name">
+                                                    <a href={vol.contactUrl} onclick={handleVolunteerClick} data-id={vol.contactId}>{vol.contactName}</a>
+                                                </td>
+                                                <td class="col-count">{vol.involvements}</td>
+                                                <td class="col-status">
+                                                    <span class={vol.statusBadgeClass}>{vol.status}</span>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Search Button (Bottom) -->
+                        <div style="margin-top: 1.5rem; text-align: right;">
+                            <lightning-button 
+                                variant="brand" 
+                                label="Search"
+                                icon-name="utility:search"
+                                onclick={handleSearchClick}>
+                            </lightning-button>
+                        </div>
+
+                    </div>
+                </lightning-tab>
+
+                <!-- ════════════════════════════════════════════
+                     TAB 2 — EMPLOYER ENGAGEMENT
+                     ════════════════════════════════════════════ -->
+                <lightning-tab label="Employer Engagement" value="employer" class="tab-employer">
+                    <div class="tab-content">
+
+                        <!-- Search Button (Top) -->
+                        <div style="margin-bottom: 1rem; text-align: right;">
+                            <lightning-button 
+                                variant="brand" 
+                                label="Search"
+                                icon-name="utility:search"
+                                onclick={handleSearchClick}>
+                            </lightning-button>
+                        </div>
+
+                        <!-- Employer KPI Row -->
+                        <div class="kpi-row">
+                            <div class="kpi-card kpi-primary">
+                                <div class="kpi-value">{employerData.totalInvolvements}</div>
+                                <div class="kpi-label">Total Engagements</div>
+                                <div class="kpi-sub">FY to date</div>
+                            </div>
+                            <div class="kpi-card kpi-green">
+                                <div class="kpi-value">{employerData.uniqueEmployers}</div>
+                                <div class="kpi-label">Unique Employers</div>
+                                <div class="kpi-sub">Distinct organizations</div>
+                            </div>
+                            <div class="kpi-card kpi-blue">
+                                <div class="kpi-value">{employerData.currentCount}</div>
+                                <div class="kpi-label">Active Engagements</div>
+                                <div class="kpi-sub">Current status</div>
+                            </div>
+                            <div class="kpi-card kpi-purple">
+                                <div class="kpi-value">{employerData.multiEngagementCount}</div>
+                                <div class="kpi-label">Multi-Engagement</div>
+                                <div class="kpi-sub">2+ roles this FY</div>
+                            </div>
+                        </div>
+
+                        <!-- Employer Engagement by Type (horizontal bar) -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <span class="section-title">Employer Engagements by Type</span>
+                                <span class="section-sub">Career Center — Employer category</span>
+                            </div>
+                            <template if:true={employerData.hasData}>
+                                <div class="bar-list">
+                                    <template for:each={employerData.byCode} for:item="row">
+                                        <div key={row.label} class="bar-row">
+                                            <div class="bar-label" title={row.label}>{row.label}</div>
+                                            <div class="bar-track">
+                                                <div class="bar-fill bar-fill-employer" style={row.barStyle}></div>
+                                            </div>
+                                            <div class="bar-count">{row.total}</div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                            <template if:false={employerData.hasData}>
+                                <div class="empty-state">
+                                    <lightning-icon icon-name="utility:company" size="medium"></lightning-icon>
+                                    <p>No employer engagement records found for this fiscal year.</p>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Employer Trend Chart -->
+                        <template if:true={employerData.hasData}>
+                            <div class="chart-card chart-full">
+                                <div class="chart-header">
+                                    <span class="chart-title">Employer Engagement Monthly Trend</span>
+                                    <span class="chart-sub">{employerData.fyLabel}</span>
+                                </div>
+                                <div class="chart-canvas-wrapper">
+                                    <canvas class="employer-trend-canvas"></canvas>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- Top Employers Table -->
+                        <template if:true={employerData.hasData}>
+                            <div class="section-card">
+                                <div class="section-header">
+                                    <span class="section-title">Top Employers This FY</span>
+                                    <span class="section-sub">Ranked by engagement count</span>
+                                </div>
+                                <div class="volunteer-table-wrapper">
+                                    <table class="volunteer-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-rank">#</th>
+                                                <th class="col-name">Employer / Contact</th>
+                                                <th class="col-count">Engagements</th>
+                                                <th class="col-status">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={employerData.topVolunteers} for:item="emp">
+                                                <tr key={emp.contactId} class={emp.rowClass}>
+                                                    <td class="col-rank">{emp.rank}</td>
+                                                    <td class="col-name">
+                                                        <a href={emp.contactUrl} onclick={handleVolunteerClick} data-id={emp.contactId}>{emp.contactName}</a>
+                                                    </td>
+                                                    <td class="col-count">{emp.involvements}</td>
+                                                    <td class="col-status">
+                                                        <span class={emp.statusBadgeClass}>{emp.status}</span>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- Search Button (Bottom) -->
+                        <div style="margin-top: 1.5rem; text-align: right;">
+                            <lightning-button 
+                                variant="brand" 
+                                label="Search"
+                                icon-name="utility:search"
+                                onclick={handleSearchClick}>
+                            </lightning-button>
+                        </div>
+
+                    </div>
+                </lightning-tab>
+
+            </lightning-tabset>
+        </template>
+
+    </div>
+</template>

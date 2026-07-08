@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Net_Amount__c</fullName>
+    <description>Gross amount on the invoice. Migrated from bt_stripe__Net_Amount__c on bt_stripe__Sales_Document__c.</description>
+    <inlineHelpText>Gross amount as it appeared on the original Blackthorn invoice.</inlineHelpText>
+    <label>Gross Amount</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

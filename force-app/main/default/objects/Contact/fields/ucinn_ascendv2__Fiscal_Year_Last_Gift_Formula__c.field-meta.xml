@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Fiscal_Year_Last_Gift_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>MAX(IF(MONTH(ucinn_ascendv2__Date_of_Most_Recent_Gift__c) &gt;= 7 &amp;&amp; MONTH(ucinn_ascendv2__Date_of_Most_Recent_Gift__c) &lt;= 12 ,YEAR(ucinn_ascendv2__Date_of_Most_Recent_Gift__c)+1 , YEAR(ucinn_ascendv2__Date_of_Most_Recent_Gift__c))
+,IF (MONTH(ucinn_ascendv2__Date_of_Most_Recent_Pledge_Payment__c) &gt;= 7 &amp;&amp; MONTH(ucinn_ascendv2__Date_of_Most_Recent_Pledge_Payment__c) &lt;= 12 ,YEAR(ucinn_ascendv2__Date_of_Most_Recent_Pledge_Payment__c)+1 , YEAR(ucinn_ascendv2__Date_of_Most_Recent_Pledge_Payment__c)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Fiscal Year Last Gift</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

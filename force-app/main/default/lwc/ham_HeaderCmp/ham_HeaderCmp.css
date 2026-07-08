@@ -1,0 +1,358 @@
+/*Add the class name below to the lightning-icon element.*/
+
+.slds-icon-action-user {
+    background-color: #002f86 !important;
+}
+
+.hamilton-header {
+    background-color: #002F86 !important;
+    position: fixed;
+    top: 0;
+    z-index: 1001;
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-family: 'Times New Roman', sans-serif;
+    height: 100px;
+
+}
+
+.hamilton-logo {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.hamilton-logo img {
+    /* width:199px; */
+    height: 68px;
+    display: block;
+}
+
+/* Header Icons Container */
+.header-icons {
+    gap: 0.5rem;
+}
+
+/* Icon Buttons - White circles for all icons (gift, bell, profile) */
+.header-icon-button {
+    background-color: white !important;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.header-icon-button:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+/* Icon color for Lightning icons (bell) */
+.header-icon {
+    --sds-c-icon-color-foreground-default: #002F86;
+}
+
+/* Gift Icon Image - Make it blue to match bell icon */
+.header-icon-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    /* Convert to blue #002F86 */
+    filter: brightness(0) saturate(100%) invert(11%) sepia(86%) saturate(3084%) hue-rotate(214deg) brightness(91%) contrast(107%);
+}
+
+.header-icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none !important;
+    border: none !important;
+    background: white !important;
+}
+
+/* Force link states to remain transparent */
+.header-icon-link:visited,
+.header-icon-link:link,
+.header-icon-link:active {
+    background: white !important;
+    color: transparent !important;
+}
+
+/* Profile Button */
+.profile-button {
+    background-color: white;
+    /* border: none; */
+    border: 1px solid #fff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.profile-button:hover {
+    transform: scale(1.05);
+}
+
+.user-profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Profile Dropdown Container */
+.profile-dropdown-container {
+    position: relative;
+}
+
+/* Settings Dropdown */
+.settings-dropdown {
+    position: absolute;
+    top: calc(100% + 0.2rem);
+    right: 0;
+    min-width: max-content !important;
+    width: max-content;
+    z-index: 7000;
+    border-radius: 12px !important;
+    padding: 12px !important;
+    margin-top: 0.2rem;
+    border: 1px solid #d9ecfa !important;
+    background-color: white !important;
+}
+
+.settings-dropdown .slds-dropdown__list {
+    width: max-content;
+}
+
+/* Menu Items - Match Main's styling */
+.settings-dropdown .my-settings-menu {
+    cursor: pointer;
+    margin-bottom: 12px;
+}
+
+.settings-dropdown .my-settings-menu:nth-last-of-type(1) {
+    margin-bottom: 0px;
+}
+
+.settings-dropdown .my-settings-menu a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0.75rem;
+}
+
+.settings-dropdown .my-settings-menu a:hover {
+    background-color: transparent;
+}
+
+.settings-dropdown .my-settings-menu .settings-popup-icon {
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+}
+
+.settings-dropdown .my-settings-menu .menu-label {
+    color: #0A2F87;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 100%;
+    white-space: nowrap;
+}
+
+
+/* Feedback icon — exact color match */
+.feedback-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+
+    background-color: #3fb3ff;
+
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+
+    -webkit-mask-position: center;
+    mask-position: center;
+
+    -webkit-mask-size: contain;
+    mask-size: contain;
+
+    margin-right: 5px;
+}
+
+.hamilton-header.kirkland-override .feedback-icon {
+    background-color: #166837;
+}
+
+/* Feedback header button */
+.feedback-header-btn {
+    background-color: #ffffff;
+    color: #002F86;
+    /* Hamilton navy */
+    border: 1px solid #ffffff;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Mallory', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+/* Hover state */
+.feedback-header-btn:hover {
+    background-color: #f5f7fb;
+    transform: scale(1.05);
+}
+
+@media (min-width: 1023px) and (max-width: 1160px) {
+    .nav-links-section {
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+    }
+
+    .hamilton-logo img {
+        height: 35px;
+    }
+}
+
+/* Mobile sizing */
+
+@media (max-width: 420px) {
+    .hamilton-logo img {
+        width: 150px;
+        height: 37px !important;
+        /* height: 45px !important; */
+    }
+}
+
+@media (max-width: 370px) {
+     .hamilton-logo img {
+        max-width: 110% !important;
+        height: 35px !important;    
+    }
+}
+
+@media (max-width: 1023px) {
+    .feedback-header-btn {
+        padding: 5px 12px;
+        font-size: 13px;
+    }
+
+    .my-spacing-right {
+        margin-right: 10px;
+    }
+}
+
+/* ── Kirkland Override Theme ─────────────────────────────────────────────── */
+
+.hamilton-header.kirkland-override {
+    background: linear-gradient(90deg, #166837 0%, #065124 100%) !important;
+    background-color: unset !important;
+}
+
+.hamilton-header.kirkland-override .slds-icon-action-user {
+    background-color: #166837 !important;
+}
+
+.hamilton-header.kirkland-override .header-icon {
+    --sds-c-icon-color-foreground-default: #166837;
+}
+
+/* Filter approximation for #166837 — verify visually after deploy */
+.hamilton-header.kirkland-override .header-icon-img {
+    filter: brightness(0) saturate(100%) invert(24%) sepia(92%) saturate(641%) hue-rotate(104deg) brightness(93%) contrast(96%);
+}
+
+.hamilton-header.kirkland-override .feedback-header-btn {
+    color: #166837;
+}
+
+.hamilton-header.kirkland-override .my-settings-menu .menu-label {
+    color: #166837;
+}
+
+/* Navigation Links Section */
+.nav-links-section {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.nav-link {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Mallory', sans-serif;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.nav-link:active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 1024px) {
+    .hamilton-header {
+        height: 85px;
+    }
+}
+
+
+/* Responsive Design */
+@media (max-width: 1023px) {
+    .hamilton-logo img {
+        /* width: 120px; */
+        height: 40px
+    }
+
+    .header-icon-button,
+    .profile-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .header-icon-img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .header-icons {
+        gap: 0rem;
+    }
+}

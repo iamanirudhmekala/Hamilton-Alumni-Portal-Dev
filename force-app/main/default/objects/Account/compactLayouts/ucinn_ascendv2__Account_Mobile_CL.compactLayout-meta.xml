@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Account_Mobile_CL</fullName>
+    <fields>Name</fields>
+    <fields>ucinn_ascendv2__Donor_ID__c</fields>
+    <fields>ucinn_ascendv2__PRM__c</fields>
+    <fields>Phone</fields>
+    <fields>ucinn_ascendv2__Email__c</fields>
+    <fields>ucinn_ascendv2__Preferred_Address_Formula__c</fields>
+    <label>Account Compact Layout</label>
+</CompactLayout>

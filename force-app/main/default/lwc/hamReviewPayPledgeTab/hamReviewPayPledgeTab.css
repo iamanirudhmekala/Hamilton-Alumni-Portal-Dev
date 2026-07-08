@@ -1,0 +1,203 @@
+.ham-pledge-tab {
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.ham-back-btn {
+    background: #F8F9FA;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #6B7280;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: all 0.2s;
+}
+
+.ham-back-btn:hover {
+    background: #E5E7EB;
+}
+
+.ham-pledge-hint {
+    font-size: 12px;
+    color: #6B7280;
+    margin-bottom: 12px;
+}
+
+.ham-pledge-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.ham-pledge-card {
+    background: #FFFFFF;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ham-pledge-card:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.ham-pledge-card-selected {
+    border-color: #0056B3;
+    background: #EFF6FF;
+}
+
+.ham-pledge-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.ham-pledge-check {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #E5E7EB;
+    border-radius: 4px;
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #059669;
+    flex-shrink: 0;
+}
+
+.ham-pledge-card-selected .ham-pledge-check {
+    border-color: #0056B3;
+    background: #0056B3;
+    color: #FFFFFF;
+}
+
+.ham-pledge-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #00205B;
+}
+
+.ham-pledge-amounts {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+.ham-pledge-amount-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ham-pledge-label {
+    font-size: 11px;
+    color: #6B7280;
+}
+
+.ham-pledge-value {
+    font-size: 12px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.ham-pledge-paid {
+    color: #059669;
+}
+
+.ham-pledge-remaining {
+    color: #0056B3;
+}
+
+.ham-pledge-progress-wrap {
+    margin-bottom: 8px;
+}
+
+.ham-pledge-progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.ham-pledge-progress-bar {
+    height: 6px;
+    background: #E5E7EB;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.ham-pledge-progress-fill {
+    height: 100%;
+    background: #0056B3;
+    border-radius: 3px;
+    transition: width 0.3s;
+}
+
+.ham-pledge-description {
+    font-size: 11px;
+    color: #6B7280;
+    margin-top: 6px;
+}
+
+.ham-pledge-total-box {
+    background: #EFF6FF;
+    border: 1px solid #60A5FA;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1E40AF;
+    margin-bottom: 14px;
+}
+
+.ham-primary-btn {
+    width: 100%;
+    background: #00205B;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ham-primary-btn:hover:not(:disabled) {
+    background: #001847;
+}
+
+.ham-primary-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ham-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.ham-empty-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.ham-empty-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.ham-empty-text {
+    font-size: 13px;
+    color: #6B7280;
+}

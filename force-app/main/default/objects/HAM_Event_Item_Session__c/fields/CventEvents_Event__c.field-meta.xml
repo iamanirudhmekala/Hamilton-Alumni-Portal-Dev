@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CventEvents_Event__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Lookup to the Cvent event this item-session association belongs to.</description>
+    <inlineHelpText>The Cvent event this item-session record is associated with.</inlineHelpText>
+    <label>Event</label>
+    <referenceTo>CventEvents__Event__c</referenceTo>
+    <relationshipLabel>HAM Event Item Sessions</relationshipLabel>
+    <relationshipName>HAM_Event_Item_Sessions</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

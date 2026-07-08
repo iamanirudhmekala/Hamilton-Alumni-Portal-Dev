@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Start_Date_must_be_before</fullName>
+    <active>true</active>
+    <errorConditionFormula>HAM_Start_Date_Time__c &gt; HAM_End_Date_Time__c</errorConditionFormula>
+    <errorDisplayField>HAM_Start_Date_Time__c</errorDisplayField>
+    <errorMessage>Start Date must be before End Date</errorMessage>
+</ValidationRule>

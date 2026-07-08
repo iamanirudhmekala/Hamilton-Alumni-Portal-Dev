@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Pledge_Reminder_Owner__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Responsible for sending the pledge reminder</description>
+    <inlineHelpText>Responsible for sending the pledge reminder</inlineHelpText>
+    <label>Pledge Reminder Owner</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Stewardship Team</fullName>
+                <default>true</default>
+                <label>Stewardship Team</label>
+            </value>
+            <value>
+                <fullName>Gift Officer</fullName>
+                <default>false</default>
+                <label>Gift Officer</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

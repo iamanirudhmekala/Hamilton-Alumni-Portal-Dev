@@ -1,0 +1,119 @@
+<template>
+    <div class="ham-giving-app">
+        <!-- Header -->
+        <div class="ham-header">
+            <div class="ham-header-title">Hamilton College · Make a Gift</div>
+            <template lwc:if={headerSubtitle}>
+                <div class="ham-header-subtitle">{headerSubtitle}</div>
+            </template>
+        </div>
+
+        <!-- Step Indicator (only when in flow) -->
+        <template lwc:if={isInFlow}>
+            <c-ham-review-step-indicator
+                current-step={currentStep}
+                completed-steps={completedSteps}
+                steps={activeSteps}
+                onstepclick={handleStepClick}>
+            </c-ham-review-step-indicator>
+        </template>
+
+        <!-- Main Card -->
+        <div class="ham-content-card">
+
+            <!-- Loading Spinner -->
+            <template lwc:if={isLoading}>
+                <div class="ham-loading">
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <template lwc:else>
+
+                <!-- Landing Screen -->
+                <template lwc:if={isLanding}>
+                    <div class="ham-landing">
+                        <div class="ham-landing-title">How would you like to give today?</div>
+                        <div class="ham-landing-subtitle">
+                            Choose a giving option below to get started. All gifts are processed securely via Stripe.
+                        </div>
+                        <div class="ham-landing-options">
+                            <div class="ham-landing-card" onclick={handleChooseGift}>
+                                <div class="ham-landing-card-icon">🎓</div>
+                                <div class="ham-landing-card-title">Make a Gift</div>
+                                <div class="ham-landing-card-desc">
+                                    Make a one-time or monthly outright gift to Hamilton College.
+                                </div>
+                            </div>
+                            <div class="ham-landing-card" onclick={handleChoosePledge}>
+                                <div class="ham-landing-card-icon">📋</div>
+                                <div class="ham-landing-card-title">Pay a Pledge</div>
+                                <div class="ham-landing-card-desc">
+                                    Make a payment toward an existing pledge commitment.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Gift Path: Step 1 - Amount -->
+                <template lwc:if={isAmountStep}>
+                    <c-ham-review-amount-step
+                        frequency={giftFrequency}
+                        amount={amount}
+                        onfrequencychange={handleFrequencyChange}
+                        onamountchange={handleAmountChange}
+                        oncontinuerequested={handleAmountContinue}>
+                    </c-ham-review-amount-step>
+                </template>
+
+                <!-- Gift Path: Step 2 - Designations -->
+                <template lwc:if={isDesignationStep}>
+                    <c-ham-review-designation-step
+                        hamilton-designations={hamiltonDesignations}
+                        other-designations={otherDesignations}
+                        selected-designations={selectedDesignationsList}
+                        amount={amount}
+                        onback={handleDesignationBack}
+                        ondesignationselect={handleDesignationSelect}
+                        onamountadjust={handleAmountAdjust}
+                        oncontinuerequested={handleDesignationContinue}>
+                    </c-ham-review-designation-step>
+                </template>
+
+                <!-- Pledge Path: Step 1 - Select Pledge -->
+                <template lwc:if={isPledgeStep}>
+                    <c-ham-review-pay-pledge-tab
+                        pledges={userPledges}
+                        onback={handlePledgeBack}
+                        oncontinuerequested={handlePledgeContinue}>
+                    </c-ham-review-pay-pledge-tab>
+                </template>
+
+                <!-- Shared: Step - Payment -->
+                <template lwc:if={isPaymentStep}>
+                    <c-ham-review-payment-tab
+                        form-data={formDataForPayment}
+                        current-contact={currentContact}
+                        gift-path={giftPath}
+                        onback={handlePaymentBack}
+                        onpaymentcomplete={handlePaymentComplete}>
+                    </c-ham-review-payment-tab>
+                </template>
+
+                <!-- Shared: Step - Confirm -->
+                <template lwc:if={isConfirmStep}>
+                    <c-ham-review-confirm-step
+                        contact={currentContact}
+                        selected-designations={selectedDesignationsList}
+                        amount={amount}
+                        gift-frequency={giftFrequency}
+                        gift-path={giftPath}
+                        onstartover={handleStartOver}>
+                    </c-ham-review-confirm-step>
+                </template>
+
+            </template>
+        </div>
+    </div>
+</template>

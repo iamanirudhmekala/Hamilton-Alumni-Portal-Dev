@@ -1,0 +1,219 @@
+.impact-wrapper {
+    background: #F4F4F4;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.impact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: .75rem 1rem 0 1rem;
+    height: 10%;
+}
+
+.impact-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111C24;
+    font-family: 'Mallory-main', sans-serif;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.redirect-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* ── Section divider ─────────────────────────────────────────────────────── */
+.section-divider {
+    border: none;
+    border-top: 1px solid #D9D9D9;
+    margin: 0 1rem;
+}
+
+.impact-section {
+    /* margin-bottom: 4px; */
+    padding: 0 1rem;
+    /* height: 29%; */
+    height: 25%;
+    margin-top: 3%;
+    /* border-bottom: 2px solid; */
+    padding-top: 20px;
+}
+
+/* ── Section label (uppercase) ───────────────────────────────────────────── */
+.section-label {
+    font-size: 1rem;
+    font-weight: 600;
+    /* color: #111C24; */
+    color: #231F20;
+    font-family: 'Mallory-main', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 0 0 12px 0;
+}
+
+/* ── Section 1: This Year's Hamilton Fund ────────────────────────────────── */
+.fund-amount-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.fund-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #002F86;
+    font-family: 'Mallory-main', sans-serif;
+    line-height: 1.1;
+}
+
+.fund-status {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #111C24;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.fund-description {
+    font-size: 0.875rem;
+    color: #231F20;
+    font-family: 'Mallory-main', sans-serif;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ── Section 2: Lifetime Impact ──────────────────────────────────────────── */
+.lifetime-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.lifetime-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.lifetime-sublabel {
+    font-size: 0.875rem;
+    color: #231F20;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.lifetime-amount {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #002F86;
+    font-family: 'Mallory-main', sans-serif;
+    line-height: 1.2;
+}
+
+.lifetime-context {
+    font-size: 0.875rem;
+    color: #231F20;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+/* ── Section 3: Volunteer Leadership ─────────────────────────────────────── */
+.volunteer-text {
+    font-size: 0.875rem;
+    color: #231F20;
+    font-family: 'Mallory-main', sans-serif;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+}
+
+.volunteer-link {
+    display: inline;
+    font-size: 0.875rem;
+    font-family: 'Mallory-main', sans-serif;
+    color: #002F86;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.impact-wrapper.kirkland .volunteer-link {
+    color: #166837;
+}
+
+.volunteer-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.volunteer-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 14px 16px;
+}
+
+.volunteer-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #002F86;
+    font-family: 'Mallory-main', sans-serif;
+    margin-bottom: 4px;
+}
+
+.volunteer-card-desc {
+    font-size: 0.875rem;
+    color: #555;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+/* ── Kirkland override ────────────────────────────────────────────────────── */
+.impact-wrapper.kirkland .fund-amount,
+.impact-wrapper.kirkland .lifetime-amount,
+.impact-wrapper.kirkland .volunteer-card-title {
+    color: #166837;
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+@media (max-width: 1023px) {
+    .impact-wrapper {
+        padding: 16px;
+    }
+
+    .impact-title {
+        font-size: 1.25rem;
+    }
+
+    .fund-amount {
+        font-size: 1.75rem;
+    }
+    .section-divider {
+    border: none;
+    border-top: 1px solid #D9D9D9;
+    margin-top: 10px;
+    }
+
+    .lifetime-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lifetime-amount {
+        font-size: 1.5rem;
+    }
+
+    .volunteer-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .impact-header, .impact-section{
+        height: unset !important;
+    }
+}

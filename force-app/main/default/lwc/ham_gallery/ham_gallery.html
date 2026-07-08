@@ -1,0 +1,174 @@
+<template>
+    <div class={wrapperClass}>
+        <h2 class="section-header slds-text-heading_large slds-var-m-bottom_x-small">{gallery}</h2>
+        <template lwc:if={galleryAvailable}>
+            <div class="carousel-background">
+                <div class="carousel-wrapper">
+
+                    <!-- Left Arrow -->
+                    <button class="arrow left" onclick={prevSlide}>❮</button>
+
+                    <!-- ============ MOBILE VIEW ============ -->
+                    <template lwc:if={isMobile}>
+                        <div class="mobile-viewport"
+                            ontouchstart={handleTouchStart}
+                            ontouchmove={handleTouchMove}
+                            ontouchend={handleTouchEnd}>
+                            <div class="mobile-track" style={mobileTrackStyle}>
+                                <template for:each={items} for:item="item">
+                                    <div key={item.Id} class="mobile-slide">
+                                        <div class="media-wrapper"
+                                            data-id={item.Id}
+                                            onclick={handleMediaClick}>
+
+                                            <template lwc:if={item.HAM_Is_Video_Content__c}>
+                                                <template lwc:if={item.isYouTube}>
+                                                    <div class="video-thumb-container">
+                                                        <img src={item.youtubethumbnail} class="slide-img" />
+                                                        <div class="play-button">►</div>
+                                                    </div>
+                                                </template>
+                                                <template lwc:elseif={item.isMp4}>
+                                                    <div class="mp4-thumb-container">
+                                                        <img src={item.videoThumbnail} class="mp4-thumb-img"/>
+                                                        <div class="play-button">►</div>
+                                                    </div>
+                                                </template>
+                                            </template>
+                                            <template lwc:else>
+                                                <img
+                                                    src={item.HAM_Image_URL__c}
+                                                    class="slide-img"
+                                                    data-id={item.Id}
+                                                    onload={handleImageLoad}
+                                                />
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- ============ DESKTOP VIEW ============ -->
+                    <template lwc:else>
+                        <div class={desktopStageClass}
+                            onmouseenter={stopAutoSlide}
+                            onmouseleave={startAutoSlide}>
+                            <template for:each={slidesWithPosition} for:item="item">
+                                <div key={item.Id} class={item.positionClass}>
+                                    <div class="media-wrapper"
+                                        data-id={item.Id}
+                                        onclick={handleMediaClick}>
+
+                                        <template lwc:if={item.HAM_Is_Video_Content__c}>
+                                            <template lwc:if={item.isYouTube}>
+                                                <template lwc:if={item.isPlaying}>
+                                                    <iframe
+                                                        class="video-iframe"
+                                                        src={item.embedUrl}
+                                                        allow="autoplay; encrypted-media; fullscreen"
+                                                        frameborder="0">
+                                                    </iframe>
+                                                </template>
+                                                <template lwc:else>
+                                                    <div class="video-thumb-container">
+                                                        <img src={item.youtubethumbnail} class="slide-img" />
+                                                        <div class="play-button">►</div>
+                                                    </div>
+                                                </template>
+                                            </template>
+                                            <template lwc:elseif={item.isMp4}>
+                                                <template lwc:if={item.isPlaying}>
+                                                    <video
+                                                        src={item.videoUrl}
+                                                        controls
+                                                        autoplay
+                                                        playsinline>
+                                                    </video>
+                                                </template>
+                                                <template lwc:else>
+                                                    <div class="mp4-thumb-container">
+                                                        <img src={item.videoThumbnail} class="mp4-thumb-img"/>
+                                                        <div class="play-button">►</div>
+                                                    </div>
+                                                </template>
+                                            </template>
+                                        </template>
+                                        <template lwc:else>
+                                            <img
+                                                src={item.HAM_Image_URL__c}
+                                                class="slide-img"
+                                                data-id={item.Id}
+                                                onload={handleImageLoad}
+                                            />
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Right Arrow -->
+                    <button class="arrow right" onclick={nextSlide}>❯</button>
+                </div>
+
+                <!-- Dots -->
+                <div class="dots">
+                    <template for:each={dotItems} for:item="dot" for:index="i">
+                        <span key={dot.Id}
+                            data-index={i}
+                            class={dot.dotClass}
+                            onclick={goToSlide}>
+                        </span>
+                    </template>
+                </div>
+            </div>
+
+            <!-- FULLSCREEN MODAL -->
+            <template lwc:if={showModal}>
+                <section class="lightbox">
+                    <button class="close-btn" onclick={closeModal}>✕</button>
+                    <div class="lightbox-content">
+                        <template lwc:if={activeMedia.HAM_Is_Video_Content__c}>
+                            <template lwc:if={activeMedia.isYouTube}>
+                                <iframe
+                                    src={activeMedia.embedUrl}
+                                    allow="autoplay; encrypted-media; fullscreen">
+                                </iframe>
+                            </template>
+                            <template lwc:elseif={activeMedia.isMp4}>
+                                <video
+                                    src={activeMedia.videoUrl}
+                                    controls
+                                    autoplay
+                                    playsinline
+                                    allowfullscreen>
+                                </video>
+                            </template>
+                        </template>
+                        <template lwc:else>
+                            <img src={activeMedia.HAM_Image_URL__c} />
+                        </template>
+                    </div>
+                </section>
+            </template>
+        </template>
+
+        <!-- No Gallery Fallback -->
+        <template lwc:else>
+            <div class="carousel-background">
+                <div class="carousel-wrapper">
+                    <div class="nogallery-container">
+                        <img
+                            src={noGallery}
+                            alt="Gallery is being updated"
+                            class="nogallery-img"
+                            loading="lazy"
+                        />
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

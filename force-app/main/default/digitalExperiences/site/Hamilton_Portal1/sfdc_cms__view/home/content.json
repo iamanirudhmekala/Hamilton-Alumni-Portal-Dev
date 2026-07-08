@@ -1,0 +1,101 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Home",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "0rem",
+            "dxpStyle" : {
+              "margin" : {
+                "bottom" : "0px",
+                "left" : "0px",
+                "right" : "0px",
+                "top" : "0px"
+              },
+              "padding" : {
+                "bottom" : "",
+                "left" : "",
+                "right" : "",
+                "top" : ""
+              }
+            },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "0rem",
+            "sectionConfig" : "{\"UUID\":\"d88134fd-29e2-4a34-9e70-667d478912ac\",\"columns\":[{\"UUID\":\"94fcf83d-a3df-4056-a764-9c9437d7c3d1\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "0px",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "clientVersion" : "WebV2",
+                "deploymentName" : "Milton",
+                "hideChatButtonOnLoad" : "Default",
+                "isExpSiteAuthMode" : false,
+                "scrtUrl" : "https://hamiltoncollege--advdev.sandbox.my.salesforce-scrt.com",
+                "siteEndpoint" : "https://hamiltoncollege--advdev.sandbox.my.site.com/ESWMilton1775727799352"
+              },
+              "definition" : "experience_messaging:embeddedMessaging",
+              "id" : "9a96c2a4-5dd9-4fa5-94a5-a18d010912ed",
+              "type" : "component"
+            }, {
+              "attributes" : { },
+              "definition" : "c:ham_userDetails",
+              "id" : "518f0669-24f0-4865-9aa1-2045345d9e74",
+              "type" : "component"
+            }, {
+              "attributes" : {
+                "dxpStyle" : { }
+              },
+              "definition" : "c:ham_MainCmp",
+              "id" : "c3f7aa89-a589-4914-b1ed-769bf304dc23",
+              "type" : "component"
+            } ],
+            "id" : "94fcf83d-a3df-4056-a764-9c9437d7c3d1",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "d88134fd-29e2-4a34-9e70-667d478912ac",
+          "type" : "component"
+        } ],
+        "id" : "40abd691-cb96-4c5e-b6d9-929e530abcac",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"https://www.hamilton.edu/v22/favicons/favicon-32x32.png\">",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Home",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "2ae61c7c-df43-434a-b668-fbd10aab7e76",
+          "type" : "component"
+        } ],
+        "id" : "84fcfec5-0a97-4ede-bbe0-388eb3c5427e",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "a95209f4-43fc-4001-aaf8-e06b0a612f9b",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "home"
+  },
+  "urlName" : "home"
+}

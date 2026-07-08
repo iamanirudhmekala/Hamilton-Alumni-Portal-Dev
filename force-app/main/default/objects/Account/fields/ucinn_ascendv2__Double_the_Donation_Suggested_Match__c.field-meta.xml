@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Double_the_Donation_Suggested_Match__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Suggested Match for Double the Donation company. Suggested match if there is a match from running the Double the Donation batch to connect Double the Donation companies with organizations.</description>
+    <externalId>false</externalId>
+    <label>Double the Donation Suggested Match</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

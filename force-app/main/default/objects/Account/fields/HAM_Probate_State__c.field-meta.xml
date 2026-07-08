@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Probate_State__c</fullName>
+    <description>U.S. state where probate is filed</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The U.S. state in which probate has been filed for this estate.</inlineHelpText>
+    <label>Probate State</label>
+    <length>80</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

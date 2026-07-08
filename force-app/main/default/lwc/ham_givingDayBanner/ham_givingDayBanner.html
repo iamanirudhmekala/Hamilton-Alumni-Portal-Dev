@@ -1,0 +1,63 @@
+<template>
+    <template lwc:if={isVisible}>
+        <template lwc:if={configData}>
+            <div class="banner-container">
+                <!-- Close Button -->
+                <button class="close-button" onclick={handleClose} aria-label="Close banner">
+                    <img src={images.givingDayClose} alt="" class="close-icon">
+                </button>
+
+                <!-- Row 1: Title and Button -->
+                <div class="header-row">
+                    <div class="title-wrapper">
+                        <h2 class="title">{titleValue}</h2>
+                    </div>
+
+                    <div class="button-wrapper">
+                        <a  onclick={handleMakeGiftClick} 
+                           class="gift-button"
+                           onmouseenter={handleButtonMouseEnter}
+                           onmouseleave={handleButtonMouseLeave}>
+                            <template lwc:if={images.mobileGridOutlineOnly}>
+                                <span>
+                                    <img src={buttonIcon} alt="" width="20px" height="20px">
+                                </span>
+                            </template>
+                            <template lwc:if={isDesktopView}><span class="button-text">{label.makeagift}</span></template>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Row 2: Metrics -->
+                <div class="metrics-row">
+                    <div class="metric-wrapper raised-wrapper">
+                        <div class="amount-section">
+                            <template lwc:if={goalExist}>
+                                <span class="amount-raised">${formattedRaised}</span>
+                                <div class="amount-goal-box"><span class="amount-goal">of ${formattedGoal}</span></div>
+                            </template>  
+                            <template lwc:else>
+                                <span class="amount-raised-placeholder">{givingDay}</span>
+                            </template>                            
+                        </div>
+                    </div>
+
+                    <div class="metric-wrapper goal-wrapper">
+                        <template lwc:if={goalExist}>
+                            <div class="goal-percentage">
+                                <span class="percentage">{progressPercentage}%<span class="goal-text">of Goal</span></span>
+                            </div>
+                        </template> 
+                    </div>
+                </div>
+
+                <!-- Row 3: Progress Bar -->
+                <template lwc:if={goalExist}>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style={progressBarStyle}></div>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </template>
+</template>

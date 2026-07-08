@@ -1,0 +1,172 @@
+system:
+    instructions: |system:
+          instructions: |
+            You are an AI assistant.
+            Your role is to help users by providing information related to:
+            - Your Impact
+            - Events
+            - Account Info
+            - Volunteering Opportunities
+
+            Guidelines:
+            - Identify the logged-in user using available context (such as ContactId or User information).
+            - Share meaningful insights about the user's activities, contributions, and participation.
+            - Provide details about events the user is associated with or may be interested in.
+            - Share general account-related information only when relevant.
+            - Suggest volunteering opportunities when applicable.
+
+            Response Style:
+            - Keep responses natural, conversational, and easy to understand.
+            - Avoid rigid or overly structured formats.
+            - Highlight key information clearly within the response.
+            Behavior Rules:
+            - If data is not available, politely inform the user.
+            - Ask for clarification if needed.
+            - Do not assume or generate incorrect infomation
+    messages:
+        messages:
+        welcome: |
+            Hi {!@variables.ConstituentName}, I'm Milton AI service assistant. How can I help you today?
+        error: |
+            Sorry, it looks like something has gone wrong.
+config:
+    agent_label: "Milton"
+    developer_name: "Milton"
+    description: "An intelligent AI assistant designed to help users stay informed and engaged by providing personalized insights on their impact, relevant events, account information, and volunteering opportunities. The agent ensures a seamless and conversational user experience."
+    default_agent_user: "milton@00dsu000006weem49412817.ext"
+
+variables:
+    authenticationKey: mutable string
+        description: "Stores the authentication key that's used to generate the verification code."
+        visibility: "Internal"
+    customerId: mutable string
+        description: "Stores the Salesforce user ID or contact ID."
+        visibility: "Internal"
+    customerType: mutable string
+        description: "Stores the customer ID type, whether it's a Salesforce user or a contact."
+        visibility: "Internal"
+    isVerified: mutable boolean = False
+        label: "isVerified"
+        description: "Stores a boolean value that indicates whether the customer code is verified."
+        visibility: "Internal"
+    EndUserId: linked string
+        source: @MessagingSession.MessagingEndUserId
+        description: "This variable may also be referred to as MessagingEndUser Id"
+    RoutableId: linked string
+        source: @MessagingSession.Id
+        description: "This variable may also be referred to as MessagingSession Id"
+    EndUserLanguage: linked string
+        source: @MessagingSession.EndUserLanguage
+        description: "This variable may also be referred to as MessagingSession EndUserLanguage"
+    VerifiedCustomerId: mutable string
+        description: "This variable may also be referred to as VerifiedCustomerId"
+        visibility: "Internal"
+    emailCaseId: mutable string
+        description: "Stores the Salesforce Case ID created by an inbound email."
+        visibility: "External"
+    endUserEmail: mutable string
+        description: "Stores email address of the end user who sent the inbound email."
+        visibility: "External"
+    endUserContactId: mutable string
+        description: "Stores the Salesforce Contact ID associated with the end user who sent the inbound email."
+        visibility: "External"
+    ContactId: mutable string
+        description: "This is contactID of the loggedin user passsed from portal to agent"
+        label: "ContactId"
+    ConstituentName: linked string
+        description: "This variable may also be referred to as MessagingSession ConstituentName__c"
+        label: "ConstituentName"
+        source: @MessagingSession.ConstituentName__c
+
+language:
+    additional_locales: "en_GB"
+    default_locale: "en_US"
+    all_additional_locales: False
+
+knowledge:
+    rag_feature_config_id: ""
+    citations_url: ""
+    citations_enabled: False
+
+start_agent agent_router:
+    label: "Agent Router"
+    description: "Welcome the user and determine the appropriate subagent based on user input"
+    model_config:
+        model: "model://sfdc_ai__DefaultEinsteinHyperClassifier"
+    reasoning:
+        instructions: ->
+            | Select the best tool to call based on conversation history and user's intent.
+        actions:
+            go_to_Fund_Managment: @utils.transition to @subagent.Fund_Managment
+
+subagent Fund_Managment:
+    label: "Fund Managment"
+    description: "Whenever a query comes from user which was related to the hamilton fund pledged and paid in the current year this subagent should run"
+    reasoning:
+        instructions: ->
+         | You are an assistant to fetch user financial details.
+
+            Step 1:
+            Check if {!@variables.RoutableId} (Messaging Session Id) is available.
+
+            Step 2:
+            IF {!@variables.RoutableId}  is NOT available:
+                Ask the user:
+                "I’m unable to fetch your details right now. Please try again or start the chat again."
+
+                Do NOT call the action.
+
+            Step 3:
+            IF {!@variables.RoutableId}  IS available:
+                Call the action:
+                Fetch_Pledge_and_Paid_Amount
+                with recordId = {!@variables.RoutableId} 
+
+            Step 4:
+             Format the response clearly:
+
+            Example:
+
+            User: What is my Hamilton Fund Pledged?
+
+            Response:
+            The Hamilton Fund Pledged for the Current Year - $930.01  
+            The Hamilton Fund Paid for the Current Year - $28.92
+
+        actions:
+            Fetch_Pledge_and_Paid_Amount_Sumup: @actions.Fetch_Pledge_and_Paid_Amount_Sumup
+                with recordId = @variables.RoutableId
+                
+        # No reasoning actions in this subagent
+
+
+
+
+    actions:
+        Fetch_Pledge_and_Paid_Amount_Sumup:
+            description: "Returns a summary of the user’s Hamilton Fund contributions for the current year, including pledged and paid amounts"
+            label: "Fetch Pledge and Paid Amount Sumup"
+            require_user_confirmation: False
+            include_in_progress_indicator: True
+            progress_indicator_message: "Retrieving your information, please wait..."
+            source: "Fetch_Pledge_and_Paid_Amount_Sumup"
+            target: "flow://Fetch_Pledge_and_Paid_Amount"
+            inputs:
+                "recordId": string
+                    description: "Unique record identifier (such as Messaging Session ID) used to fetch the user’s Hamilton Fund contribution details, including pledged and paid amounts for the current year."
+                    label: "recordId"
+                    is_required: False
+                    is_user_input: False
+            outputs:
+                "TotalPaid": object
+                    description: "Provides the total amount paid by the user toward the Hamilton Fund for the current year."
+                    label: "TotalPaid"
+                    is_displayable: True
+                    filter_from_agent: False
+                    complex_data_type_name: "lightning__currencyType"
+                "TotalPledged": object
+                    description: "Provides the total amount pledged by the user toward the Hamilton Fund for the current year."
+                    label: "TotalPledged"
+                    is_displayable: True
+                    filter_from_agent: False
+                    complex_data_type_name: "lightning__currencyType"

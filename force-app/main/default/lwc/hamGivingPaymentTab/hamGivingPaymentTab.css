@@ -1,0 +1,500 @@
+.form-section-compact {
+    padding-bottom: 2rem;
+    /* border-bottom: 2px solid #f3f4f6; */
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.gift-module {
+    padding-bottom: 2rem;
+}
+
+.payment-tab {
+    display: flex;
+}
+
+.payment-tab .payment-tab__button:first-of-type {
+    border-top-left-radius: 8px; 
+    border-bottom-left-radius: 8px;
+}
+
+.payment-tab .payment-tab__button:last-of-type {
+    border-top-right-radius: 8px; 
+    border-bottom-right-radius: 8px;
+}
+
+.payment-tab__button {
+    flex: 1; text-align:center; 
+    border: 2px solid #E6E7EB; 
+    padding: 1rem 0 1rem 0; 
+    color: #6b7280;
+    font-size: large;
+    font-weight: 500;
+    /* color: #374151; */
+    cursor: pointer;
+}
+
+.payment-tab__button--active {
+    background-color: #00306B;
+    background: #00306B;
+    color: #FFF;
+    border-color: #00306B;
+}
+
+.payment-tab__button--inactive {
+    background-color: #F9FAFC;
+    background: #F9FAFC;
+}
+
+.payment-tab__button--inactive:hover {
+    background-color: #F3F4F6;
+}
+
+.custom-input {
+    font-size: 1.2rem;
+    color: #001E5A;
+    border: 2px solid #E6E7EB;
+    border-radius: 8px;
+    padding-left: 1rem;
+}
+
+.custom-input:focus{
+    border: 2px solid #001F5C;
+    box-shadow: 0 0 0 3px #CBD3E0;
+}
+
+    
+.custom-grid {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgb(229, 231, 235);
+}
+
+.custom-input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.custom-input-field > label {
+    color: #00205b;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.required {
+    color: #dc2626;
+}
+
+.custom-input-field > input {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: white;
+}
+
+.custom-input-field > textarea {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: white;
+}
+
+.custom-field-padding-top {
+    padding-top: 15px;
+}
+
+.custom-input-field > select {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: white;
+}
+
+.wallet-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6b7280;
+    font-size: 0.9375rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.wallet-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.wallet-buttons-no-grid {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.full-width-button {
+    width: 100%;
+}
+
+.div-with-hover {
+    pointer-events: auto!important;
+}
+
+.inline-grid-item {
+    display: inline-grid!important;
+}
+
+.div-with-hover:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 120px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the button */
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.wallet-btn-disabled {
+    pointer-events: none;
+}
+
+.wallet-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 1rem;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.875rem;
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.wallet-btn:hover {
+    border-color: #0056b3;
+    background: #fafbfc;
+    transform: translateY(-2px);
+    box-shadow:  0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.wallet-btn-selected {
+    border-color: #0056b3;
+    background: #fafbfc;
+    box-shadow:  0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.wallet-btn-not-selected {
+    opacity: 0.7;
+}
+
+.form-submit {
+    margin-top: 1.5rem;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 1.25rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #00205b 0%, #003571 100%);
+    color: white;
+}
+
+.btn {
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.03);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.submit-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #003571 0%, #003571 100%);
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+    transform: translateY(-2px);
+}
+
+.payment-button-icon {
+    position: relative;
+    top: -1px;
+    --slds-c-icon-color-foreground: #6b7280;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 1rem;
+    background: transparent;
+    border: 1px solid rgb(209, 213, 219);
+    border-radius: 6px;
+    color: rgb(75, 85, 99);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: 0.2s;
+}
+
+.back-button-icon {
+    --slds-c-icon-color-foreground: #6b7280;
+}
+
+.payment-tab__button-icon--active {
+    --slds-c-icon-color-foreground: #fff!important;
+}
+
+.payment-tab__button-icon--inactive {
+    --slds-c-icon-color-foreground: #6b7280!important;
+}
+
+.wallet-btn-icon {
+    height: 15px;
+}
+
+.security-note {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border: 2px solid #60a5fa;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #1e40af;
+    /* margin-bottom: 1.5rem; */
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.security-note-icon {
+    --slds-c-icon-color-foreground: #1e40af!important;
+}
+
+.stock-info-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 2px solid #f59e0b;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #92400e;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.stock-info-note-icon {
+    --slds-c-icon-color-foreground: #f59e0b!important;
+    position: relative;
+    top: 15px;
+}
+
+.stock-transfer-info {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.bank-information-header {
+    margin: 0px 0px 0.75rem;
+    font-size: 0.9375rem;
+    color: rgb(31, 41, 55);
+}
+
+.bank-information-body {
+    font-size: 0.8125rem;
+    color: rgb(75, 85, 99);
+    line-height: 1.6;
+}
+
+.bank-information-footer {
+    margin: 0.75rem 0px 0px;
+    font-style: italic;
+}
+
+.bank-information-body-item {
+    margin: 0px 0px 0.5rem;
+}
+
+.transfer-notes {
+    resize: vertical;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid rgb(209, 213, 219);
+    border-radius: 6px;
+    font-size: 0.9375rem;
+}
+
+.stock-transfer-info {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    margin-bottom: 0!important;
+}
+
+.stock-transfer-info-header {
+    margin: 0px 0px 0.75rem;
+    font-size: 0.9375rem;
+    color: rgb(31, 41, 55);
+}
+
+.stock-transfer-info-body {
+    font-size: 0.8125rem;
+    color: rgb(75, 85, 99);
+    line-height: 1.6;
+}
+
+.stock-transfer-info-body-item {
+    margin: 0px 0px 0.5rem;
+}
+
+.stock-transfer-info-footer {
+    margin: 0.75rem 0px 0px;
+    font-style: italic;
+}
+
+.stock-notes {
+    resize: vertical;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid rgb(209, 213, 219);
+    border-radius: 6px;
+    font-size: 0.9375rem;
+}
+
+.stock-info-note-icon-custom {
+    top: 15px!important;
+}
+
+.section-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.static-toast {
+    height:4rem;
+    padding-top: 10px;
+    position: sticky;
+}
+
+.custom-container {
+    position: absolute!important;
+    margin-top: 10px;
+}
+
+.submit-disabled {
+    background-color: #ccc;
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.hidden-section {
+    display: none;
+}
+
+.alumni-registration {
+    display: flex;
+    border: #E6E7EB solid 2px;
+    padding: 1rem;
+    margin: 1.5rem 0 1.5rem 0;
+    border-radius: 8px;
+    align-items: center;
+}
+
+.alumni-registration:hover {
+    border-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.alumni-registration input {
+    height: 1.5em;
+    width: 1.5em;
+}
+
+.payment-section {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.input-field-wallet-invalid {
+    border: 2px solid #af1c17!important;
+}
+
+.input-field-wallet-valid {
+    border: 2px solid #17af68!important;
+}
+
+.validation-message {
+    display: none;
+    margin-left: 3px;
+    color: #af1c17;
+    font-size: 0.7rem;
+}
+
+input.input-field-wallet-invalid + .validation-message {
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .payment-tab__button {
+        font-size: medium;
+    }
+
+}
+
+.info-static-toast {
+    margin-top: 1.5rem;
+}
+
+.info-static-toast-icon {
+    position: relative;
+    top: 2px;
+    padding-right: 5px;
+    float: inline-start;
+    display: inline-flex;
+}
+
+.info-static-toast-block {
+    margin: 0 auto;
+}
+
+.info-static-toast-text {
+    display: inline-flex;
+}

@@ -1,0 +1,374 @@
+<template>
+    <div class="backgroundWhite">
+        <lightning-accordion allow-multiple-sections-open="true" active-section-name={activeGivingSectionBio} onsectiontoggle={handleGivingSectionToggle}>
+            <lightning-accordion-section name="Giving Summary" label="Giving Summary">
+
+                <!-- Loading Spinner -->
+                <template if:true={loading}>
+                    <lightning-spinner
+                        alternative-text="Loading..."
+                        size="medium"
+                        variant="brand">
+                    </lightning-spinner>
+                </template>
+
+                <template lwc:if={contactDetails}>
+
+                    <!-- =============================================
+                         ACTION BUTTONS
+                         ============================================= -->
+                    <div class="action-bar">
+                        <template lwc:if={showLoginAsButton}>
+                            <lightning-button
+                                label="Login to Portal as User"
+                                onclick={loginAsExperienceUser}
+                                class="action-btn">
+                            </lightning-button>
+                        </template>
+                        <lightning-button label="Create Contact Report" onclick={openContactReportModal} class="action-btn"></lightning-button>
+                        <lightning-button label="Ask Pipeline Form"     onclick={openAskPipelineModal}  class="action-btn"></lightning-button>
+                        <lightning-button label="Presidential Briefing" onclick={navigateToPresidentialBriefing} class="action-btn"></lightning-button>
+                        <lightning-button label="Share Feedback"        onclick={navigateToHelp}         class="action-btn"></lightning-button>
+                    </div>
+
+                    <!-- =============================================
+                         BADGES ROW
+                         ============================================= -->
+                    <div class="badge-row">
+                        <template if:true={contactDetails.HAM_1812__c}>
+                            <div class="badge-item">
+                                <img src={badgeFor1812} alt="1812" title="1812" class="badge-img" />
+                            </div>
+                        </template>
+                        <template if:true={contactDetails.HAM_Founders_Circle__c}>
+                            <div class="badge-item">
+                                <img src={badgeFC} alt="Founder's Circle" title="Founder's Circle" class="badge-img" />
+                            </div>
+                        </template>
+                        <template if:true={contactDetails.HAM_Couper_Guild__c}>
+                            <div class="badge-item">
+                                <img src={badgeCG} alt="Couper Guild" title="Couper Guild" class="badge-img" />
+                            </div>
+                        </template>
+                        <template if:true={contactDetails.HAM_Chapel_Bell__c}>
+                            <div class="badge-item">
+                                <img src={badgeCB} alt="Chapel Bell" title="Chapel Bell" class="badge-img" />
+                            </div>
+                        </template>
+                        <template if:true={contactDetails.HAM_Ten_to_Fifth__c}>
+                            <div class="badge-item">
+                                <img src={badgeFor10to5} alt="Annual fund donors $100k+" title="Annual fund donors $100k+" class="badge-img" />
+                            </div>
+                        </template>
+                        <template if:true={contactDetails.HAM_JBA__c}>
+                            <div class="badge-item">
+                                <img src={badgeForJBA} alt="JBA" title="JBA" class="badge-img" />
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- =============================================
+                         GIVING STATS — 2-column stat grid
+                         ============================================= -->
+                    <div class="section-card">
+                        <div class="section-header">Giving Summary</div>
+                        <div class="stat-grid">
+
+                            <div class="stat-item">
+                                <div class="stat-label"># Yrs of Giving (Fiscal)</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-number value={contactDetails.HAM_Total_Years_of_Giving__c} minimum-fraction-digits="0"></lightning-formatted-number>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <div class="stat-label">Current FY Paid</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-number value={contactDetails.HAM_Current_FY_Paid__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <div class="stat-label">Lifetime Committed (w/o BQI)</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-number value={contactDetails.HAM_Lifetime_Committed__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <div class="stat-label">Lifetime Paid</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-number value={contactDetails.HAM_Lifetime_Paid__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <div class="stat-label">Lifetime Committed (w/ BQI)</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-number value={contactDetails.HAM_Lifetime_Committed_w_BQI__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <div class="stat-label">Lifetime Bequest Intention</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-number value={contactDetails.HAM_Lifetime_Bequest_Intention__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <div class="stat-label">Current FY AF Committed</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-number value={contactDetails.HAM_Current_Yr_Hamilton_Fund_Fundraising__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <div class="stat-label">Current FY AF Paid</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-number value={contactDetails.HAM_Current_Year_Hamilton_Fund_Collected__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </div>
+                            </div>
+
+                            <template lwc:if={contactDetails.HAM_Special_Handling_Notes__c}>
+                                <div class="stat-item stat-item--full">
+                                    <div class="stat-label">Special Handling Notes</div>
+                                    <div class="stat-value">
+                                        <lightning-formatted-text value={contactDetails.HAM_Special_Handling_Notes__c}></lightning-formatted-text>
+                                    </div>
+                                </div>
+                            </template>
+
+                        </div>
+                    </div>
+
+                    <!-- =============================================
+                         LATEST GIFT CARD
+                         ============================================= -->
+                    <div class="section-card">
+                        <div class="section-header">Latest Gift</div>
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <div class="stat-label">Amount</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-number value={contactDetails.HAM_Last_Gift_Amount__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Date</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-date-time value={contactDetails.HAM_Last_Gift_Date__c} time-zone="UTC"></lightning-formatted-date-time>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- =============================================
+                         LARGEST AF PLEDGE CARD
+                         ============================================= -->
+                    <div class="section-card">
+                        <div class="section-header">Largest AF Pledge</div>
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <div class="stat-label">Amount</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-number value={contactDetails.HAM_Largest_AF_Pledge_Amount__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Date</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-date-time value={contactDetails.HAM_Largest_AF_Pledge_Date__c} time-zone="UTC"></lightning-formatted-date-time>
+                                </div>
+                            </div>
+                            <div class="stat-item stat-item--full">
+                                <div class="stat-label">Purpose</div>
+                                <div class="stat-value">
+                                    <lightning-formatted-text value={contactDetails.HAM_Largest_AF_Pledge_Purpose__c}></lightning-formatted-text>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- =============================================
+                         NAMED FUNDS — card list (replaces datatable)
+                         ============================================= -->
+                    <template if:true={hasDesignations}>
+                        <div class="section-card">
+                            <div class="section-header">Named Funds</div>
+                            <ul class="fund-list">
+                                <template for:each={designationDetails} for:item="fund">
+                                    <li key={fund.Id} class="fund-list-item">
+                                        <lightning-icon icon-name="utility:record" size="x-small" class="fund-icon"></lightning-icon>
+                                        <a href={fund.recordLink} target="_blank" class="fund-link">{fund.HAM_Fund_Name__c}</a>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </template>
+
+                    <!-- =============================================
+                         GIVING BY DESIGNATION — mobile cards (replaces datatable)
+                         ============================================= -->
+                    <div class="section-card">
+                        <div class="section-header-row">
+                            <div class="section-header">Giving by Designation</div>
+                            <div class="sort-controls">
+                                <span class="sort-label">Sort:</span>
+                                <button class={givingDesignationSortAmountClass} onclick={sortGivingByCommitted} title="Sort by Committed">Committed</button>
+                                <button class={givingDesignationSortPaidClass}   onclick={sortGivingByPaid}      title="Sort by Paid">Paid</button>
+                            </div>
+                        </div>
+
+                        <template if:true={hasGivingDetails}>
+                            <ul class="data-card-list">
+                                <template for:each={pageGivingDetails} for:item="row">
+                                    <li key={row.Id} class="data-card">
+                                        <div class="card-header">{row.HAM_Designation__c}</div>
+                                        <div class="card-row">
+                                            <span class="card-label">Committed</span>
+                                            <span class="card-value">
+                                                <lightning-formatted-number value={row.HAM_Pledged__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                            </span>
+                                        </div>
+                                        <div class="card-divider"></div>
+                                        <div class="card-row">
+                                            <span class="card-label">Paid</span>
+                                            <span class="card-value">
+                                                <lightning-formatted-number value={row.HAM_Paid__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                            </span>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+
+                            <!-- Pagination -->
+                            <template if:true={showGivingPagination}>
+                                <div class="pagination-bar">
+                                    <button class="pagination-btn" onclick={prevGivingPage} disabled={isGivingFirstPage}>
+                                        <lightning-icon icon-name="utility:chevronleft" size="x-small"></lightning-icon>
+                                    </button>
+                                    <span class="pagination-label">Page {givingPageNumber} of {givingTotalPages} &middot; {givingTotalRecords} total</span>
+                                    <button class="pagination-btn" onclick={nextGivingPage} disabled={isGivingLastPage}>
+                                        <lightning-icon icon-name="utility:chevronright" size="x-small"></lightning-icon>
+                                    </button>
+                                </div>
+                            </template>
+                        </template>
+
+                        <template if:false={hasGivingDetails}>
+                            <div class="empty-state">No giving by designation records found.</div>
+                        </template>
+                    </div>
+
+                    <!-- =============================================
+                         GIVING BY CAMPAIGN — mobile cards (replaces datatable)
+                         ============================================= -->
+                    <div class="section-card">
+                        <div class="section-header-row">
+                            <div class="section-header">Giving by Campaign</div>
+                            <div class="sort-controls">
+                                <span class="sort-label">Sort:</span>
+                                <button class={campaignSortAmountClass} onclick={sortCampaignByCommitted} title="Sort by Committed">Committed</button>
+                                <button class={campaignSortPaidClass}   onclick={sortCampaignByPaid}      title="Sort by Paid">Paid</button>
+                            </div>
+                        </div>
+
+                        <template if:true={hasCampaignDetails}>
+                            <ul class="data-card-list">
+                                <template for:each={pageCampaignDetails} for:item="row">
+                                    <li key={row.Id} class="data-card">
+                                        <div class="card-header">{row.HAM_Designation__c}</div>
+                                        <div class="card-row">
+                                            <span class="card-label">Committed</span>
+                                            <span class="card-value">
+                                                <lightning-formatted-number value={row.HAM_Pledged__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                            </span>
+                                        </div>
+                                        <div class="card-divider"></div>
+                                        <div class="card-row">
+                                            <span class="card-label">Paid</span>
+                                            <span class="card-value">
+                                                <lightning-formatted-number value={row.HAM_Paid__c} minimum-fraction-digits="2" format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                            </span>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+
+                            <!-- Pagination -->
+                            <template if:true={showCampaignPagination}>
+                                <div class="pagination-bar">
+                                    <button class="pagination-btn" onclick={prevCampaignPage} disabled={isCampaignFirstPage}>
+                                        <lightning-icon icon-name="utility:chevronleft" size="x-small"></lightning-icon>
+                                    </button>
+                                    <span class="pagination-label">Page {campaignPageNumber} of {campaignTotalPages} &middot; {campaignTotalRecords} total</span>
+                                    <button class="pagination-btn" onclick={nextCampaignPage} disabled={isCampaignLastPage}>
+                                        <lightning-icon icon-name="utility:chevronright" size="x-small"></lightning-icon>
+                                    </button>
+                                </div>
+                            </template>
+                        </template>
+
+                        <template if:false={hasCampaignDetails}>
+                            <div class="empty-state">No giving by campaign records found.</div>
+                        </template>
+                    </div>
+
+                </template>
+            </lightning-accordion-section>
+        </lightning-accordion>
+
+        <!-- =============================================
+             MODAL: Contact Report Flow
+             ============================================= -->
+        <template if:true={isContactReportModalOpen}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" data-id="contactReportModal">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 class="slds-modal__title">New Contact Report</h2>
+                        <button class="slds-button slds-button_icon slds-modal__close" title="Close" onclick={closeContactReportModal}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                        </button>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning-flow
+                            flow-api-name="Contact_Report_Create_New_Contact_Report_Gift_Officers"
+                            flow-input-variables={contactReportFlowInputVariables}
+                            onstatuschange={handleContactReportFlowStatusChange}>
+                        </lightning-flow>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <!-- =============================================
+             MODAL: Ask Pipeline Form Flow
+             ============================================= -->
+        <template if:true={isAskPipelineModalOpen}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" data-id="askPipelineModal">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 class="slds-modal__title">Ask Pipeline Form</h2>
+                        <button class="slds-button slds-button_icon slds-modal__close" title="Close" onclick={closeAskPipelineModal}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                        </button>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" style="min-height: 200px; position: relative;">
+                        <template if:true={isFlowLoading}>
+                            <lightning-spinner alternative-text="Loading form..." size="medium" variant="brand"></lightning-spinner>
+                        </template>
+                        <lightning-flow
+                            flow-api-name="HAM_Ask_Pipeline_Form"
+                            flow-input-variables={askPipelineFlowInputVariables}
+                            onstatuschange={handleAskPipelineFlowStatusChange}>
+                        </lightning-flow>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+    </div>
+</template>

@@ -1,0 +1,31 @@
+<template>
+    <div class="card">
+        <lightning-accordion allow-multiple-sections-open active-section-name={activeSection} onsectiontoggle={handleSectionToggle}>
+            <lightning-accordion-section name="My Prospects" label="My Prospects">
+                <div slot="actions">
+                    <lightning-button
+                        label="Export"
+                        icon-name="utility:download"
+                        onclick={handleDownloadCsv}
+                        variant="neutral"
+                        disabled={isExportDisabled}>
+                    </lightning-button>
+                </div>
+                <div class="slds-p-around_small">
+                    <div class="content table-responsive table-full-width">
+                        <lightning-datatable
+                            key-field="id"
+                            data={allProspects}
+                            columns={columns}
+                            hide-checkbox-column="true"
+                            sorted-by={sortedBy}
+                            sorted-direction={sortedDirection}
+                            onsort={doSorting}>
+                        </lightning-datatable>
+                    </div>
+
+                </div>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </div>
+</template>

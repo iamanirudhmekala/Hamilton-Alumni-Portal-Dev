@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Current_Campaign_Committed__c</fullName>
+    <defaultValue>0.0</defaultValue>
+    <description>This field is populated with aggregate committed from CRMA where campaign priority = &quot;Future Capital Campaign&quot;</description>
+    <inlineHelpText>This field is populated with aggregate committed from CRMA where campaign priority = &quot;Future Capital Campaign&quot;</inlineHelpText>
+    <label>HAM Current Campaign Committed</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

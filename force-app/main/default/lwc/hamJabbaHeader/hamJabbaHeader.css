@@ -1,0 +1,11 @@
+/* Header wrapper */
+.app-header {
+    background: linear-gradient(135deg, var(--secondary-blue) 0%, #0066cc 100%);
+    box-shadow: 0 2px 8px #0066cc;
+    padding: 1.25rem 0;
+}
+
+/* Centered content */
+.app-header .slds-container_large {
+    max-width: 1400px;
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Date_Estate_Opened__c</fullName>
+    <description>Date the estate was formally opened or probate initiated</description>
+    <inlineHelpText>The date probate was initiated or the estate was formally opened.</inlineHelpText>
+    <label>Date Estate Opened</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

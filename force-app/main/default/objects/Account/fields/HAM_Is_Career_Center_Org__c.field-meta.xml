@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Is_Career_Center_Org__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This flag will be used to identify Org records that Career Center will be using for engagements, interest and other day to day activities.</description>
+    <inlineHelpText>This flag will be used to identify Org records that Career Center will be using for engagements, interest and other day to day activities.</inlineHelpText>
+    <label>HAM Is Career Center Org</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

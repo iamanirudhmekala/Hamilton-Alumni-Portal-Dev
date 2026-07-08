@@ -1,0 +1,90 @@
+<template>
+    <div class="ham-other-tab">
+        <div class="ham-search-wrapper">
+            <input
+                type="text"
+                class="ham-search-input"
+                value={searchTerm}
+                placeholder="Search designations (min. 2 characters)..."
+                oninput={handleSearchInput}
+            />
+        </div>
+
+        <template lwc:if={isLoading}>
+            <div class="ham-loading-row">
+                <lightning-spinner alternative-text="Searching" size="small"></lightning-spinner>
+                <span class="ham-loading-text">Searching...</span>
+            </div>
+        </template>
+
+        <template lwc:if={showHint}>
+            <div class="ham-hint-text">Type at least 2 characters to search for designations.</div>
+        </template>
+
+        <template lwc:if={hasDesignations}>
+            <div class="ham-pagination-info">
+                Showing {paginationStart}–{paginationEnd} of {totalResults} results
+            </div>
+
+            <div class="ham-designation-grid">
+                <template for:each={pagedDesignations} for:item="designation">
+                    <div key={designation.id} class="ham-designation-card">
+                        <div class="ham-card-title">{designation.name}</div>
+                        <template lwc:if={designation.isSelected}>
+                            <input
+                                type="text"
+                                class="ham-card-amount-input"
+                                value={designation.selectedAmount}
+                                data-id={designation.id}
+                                oninput={handleAmountInput}
+                                placeholder="$ 0.00"
+                            />
+                        </template>
+                        <!-- NEW: disabled bound to isAddDisabled -->
+                        <button
+                            class={designation.buttonClass}
+                            data-id={designation.id}
+                            disabled={designation.isAddDisabled}
+                            onclick={handleDesignationClick}>
+                            {designation.buttonLabel}
+                        </button>
+                    </div>
+                </template>
+            </div>
+
+            <template lwc:if={showPagination}>
+                <div class="ham-pagination-controls">
+                    <button
+                        class="ham-page-btn"
+                        disabled={isFirstPage}
+                        onclick={handlePrevPage}>
+                        &laquo; Prev
+                    </button>
+
+                    <template for:each={pageNumbers} for:item="page">
+                        <button
+                            key={page.number}
+                            class={page.cssClass}
+                            data-page={page.number}
+                            onclick={handlePageClick}>
+                            {page.number}
+                        </button>
+                    </template>
+
+                    <button
+                        class="ham-page-btn"
+                        disabled={isLastPage}
+                        onclick={handleNextPage}>
+                        Next &raquo;
+                    </button>
+                </div>
+            </template>
+        </template>
+
+        <template lwc:if={showEmpty}>
+            <div class="ham-empty-state">
+                <p class="ham-empty-text">No designations found for &quot;{searchTerm}&quot;. Try a different search term.</p>
+            </div>
+        </template>
+    </div>
+</template>

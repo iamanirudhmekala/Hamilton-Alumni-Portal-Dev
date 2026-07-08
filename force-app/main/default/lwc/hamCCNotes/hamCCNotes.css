@@ -1,0 +1,173 @@
+/* ── Mobile sort bar ───────────────────────── */
+.mobile-sort-bar {
+    display: flex;
+    align-items: flex-end;
+    padding: 0.5rem 0.75rem 0.25rem;
+}
+
+.mobile-sort-combo {
+    flex: 1;
+}
+
+/* ── Mobile filter card & form ─────────────── */
+.mobile-filter-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.5rem 0.25rem;
+}
+
+.mobile-filter-field {
+    width: 100%;
+}
+
+.mobile-filter-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 0.5rem;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 0.25rem;
+}
+
+/* ── Card container ────────────────────────── */
+.mobile-card-container {
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* ── Individual card — green left border ────── */
+.mobile-card {
+    background: #ffffff;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    border-left: 4px solid rgb(75, 164, 118);
+    padding: 0.75rem 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Card header: title link ───────────────── */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.card-title-link {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgb(75, 164, 118);
+    text-decoration: none;
+    flex: 1;
+}
+
+.card-title-link:hover {
+    text-decoration: underline;
+}
+
+/* ── Card rows ─────────────────────────────── */
+.card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.2rem 0;
+    font-size: 0.8rem;
+}
+
+.card-row-stacked {
+    display: flex;
+    flex-direction: column;
+    padding: 0.3rem 0;
+    font-size: 0.8rem;
+}
+
+.card-label {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.75rem;
+}
+
+.card-value-bold {
+    font-weight: 700;
+}
+
+.card-value-full {
+    margin-top: 0.2rem;
+    color: #333;
+    word-break: break-word;
+}
+
+.card-divider {
+    border-top: 1px solid #e8e8e8;
+    margin: 0.4rem 0;
+}
+
+/* ── Show more/less ────────────────────────── */
+.show-more-row {
+    text-align: right;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.show-more-row a {
+    color: rgb(75, 164, 118);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.show-more-row a:hover {
+    text-decoration: underline;
+}
+
+/* ── Header: desktop vs mobile action buttons ──
+   Controlled by isMobile JS flag — no media query.
+── */
+.desktop-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mobile-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* ── Keep header buttons on one line ────────── */
+.slds-no-flex {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+}
+
+.slds-no-flex .slds-var-m-right_x-small,
+.slds-no-flex .slds-m-right_x-small {
+    margin-right: 0 !important;
+}
+
+.slds-no-flex .slds-m-left_x-small {
+    margin-left: 0 !important;
+}
+
+/* ── Prevent card header overflow ───────────── */
+.slds-card__header {
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.slds-media__body {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.slds-card__header-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

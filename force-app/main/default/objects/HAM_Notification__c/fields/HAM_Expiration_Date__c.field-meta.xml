@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Expiration_Date__c</fullName>
+    <description>Calculated at insert (Today + 30). Used by Batch Apex for cleanup.</description>
+    <inlineHelpText>Calculated at insert (Today + 30). Used by Batch Apex for cleanup.</inlineHelpText>
+    <label>HAM Expiration Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

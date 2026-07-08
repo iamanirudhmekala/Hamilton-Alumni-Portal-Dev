@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Leave_Reason__c</fullName>
+    <label>Leave Reason</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Irrelevant content</fullName>
+                <default>false</default>
+                <label>Irrelevant content</label>
+            </value>
+            <value>
+                <fullName>Low value</fullName>
+                <default>false</default>
+                <label>Low value</label>
+            </value>
+            <value>
+                <fullName>Inactive group</fullName>
+                <default>false</default>
+                <label>Inactive group</label>
+            </value>
+            <value>
+                <fullName>Negative experience</fullName>
+                <default>false</default>
+                <label>Negative experience</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>5</visibleLines>
+</CustomField>

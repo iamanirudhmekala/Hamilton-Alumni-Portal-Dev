@@ -1,0 +1,346 @@
+<template>
+    <div class={mainWrapperClass}>
+
+        <!-- Global loading spinner: shown until fetchLoggedInUserInfo resolves.
+             Prevents students from briefly seeing alumni-only content. -->
+        <template if:true={isLoading}>
+            <div class="global-spinner-container">
+                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:false={isLoading}>
+
+            <!-- Template tag to render desktop view -->
+            <!--<template if:true={isDesktopView}>-->
+            <c-ham_-header-cmp user-profile-url={userProfileUrl} label={label} images={images} is-student={isStudent}
+                is-override={isOverride} onpreferences={handlePreferencesClick} oneditprofile={handleEditProfile}
+                onlogout={handleLogout} onmakegift={handleMakeGiftEvent}>
+            </c-ham_-header-cmp>
+
+            <template if:true={isPreferencesOpen}>
+                <c-ham_-preference-center contact-id={currentUserContactId} is-student={isStudent}
+                    is-override={isOverride}></c-ham_-preference-center>
+            </template>
+
+            <template lwc:if={isProfileOverview}>
+                <c-ham_alumni-profile-overview-cmp current-user-contact-id={currentUserContactId}
+                    main-resource={mainResource} images={images} onback={handleProfileClose} contact-id={selectedCardId}
+                    label={label} is-student={isStudent} is-override={isOverride}></c-ham_alumni-profile-overview-cmp>
+            </template>
+
+            <!-- Home View -->
+            <template if:true={isHomeView}>
+                <c-ham_welcome-banner user-name={userName} user-birthday={userBirthday} label={label}
+                    is-kirkland-alumnae={isKirklandAlumnae} kirkland-alumnae-icon={images.kirklandAlumnaeIcon}
+                    badge-data={parentBadgesArray} registered-users-count={registeredUsersCount}
+                    is-override={isOverride} user-first-name={userFirstName} class-year={contactClassYear}
+                    images={images}></c-ham_welcome-banner>
+
+                <!-- ═══════════════════════════════════════════════
+                 ALUMNI HOME (non-student) — unchanged layout
+                 ═══════════════════════════════════════════════ -->
+                <template if:false={isStudent}>
+                    <div class="dashboard-container">
+
+                        <!-- Row 0: Redirection Cards -->
+                        <div class="row full-width">
+                            <c-ham_redirection-cards is-override={isOverride} onscrolltosection={handleScrollToSection}>
+                            </c-ham_redirection-cards>
+                        </div>
+
+                        <!-- Row 1: Giving Day -->
+                        <div class="row full-width">
+                            <c-ham_giving-day-banner label={label} images={images}
+                                onmakegift={handleMakeGiftEvent}></c-ham_giving-day-banner>
+                        </div>
+
+                        <!-- Row 2: Directory & My Impact -->
+                        <div class="row two-column">
+                            <div class="col my-directory-col" data-section-id="directory">
+                                <c-ham_directory-widget onnavigateevent={navigateMyImpact}
+                                    onnavigatedirectoryevent={navigateDirectory} usercontact-id={currentUserContactId}
+                                    onnavigate={handleWidgetNavigation} images={images} label={label}
+                                    main-resource={mainResource.hamIcons} is-override={isOverride}
+                                    onprofileoverview={handleProfileOverview}></c-ham_directory-widget>
+                            </div>
+                            <div class="col my-impact-col" data-section-id="impact">
+                                <c-ham_my-impact-widget onnavigateevent={navigateMyImpact} images={images} label={label}
+                                    main-resource={mainResource.hamIcons} user-contact-id={currentUserContactId}
+                                    onnavigate={handleWidgetNavigation} is-override={isOverride}
+                                    onmakegift={handleMakeGiftEvent}
+                                    onbadgesloaded={handleBadgesLoaded}
+                                    onnavigatevolserviceevent={handleNavigateVolunteerService}></c-ham_my-impact-widget>
+                            </div>
+                        </div>
+
+                        <!-- Row 3 & 4: Events + News (desktop) -->
+                        <template lwc:if={isDesktopView}>
+                            <div class="row full-width" data-section-id="events">
+                                <c-ham_upcoming-events onnavigateevent={navigateMyImpact} label={label} images={images}
+                                    is-override={isOverride}
+                                    usercontact-id={currentUserContactId}></c-ham_upcoming-events>
+                            </div>
+                            <div class="row full-width" data-section-id="news">
+                                <c-ham_trending-news onnavigateevent={navigateMyImpact} label={label} images={images}
+                                    is-override={isOverride}></c-ham_trending-news>
+                            </div>
+                        </template>
+
+                        <!-- Events + News mobile cards -->
+                        <template lwc:if={isMobileView}>
+                            <div class="dynamic-card">
+                                <div class="card-box">
+                                    <div class="my-card" data-section-id="events">
+                                        <c-ham_upcoming-events onnavigateevent={navigateMyImpact} label={label}
+                                            images={images} is-override={isOverride}
+                                            usercontact-id={currentUserContactId}></c-ham_upcoming-events>
+                                    </div>
+                                    <div class="my-card" data-section-id="news">
+                                        <c-ham_trending-news onnavigateevent={navigateMyImpact} label={label}
+                                            images={images} is-override={isOverride}></c-ham_trending-news>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- Row 5: Trivia & Volunteer -->
+                        <div class="row two-column">
+                            <div class="col trivia-col" data-section-id="trivia">
+                                <c-ham_hamilton-trivia usercontact-id={currentUserContactId}
+                                    is-override={isOverride}></c-ham_hamilton-trivia>
+                            </div>
+                            <div class="col" data-section-id="volunteer">
+                                <c-ham_volunteer-opportunities onnavigatevolevent={handleNavigateVolunteer}
+                                    user-contact-id={currentUserContactId} onnavigateevent={navigateMyImpact}
+                                    label={label} images={images}
+                                    is-override={isOverride}></c-ham_volunteer-opportunities>
+                            </div>
+                        </div>
+
+                        <!-- Row 6: Gallery -->
+                        <div class="row full-width" data-section-id="gallery">
+                            <c-ham_gallery is-override={isOverride}></c-ham_gallery>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- ═══════════════════════════════════════════════
+                 STUDENT HOME — tailored layout
+                 Desktop:  Directory + Groups | Trivia | News | Gallery
+                 Mobile:   Directory | Groups | News | Trivia | Gallery
+                 ═══════════════════════════════════════════════ -->
+                <template if:true={isStudent}>
+                    <div class="dashboard-container">
+
+                        <!-- Desktop student layout -->
+                        <template lwc:if={isDesktopView}>
+                            <!-- Row 0: Redirection Cards -->
+                            <div class="row full-width">
+                                <c-ham_redirection-cards is-student={isStudent}
+                                    onscrolltosection={handleScrollToSection}>
+                                </c-ham_redirection-cards>
+                            </div>
+
+                            <!-- Row 1: Directory + Groups -->
+                            <div class="row two-column">
+                                <div class="col my-directory-col" data-section-id="directory">
+                                    <c-ham_directory-widget onnavigateevent={navigateMyImpact}
+                                        onnavigatedirectoryevent={navigateDirectory}
+                                        usercontact-id={currentUserContactId} onnavigate={handleWidgetNavigation}
+                                        images={images} label={label} main-resource={mainResource.hamIcons}
+                                        onprofileoverview={handleProfileOverview}></c-ham_directory-widget>
+                                </div>
+                                <div class="col">
+                                    <c-ham_groups-cmp user-contact-id={currentUserContactId} onviewgroup={handleWidgetViewGroup}></c-ham_groups-cmp>
+                                </div>
+                            </div>
+
+                            <!-- Row 2: Trending News (full-width) -->
+                            <div class="row full-width" data-section-id="news">
+                                <c-ham_trending-news onnavigateevent={navigateMyImpact} label={label}
+                                    images={images}></c-ham_trending-news>
+                            </div>
+
+                            <!-- Row 3: Trivia (full-width) -->
+                            <div class="row full-width trivia-row" data-section-id="trivia">
+                                <c-ham_hamilton-trivia usercontact-id={currentUserContactId}></c-ham_hamilton-trivia>
+                            </div>
+
+                            <!-- Row 4: Gallery (full-width) -->
+                            <div class="row full-width" data-section-id="gallery">
+                                <c-ham_gallery></c-ham_gallery>
+                            </div>
+                        </template>
+
+                        <!-- Mobile student layout -->
+                        <template lwc:if={isMobileView}>
+                            <!-- Redirection Cards -->
+                            <div class="row full-width">
+                                <c-ham_redirection-cards is-student={isStudent}
+                                    onscrolltosection={handleScrollToSection}>
+                                </c-ham_redirection-cards>
+                            </div>
+
+                            <div class="dynamic-card">
+                                <div class="card-box">
+                                    <!-- Directory card -->
+                                    <div class="my-card" data-section-id="directory">
+                                        <c-ham_directory-widget onnavigateevent={navigateMyImpact}
+                                            onnavigatedirectoryevent={navigateDirectory}
+                                            usercontact-id={currentUserContactId} onnavigate={handleWidgetNavigation}
+                                            images={images} label={label} main-resource={mainResource.hamIcons}
+                                            onprofileoverview={handleProfileOverview}></c-ham_directory-widget>
+                                    </div>
+                                    <div class="my-card">
+                                        <c-ham_groups-cmp user-contact-id={currentUserContactId} onviewgroup={handleWidgetViewGroup}></c-ham_groups-cmp>
+                                    </div>
+                                    <!-- News card -->
+                                    <div class="my-card" data-section-id="news">
+                                        <c-ham_trending-news onnavigateevent={navigateMyImpact} label={label}
+                                            images={images}></c-ham_trending-news>
+                                    </div>
+                                    <!-- Trivia card -->
+                                    <div class="my-card" data-section-id="trivia">
+                                        <c-ham_hamilton-trivia
+                                            usercontact-id={currentUserContactId}></c-ham_hamilton-trivia>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Gallery -->
+                            <div class="row full-width" data-section-id="gallery">
+                                <c-ham_gallery></c-ham_gallery>
+                            </div>
+                        </template>
+
+                    </div>
+                </template>
+            </template>
+
+            <!-- My Impact and Alumni directory embedded  -   -->
+            <template if:true={isGivingPageActive}>
+                <c-ham-review-transaction-form></c-ham-review-transaction-form>
+                <!-- <c-hamilton-giving-app></c-hamilton-giving-app> -->
+            </template>
+            <!-- My Impact and Alumni directory embedded     -->
+            <template if:true={isMyImpactActive}>
+                <c-ham_my-impact-cmp lwc:ref="myImpactComponent" main-resource={mainResource.hamIcons}
+                    is-override={isOverride} onnavigateevent={navigateMyImpact} user-contact-id={currentUserContactId}
+                    images={images} onmakegift={handleMakeGiftEvent} is-profile-updated={profileUpdatedToken}
+                    onresetprofileflag={handleResetFlag}
+                    onnavigatevolserviceevent={handleNavigateVolunteerService}></c-ham_my-impact-cmp>
+            </template>
+            <template if:true={isAlumniDirectoryActive}>
+                <c-ham_alumni-display-cmp contact-id={currentUserContactId} contact-class-year={contactClassYear}
+                    active-tab-name={alumniDirectoryDefaultTab} label={label} onprofileoverview={handleProfileOverview}
+                    is-override={isOverride}></c-ham_alumni-display-cmp>
+            </template>
+            <template if:true={isEventsActive}>
+                <c-ham_events-cmp main-resource={mainResource.hamIcons} user-contact-id={currentUserContactId}
+                    label={label} is-override={isOverride}></c-ham_events-cmp>
+            </template>
+            <!-- <template if:true={isNewsActive}>
+                <c-ham_-news-cmp main-resource={mainResource.hamIcons} user-contact-id={currentUserContactId}
+                    label={label} is-override={isOverride}></c-ham_-news-cmp>
+            </template> -->
+            <template if:true={isCommunityActive}>
+                <c-ham_-community-wrapper user-contact-id={currentUserContactId} initial-tab={communitySubTab}
+                    group-id={selectedGroupId} subview={groupSubview} oncommunitytabchange={handleCommunityTabChange}
+                    onnavigategroup={handleGroupUrlNav} onprofileoverview={handleProfileOverview}
+                    is-override={isOverride} images={images} label={label}> 
+                </c-ham_-community-wrapper>
+            </template>
+            <template if:true={isVolunteerOppActive}>
+                <c-ham_-volunteer-opp-cmp main-resource={mainResource.hamIcons} user-contact-id={currentUserContactId}
+                    images={images} label={label} is-mobile={isMobileView} is-desktop={isDesktopView}
+                    is-volunteer-tab={isVolunteerOppActive} active-main-tab={opportunityActiveTab}
+                    is-override={isOverride}></c-ham_-volunteer-opp-cmp>
+            </template>
+            <!-- Groups full-page view (student-only) 
+        <template if:true={isGroupsActive}>
+            <c-ham_-groups-orchestrator
+                group-id={selectedGroupId}
+                user-contact-id={currentUserContactId}
+                onnavigategroup={handleGroupUrlNav}
+                onprofileoverview={handleProfileOverview}
+                is-override={isOverride}>
+            </c-ham_-groups-orchestrator>
+        </template>
+        -->
+
+            <template if:true={isEditProfile}>
+                <c-ham_edit-profile-cmp user-contact-id={currentUserContactId} onclose={handleEditProfileClose}
+                    onprofileupdated={handleProfileUpdated} label={label}
+                    is-override={isOverride}></c-ham_edit-profile-cmp>
+            </template>
+
+
+
+            <!-- Mobile view sticky navigation — Alumni (non-student): Home, Directory, My Impact, News, Events -->
+            <template if:true={isMobileViewForBottomNav}>
+                <template if:false={isStudent}>
+                    <nav class="mobile-menu-sticky-footer">
+                        <a class="footer-nav-item" onclick={handleMobileMenuItemClick} data-name={label.hometitle}>
+                            <img src={computeHomeStyle} alt="" class="footer-icon" />
+                            <span>{label.hometitle}</span>
+                        </a>
+                        <a class="footer-nav-item" onclick={handleMobileMenuItemClick}
+                            data-name={label.alumnidirectory}>
+                            <img src={computealumnidirectory} alt="" class="footer-icon" />
+                            <span>{label.alumnidirectory}</span>
+                        </a>
+                        <a class="footer-nav-item" onclick={handleMobileMenuItemClick} data-name={label.myimpact}>
+                            <img src={computeMyImpactStyle} alt="" class="footer-icon" />
+                            <span>{label.mobileImpact}</span>
+                        </a>
+                        <!-- <a class="footer-nav-item" data-name={label.news}
+                                    onclick={handleMobileMenuItemClick}>
+                                    <img src={computeNewsStyle} alt="" class="footer-icon" />
+                                    <span>{label.news}</span>
+                        </a> -->
+                        <a class="footer-nav-item" onclick={handleMobileMenuItemClick} data-name={label.community}>
+                            <img src={computeCommunityStyle} alt="" class="footer-icon" />
+                            <span>{label.community}</span>
+                        </a>
+                        <a class="footer-nav-item" onclick={handleMobileMenuItemClick} data-name={label.events}>
+                            <img src={computeEventsStyle} alt="" class="footer-icon" />
+                            <span>{label.events}</span>
+                        </a>
+                    </nav>
+                </template>
+
+                <!-- Mobile view sticky navigation — Student: Home, Directory, News, Groups -->
+                <template if:true={isStudent}>
+                    <nav class="mobile-menu-sticky-footer">
+                        <a class="footer-nav-item" onclick={handleMobileMenuItemClick} data-name={label.hometitle}>
+                            <img src={computeHomeStyle} alt="" class="footer-icon" />
+                            <span>{label.hometitle}</span>
+                        </a>
+                        <a class="footer-nav-item" onclick={handleMobileMenuItemClick}
+                            data-name={label.alumnidirectory}>
+                            <img src={computealumnidirectory} alt="" class="footer-icon" />
+                            <span>{label.alumnidirectory}</span>
+                        </a>
+                        <a class="footer-nav-item" onclick={handleMobileMenuItemClick} data-name={label.community}>
+                            <img src={computeCommunityStyle} alt="" class="footer-icon" />
+                            <span>{label.community}</span>
+                        </a>
+                        <!-- <a class="footer-nav-item" onclick={handleMobileMenuItemClick} data-name={label.news}>
+                            <img src={computeNewsStyle} alt="" class="footer-icon" />
+                            <span>{label.news}</span>
+                        </a> -->
+                        <!-- <a class="footer-nav-item" onclick={handleMobileMenuItemClick} data-name={label.groups}>
+                            <span class="footer-groups-icon">&#9632;</span>
+                            <span class={isGroupsTabActive}>{label.groups}</span>
+                        </a> -->
+                    </nav>
+                </template>
+            </template>
+
+            <template lwc:if={isDesktopView}>
+                <c-ham_-footer-cmp is-override={isOverride}></c-ham_-footer-cmp>
+            </template>
+
+        </template><!-- end if:false={isLoading} -->
+    </div>
+</template>

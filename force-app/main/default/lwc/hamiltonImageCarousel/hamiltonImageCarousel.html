@@ -1,0 +1,46 @@
+<template>
+    <div class="carousel-container">
+        <div class="carousel-wrapper">
+            <div class="carousel-slides">
+                <template for:each={slides} for:item="slide">
+                    <div key={slide.id} class={slide.cssClass}>
+                        <img src={slide.imgUrl} alt="">
+                        <!-- <div class="carousel-slide-placeholder">
+                            <p>{slide.caption}</p>
+                        </div> -->
+                        <div class="carousel-caption">
+                            {slide.caption}
+                        </div>
+                    </div>
+                </template>
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <lightning-button-icon
+                icon-name="utility:chevronleft"
+                alternative-text="Previous"
+                class="carousel-button carousel-button-left"
+                onclick={handlePrevious}>
+            </lightning-button-icon>
+            
+            <lightning-button-icon
+                icon-name="utility:chevronright"
+                alternative-text="Next"
+                class="carousel-button carousel-button-right"
+                onclick={handleNext}>
+            </lightning-button-icon>
+        </div>
+        
+        <!-- Indicators -->
+        <div class="carousel-indicators">
+            <template for:each={slides} for:item="slide">
+                <button 
+                    key={slide.id} 
+                    class={slide.indicatorClass}
+                    data-index={slide.index}
+                    onclick={handleIndicatorClick}>
+                </button>
+            </template>
+        </div>
+    </div>
+</template>

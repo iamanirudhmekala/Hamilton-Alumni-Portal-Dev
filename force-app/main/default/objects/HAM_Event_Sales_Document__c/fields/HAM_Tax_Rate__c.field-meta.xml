@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Tax_Rate__c</fullName>
+    <description>Tax rate applied to this invoice. Migrated from bt_stripe__Tax_Rate__c on bt_stripe__Sales_Document__c.</description>
+    <inlineHelpText>The tax rate percentage from the original Blackthorn invoice.</inlineHelpText>
+    <label>Tax Rate</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

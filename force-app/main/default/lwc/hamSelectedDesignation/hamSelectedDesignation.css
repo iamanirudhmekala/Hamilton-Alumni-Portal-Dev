@@ -1,0 +1,76 @@
+.banner {
+    /* margin-top: 2.5rem; */
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 2px solid #0056b3;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.125rem;
+    color: #1e40af;
+}
+
+.selected-designation {
+    display: flex;
+
+    margin-bottom: 0.75rem;
+}
+
+.selected-designation button {
+    padding: 0.5rem;
+    background: white;
+    border: 2px solid rgb(229, 231, 235);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(220, 38, 38);
+    transition: 0.2s;
+
+    margin-left: 0.5rem;
+}
+
+.designation-name {
+    color: #00205b;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.designation-amt {
+    /* width: 100%; */
+    padding: 0.625rem 0.75rem 0.625rem 1.75rem;
+    border: 2px solid rgb(229, 231, 235);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.dollar {
+    position: absolute; 
+    left: 0.75rem; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    font-weight: 600; 
+    color: rgb(107, 114, 128);
+}
+
+@media (max-width: 768px) {
+    .selected-designation {
+        display: grid;
+        grid-template-columns: 1fr max-content min-content;
+        padding: 1rem;
+    }
+    .selected-designation div:first-child {
+        grid-column: 1 / -1;
+        padding-bottom: 0.25rem;
+    }
+
+    .selected-designation div input {
+        width: 100%;
+    }
+
+    .selected-designation button {
+        max-width: 38px;
+    }
+
+}

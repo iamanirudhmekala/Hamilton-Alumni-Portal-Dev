@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Opp_Amount_Greater_Than_Penny</fullName>
+    <active>false</active>
+    <description>This is created for accidental entering of 0 or penny number and this field must be entered always except Proposal.</description>
+    <errorConditionFormula>AND(
+  $RecordType.Name &lt;&gt; &quot;Proposal&quot;,
+  TEXT(StageName) &lt;&gt; &quot;Void&quot;,
+  OR(
+    ISBLANK(Amount),
+    Amount &lt;= 0.01
+  )
+)</errorConditionFormula>
+    <errorDisplayField>Amount</errorDisplayField>
+    <errorMessage>The Opportunity Amount is required and must be greater than $0.01</errorMessage>
+</ValidationRule>

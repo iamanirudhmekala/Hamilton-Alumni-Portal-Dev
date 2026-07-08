@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Total_Campaign_Fundraising__c</fullName>
+    <deprecated>false</deprecated>
+    <inlineHelpText>Total outright gift and pledges (including soft credits)  from July 1 2010 to present</inlineHelpText>
+    <label>Total Campaign Fundraising</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

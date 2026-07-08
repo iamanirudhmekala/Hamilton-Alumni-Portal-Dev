@@ -1,0 +1,161 @@
+<template>
+    <div>
+        <template if:true={loading}>
+            <lightning-spinner
+                alternative-text="Loading..."
+                size="medium"
+                variant="brand">
+            </lightning-spinner>
+        </template>
+        <lightning-card title="Constituent Search" icon-name="utility:search">
+            <div class="slds-m-around_medium">
+               
+
+                <!-- Advanced Search Section -->
+                <div class="slds-box slds-m-bottom_small">
+                    <div class="slds-text-heading_small slds-m-bottom_small">
+                        <strong>Advanced Search</strong> - Search for multiple contacts
+                    </div>
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col">
+                            <lightning-input
+                                type="search"
+                                label="Constituent Name, Email, or Phone..."
+                                placeholder="Search by Name, Email, or Phone..."
+                                value={nameSearchString}
+                                onchange={handleInputChange}
+                                onkeyup={handleKeyUp}
+                                name="nameSearch"
+                            ></lightning-input>
+                        </div>
+                        <template if:false={isMobile}>
+                            <div class="slds-col">
+                                <lightning-input
+                                    type="search"
+                                    label="Donor Id"
+                                    placeholder="Search by Donor Id..."
+                                    value={donorIdStr}
+                                    onchange={handleInputChange}
+                                    onkeyup={handleKeyUp}
+                                    name="donorId"
+                                ></lightning-input>
+                            </div>
+                        </template>
+                    </div>
+                    
+                    <div class="slds-grid slds-wrap slds-gutters slds-p-around_small">
+
+                        <!-- Left Section with Picklists -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-3 slds-p-around_small">
+                            <div class="slds-grid slds-wrap slds-gutters">
+
+                                <!-- Picklist 1 - Class Year -->
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                    <lightning-combobox
+                                        name="Picklist1"
+                                        label="Class Year"
+                                        value={selectedClassYear}
+                                        placeholder="Select Class Year"
+                                        options={classYearOptions}
+                                        onchange={handlePicklistChange}>
+                                    </lightning-combobox>
+                                </div>
+
+                                <!-- Picklist 2 - Sports Association -->
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                    <lightning-combobox
+                                        name="Picklist2"
+                                        label="Sports Association"
+                                        value={selectedSportsAssociation}
+                                        placeholder="Select Sports Association"
+                                        options={sportsAssociationOptions}
+                                        onchange={handlePicklistChange}>
+                                    </lightning-combobox>
+                                </div>
+
+                                <!-- Picklist 3 - Student Organizations -->
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                    <lightning-combobox
+                                        name="Picklist3"
+                                        label="Student Organizations"
+                                        value={selectedStudentOrganization}
+                                        placeholder="Select Student Organization"
+                                        options={studentOrganizationOptions}
+                                        onchange={handlePicklistChange}>
+                                    </lightning-combobox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Section with Buttons -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-align_absolute-center slds-p-around_small">
+                            <lightning-button 
+                                label="Clear" 
+                                title="Clear" 
+                                onclick={clearData} 
+                                class="slds-m-right_small">
+                            </lightning-button>
+
+                            <lightning-button 
+                                variant="brand" 
+                                label="Search" 
+                                onclick={searchConstituents}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                    <!--code ends-->
+                </div>
+                <!-- End Advanced Search Section -->
+
+                <!-- Search Results Table -->
+                <div class="slds-p-around_small">
+                    <template lwc:if={pageConstituents}>
+                        <lightning-datatable
+                            key-field="Id"
+                            data={pageConstituents}
+                            columns={activeColumns}
+                            sorted-by={sortBy}
+                            sorted-direction={sortDirection}
+                            onsort={doSorting}
+                            onrowaction={handleRowAction}
+                            hide-checkbox-column="true">
+                        </lightning-datatable>
+
+                        <!-- Updated Pagination Controls -->
+                        <div class="slds-m-top_small slds-grid slds-grid_align-spread slds-align_absolute-center">
+                            <lightning-button label="Prev" onclick={prevPage} disabled={isFirstPage}></lightning-button>
+                            <div class="slds-m-horizontal_small">
+                                Page {pageNumber} of {totalPages} · {totalRecords} total
+                            </div>
+                            <lightning-button label="Next" onclick={nextPage} disabled={isLastPage}></lightning-button>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- OR Divider -->
+                <div class="slds-text-align_center slds-m-vertical_small">
+                    <div class="slds-text-heading_medium">
+                        <strong>— OR —</strong>
+                    </div>
+                </div>
+
+                 <!-- Quick Search Section -->
+                <div class="slds-box slds-theme_shade slds-m-bottom_small">
+                    <div class="slds-text-heading_small slds-m-bottom_x-small">
+                        <strong>Quick Search</strong> - Select to navigate directly to contact page
+                    </div>
+                    <lightning-record-picker
+                        label="Select Contact"
+                        placeholder="Search by Name or Donor ID..."
+                        object-api-name="Contact"
+                        value={selectedContactId}
+                        onchange={handleRecordPickerChange}
+                        display-info={contactDisplayInfo}
+                        matching-info={contactMatchingInfo}
+                    ></lightning-record-picker>
+                </div>
+
+            </div>
+        </lightning-card>
+    </div>
+</template>

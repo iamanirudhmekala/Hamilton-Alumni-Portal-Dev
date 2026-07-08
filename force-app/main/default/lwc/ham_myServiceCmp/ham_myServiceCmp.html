@@ -1,0 +1,190 @@
+<template>
+    <div class={wrapperClass}>
+        <!-- ============================================================
+         My Service Accordion Component
+         Displays user's service information in an expandable/collapsible
+         accordion format with contact details and volunteer navigation
+         ============================================================ -->
+
+        <!-- EXPANDED STATE: Service accordion is open -->
+        <template lwc:if={showService}>
+            <div class="card-service">
+
+                <!-- Accordion Header - Click to collapse -->
+                <div class="card-header-service" onclick={toggleService}>
+                    <span>▲</span> {label.myService}
+                </div>
+
+                <!-- Accordion Body - Contains service details -->
+                <div class="card-body-service">
+
+                    <!-- ========================================
+                     Dynamic Service Items List
+                     Iterates through myServices array to display
+                     each service with its label and values
+                     ======================================== -->
+                    <div class="my-service-section">
+                        <div class="my-service-section-first-child">
+                            <template for:each={myServices} for:item="item">
+                                <div class="my-services-title-and-btn" key={item.order}>
+                                    <p class="section-label">{item.displaylabel}</p>
+
+                                    <div class="my-service-btn-1">
+                                        <button
+                                    class="view-activity"
+                                    onclick={handleVolunteerActNavigation}
+                                    data-name={label.volActTab}>
+                                    View {label.volActTab}
+                                </button>
+                                    </div>
+                                </div>
+
+                                <!-- Service Section Label -->
+
+                                <!-- Conditional Value Display:
+                                - If displayValueList exists: render as bullet list
+                                - Otherwise: render as plain text paragraph -->
+                                <template lwc:if={item.displayValueList}>
+                                    <ul key={item.order}>
+                                        <template for:each={item.displayValueList} for:item="value">
+                                            <li class="accordian-text-new" key={value}>{value}</li>
+                                        </template>
+                                    </ul>
+                                </template>
+                                <template lwc:else>
+                                    <p key={item.order}>{item.displayValueText}</p>
+                                </template>
+
+                            </template>
+                        </div>
+
+
+                    </div>
+
+                    <!-- ========================================
+                     Contact Information Section
+                     Displays campus contact with popup functionality
+                     ======================================== -->
+                    <div class="info-group">
+                        <div class="relative-for-popup">
+
+                            <!-- Clickable Contact Link - Opens contact popup -->
+                            <p class="info-spacing clickable-contact" onclick={openConnectionPopUp}
+                                data-name="CampusContact">
+                                <strong>{label.myContactToVolunteer}</strong> {campusContact.name}
+                            </p>
+
+                            <!-- ========================================
+                             Contact Popup Modal
+                             Shows phone and email options
+                             Renders different layouts for desktop vs mobile
+                             ======================================== -->
+                            <template lwc:if={isPopupVisible}>
+                                <div class="popup-backdrop" onclick={closeConnectionPopUp}></div>
+
+                                <!-- DESKTOP VIEW: Custom styled popup card -->
+                                <template lwc:if={isDesktopView}>
+                                    <div class="popup-card">
+                                        <!-- Close Button -->
+                                        <div class="popup-close" onclick={closeConnectionPopUp}>×</div>
+
+                                        <!-- Phone Contact Option -->
+                                        <div class="popup-item">
+                                            <template lwc:if={isOverride}>
+                                                <span><img src={hamicons.callImageGreen} class="popup-icon" alt="" width="25px"
+                                        height="25px"></img></span>
+                                            </template>
+                                            <template lwc:else>
+                                                <span><img src={images.callImage} class="popup-icon" alt="" width="25px"
+                                        height="25px"></img></span>
+                                            </template>
+                                            <a href={campusContact.phone}>{campusContact.phoneLabel}</a>
+                                        </div>
+
+                                        <!-- Email Contact Option -->
+                                        <div class="popup-item">
+                                            <template lwc:if={isOverride}>
+                                                <span><img src={images.mailImageGreen} class="popup-icon" alt="" width="25px"
+                                        height="25px"></img></span>
+                                            </template>
+                                            <template lwc:else>
+                                                <span><img src={images.mailImage} class="popup-icon" alt="" width="25px"
+                                        height="25px"></img></span>
+                                            </template>
+                                            <a href={campusContact.email}>{campusContact.emailLabel}</a>
+                                        </div>
+                                    </div>
+
+                                </template>
+
+                                <!-- MOBILE VIEW: SLDS Popover component for touch-friendly UI -->
+                                <template lwc:if={isMobileView}>
+                                    <div aria-label="Dialog title" aria-describedby="popover-body-id"
+                                        class="slds-popover">
+
+                                        <!-- Close Button -->
+                                        <div class="slds-popover__close slds-float_right"
+                                            onclick={closeConnectionPopUp}>×</div>
+
+                                        <!-- Popover Body with Contact Options -->
+                                        <div id="popover-body-id" class="slds-popover__body">
+                                            <!-- Phone -->
+                                            <template lwc:if={isOverride}>
+                                                <span><img src={images.callImageGreen} class="popup-icon" alt="" width="25px"
+                                        height="25px"></img></span>
+                                            </template>
+                                            <template lwc:else>
+                                                <span><img src={images.callImage} class="popup-icon" alt="" width="25px"
+                                        height="25px"></img></span>
+                                            </template>
+                                            <a href={campusContact.phone}>{campusContact.phoneLabel}</a>
+                                            <br/>
+                                            <!-- Email -->
+                                            <template lwc:if={isOverride}>
+                                                <span><img src={images.mailImageGreen} class="popup-icon" alt="" width="25px"
+                                        height="25px"></img></span>
+                                            </template>
+                                            <template lwc:else>
+                                                <span><img src={images.mailImage} class="popup-icon" alt="" width="25px"
+                                        height="25px"></img></span>
+                                            </template>
+                                            <a href={campusContact.email}>{campusContact.emailLabel}</a>
+                                        </div>
+                                    </div>
+                                </template>
+
+                            </template>
+                            <!-- END: Contact Popup Modal -->
+
+                            <!-- ========================================
+                             Volunteer Navigation Button
+                             Navigates user to volunteer opportunities page
+                             ======================================== -->
+                            <div class="my-service-btn-1">
+                                <button
+                                class="view-buttom"
+                                onclick={handleVolunteerCmpNavigation}
+                                data-name={label.volunteerOpportunity}>
+                                View {label.volOppTab}
+                            </button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- END: Contact Information Section -->
+
+                </div>
+            </div>
+        </template>
+
+        <!-- COLLAPSED STATE: Service accordion is closed -->
+        <template lwc:else>
+            <div class="card-service collapsed-service" onclick={toggleService}>
+                <!-- Accordion Header - Click to expand -->
+                <div class="card-header-service">
+                    <span>▶</span> {label.myService}
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

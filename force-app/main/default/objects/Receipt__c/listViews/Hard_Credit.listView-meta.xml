@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Hard_Credit</fullName>
+    <columns>NAME</columns>
+    <columns>HAM_Constituent__c</columns>
+    <columns>HAM_Credit_Line_Ids__c</columns>
+    <columns>HAM_Designation_Text__c</columns>
+    <columns>HAM_Is_Processed__c</columns>
+    <columns>HAM_Receipt_Type__c</columns>
+    <columns>HAM_Total_Amount__c</columns>
+    <columns>Receipt_Date__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>HAM_Receipt_Type__c</field>
+        <operation>equals</operation>
+        <value>Hard Credit</value>
+    </filters>
+    <label>Hard Credit</label>
+</ListView>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Allows custom permissions for Agentforce Agent : Milton&apos;s agent user : milton@00dsu000006weem49412817.ext.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.ConstituentId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Milton1930741067 Permissions</label>
+    <license>Einstein Agent</license>
+</PermissionSet>

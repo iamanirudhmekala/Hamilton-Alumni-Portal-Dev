@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>conference360__Refresh_Platform_Cache</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <height>600</height>
+    <linkType>page</linkType>
+    <masterLabel>Refresh Platform Cache</masterLabel>
+    <openType>sidebar</openType>
+    <page>conference360__ContactRefreshPlatformCache</page>
+    <protected>false</protected>
+</WebLink>

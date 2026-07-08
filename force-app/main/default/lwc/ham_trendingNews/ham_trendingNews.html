@@ -1,0 +1,19 @@
+<template>
+    <!-- <div class="placeholder-widget"> -->
+        <template lwc:if={configData}>
+            <c-ham_dynamic-feed 
+                component-key="NewsFeedLWC" 
+                component-title="Trending News"
+                component-data={configData}
+                label={label}
+                images={images}
+                is-override={isOverride}> 
+            </c-ham_dynamic-feed>
+        </template>
+        <!-- <template lwc:if={error}>
+            <p class="slds-text-color_error slds-p-around_medium">
+                
+            </p>
+        </template> -->
+    <!-- </div> -->
+</template>

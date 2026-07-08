@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <description>CventEvents__RegistrationType__c INCLUDES (&apos;Speaker&apos;, &apos;Host&apos;, &apos;Sponsor&apos;, &apos;Presenter&apos;, &apos;Moderator&apos;).</description>
+        <name>Check_Registration_Type</name>
+        <label>Check Registration Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>invalid</defaultConnectorLabel>
+        <rules>
+            <name>Valid</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsValidRegistrationType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Associated_Person</targetReference>
+            </connector>
+            <label>Valid</label>
+        </rules>
+    </decisions>
+    <description>This flow will create an associated Person and Involvement when a attendee record is created.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>AssociatedPersonRecordTypeId</name>
+        <dataType>String</dataType>
+        <expression>IF(
+  OR(
+    CONTAINS({!$Record.CventEvents__RegistrationType__c}, &apos;Speaker&apos;),
+    CONTAINS({!$Record.CventEvents__RegistrationType__c}, &apos;Presenter&apos;),
+    CONTAINS({!$Record.CventEvents__RegistrationType__c}, &apos;Moderator&apos;)
+  ),
+  &apos;012U1000007rKhJIAU&apos;, /* Content Role RecordTypeId */
+  IF(
+    OR(
+      CONTAINS({!$Record.CventEvents__RegistrationType__c}, &apos;Host&apos;),
+      CONTAINS({!$Record.CventEvents__RegistrationType__c}, &apos;Sponsor&apos;)
+    ),
+    &apos;012U1000007rKhKIAU&apos;, /* VIP Role RecordTypeId */
+    NULL
+  )
+)</expression>
+    </formulas>
+    <formulas>
+        <name>IsValidRegistrationType</name>
+        <dataType>Boolean</dataType>
+        <expression>CONTAINS({!$Record.CventEvents__RegistrationType__c}, &apos;Speaker&apos;)
+|| CONTAINS({!$Record.CventEvents__RegistrationType__c}, &apos;Host&apos;)
+|| CONTAINS({!$Record.CventEvents__RegistrationType__c}, &apos;Sponsor&apos;)
+|| CONTAINS({!$Record.CventEvents__RegistrationType__c}, &apos;Presenter&apos;)
+|| CONTAINS({!$Record.CventEvents__RegistrationType__c}, &apos;Moderator&apos;)</expression>
+    </formulas>
+    <formulas>
+        <description>If the Registration type is &quot;Host Test,&quot; it will trim to &quot;Host&quot; only. This will be used in creating Associated Person&apos;s Role field and getting Involvement Code get element box.</description>
+        <name>TrimRegistrationType</name>
+        <dataType>String</dataType>
+        <expression>IF(CONTAINS({!$Record.CventEvents__RegistrationType__c}, &quot;Speaker&quot;), &quot;Speaker&quot;,
+IF(CONTAINS({!$Record.CventEvents__RegistrationType__c}, &quot;Moderator&quot;), &quot;Moderator&quot;,
+IF(CONTAINS({!$Record.CventEvents__RegistrationType__c}, &quot;Presenter&quot;), &quot;Presenter&quot;,
+IF(CONTAINS({!$Record.CventEvents__RegistrationType__c}, &quot;Host&quot;), &quot;Host&quot;,
+IF(CONTAINS({!$Record.CventEvents__RegistrationType__c}, &quot;Sponsor&quot;), &quot;Sponsor&quot;,
+&quot;Other&quot;)))))</expression>
+    </formulas>
+    <interviewLabel>HAM {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>HAM Cvent Auto Create Associated Person and Involvement</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Associated_Person</name>
+        <label>Create Associated Person</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Involvement_Code</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Constituent__c</field>
+            <value>
+                <elementReference>$Record.CventEvents__Contact__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Cvent_Event__c</field>
+            <value>
+                <elementReference>$Record.CventEvents__Event__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>HAM_End_Date__c</field>
+            <value>
+                <elementReference>$Record.CventEvents__Event__r.CventEvents__pkg_EndDate__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>HAM_Role__c</field>
+            <value>
+                <elementReference>TrimRegistrationType</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>HAM_Start_Date__c</field>
+            <value>
+                <elementReference>$Record.CventEvents__Event__r.CventEvents__pkg_StartDate__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>AssociatedPersonRecordTypeId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>HAM_Associated_People__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Involvement_Record</name>
+        <label>Create Involvement Record</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Get_Involvement_Record_Type_Volunteer.RecordTypeId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ucinn_ascendv2__Contact__c</field>
+            <value>
+                <elementReference>$Record.CventEvents__Contact__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ucinn_ascendv2__End_Date__c</field>
+            <value>
+                <elementReference>$Record.CventEvents__Event__r.CventEvents__pkg_EndDate__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ucinn_ascendv2__Involvement_Code__c</field>
+            <value>
+                <elementReference>Get_Involvement_Code.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ucinn_ascendv2__Start_Date__c</field>
+            <value>
+                <elementReference>$Record.CventEvents__Event__r.CventEvents__pkg_StartDate__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ucinn_ascendv2__Involvement__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Involvement_Code</name>
+        <label>Get Involvement Code</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Involvement_Record_Type_Volunteer</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ucinn_ascendv2__Involvement_Description__c</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>TrimRegistrationType</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ucinn_ascendv2__Involvement_Value__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Involvement_Record_Type_Volunteer</name>
+        <label>Get Involvement Record Type Volunteer</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Create_Involvement_Record</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ucinn_ascendv2__Involvement_Type_Formula__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Volunteer Engagement</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ucinn_ascendv2__Involvement__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_Registration_Type</targetReference>
+        </connector>
+        <object>CventEvents__Attendee__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

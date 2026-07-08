@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Appeal_of_Most_Recent_Pledge_Pymt_Lookup__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <label>Appeal of Most Recent Pledge Payment</label>
+    <referenceTo>Campaign</referenceTo>
+    <relationshipLabel>Constituents (Appeal of Most Recent Pledge Payment)</relationshipLabel>
+    <relationshipName>Constituents_Appeal_of_Mst_Rcnt_Pldg_Pym</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

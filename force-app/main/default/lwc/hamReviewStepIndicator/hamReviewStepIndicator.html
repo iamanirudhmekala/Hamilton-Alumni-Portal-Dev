@@ -1,0 +1,9 @@
+<template>
+    <div class="step-indicator">
+        <template for:each={enrichedSteps} for:item="step">
+            <div key={step.key} class={step.pillClass} data-step={step.key} onclick={handleStepClick}>
+                <span class="step-label">{step.label}</span>
+            </div>
+        </template>
+    </div>
+</template>

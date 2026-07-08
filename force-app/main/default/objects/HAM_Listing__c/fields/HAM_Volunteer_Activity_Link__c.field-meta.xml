@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Volunteer_Activity_Link__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This is a lookup to Interest Values so that the displayed activity maps to the right value on backend.</description>
+    <inlineHelpText>This is a lookup to Interest Values so that the displayed activity maps to the right value on backend.</inlineHelpText>
+    <label>HAM Volunteer Activity Link</label>
+    <referenceTo>ucinn_ascendv2__Involvement_Value__c</referenceTo>
+    <relationshipLabel>Listing</relationshipLabel>
+    <relationshipName>Listing</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

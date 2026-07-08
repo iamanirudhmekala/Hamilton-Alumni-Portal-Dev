@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Contact_Type__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Constituent Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Trustee</fullName>
+                <default>false</default>
+                <label>Trustee</label>
+            </value>
+            <value>
+                <fullName>Hamilton Alumni</fullName>
+                <default>false</default>
+                <label>Hamilton Alumni</label>
+            </value>
+            <value>
+                <fullName>Hamilton Withdrawn</fullName>
+                <default>false</default>
+                <label>Hamilton Withdrawn</label>
+            </value>
+            <value>
+                <fullName>Kirkland Alumnae</fullName>
+                <default>false</default>
+                <label>Kirkland Alumnae</label>
+            </value>
+            <value>
+                <fullName>Employee</fullName>
+                <default>false</default>
+                <label>Employee</label>
+            </value>
+            <value>
+                <fullName>Student</fullName>
+                <default>false</default>
+                <label>Student</label>
+            </value>
+            <value>
+                <fullName>Student on Leave</fullName>
+                <default>false</default>
+                <label>Student on Leave</label>
+            </value>
+            <value>
+                <fullName>Current Parent</fullName>
+                <default>false</default>
+                <label>Current Parent</label>
+            </value>
+            <value>
+                <fullName>Parent on Leave</fullName>
+                <default>false</default>
+                <label>Parent on Leave</label>
+            </value>
+            <value>
+                <fullName>Retiree</fullName>
+                <default>false</default>
+                <label>Retiree</label>
+            </value>
+            <value>
+                <fullName>Past Parent</fullName>
+                <default>false</default>
+                <label>Past Parent</label>
+            </value>
+            <value>
+                <fullName>Grandparent</fullName>
+                <default>false</default>
+                <label>Grandparent</label>
+            </value>
+            <value>
+                <fullName>Former Employee</fullName>
+                <default>false</default>
+                <label>Former Employee</label>
+            </value>
+            <value>
+                <fullName>Spouse of Alumni or Trustee</fullName>
+                <default>false</default>
+                <label>Spouse of Alumni or Trustee</label>
+            </value>
+            <value>
+                <fullName>Surviving Spouse</fullName>
+                <default>false</default>
+                <label>Surviving Spouse</label>
+            </value>
+            <value>
+                <fullName>Parent of Withdrawn</fullName>
+                <default>false</default>
+                <label>Parent of Withdrawn</label>
+            </value>
+            <value>
+                <fullName>Estate</fullName>
+                <default>false</default>
+                <label>Estate</label>
+            </value>
+            <value>
+                <fullName>Organization Contact</fullName>
+                <default>false</default>
+                <label>Organization Contact</label>
+            </value>
+            <value>
+                <fullName>Incoming Student</fullName>
+                <default>false</default>
+                <label>Incoming Student</label>
+            </value>
+            <value>
+                <fullName>Incoming Parent</fullName>
+                <default>false</default>
+                <label>Incoming Parent</label>
+            </value>
+            <value>
+                <fullName>Friend</fullName>
+                <default>true</default>
+                <label>Friend</label>
+            </value>
+            <value>
+                <fullName>Graduating Student</fullName>
+                <default>false</default>
+                <label>Graduating Student</label>
+            </value>
+            <value>
+                <fullName>Graduating Parent</fullName>
+                <default>false</default>
+                <label>Graduating Parent</label>
+            </value>
+            <value>
+                <fullName>Tribute Donor</fullName>
+                <default>false</default>
+                <label>Tribute Donor</label>
+            </value>
+            <value>
+                <fullName>Former Incoming Student</fullName>
+                <default>false</default>
+                <label>Former Incoming Student</label>
+            </value>
+            <value>
+                <fullName>Former Incoming Parent</fullName>
+                <default>false</default>
+                <label>Former Incoming Parent</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

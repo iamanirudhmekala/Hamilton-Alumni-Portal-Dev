@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>iWave_PROscores__isProfile__c</fullName>
+    <defaultValue>false</defaultValue>
+    <deprecated>false</deprecated>
+    <description>The iWave &apos;Score&apos; has been promoted to a detailed &apos;Profile&apos;, accessible at iWave.com</description>
+    <inlineHelpText>The iWave &apos;Score&apos; has been promoted to a detailed &apos;Profile&apos;, accessible at iWave.com</inlineHelpText>
+    <label>iWave Profile</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

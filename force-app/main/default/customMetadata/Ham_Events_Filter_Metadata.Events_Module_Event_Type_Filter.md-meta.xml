@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Events Module Event Type Filter</label>
+    <protected>false</protected>
+    <values>
+        <field>HAM_Direct_Filter__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>HAM_Order__c</field>
+        <value xsi:type="xsd:string">2</value>
+    </values>
+    <values>
+        <field>HAM_Placeholder__c</field>
+        <value xsi:type="xsd:string">Event Type</value>
+    </values>
+    <values>
+        <field>HAM_Reference_Field_API__c</field>
+        <value xsi:type="xsd:string">ADVEventFormat__c</value>
+    </values>
+    <values>
+        <field>HAM_Reference_Object_API__c</field>
+        <value xsi:type="xsd:string">CventEvents__Event__c</value>
+    </values>
+    <values>
+        <field>HAM_Reference_Type__c</field>
+        <value xsi:type="xsd:string">Picklist</value>
+    </values>
+    <values>
+        <field>HAM_Reference_Values__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+</CustomMetadata>

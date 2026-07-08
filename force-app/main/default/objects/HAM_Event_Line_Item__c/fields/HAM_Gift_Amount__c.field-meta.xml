@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Gift_Amount__c</fullName>
+    <description>Hamilton-specific gift amount for this line item, used for gift processing and reporting.</description>
+    <inlineHelpText>Gift portion of this line item amount for gift processing purposes.</inlineHelpText>
+    <label>Gift Amount</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

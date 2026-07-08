@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Stewardship_Type__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Stewardship Type</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Beneficiary Thank You Letter</fullName>
+                <default>false</default>
+                <label>Beneficiary Thank You Letter</label>
+            </value>
+            <value>
+                <fullName>Birthday Card</fullName>
+                <default>false</default>
+                <label>Birthday Card</label>
+            </value>
+            <value>
+                <fullName>Dean’s Acknowledgment</fullName>
+                <default>false</default>
+                <label>Dean’s Acknowledgment</label>
+            </value>
+            <value>
+                <fullName>Departmental Acknowledgment</fullName>
+                <default>false</default>
+                <label>Departmental Acknowledgment</label>
+            </value>
+            <value>
+                <fullName>Departmental Correspondence</fullName>
+                <default>false</default>
+                <label>Departmental Correspondence</label>
+            </value>
+            <value>
+                <fullName>Endowment Report</fullName>
+                <default>false</default>
+                <label>Endowment Report</label>
+            </value>
+            <value>
+                <fullName>Gift Agreement</fullName>
+                <default>false</default>
+                <label>Gift Agreement</label>
+            </value>
+            <value>
+                <fullName>Gift Receipt</fullName>
+                <default>false</default>
+                <label>Gift Receipt</label>
+            </value>
+            <value>
+                <fullName>Giving Society</fullName>
+                <default>false</default>
+                <label>Giving Society</label>
+            </value>
+            <value>
+                <fullName>Holiday Card</fullName>
+                <default>false</default>
+                <label>Holiday Card</label>
+            </value>
+            <value>
+                <fullName>Naming Opportunity</fullName>
+                <default>false</default>
+                <label>Naming Opportunity</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Other Correspondence</fullName>
+                <default>false</default>
+                <label>Other Correspondence</label>
+            </value>
+            <value>
+                <fullName>Other Dean’s Letter</fullName>
+                <default>false</default>
+                <label>Other Dean’s Letter</label>
+            </value>
+            <value>
+                <fullName>Other Presidential Letter</fullName>
+                <default>false</default>
+                <label>Other Presidential Letter</label>
+            </value>
+            <value>
+                <fullName>Other SVP Letter</fullName>
+                <default>false</default>
+                <label>Other SVP Letter</label>
+            </value>
+            <value>
+                <fullName>Pledge Reminder</fullName>
+                <default>false</default>
+                <label>Pledge Reminder</label>
+            </value>
+            <value>
+                <fullName>Presidential Acknowledgment</fullName>
+                <default>false</default>
+                <label>Presidential Acknowledgment</label>
+            </value>
+            <value>
+                <fullName>Recognition Name</fullName>
+                <default>false</default>
+                <label>Recognition Name</label>
+            </value>
+            <value>
+                <fullName>Stewardship/Impact Report</fullName>
+                <default>false</default>
+                <label>Stewardship/Impact Report</label>
+            </value>
+            <value>
+                <fullName>Stewardship/Recognition Event</fullName>
+                <default>false</default>
+                <label>Stewardship/Recognition Event</label>
+            </value>
+            <value>
+                <fullName>Stewardship/Recognition Gift</fullName>
+                <default>false</default>
+                <label>Stewardship/Recognition Gift</label>
+            </value>
+            <value>
+                <fullName>Stewardship Plan</fullName>
+                <default>false</default>
+                <label>Stewardship Plan</label>
+            </value>
+            <value>
+                <fullName>SVP Acknowledgment</fullName>
+                <default>false</default>
+                <label>SVP Acknowledgment</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

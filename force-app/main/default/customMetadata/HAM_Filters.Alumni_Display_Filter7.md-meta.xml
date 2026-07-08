@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Alumni_Display_Filter7</label>
+    <protected>false</protected>
+    <values>
+        <field>HAM_Direct_Filter_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Direct_Filter__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>HAM_Order__c</field>
+        <value xsi:type="xsd:double">3.0</value>
+    </values>
+    <values>
+        <field>HAM_Placeholder__c</field>
+        <value xsi:type="xsd:string">Region</value>
+    </values>
+    <values>
+        <field>HAM_Reference_Field_API__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Reference_Object_API__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Reference_Type__c</field>
+        <value xsi:type="xsd:string">Custom</value>
+    </values>
+    <values>
+        <field>HAM_Reference_Values__c</field>
+        <value xsi:type="xsd:string">Newyork;Califronia;Florida;San Francisco</value>
+    </values>
+    <values>
+        <field>HAM_Related_Filter_Object__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Related_Reference_Additional_Filter__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Related_Reference_Filter_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Related_Reference_Filter__c</field>
+        <value xsi:nil="true"/>
+    </values>
+</CustomMetadata>

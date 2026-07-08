@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Affiliated_Account__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <description>The original affiliated Organization tied to this Matching Gift.</description>
+    <inlineHelpText>The original affiliated Organization tied to this Matching Gift.</inlineHelpText>
+    <label>Affiliated Organization</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Opportunities (Affiliated Organization)</relationshipLabel>
+    <relationshipName>Opportunity_Affiliated_Account</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

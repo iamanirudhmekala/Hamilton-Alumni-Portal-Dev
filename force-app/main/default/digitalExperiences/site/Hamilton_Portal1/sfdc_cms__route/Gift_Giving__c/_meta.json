@@ -1,0 +1,5 @@
+{
+  "apiName" : "Gift_Giving__c",
+  "type" : "sfdc_cms__route",
+  "path" : "routes"
+}

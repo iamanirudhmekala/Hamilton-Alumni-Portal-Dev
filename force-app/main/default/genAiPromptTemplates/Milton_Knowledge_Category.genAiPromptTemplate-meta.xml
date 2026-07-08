@@ -1,0 +1,1559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>ZDzY0Y0Web78Vf7+AJu6tv2QW9ps/DJUxX3c3C/X9nw=_5</activeVersionIdentifier>
+    <description>Your job is to analyze the chat transcript to identify which support category: Directory, Profile, Volunteer, Events, or General — the user&apos;s conversation belongs to. Returns a single word category name.</description>
+    <developerName>Milton_Knowledge_Category</developerName>
+    <masterLabel>Milton Knowledge Category</masterLabel>
+    <templateVersions>
+        <content>Your job is to read a chat conversation transcript between a user and a service agent from the Hamilton Alumni HQ portal, and find out which support category the conversation
+belongs to. A case has already been raised on behalf of the user — you do not need to assess satisfaction or frustration. 
+
+Your only task is to go through the transcript, look at the last 5 question-and-answer exchanges, and determine the ONE category that best matches what the user was asking about.
+
+The five possible categories are:
+  - Directory
+  - Profile
+  - Volunteer
+  - Events
+  - General
+
+Think step-by-step:
+  Step 1 – Read the last 5 user questions and agent responses from the transcript.
+  Step 2 – Identify the topic being discussed across those exchanges.
+  Step 3 – Match the topic to the correct category using the reference list below.
+            If the topic does not clearly match any of the four categories,
+            Assign the category as General.
+  Step 4 – Return ONLY the category name. One word. Nothing else.
+
+---
+
+CATEGORY REFERENCE:
+
+------------------------------------------------------
+CATEGORY 1: Directory
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+  1.  The user is asking how to find or search for fellow alumni or classmates
+      inside the HQ portal. They may be trying to locate a specific person by
+      name or browse a group of alumni they want to reconnect with.
+
+  2.  The user is trying to use directory filters such as Class Year, Major,
+      Concentration, Industry, or Region to narrow down their search results.
+      They may be confused about how to apply multiple filters at the same time
+      or why certain filters are not returning expected results.
+
+  3.  The user is attempting to search for alumni using associations such as
+      student organizations, sports teams, or volunteer roles within the directory.
+      They may be unsure which filter category to use or why results are not appearing.
+
+  4.  The user wants to save or bookmark a directory search so they can reuse it
+      on future visits without having to re-enter the same filters each time.
+      They may be reporting that a saved search is not persisting or the bookmark
+      icon is not working as expected.
+
+  5.  The user wants to control whether their own profile appears in the alumni
+      directory and is asking how to show or hide themselves from search results.
+      They may be confused about which setting controls their overall visibility
+      to other alumni.
+
+  6.  The user is trying to toggle the &quot;Show in the directory&quot; button to either
+      On or Off but is experiencing difficulty finding or activating that setting.
+      They may report that the toggle is not saving or that their profile is still
+      appearing despite being turned off.
+
+  7.  The user is asking about managing their directory privacy settings as a whole,
+      including where to find them and how to apply changes correctly.
+      They may be unsure about the difference between being hidden from search
+      versus controlling which individual fields are visible.
+
+  8.  The user wants to control the visibility of specific profile sections in the
+      directory, such as Personal Information, Social Media links, or Address Details.
+      They may be trying to hide only certain fields while keeping the rest visible
+      and are unsure how the toggle controls work per section.
+
+  9.  The user wants to preview how their profile currently appears to other alumni
+      before or after making privacy changes. They may be unable to find the
+      Preview Profile option or are reporting that the preview does not reflect
+      the changes they just saved.
+
+  10. The user is unable to send connection requests to other alumni or is not
+      receiving connection requests themselves, and this is linked to their
+      directory visibility being turned off. They may not realise that hiding
+      from the directory also disables connection request functionality.
+
+------------------------------------------------------
+CATEGORY 2: Profile
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+  1.  The user is trying to update their contact information on their profile,
+      such as their email address or phone number. They may report that the
+      changes are not saving correctly or that old details keep reappearing
+      after they submit their updates.
+
+  2.  The user wants to update their employer details or current job information
+      displayed on their alumni profile. They may be unsure where the employer
+      section is located or why their updated job title or company name is not
+      reflecting after saving.
+
+  3.  The user is attempting to change their mailing address or home address
+      stored in their profile. They may be experiencing an issue where the
+      address reverts to the previous value after saving, or they cannot locate
+      the address field within the profile settings.
+
+  4.  The user wants to preview their profile to see exactly how it will appear
+      to other alumni after making updates. They may be having trouble locating
+      the Preview Profile option or finding that the preview does not match
+      the edits they have just made.
+
+  5.  The user has made changes to their profile but is unsure how to finalise
+      and publish those changes using the Save Settings button. They may report
+      that clicking Save Settings does not seem to be working or that their
+      updates disappear after navigating away from the page.
+
+  6.  The user wants to control the types of communications they receive from
+      Hamilton, such as newsletters, event announcements, or general updates.
+      They may be unsure where the communication preferences section is located
+      or why they are still receiving messages after opting out.
+
+  7.  The user is trying to turn on or turn off specific communication channels
+      such as email or SMS notifications from the Hamilton institution.
+      They may report that the toggle controls are not responding or that their
+      preferences are not being saved after they click the save button.
+
+  8.  The user has updated their communication preferences but the changes are
+      not being saved or applied, and they are asking why they keep receiving
+      unwanted messages. They may have followed the correct steps but the
+      system is not reflecting their updated preferences.
+
+  9.  The user wants to review their full donation history to the Hamilton
+      institution and is looking for the Giving Over Past 5 Years table on
+      the My Impact page. They may be unable to locate the Philanthropy section
+      or report that the table is not displaying their contributions correctly.
+
+  10. The user is checking their outstanding pledge balance or wants to know
+      how much they still owe on a previous commitment. They may be unable to
+      find the Open Pledges table or report that the balance shown does not
+      match what they expected.
+
+------------------------------------------------------
+CATEGORY 3: Volunteer
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+  1.  The user is asking what types of volunteer opportunities are currently
+      available for Hamilton alumni through the HQ portal. They may be exploring
+      options for the first time and want a full list of roles they can consider
+      before deciding which one to pursue.
+
+  2.  The user is asking specifically about the Event Host volunteer role,
+      including what responsibilities it involves and how to express interest.
+      They may want to understand what is expected of them before committing
+      to this particular role.
+
+  3.  The user is enquiring about the Alumni Council Member role, including
+      what it entails, who is eligible, and how the selection or sign-up process works.
+      They may be unclear about whether this is an appointed or application-based role.
+
+  4.  The user is asking about the Career Center Volunteer role and how alumni
+      can support current students or recent graduates through this opportunity.
+      They may want to understand the time commitment or the nature of the
+      support they would be providing.
+
+  5.  The user is interested in the Skill or Expertise Sharing volunteer opportunity
+      and wants to know how they can contribute their professional knowledge
+      to the Hamilton community. They may be asking what format this takes,
+      such as workshops, webinars, or one-on-one sessions.
+
+  6.  The user is asking about the College Ambassadors role and what it involves
+      in terms of representing Hamilton within their local or professional community.
+      They may want to know how active this role is and what the expectations are
+      for an ambassador.
+
+  7.  The user wants to know about the Career Center Recruitment volunteer opportunity
+      and how alumni can assist in connecting students with job or internship prospects.
+      They may be asking whether this requires a formal commitment or can be done
+      on an ad hoc basis.
+
+  8.  The user is interested in the Social Media Advocates volunteer role and
+      wants to understand how they can help promote Hamilton through their
+      own social media platforms. They may be asking what content they would
+      be expected to share and how much time it requires.
+
+  9.  The user wants to know how to formally express interest in a volunteer role
+      by using the Raise a Hand button in the Volunteer Opportunities subtab.
+      They may be unable to find the button, or they may have clicked it but
+      have not received any follow-up from the institution.
+
+  10. The user specifically wants to sign up for a mentoring role to support
+      current students or recent graduates and is looking for the Career Center
+      Volunteer listing. They may be confused about which role covers mentoring
+      or may be unable to locate the correct listing in the volunteer section.
+
+------------------------------------------------------
+CATEGORY 4: Events
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+  1.  The user is asking how to find Hamilton alumni events that are listed
+      in the HQ portal and is unsure where to navigate to see what is available.
+      They may be visiting the Events section for the first time and need
+      guidance on how to browse upcoming activities.
+
+  2.  The user is trying to navigate to the Upcoming Events subtab within
+      the Events module but is having difficulty finding it or the tab is
+      not loading correctly. They may be reporting that the page is blank
+      or that no events are being listed.
+
+  3.  The user wants to use the Region filter under Other Events to find
+      alumni events happening near their location. They may be confused
+      about how to apply the filter or reporting that the filter is not
+      returning events in their area despite events being known to exist.
+
+  4.  The user is trying to click the Register button on an event listing
+      to complete their sign-up and is experiencing issues such as the button
+      not responding, the page not loading, or the registration not going through.
+      They may need guidance on what happens after clicking Register.
+
+  5.  The user has been directed to the Cvent registration page to complete
+      their event sign-up but is encountering problems on that external page.
+      They may report errors during the registration process or be unsure
+      whether their registration was successfully submitted on Cvent.
+
+  6.  The user has completed registration and was told to refresh the HQ portal
+      to confirm their sign-up under the My Events subtab, but the confirmation
+      is not appearing even after refreshing. They may have registered successfully
+      on Cvent but the portal is not reflecting the updated status.
+
+  7.  The user is looking for a list of events they have already registered for
+      and is trying to find the My Events subtab within the Events module.
+      They may be unable to locate this subtab or report that it is showing
+      no events despite having previously registered.
+
+  8.  The user registered for an event but it is not appearing in their portal
+      after registration was completed. They may have followed all the correct
+      steps including refreshing the page but the event is still missing
+      from their My Events list.
+
+  9.  The user wants to find events in a specific city or geographic area
+      and is asking how to search by location within the portal. They may
+      be unsure whether location-based filtering is available or how to
+      narrow results to a particular region or city.
+
+  10. The user is asking general questions about what events are coming up,
+      whether new events are being added, or when the next event in their
+      area will be scheduled. They may be checking availability for a
+      specific time period or asking how frequently the events list is updated.
+
+---
+
+EXAMPLES:
+
+Transcript (last 5 exchanges):
+  User: &quot;How do I search for alumni in my city?&quot;
+  Agent: &quot;Use the Region filter in the Search Directory subtab.&quot;
+  User: &quot;Can I save that search?&quot;
+  Agent: &quot;Yes, click the Bookmark icon to save your preferences.&quot;
+  User: &quot;I saved it but it&apos;s not showing next time I log in.&quot;
+  Agent: &quot;Please try clearing your browser cache and retry.&quot;
+  User: &quot;Still not working.&quot;
+  Agent: &quot;I understand. Would you like to raise a case?&quot;
+  User: &quot;Yes please.&quot;
+Answer:
+  Directory
+
+---
+
+Transcript (last 5 exchanges):
+  User: &quot;I want to update my mailing address.&quot;
+  Agent: &quot;Go to Profile and Privacy and edit your Mailing Address section.&quot;
+  User: &quot;I updated it but it reverted back.&quot;
+  Agent: &quot;Please click Save Settings after making changes.&quot;
+  User: &quot;I did click Save Settings and it still reverted.&quot;
+  Agent: &quot;I&apos;m sorry about that. Would you like to raise a case?&quot;
+  User: &quot;Yes.&quot;
+Answer:
+  Profile
+
+---
+
+Transcript (last 5 exchanges):
+  User: &quot;How do I sign up to be a mentor?&quot;
+  Agent: &quot;Go to My Impact, then Volunteer Opportunities and find Career Center: Volunteer.&quot;
+  User: &quot;I don&apos;t see Career Center: Volunteer listed there.&quot;
+  Agent: &quot;Please scroll down, it should be listed under available roles.&quot;
+  User: &quot;It&apos;s definitely not there.&quot;
+  Agent: &quot;I apologise for the trouble. Shall I raise a case for you?&quot;
+  User: &quot;Yes go ahead.&quot;
+Answer:
+  Volunteer
+
+---
+
+Transcript (last 5 exchanges):
+  User: &quot;I registered for an event but cannot see it in my portal.&quot;
+  Agent: &quot;Please check the My Events subtab after refreshing the page.&quot;
+  User: &quot;I refreshed and it&apos;s still not there.&quot;
+  Agent: &quot;Try logging out and back in.&quot;
+  User: &quot;Still missing.&quot;
+  Agent: &quot;I&apos;m sorry. Would you like me to raise a case?&quot;
+  User: &quot;Yes please raise a case.&quot;
+Answer:
+  Events
+
+---
+
+------------------------------------------------------
+INPUT:
+NOW ANALYSE THIS TRANSCRIPT: {!$Input:Chat_Transcript}
+------------------------------------------------------
+
+------------------------------------------------------
+OUTPUT
+Return ONLY one word — the category name: Directory | Profile | Volunteer | Events | General
+------------------------------------------------------
+
+
+
+
+
+
+</content>
+        <inputs>
+            <apiName>Chat_Transcript</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>Chat Transcript</masterLabel>
+            <referenceName>Input:Chat_Transcript</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT5Mini</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>ZDzY0Y0Web78Vf7+AJu6tv2QW9ps/DJUxX3c3C/X9nw=_1</versionIdentifier>
+    </templateVersions>
+    <templateVersions>
+        <content>Your job is to read a chat conversation transcript between a user and a service agent from the Hamilton Alumni HQ portal, and find out which support category the conversation
+belongs to. A case has already been raised on behalf of the user — you do not need to assess satisfaction or frustration. 
+
+Your only task is to go through the transcript and review the conversation starting from the latest message upward for the last 5 question-and-answer exchanges. Based on those exchanges, determine the ONE category that best matches what the user was asking about.
+
+The five possible categories are:
+  - Directory
+  - Profile
+  - Volunteer
+  - Events
+  - General
+
+Think step-by-step:
+  Step 1 – Read the last 5 user questions and agent responses from the transcript.
+  Step 2 – Identify the topic being discussed across those exchanges.
+  Step 3 – Match the topic to the correct category using the reference list below.
+            If the topic does not clearly match any of the four categories,
+            Assign the category as General.
+  Step 4 – Return ONLY the category name. One word. Nothing else.
+
+---
+
+CATEGORY REFERENCE:
+
+------------------------------------------------------
+CATEGORY 1: Directory
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+  1.  The user is asking how to find or search for fellow alumni or classmates
+      inside the HQ portal. They may be trying to locate a specific person by
+      name or browse a group of alumni they want to reconnect with.
+
+  2.  The user is trying to use directory filters such as Class Year, Major,
+      Concentration, Industry, or Region to narrow down their search results.
+      They may be confused about how to apply multiple filters at the same time
+      or why certain filters are not returning expected results.
+
+  3.  The user is attempting to search for alumni using associations such as
+      student organizations, sports teams, or volunteer roles within the directory.
+      They may be unsure which filter category to use or why results are not appearing.
+
+  4.  The user wants to save or bookmark a directory search so they can reuse it
+      on future visits without having to re-enter the same filters each time.
+      They may be reporting that a saved search is not persisting or the bookmark
+      icon is not working as expected.
+
+  5.  The user wants to control whether their own profile appears in the alumni
+      directory and is asking how to show or hide themselves from search results.
+      They may be confused about which setting controls their overall visibility
+      to other alumni.
+
+  6.  The user is trying to toggle the &quot;Show in the directory&quot; button to either
+      On or Off but is experiencing difficulty finding or activating that setting.
+      They may report that the toggle is not saving or that their profile is still
+      appearing despite being turned off.
+
+  7.  The user is asking about managing their directory privacy settings as a whole,
+      including where to find them and how to apply changes correctly.
+      They may be unsure about the difference between being hidden from search
+      versus controlling which individual fields are visible.
+
+  8.  The user wants to control the visibility of specific profile sections in the
+      directory, such as Personal Information, Social Media links, or Address Details.
+      They may be trying to hide only certain fields while keeping the rest visible
+      and are unsure how the toggle controls work per section.
+
+  9.  The user wants to preview how their profile currently appears to other alumni
+      before or after making privacy changes. They may be unable to find the
+      Preview Profile option or are reporting that the preview does not reflect
+      the changes they just saved.
+
+  10. The user is unable to send connection requests to other alumni or is not
+      receiving connection requests themselves, and this is linked to their
+      directory visibility being turned off. They may not realise that hiding
+      from the directory also disables connection request functionality.
+
+------------------------------------------------------
+CATEGORY 2: Profile
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+  1.  The user is trying to update their contact information on their profile,
+      such as their email address or phone number. They may report that the
+      changes are not saving correctly or that old details keep reappearing
+      after they submit their updates.
+
+  2.  The user wants to update their employer details or current job information
+      displayed on their alumni profile. They may be unsure where the employer
+      section is located or why their updated job title or company name is not
+      reflecting after saving.
+
+  3.  The user is attempting to change their mailing address or home address
+      stored in their profile. They may be experiencing an issue where the
+      address reverts to the previous value after saving, or they cannot locate
+      the address field within the profile settings.
+
+  4.  The user wants to preview their profile to see exactly how it will appear
+      to other alumni after making updates. They may be having trouble locating
+      the Preview Profile option or finding that the preview does not match
+      the edits they have just made.
+
+  5.  The user has made changes to their profile but is unsure how to finalise
+      and publish those changes using the Save Settings button. They may report
+      that clicking Save Settings does not seem to be working or that their
+      updates disappear after navigating away from the page.
+
+  6.  The user wants to control the types of communications they receive from
+      Hamilton, such as newsletters, event announcements, or general updates.
+      They may be unsure where the communication preferences section is located
+      or why they are still receiving messages after opting out.
+
+  7.  The user is trying to turn on or turn off specific communication channels
+      such as email or SMS notifications from the Hamilton institution.
+      They may report that the toggle controls are not responding or that their
+      preferences are not being saved after they click the save button.
+
+  8.  The user has updated their communication preferences but the changes are
+      not being saved or applied, and they are asking why they keep receiving
+      unwanted messages. They may have followed the correct steps but the
+      system is not reflecting their updated preferences.
+
+  9.  The user wants to review their full donation history to the Hamilton
+      institution and is looking for the Giving Over Past 5 Years table on
+      the My Impact page. They may be unable to locate the Philanthropy section
+      or report that the table is not displaying their contributions correctly.
+
+  10. The user is checking their outstanding pledge balance or wants to know
+      how much they still owe on a previous commitment. They may be unable to
+      find the Open Pledges table or report that the balance shown does not
+      match what they expected.
+
+------------------------------------------------------
+CATEGORY 3: Volunteer
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+  1.  The user is asking what types of volunteer opportunities are currently
+      available for Hamilton alumni through the HQ portal. They may be exploring
+      options for the first time and want a full list of roles they can consider
+      before deciding which one to pursue.
+
+  2.  The user is asking specifically about the Event Host volunteer role,
+      including what responsibilities it involves and how to express interest.
+      They may want to understand what is expected of them before committing
+      to this particular role.
+
+  3.  The user is enquiring about the Alumni Council Member role, including
+      what it entails, who is eligible, and how the selection or sign-up process works.
+      They may be unclear about whether this is an appointed or application-based role.
+
+  4.  The user is asking about the Career Center Volunteer role and how alumni
+      can support current students or recent graduates through this opportunity.
+      They may want to understand the time commitment or the nature of the
+      support they would be providing.
+
+  5.  The user is interested in the Skill or Expertise Sharing volunteer opportunity
+      and wants to know how they can contribute their professional knowledge
+      to the Hamilton community. They may be asking what format this takes,
+      such as workshops, webinars, or one-on-one sessions.
+
+  6.  The user is asking about the College Ambassadors role and what it involves
+      in terms of representing Hamilton within their local or professional community.
+      They may want to know how active this role is and what the expectations are
+      for an ambassador.
+
+  7.  The user wants to know about the Career Center Recruitment volunteer opportunity
+      and how alumni can assist in connecting students with job or internship prospects.
+      They may be asking whether this requires a formal commitment or can be done
+      on an ad hoc basis.
+
+  8.  The user is interested in the Social Media Advocates volunteer role and
+      wants to understand how they can help promote Hamilton through their
+      own social media platforms. They may be asking what content they would
+      be expected to share and how much time it requires.
+
+  9.  The user wants to know how to formally express interest in a volunteer role
+      by using the Raise a Hand button in the Volunteer Opportunities subtab.
+      They may be unable to find the button, or they may have clicked it but
+      have not received any follow-up from the institution.
+
+  10. The user specifically wants to sign up for a mentoring role to support
+      current students or recent graduates and is looking for the Career Center
+      Volunteer listing. They may be confused about which role covers mentoring
+      or may be unable to locate the correct listing in the volunteer section.
+
+------------------------------------------------------
+CATEGORY 4: Events
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+  1.  The user is asking how to find Hamilton alumni events that are listed
+      in the HQ portal and is unsure where to navigate to see what is available.
+      They may be visiting the Events section for the first time and need
+      guidance on how to browse upcoming activities.
+
+  2.  The user is trying to navigate to the Upcoming Events subtab within
+      the Events module but is having difficulty finding it or the tab is
+      not loading correctly. They may be reporting that the page is blank
+      or that no events are being listed.
+
+  3.  The user wants to use the Region filter under Other Events to find
+      alumni events happening near their location. They may be confused
+      about how to apply the filter or reporting that the filter is not
+      returning events in their area despite events being known to exist.
+
+  4.  The user is trying to click the Register button on an event listing
+      to complete their sign-up and is experiencing issues such as the button
+      not responding, the page not loading, or the registration not going through.
+      They may need guidance on what happens after clicking Register.
+
+  5.  The user has been directed to the Cvent registration page to complete
+      their event sign-up but is encountering problems on that external page.
+      They may report errors during the registration process or be unsure
+      whether their registration was successfully submitted on Cvent.
+
+  6.  The user has completed registration and was told to refresh the HQ portal
+      to confirm their sign-up under the My Events subtab, but the confirmation
+      is not appearing even after refreshing. They may have registered successfully
+      on Cvent but the portal is not reflecting the updated status.
+
+  7.  The user is looking for a list of events they have already registered for
+      and is trying to find the My Events subtab within the Events module.
+      They may be unable to locate this subtab or report that it is showing
+      no events despite having previously registered.
+
+  8.  The user registered for an event but it is not appearing in their portal
+      after registration was completed. They may have followed all the correct
+      steps including refreshing the page but the event is still missing
+      from their My Events list.
+
+  9.  The user wants to find events in a specific city or geographic area
+      and is asking how to search by location within the portal. They may
+      be unsure whether location-based filtering is available or how to
+      narrow results to a particular region or city.
+
+  10. The user is asking general questions about what events are coming up,
+      whether new events are being added, or when the next event in their
+      area will be scheduled. They may be checking availability for a
+      specific time period or asking how frequently the events list is updated.
+
+---
+
+EXAMPLES:
+
+Transcript (last 5 exchanges):
+  User: &quot;How do I search for alumni in my city?&quot;
+  Agent: &quot;Use the Region filter in the Search Directory subtab.&quot;
+  User: &quot;Can I save that search?&quot;
+  Agent: &quot;Yes, click the Bookmark icon to save your preferences.&quot;
+  User: &quot;I saved it but it&apos;s not showing next time I log in.&quot;
+  Agent: &quot;Please try clearing your browser cache and retry.&quot;
+  User: &quot;Still not working.&quot;
+  Agent: &quot;I understand. Would you like to raise a case?&quot;
+  User: &quot;Yes please.&quot;
+Answer:
+  Directory
+
+---
+
+Transcript (last 5 exchanges):
+  User: &quot;I want to update my mailing address.&quot;
+  Agent: &quot;Go to Profile and Privacy and edit your Mailing Address section.&quot;
+  User: &quot;I updated it but it reverted back.&quot;
+  Agent: &quot;Please click Save Settings after making changes.&quot;
+  User: &quot;I did click Save Settings and it still reverted.&quot;
+  Agent: &quot;I&apos;m sorry about that. Would you like to raise a case?&quot;
+  User: &quot;Yes.&quot;
+Answer:
+  Profile
+
+---
+
+Transcript (last 5 exchanges):
+  User: &quot;How do I sign up to be a mentor?&quot;
+  Agent: &quot;Go to My Impact, then Volunteer Opportunities and find Career Center: Volunteer.&quot;
+  User: &quot;I don&apos;t see Career Center: Volunteer listed there.&quot;
+  Agent: &quot;Please scroll down, it should be listed under available roles.&quot;
+  User: &quot;It&apos;s definitely not there.&quot;
+  Agent: &quot;I apologise for the trouble. Shall I raise a case for you?&quot;
+  User: &quot;Yes go ahead.&quot;
+Answer:
+  Volunteer
+
+---
+
+Transcript (last 5 exchanges):
+  User: &quot;I registered for an event but cannot see it in my portal.&quot;
+  Agent: &quot;Please check the My Events subtab after refreshing the page.&quot;
+  User: &quot;I refreshed and it&apos;s still not there.&quot;
+  Agent: &quot;Try logging out and back in.&quot;
+  User: &quot;Still missing.&quot;
+  Agent: &quot;I&apos;m sorry. Would you like me to raise a case?&quot;
+  User: &quot;Yes please raise a case.&quot;
+Answer:
+  Events
+
+---
+
+------------------------------------------------------
+INPUT:
+NOW ANALYSE THIS TRANSCRIPT: {!$Input:Chat_Transcript}
+------------------------------------------------------
+
+------------------------------------------------------
+OUTPUT
+Return ONLY one word — the category name: Directory | Profile | Volunteer | Events | General
+------------------------------------------------------
+
+
+
+
+
+
+</content>
+        <inputs>
+            <apiName>Chat_Transcript</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>Chat Transcript</masterLabel>
+            <referenceName>Input:Chat_Transcript</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT5Mini</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>ZDzY0Y0Web78Vf7+AJu6tv2QW9ps/DJUxX3c3C/X9nw=_2</versionIdentifier>
+    </templateVersions>
+    <templateVersions>
+        <content>Your job is to read a chat conversation transcript between a user and a service agent from the Hamilton Alumni HQ portal, and find out which support category the conversation
+belongs to. A case has already been raised on behalf of the user — you do not need to assess satisfaction or frustration. 
+
+Your only task is to go through the transcript and review the conversation starting from the latest message upward for the last 5 question-and-answer exchanges. Based on those exchanges, determine the ONE category that best matches what the user was asking about.
+
+When identifying the last 5 exchanges:
+- Count only messages where the USER asked a question about the portal.
+- Ignore system messages, agent join notifications, frustration statements (e.g. &quot;not satisfied with your answer&quot;), case creation confirmations, and any message that does not contain a portal-related question.
+
+The five possible categories are:
+ - Directory
+ - Profile
+ - Volunteer
+ - Events
+ - General
+
+Think step-by-step:
+ Step 1 – Read the last 5 user questions and agent responses from the transcript. Ignore system messages, agent join events, and non-question messages.
+ Step 2 – Identify the topic being discussed across those exchanges.
+ Step 3 – Match the topic to the correct category using the reference list below.
+      If the topic does not clearly match any of the four categories,
+      Assign the category as General.
+ Step 4 – Return ONLY the category name. One word. Nothing else.
+
+---
+
+CATEGORY REFERENCE:
+
+------------------------------------------------------
+CATEGORY 1: Directory
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+ 1. The user is asking how to find or search for fellow alumni or classmates
+   inside the HQ portal. They may be trying to locate a specific person by
+   name or browse a group of alumni they want to reconnect with.
+
+ 2. The user is trying to use directory filters such as Class Year, Major,
+   Concentration, Industry, or Region to narrow down their search results.
+   They may be confused about how to apply multiple filters at the same time
+   or why certain filters are not returning expected results.
+
+ 3. The user is attempting to search for alumni using associations such as
+   student organizations, sports teams, or volunteer roles within the directory.
+   They may be unsure which filter category to use or why results are not appearing.
+
+ 4. The user wants to save or bookmark a directory search so they can reuse it
+   on future visits without having to re-enter the same filters each time.
+   They may be reporting that a saved search is not persisting or the bookmark
+   icon is not working as expected.
+
+ 5. The user wants to control whether their own profile appears in the alumni
+   directory and is asking how to show or hide themselves from search results.
+   They may be confused about which setting controls their overall visibility
+   to other alumni.
+
+ 6. The user is trying to toggle the &quot;Show in the directory&quot; button to either
+   On or Off but is experiencing difficulty finding or activating that setting.
+   They may report that the toggle is not saving or that their profile is still
+   appearing despite being turned off.
+
+ 7. The user is asking about managing their directory privacy settings as a whole,
+   including where to find them and how to apply changes correctly.
+   They may be unsure about the difference between being hidden from search
+   versus controlling which individual fields are visible.
+
+ 8. The user wants to control the visibility of specific profile sections in the
+   directory, such as Personal Information, Social Media links, or Address Details.
+   They may be trying to hide only certain fields while keeping the rest visible
+   and are unsure how the toggle controls work per section.
+
+ 9. The user wants to preview how their profile currently appears to other alumni
+   before or after making privacy changes. They may be unable to find the
+   Preview Profile option or are reporting that the preview does not reflect
+   the changes they just saved.
+
+ 10. The user is unable to send connection requests to other alumni or is not
+   receiving connection requests themselves, and this is linked to their
+   directory visibility being turned off. They may not realise that hiding
+   from the directory also disables connection request functionality.
+
+------------------------------------------------------
+CATEGORY 2: Profile
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+ 1. The user is trying to update their contact information on their profile,
+   such as their email address or phone number. They may report that the
+   changes are not saving correctly or that old details keep reappearing
+   after they submit their updates.
+
+ 2. The user wants to update their employer details or current job information
+   displayed on their alumni profile. They may be unsure where the employer
+   section is located or why their updated job title or company name is not
+   reflecting after saving.
+
+ 3. The user is attempting to change their mailing address or home address
+   stored in their profile. They may be experiencing an issue where the
+   address reverts to the previous value after saving, or they cannot locate
+   the address field within the profile settings.
+
+ 4. The user wants to preview their profile to see exactly how it will appear
+   to other alumni after making updates. They may be having trouble locating
+   the Preview Profile option or finding that the preview does not match
+   the edits they have just made.
+
+ 5. The user has made changes to their profile but is unsure how to finalise
+   and publish those changes using the Save Settings button. They may report
+   that clicking Save Settings does not seem to be working or that their
+   updates disappear after navigating away from the page.
+
+ 6. The user wants to control the types of communications they receive from
+   Hamilton, such as newsletters, event announcements, or general updates.
+   They may be unsure where the communication preferences section is located
+   or why they are still receiving messages after opting out.
+
+ 7. The user is trying to turn on or turn off specific communication channels
+   such as email or SMS notifications from the Hamilton institution.
+   They may report that the toggle controls are not responding or that their
+   preferences are not being saved after they click the save button.
+
+ 8. The user has updated their communication preferences but the changes are
+   not being saved or applied, and they are asking why they keep receiving
+   unwanted messages. They may have followed the correct steps but the
+   system is not reflecting their updated preferences.
+
+ 9. The user wants to review their full donation history to the Hamilton
+   institution and is looking for the Giving Over Past 5 Years table on
+   the My Impact page. They may be unable to locate the Philanthropy section
+   or report that the table is not displaying their contributions correctly.
+
+ 10. The user is checking their outstanding pledge balance or wants to know
+   how much they still owe on a previous commitment. They may be unable to
+   find the Open Pledges table or report that the balance shown does not
+   match what they expected.
+
+------------------------------------------------------
+CATEGORY 3: Volunteer
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+ 1. The user is asking what types of volunteer opportunities are currently
+   available for Hamilton alumni through the HQ portal. They may be exploring
+   options for the first time and want a full list of roles they can consider
+   before deciding which one to pursue.
+
+ 2. The user is asking specifically about the Event Host volunteer role,
+   including what responsibilities it involves and how to express interest.
+   They may want to understand what is expected of them before committing
+   to this particular role.
+
+ 3. The user is enquiring about the Alumni Council Member role, including
+   what it entails, who is eligible, and how the selection or sign-up process works.
+   They may be unclear about whether this is an appointed or application-based role.
+
+ 4. The user is asking about the Career Center Volunteer role and how alumni
+   can support current students or recent graduates through this opportunity.
+   They may want to understand the time commitment or the nature of the
+   support they would be providing.
+
+ 5. The user is interested in the Skill or Expertise Sharing volunteer opportunity
+   and wants to know how they can contribute their professional knowledge
+   to the Hamilton community. They may be asking what format this takes,
+   such as workshops, webinars, or one-on-one sessions.
+
+ 6. The user is asking about the College Ambassadors role and what it involves
+   in terms of representing Hamilton within their local or professional community.
+   They may want to know how active this role is and what the expectations are
+   for an ambassador.
+
+ 7. The user wants to know about the Career Center Recruitment volunteer opportunity
+   and how alumni can assist in connecting students with job or internship prospects.
+   They may be asking whether this requires a formal commitment or can be done
+   on an ad hoc basis.
+
+ 8. The user is interested in the Social Media Advocates volunteer role and
+   wants to understand how they can help promote Hamilton through their
+   own social media platforms. They may be asking what content they would
+   be expected to share and how much time it requires.
+
+ 9. The user wants to know how to formally express interest in a volunteer role,
+   sign up for volunteering, or register for a volunteer opportunity through
+   the portal. This includes phrases like &quot;How do I sign up to volunteer?&quot;,
+   &quot;How do I express interest in a role?&quot;, &quot;How do I raise my hand for a
+   volunteer opportunity?&quot;, or &quot;How do I apply for a volunteer role?&quot;.
+   They may be unable to find the Raise a Hand button, or they may have
+   clicked it but have not received any follow-up from the institution.
+
+ 10. The user specifically wants to sign up for a mentoring role to support
+   current students or recent graduates and is looking for the Career Center
+   Volunteer listing. They may be confused about which role covers mentoring
+   or may be unable to locate the correct listing in the volunteer section.
+
+------------------------------------------------------
+CATEGORY 4: Events
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+ 1. The user is asking how to find Hamilton alumni events that are listed
+   in the HQ portal and is unsure where to navigate to see what is available.
+   They may be visiting the Events section for the first time and need
+   guidance on how to browse upcoming activities.
+
+ 2. The user is trying to navigate to the Upcoming Events subtab within
+   the Events module but is having difficulty finding it or the tab is
+   not loading correctly. They may be reporting that the page is blank
+   or that no events are being listed.
+
+ 3. The user wants to use the Region filter under Other Events to find
+   alumni events happening near their location. They may be confused
+   about how to apply the filter or reporting that the filter is not
+   returning events in their area despite events being known to exist.
+
+ 4. The user is trying to click the Register button on an event listing
+   to complete their sign-up and is experiencing issues such as the button
+   not responding, the page not loading, or the registration not going through.
+   They may need guidance on what happens after clicking Register.
+
+ 5. The user has been directed to the Cvent registration page to complete
+   their event sign-up but is encountering problems on that external page.
+   They may report errors during the registration process or be unsure
+   whether their registration was successfully submitted on Cvent.
+
+ 6. The user has completed registration and was told to refresh the HQ portal
+   to confirm their sign-up under the My Events subtab, but the confirmation
+   is not appearing even after refreshing. They may have registered successfully
+   on Cvent but the portal is not reflecting the updated status.
+
+ 7. The user is looking for a list of events they have already registered for
+   and is trying to find the My Events subtab within the Events module.
+   They may be unable to locate this subtab or report that it is showing
+   no events despite having previously registered.
+
+ 8. The user registered for an event but it is not appearing in their portal
+   after registration was completed. They may have followed all the correct
+   steps including refreshing the page but the event is still missing
+   from their My Events list.
+
+ 9. The user wants to find events in a specific city or geographic area
+   and is asking how to search by location within the portal. They may
+   be unsure whether location-based filtering is available or how to
+   narrow results to a particular region or city.
+
+ 10. The user is asking general questions about what events are coming up,
+   whether new events are being added, or when the next event in their
+   area will be scheduled. They may be checking availability for a
+   specific time period or asking how frequently the events list is updated.
+
+---
+
+EXAMPLES:
+
+Transcript (last 5 exchanges):
+ User: &quot;How do I search for alumni in my city?&quot;
+ Agent: &quot;Use the Region filter in the Search Directory subtab.&quot;
+ User: &quot;Can I save that search?&quot;
+ Agent: &quot;Yes, click the Bookmark icon to save your preferences.&quot;
+ User: &quot;I saved it but it&apos;s not showing next time I log in.&quot;
+ Agent: &quot;Please try clearing your browser cache and retry.&quot;
+ User: &quot;Still not working.&quot;
+ Agent: &quot;I understand. Would you like to raise a case?&quot;
+ User: &quot;Yes please.&quot;
+Answer:
+ Directory
+
+---
+
+Transcript (last 5 exchanges):
+ User: &quot;I want to update my mailing address.&quot;
+ Agent: &quot;Go to Profile and Privacy and edit your Mailing Address section.&quot;
+ User: &quot;I updated it but it reverted back.&quot;
+ Agent: &quot;Please click Save Settings after making changes.&quot;
+ User: &quot;I did click Save Settings and it still reverted.&quot;
+ Agent: &quot;I&apos;m sorry about that. Would you like to raise a case?&quot;
+ User: &quot;Yes.&quot;
+Answer:
+ Profile
+
+---
+
+Transcript (last 5 exchanges):
+ User: &quot;How do I sign up to be a mentor?&quot;
+ Agent: &quot;Go to My Impact, then Volunteer Opportunities and find Career Center: Volunteer.&quot;
+ User: &quot;I don&apos;t see Career Center: Volunteer listed there.&quot;
+ Agent: &quot;Please scroll down, it should be listed under available roles.&quot;
+ User: &quot;It&apos;s definitely not there.&quot;
+ Agent: &quot;I apologise for the trouble. Shall I raise a case for you?&quot;
+ User: &quot;Yes go ahead.&quot;
+Answer:
+ Volunteer
+
+---
+
+Transcript (last 5 exchanges):
+ User: &quot;What kinds of volunteer roles are available for alumni?&quot;
+ Agent: &quot;You can explore roles like Event Host, Alumni Council Member, Career Center Volunteer, and more under Volunteer Opportunities.&quot;
+ User: &quot;How do I sign up to volunteer or express interest in a role?&quot;
+ Agent: &quot;You can click the Raise a Hand button in the Volunteer Opportunities subtab to express your interest.&quot;
+ User: &quot;not satisfied with your answer&quot;
+ Agent: &quot;I&apos;m sorry to hear that. Would you like me to raise a case?&quot;
+ User: &quot;Yes&quot;
+Answer:
+ Volunteer
+
+---
+
+Transcript (last 5 exchanges):
+ User: &quot;I registered for an event but cannot see it in my portal.&quot;
+ Agent: &quot;Please check the My Events subtab after refreshing the page.&quot;
+ User: &quot;I refreshed and it&apos;s still not there.&quot;
+ Agent: &quot;Try logging out and back in.&quot;
+ User: &quot;Still missing.&quot;
+ Agent: &quot;I&apos;m sorry. Would you like me to raise a case?&quot;
+ User: &quot;Yes please raise a case.&quot;
+Answer:
+ Events
+
+---
+
+------------------------------------------------------
+INPUT:
+NOW ANALYSE THIS TRANSCRIPT: {!$Input:Chat_Transcript}
+------------------------------------------------------
+
+------------------------------------------------------
+OUTPUT
+Return ONLY one word — the category name: Directory | Profile | Volunteer | Events | General
+------------------------------------------------------
+</content>
+        <inputs>
+            <apiName>Chat_Transcript</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>Chat Transcript</masterLabel>
+            <referenceName>Input:Chat_Transcript</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT5Mini</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>ZDzY0Y0Web78Vf7+AJu6tv2QW9ps/DJUxX3c3C/X9nw=_3</versionIdentifier>
+    </templateVersions>
+    <templateVersions>
+        <content>Your job is to read a chat conversation transcript between a user and a service agent from the Hamilton Alumni HQ portal, and find out which support category the conversation
+belongs to. A case has already been raised on behalf of the user — you do not need to assess satisfaction or frustration. 
+
+Your only task is to go through the transcript and review the conversation starting from the latest message upward for the last 5 question-and-answer exchanges. Based on those exchanges, determine the ONE category that best matches what the user was asking about.
+
+When identifying the last 5 exchanges:
+- Count only messages where the USER asked a question about the portal.
+- Ignore system messages, agent join notifications, frustration statements  (e.g. &quot;not satisfied with your answer&quot;), case creation confirmations, and 
+ any message that does not contain a portal-related question.
+- IMPORTANT — Multiple Cases in One Session: If the transcript contains more than one case creation (identified by the phrase &quot;The case has been created successfully&quot;), focus ONLY on the exchanges that occurred AFTER the second-to-last case creation and BEFORE the final case creation confirmation. This isolates the topic of the most recent case. Ignore all exchanges from earlier cases in the same session.
+
+The five possible categories are:
+ - Directory
+ - Profile
+ - Volunteer
+ - Events
+ - General
+
+Think step-by-step:
+ Step 1 – Read the last 5 user questions and agent responses from the transcript. Ignore system messages, agent join events, and non-question messages.
+ Step 2 – Identify the topic being discussed across those exchanges.
+ Step 3 – Match the topic to the correct category using the reference list below.
+   If the topic does not clearly match any of the four categories,
+   Assign the category as General.
+ Step 4 – Return ONLY the category name. One word. Nothing else.
+
+---
+
+CATEGORY REFERENCE:
+
+------------------------------------------------------
+CATEGORY 1: Directory
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+ 1. The user is asking how to find or search for fellow alumni or classmates
+  inside the HQ portal. They may be trying to locate a specific person by
+  name or browse a group of alumni they want to reconnect with.
+
+ 2. The user is trying to use directory filters such as Class Year, Major,
+  Concentration, Industry, or Region to narrow down their search results.
+  They may be confused about how to apply multiple filters at the same time
+  or why certain filters are not returning expected results.
+
+ 3. The user is attempting to search for alumni using associations such as
+  student organizations, sports teams, or volunteer roles within the directory.
+  They may be unsure which filter category to use or why results are not appearing.
+
+ 4. The user wants to save or bookmark a directory search so they can reuse it
+  on future visits without having to re-enter the same filters each time.
+  They may be reporting that a saved search is not persisting or the bookmark
+  icon is not working as expected.
+
+ 5. The user wants to control whether their own profile appears in the alumni
+  directory and is asking how to show or hide themselves from search results.
+  They may be confused about which setting controls their overall visibility
+  to other alumni.
+
+ 6. The user is trying to toggle the &quot;Show in the directory&quot; button to either
+  On or Off but is experiencing difficulty finding or activating that setting.
+  They may report that the toggle is not saving or that their profile is still
+  appearing despite being turned off.
+
+ 7. The user is asking about managing their directory privacy settings as a whole,
+  including where to find them and how to apply changes correctly.
+  They may be unsure about the difference between being hidden from search
+  versus controlling which individual fields are visible.
+
+ 8. The user wants to control the visibility of specific profile sections in the
+  directory, such as Personal Information, Social Media links, or Address Details.
+  They may be trying to hide only certain fields while keeping the rest visible
+  and are unsure how the toggle controls work per section.
+
+ 9. The user wants to preview how their profile currently appears to other alumni
+  before or after making privacy changes. They may be unable to find the
+  Preview Profile option or are reporting that the preview does not reflect
+  the changes they just saved.
+
+ 10. The user is unable to send connection requests to other alumni or is not
+  receiving connection requests themselves, and this is linked to their
+  directory visibility being turned off. They may not realise that hiding
+  from the directory also disables connection request functionality.
+
+------------------------------------------------------
+CATEGORY 2: Profile
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+ 1. The user is trying to update their contact information on their profile,
+  such as their email address or phone number. They may report that the
+  changes are not saving correctly or that old details keep reappearing
+  after they submit their updates.
+
+ 2. The user wants to update their employer details or current job information
+  displayed on their alumni profile. They may be unsure where the employer
+  section is located or why their updated job title or company name is not
+  reflecting after saving.
+
+ 3. The user is attempting to change their mailing address or home address
+  stored in their profile. They may be experiencing an issue where the
+  address reverts to the previous value after saving, or they cannot locate
+  the address field within the profile settings.
+
+ 4. The user wants to preview their profile to see exactly how it will appear
+  to other alumni after making updates. They may be having trouble locating
+  the Preview Profile option or finding that the preview does not match
+  the edits they have just made.
+
+ 5. The user has made changes to their profile but is unsure how to finalise
+  and publish those changes using the Save Settings button. They may report
+  that clicking Save Settings does not seem to be working or that their
+  updates disappear after navigating away from the page.
+
+ 6. The user wants to control the types of communications they receive from
+  Hamilton, such as newsletters, event announcements, or general updates.
+  They may be unsure where the communication preferences section is located
+  or why they are still receiving messages after opting out.
+
+ 7. The user is trying to turn on or turn off specific communication channels
+  such as email or SMS notifications from the Hamilton institution.
+  They may report that the toggle controls are not responding or that their
+  preferences are not being saved after they click the save button.
+
+ 8. The user has updated their communication preferences but the changes are
+  not being saved or applied, and they are asking why they keep receiving
+  unwanted messages. They may have followed the correct steps but the
+  system is not reflecting their updated preferences.
+
+ 9. The user wants to review their full donation history to the Hamilton
+  institution and is looking for the Giving Over Past 5 Years table on
+  the My Impact page. They may be unable to locate the Philanthropy section
+  or report that the table is not displaying their contributions correctly.
+
+ 10. The user is checking their outstanding pledge balance or wants to know
+  how much they still owe on a previous commitment. They may be unable to
+  find the Open Pledges table or report that the balance shown does not
+  match what they expected.
+
+------------------------------------------------------
+CATEGORY 3: Volunteer
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+ 1. The user is asking what types of volunteer opportunities are currently
+  available for Hamilton alumni through the HQ portal. They may be exploring
+  options for the first time and want a full list of roles they can consider
+  before deciding which one to pursue.
+
+ 2. The user is asking specifically about the Event Host volunteer role,
+  including what responsibilities it involves and how to express interest.
+  They may want to understand what is expected of them before committing
+  to this particular role.
+
+ 3. The user is enquiring about the Alumni Council Member role, including
+  what it entails, who is eligible, and how the selection or sign-up process works.
+  They may be unclear about whether this is an appointed or application-based role.
+
+ 4. The user is asking about the Career Center Volunteer role and how alumni
+  can support current students or recent graduates through this opportunity.
+  They may want to understand the time commitment or the nature of the
+  support they would be providing.
+
+ 5. The user is interested in the Skill or Expertise Sharing volunteer opportunity
+  and wants to know how they can contribute their professional knowledge
+  to the Hamilton community. They may be asking what format this takes,
+  such as workshops, webinars, or one-on-one sessions.
+
+ 6. The user is asking about the College Ambassadors role and what it involves
+  in terms of representing Hamilton within their local or professional community.
+  They may want to know how active this role is and what the expectations are
+  for an ambassador.
+
+ 7. The user wants to know about the Career Center Recruitment volunteer opportunity
+  and how alumni can assist in connecting students with job or internship prospects.
+  They may be asking whether this requires a formal commitment or can be done
+  on an ad hoc basis.
+
+ 8. The user is interested in the Social Media Advocates volunteer role and
+  wants to understand how they can help promote Hamilton through their
+  own social media platforms. They may be asking what content they would
+  be expected to share and how much time it requires.
+
+ 9. The user wants to know how to formally express interest in a volunteer role,
+  sign up for volunteering, or register for a volunteer opportunity through
+  the portal. This includes phrases like &quot;How do I sign up to volunteer?&quot;,
+  &quot;How do I express interest in a role?&quot;, &quot;How do I raise my hand for a
+  volunteer opportunity?&quot;, or &quot;How do I apply for a volunteer role?&quot;.
+  They may be unable to find the Raise a Hand button, or they may have
+  clicked it but have not received any follow-up from the institution.
+
+ 10. The user specifically wants to sign up for a mentoring role to support
+  current students or recent graduates and is looking for the Career Center
+  Volunteer listing. They may be confused about which role covers mentoring
+  or may be unable to locate the correct listing in the volunteer section.
+
+------------------------------------------------------
+CATEGORY 4: Events
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+
+ 1. The user is asking how to find Hamilton alumni events that are listed
+  in the HQ portal and is unsure where to navigate to see what is available.
+  They may be visiting the Events section for the first time and need
+  guidance on how to browse upcoming activities.
+
+ 2. The user is trying to navigate to the Upcoming Events subtab within
+  the Events module but is having difficulty finding it or the tab is
+  not loading correctly. They may be reporting that the page is blank
+  or that no events are being listed.
+
+ 3. The user wants to use the Region filter under Other Events to find
+  alumni events happening near their location. They may be confused
+  about how to apply the filter or reporting that the filter is not
+  returning events in their area despite events being known to exist.
+
+ 4. The user is trying to click the Register button on an event listing
+  to complete their sign-up and is experiencing issues such as the button
+  not responding, the page not loading, or the registration not going through.
+  They may need guidance on what happens after clicking Register.
+
+ 5. The user has been directed to the Cvent registration page to complete
+  their event sign-up but is encountering problems on that external page.
+  They may report errors during the registration process or be unsure
+  whether their registration was successfully submitted on Cvent.
+
+ 6. The user has completed registration and was told to refresh the HQ portal
+  to confirm their sign-up under the My Events subtab, but the confirmation
+  is not appearing even after refreshing. They may have registered successfully
+  on Cvent but the portal is not reflecting the updated status.
+
+ 7. The user is looking for a list of events they have already registered for
+  and is trying to find the My Events subtab within the Events module.
+  They may be unable to locate this subtab or report that it is showing
+  no events despite having previously registered.
+
+ 8. The user registered for an event but it is not appearing in their portal
+  after registration was completed. They may have followed all the correct
+  steps including refreshing the page but the event is still missing
+  from their My Events list.
+
+ 9. The user wants to find events in a specific city or geographic area
+  and is asking how to search by location within the portal. They may
+  be unsure whether location-based filtering is available or how to
+  narrow results to a particular region or city.
+
+ 10. The user is asking general questions about what events are coming up,
+  whether new events are being added, or when the next event in their
+  area will be scheduled. They may be checking availability for a
+  specific time period or asking how frequently the events list is updated.
+
+---
+
+EXAMPLES:
+
+Transcript (last 5 exchanges):
+ User: &quot;How do I search for alumni in my city?&quot;
+ Agent: &quot;Use the Region filter in the Search Directory subtab.&quot;
+ User: &quot;Can I save that search?&quot;
+ Agent: &quot;Yes, click the Bookmark icon to save your preferences.&quot;
+ User: &quot;I saved it but it&apos;s not showing next time I log in.&quot;
+ Agent: &quot;Please try clearing your browser cache and retry.&quot;
+ User: &quot;Still not working.&quot;
+ Agent: &quot;I understand. Would you like to raise a case?&quot;
+ User: &quot;Yes please.&quot;
+Answer:
+ Directory
+
+---
+
+Transcript (last 5 exchanges):
+ User: &quot;I want to update my mailing address.&quot;
+ Agent: &quot;Go to Profile and Privacy and edit your Mailing Address section.&quot;
+ User: &quot;I updated it but it reverted back.&quot;
+ Agent: &quot;Please click Save Settings after making changes.&quot;
+ User: &quot;I did click Save Settings and it still reverted.&quot;
+ Agent: &quot;I&apos;m sorry about that. Would you like to raise a case?&quot;
+ User: &quot;Yes.&quot;
+Answer:
+ Profile
+
+---
+
+Transcript (last 5 exchanges):
+ User: &quot;How do I sign up to be a mentor?&quot;
+ Agent: &quot;Go to My Impact, then Volunteer Opportunities and find Career Center: Volunteer.&quot;
+ User: &quot;I don&apos;t see Career Center: Volunteer listed there.&quot;
+ Agent: &quot;Please scroll down, it should be listed under available roles.&quot;
+ User: &quot;It&apos;s definitely not there.&quot;
+ Agent: &quot;I apologise for the trouble. Shall I raise a case for you?&quot;
+ User: &quot;Yes go ahead.&quot;
+Answer:
+ Volunteer
+
+---
+
+Transcript (last 5 exchanges):
+ User: &quot;What kinds of volunteer roles are available for alumni?&quot;
+ Agent: &quot;You can explore roles like Event Host, Alumni Council Member, Career Center Volunteer, and more under Volunteer Opportunities.&quot;
+ User: &quot;How do I sign up to volunteer or express interest in a role?&quot;
+ Agent: &quot;You can click the Raise a Hand button in the Volunteer Opportunities subtab to express your interest.&quot;
+ User: &quot;not satisfied with your answer&quot;
+ Agent: &quot;I&apos;m sorry to hear that. Would you like me to raise a case?&quot;
+ User: &quot;Yes&quot;
+Answer:
+ Volunteer
+
+---
+
+Transcript (last 5 exchanges):
+ User: &quot;I registered for an event but cannot see it in my portal.&quot;
+ Agent: &quot;Please check the My Events subtab after refreshing the page.&quot;
+ User: &quot;I refreshed and it&apos;s still not there.&quot;
+ Agent: &quot;Try logging out and back in.&quot;
+ User: &quot;Still missing.&quot;
+ Agent: &quot;I&apos;m sorry. Would you like me to raise a case?&quot;
+ User: &quot;Yes please raise a case.&quot;
+Answer:
+ Events
+
+---
+
+------------------------------------------------------
+INPUT:
+NOW ANALYSE THIS TRANSCRIPT: {!$Input:Chat_Transcript}
+------------------------------------------------------
+
+------------------------------------------------------
+OUTPUT
+Return ONLY one word — the category name: Directory | Profile | Volunteer | Events | General
+------------------------------------------------------
+</content>
+        <inputs>
+            <apiName>Chat_Transcript</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>Chat Transcript</masterLabel>
+            <referenceName>Input:Chat_Transcript</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT5Mini</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>ZDzY0Y0Web78Vf7+AJu6tv2QW9ps/DJUxX3c3C/X9nw=_4</versionIdentifier>
+    </templateVersions>
+    <templateVersions>
+        <content>Your job is to read a chat conversation transcript between a user and a service agent from the Hamilton Alumni HQ portal, and find out which support category the conversation
+belongs to. A case has already been raised on behalf of the user — you do not need to assess satisfaction or frustration. 
+
+Your only task is to go through the transcript and review the conversation starting from the latest message upward for the last 5 question-and-answer exchanges. Based on those exchanges, determine the ONE category that best matches what the user was asking about.
+
+When identifying the last 5 exchanges:
+- Count only messages where the USER asked a question about the portal.
+- Ignore system messages, agent join notifications, frustration statements  (e.g., &quot;not satisfied with your answer&quot;), case creation confirmations, and 
+ any message that does not contain a portal-related question.
+- IMPORTANT — Multiple Cases in One Session: If the transcript contains more than one case creation (identified by the phrase &quot;The case has been created successfully&quot;), focus ONLY on the exchanges that occurred AFTER the second-to-last case creation and BEFORE the final case creation confirmation. This isolates the topic of the most recent case. Ignore all exchanges from earlier cases in the same session.
+
+The five possible categories are:
+ - Directory
+ - Profile
+ - Volunteer
+ - Events
+ - General
+
+Think step-by-step:
+ Step 1 – Read the last 5 user questions and agent responses from the transcript. Ignore system messages, agent join events, and non-question messages.
+ Step 2 – Identify the topic being discussed across those exchanges.
+ Step 3 – Match the topic to the correct category using the reference list below.
+   If the topic does not clearly match any of the four categories,
+   Assign the category as General.
+ Step 4 – Return ONLY the category name. One word. Nothing else.
+
+---
+ 
+CATEGORY REFERENCE:
+ 
+------------------------------------------------------
+CATEGORY 1: Directory
+Keywords: Directory, Classmates, Search
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+ 
+ 1. The user is asking how to find, search for, or reconnect with fellow alumni or classmates inside the HQ portal. They may be trying to locate a specific person by name or browse alumni they want to reconnect with.
+ 
+ 2. The user is trying to use directory filters such as Class Year, Major, Concentration, Industry, or Region to narrow down their search results. They may be confused about how to apply multiple filters or why certain filters are not returning the expected results.
+ 
+ 3. The user is searching for alumni using associations such as student organizations, sports teams, or volunteer roles within the directory. They may be unsure which filter to use or why results are not appearing.
+ 
+ 4. The user wants to save or bookmark a directory search so they can reuse it on future visits without re-entering the same filters. They may report that a saved search is not persisting or that the bookmark icon is not working.
+ 
+ 5. The user wants to control whether their own profile appears in the alumni directory and is asking how to show or hide themselves from search results.
+ 
+ 6. The user is trying to toggle the &quot;Show in the directory&quot; button to On or Off, but is experiencing difficulty finding or activating that setting. They may report that the toggle is not saving, or their profile is still appearing despite being turned off.
+ 
+ 7. The user is asking about managing their overall directory privacy settings, including where to find them and how to apply changes correctly.
+ 
+ 8. The user wants to control the visibility of specific profile sections in the directory, such as Personal Information, Social Media links, or Address Details, while keeping other sections visible.
+ 
+------------------------------------------------------
+CATEGORY 2: Profile
+Keywords: Profile, Preferences, Privacy
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+ 
+ 1. The user is trying to update their contact information on their profile, such as their email address or phone number. They may report that changes are not saving or that old details keep reappearing after they submit updates.
+ 
+ 2. The user wants to update their employer details or current job information displayed on their alumni profile. They may be unsure where the employer section is located or why their updated job title or company name is not reflected.
+ 
+ 3. The user is attempting to change their mailing or home address stored in their profile. They may experience the address reverting after saving, or they cannot locate the address field within profile settings.
+ 
+ 4. The user wants to preview their profile to see exactly how it will appear to other alumni after making updates. They may have trouble finding the Preview Profile option or the preview does not match their recent edits.
+ 
+ 5. The user has made changes in the Profile and Privacy section but is unsure how to finalise and publish those changes using the Save Settings button. They may report that clicking Save Settings does not work or that updates disappear on navigation.
+ 
+ 6. The user is navigating the Profile and Privacy section and has questions about finding or managing the settings within it.
+ 
+ 7. The user wants to control their communication preferences, such as newsletters, event announcements, or email and SMS notifications from Hamilton. They may be unsure where to find these settings or why preferences are not being saved.
+ 
+ 8. The user wants to review their donation history or outstanding pledge balance on the My Impact page. They may be unable to locate the Philanthropy section or report that the table is not displaying their contributions correctly.
+ 
+------------------------------------------------------
+CATEGORY 3: Volunteer
+Keywords: Volunteer, Mentor, Mentorship, Career Center
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+ 
+ 1. The user is asking what types of volunteer opportunities are currently available for Hamilton alumni through the HQ portal. They may be exploring options for the first time and want a full list of roles before deciding which to pursue.
+ 
+ 2. The user is asking about the Event Host or Alumni Council Member volunteer role, including responsibilities, eligibility, and how to express interest.
+ 
+ 3. The user is asking about the Career Center Volunteer role and how alumni can support current students or recent graduates through this opportunity.
+ 
+ 4. The user is interested in the Skill or Expertise Sharing volunteer opportunity and wants to know how to contribute their professional knowledge to the Hamilton community, such as through workshops, webinars, or one-on-one sessions.
+ 
+ 5. The user is asking about the College Ambassadors&apos; role and what it involves in terms of representing Hamilton within their local or professional community.
+ 
+ 6. The user is interested in the Social Media Advocates volunteer role and wants to understand how to help promote Hamilton through their own social media platforms and what content they would be expected to share.
+ 
+ 7. The user wants to know how to formally express interest in a volunteer role, sign up, or register for an opportunity using the Raise a Hand button in the portal. They may be unable to find the button or have not received a follow-up.
+ 
+ 8. The user specifically wants to sign up for a mentoring or mentorship role to support current students or recent graduates and is trying to locate the Career Center Volunteer listing in the portal.
+ 
+------------------------------------------------------
+CATEGORY 4: Events
+Keywords: Events, Registration
+------------------------------------------------------
+Map to this category if the last 5 exchanges are about any of the following:
+ 
+ 1. The user is asking how to find Hamilton alumni events listed in the HQ portal or is unsure how to browse upcoming activities in the Events section.
+ 
+ 2. The user is trying to navigate to the Upcoming Events subtab within the Events module, but is having difficulty finding it, or the tab is not loading correctly.
+ 
+ 3. The user wants to use the Region filter under Other Events to find alumni events near their location. They may be confused about how to apply the filter or report that it is not returning events in their area.
+ 
+ 4. The user is trying to click the Register button on an event listing and is experiencing issues such as the button not responding, the page not loading, or the registration not going through.
+ 
+ 5. The user has been directed to the Cvent registration page to complete their event sign-up, but is encountering problems on that external page. They may report errors during registration or be unsure whether their submission went through.
+ 
+ 6. The user has completed registration, but the confirmation is not appearing under the My Events subtab after refreshing the portal. They may have registered for the event, but the portal is not reflecting the updated status.
+ 
+ 7. The user is looking for a list of events they have already registered for and is trying to find the My Events subtab within the Events module. They may report that it is showing no events despite having previously registered.
+ 
+ 8. The user registered for an event, but it is not appearing in their portal after registration was completed, even after following all the correct steps and refreshing.
+ 
+---
+ 
+EXAMPLES:
+ 
+Transcript (last 5 exchanges):
+ User: &quot;How do I search for alumni in my city?&quot;
+ Agent: &quot;Use the Region filter in the Search Directory subtab.&quot;
+ User: &quot;Can I save that search?&quot;
+ Agent: &quot;Yes, click the Bookmark icon to save your preferences.&quot;
+ User: &quot;I saved it but it&apos;s not showing next time I log in.&quot;
+ Agent: &quot;Please try clearing your browser cache and retry.&quot;
+ User: &quot;Still not working.&quot;
+ Agent: &quot;I understand. Would you like to raise a case?&quot;
+ User: &quot;Yes please.&quot;
+Answer:
+ Directory
+ 
+---
+ 
+Transcript (last 5 exchanges):
+ User: &quot;I want to update my mailing address in Profile and Privacy.&quot;
+ Agent: &quot;Go to Profile and Privacy and edit your Mailing Address section.&quot;
+ User: &quot;I updated it but it reverted back.&quot;
+ Agent: &quot;Please click Save Settings after making changes.&quot;
+ User: &quot;I did click Save Settings and it still reverted.&quot;
+ Agent: &quot;I&apos;m sorry about that. Would you like to raise a case?&quot;
+ User: &quot;Yes.&quot;
+Answer:
+ Profile
+ 
+---
+ 
+Transcript (last 5 exchanges):
+ User: &quot;How do I sign up to be a mentor?&quot;
+ Agent: &quot;Go to My Impact, then Volunteer Opportunities and find Career Center: Volunteer.&quot;
+ User: &quot;I don&apos;t see Career Center: Volunteer listed there.&quot;
+ Agent: &quot;Please scroll down, it should be listed under available roles.&quot;
+ User: &quot;It&apos;s definitely not there.&quot;
+ Agent: &quot;I apologise for the trouble. Shall I raise a case for you?&quot;
+ User: &quot;Yes go ahead.&quot;
+Answer:
+ Volunteer
+ 
+---
+ 
+Transcript (last 5 exchanges):
+ User: &quot;What kinds of volunteer roles are available for alumni?&quot;
+ Agent: &quot;You can explore roles like Event Host, Alumni Council Member, Career Center Volunteer, and more under Volunteer Opportunities.&quot;
+ User: &quot;How do I sign up to volunteer or express interest in a role?&quot;
+ Agent: &quot;You can click the Raise a Hand button in the Volunteer Opportunities subtab to express your interest.&quot;
+ User: &quot;not satisfied with your answer&quot;
+ Agent: &quot;I&apos;m sorry to hear that. Would you like me to raise a case?&quot;
+ User: &quot;Yes&quot;
+Answer:
+ Volunteer
+ 
+---
+ 
+Transcript (last 5 exchanges):
+ User: &quot;How do I register for an upcoming event?&quot;
+ Agent: &quot;Click the Register button on the event listing, which will direct you to the Cvent registration page.&quot;
+ User: &quot;I completed registration on Cvent but it&apos;s not showing in My Events.&quot;
+ Agent: &quot;Please refresh the page and check the My Events subtab.&quot;
+ User: &quot;Still not showing after refreshing.&quot;
+ Agent: &quot;I&apos;m sorry. Would you like me to raise a case?&quot;
+ User: &quot;Yes please raise a case.&quot;
+Answer:
+ Events
+ 
+---
+
+
+------------------------------------------------------
+INPUT:
+NOW ANALYSE THIS TRANSCRIPT: {!$Input:Chat_Transcript}
+------------------------------------------------------
+
+------------------------------------------------------
+OUTPUT
+Return ONLY one word — the category name: Directory | Profile | Volunteer | Events | General
+------------------------------------------------------
+</content>
+        <inputs>
+            <apiName>Chat_Transcript</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>Chat Transcript</masterLabel>
+            <referenceName>Input:Chat_Transcript</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultGPT5Mini</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>ZDzY0Y0Web78Vf7+AJu6tv2QW9ps/DJUxX3c3C/X9nw=_5</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

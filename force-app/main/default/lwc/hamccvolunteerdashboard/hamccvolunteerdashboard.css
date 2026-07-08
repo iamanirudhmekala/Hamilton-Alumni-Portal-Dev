@@ -1,0 +1,262 @@
+/* ── Container ──────────────────────────────────────────────────────────── */
+.dash {
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    padding: 1rem;
+    color: #1C1C1A;
+}
+
+/* ── Loading / error ────────────────────────────────────────────────────── */
+.state-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    gap: 1rem;
+}
+.state-text {
+    font-size: 0.875rem;
+    color: #888780;
+    margin: 0;
+}
+
+/* ── KPI grid ────────────────────────────────────────────────────────────── */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+}
+
+.kpi-card--green {
+    background: #F0FAF5;
+}
+
+.kpi-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #888780;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+
+.kpi-value {
+    font-size: 30px;
+    font-weight: 300;
+    color: #1C1C1A;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.kpi-sub {
+    font-size: 11px;
+    color: #888780;
+}
+
+/* ── Section labels ─────────────────────────────────────────────────────── */
+.section-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #888780;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 1.75rem 0 0.75rem;
+}
+
+/* ── Cards ───────────────────────────────────────────────────────────────── */
+.card {
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1C1C1A;
+    margin-bottom: 1rem;
+}
+
+/* ── Two-column chart row ────────────────────────────────────────────────── */
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* ── Chart wrap ─────────────────────────────────────────────────────────── */
+.chart-wrap {
+    position: relative;
+    height: 220px;
+}
+
+.chart-wrap canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ── Chart legend ────────────────────────────────────────────────────────── */
+.dot-legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #888780;
+}
+.dot-legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+.dot--blue   { background: #378ADD; }
+.dot--teal   { background: #1D9E75; }
+.dot--purple { background: #7F77DD; }
+
+/* ── Horizontal bar rows ────────────────────────────────────────────────── */
+.bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 9px;
+    font-size: 12.5px;
+}
+
+.bar-label {
+    width: 210px;
+    flex-shrink: 0;
+    color: #1C1C1A;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bar-track {
+    flex: 1;
+    background: #F5F4F1;
+    border-radius: 3px;
+    height: 18px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.bar-fill--blue { background: #378ADD; }
+.bar-fill--teal { background: #1D9E75; }
+
+.bar-count {
+    width: 30px;
+    text-align: right;
+    font-weight: 500;
+    color: #1C1C1A;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.bar-pct {
+    width: 36px;
+    text-align: right;
+    font-size: 11px;
+    color: #888780;
+    flex-shrink: 0;
+}
+
+/* ── Volunteers table ────────────────────────────────────────────────────── */
+.vol-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.vol-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 500;
+    color: #888780;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: 6px 8px;
+}
+
+.vol-table td {
+    padding: 9px 8px;
+    border-bottom: 1px solid #F5F4F1;
+    color: #1C1C1A;
+    vertical-align: middle;
+}
+
+.vol-table tr:last-child td {
+    border-bottom: none;
+}
+
+.vol-table a {
+    color: #185FA5;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.vol-table a:hover {
+    text-decoration: underline;
+}
+
+.col-rank   { width: 32px; }
+.col-count  { width: 100px; text-align: center; }
+.col-status { width: 100px; text-align: center; }
+
+.rank-num {
+    color: #888780;
+    font-size: 12px;
+}
+
+/* ── Status badges ───────────────────────────────────────────────────────── */
+.badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.badge--current {
+    background: #E1F5EE;
+    color: #0F6E56;
+}
+
+.badge--former {
+    background: #F5F4F1;
+    color: #5F5E5A;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+.empty-state {
+    font-size: 13px;
+    color: #888780;
+    text-align: center;
+    padding: 1rem 0;
+    margin: 0;
+}
+
+/* ── Responsive: collapse 5-col KPI to 3+2 on narrow screens ────────────── */
+@media (max-width: 960px) {
+    .kpi-grid  { grid-template-columns: repeat(3, 1fr); }
+    .two-col   { grid-template-columns: 1fr; }
+    .bar-label { width: 140px; }
+}

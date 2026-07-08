@@ -1,0 +1,97 @@
+<!-- customSocialLogin.html -->
+<template>
+    <!--
+    <div class="button-container">
+        <div class="google-button">
+            <button onclick={handleGoogleLogin} class={instaClass}>
+                <img src={images.googleIcon} alt="Google" />
+            </button>
+        </div>
+
+        <div class="linkedin-button">
+            <button onclick={handleLinkedInLogin} class={linkedinClass}>
+                <img src={images.linkedinIcon} alt="LinkedIn" />
+            </button>
+        </div>
+
+        <div class="facebook-button">
+            <button onclick={handleFacebookLogin} class={facebookClass}>
+                <img src={images.faceIcon} alt="Facebook" />
+            </button>
+        </div>
+        <div class="apple-button">
+            <button onclick={handleAppleLogin} class={appleClass}>
+                <img src={images.appleIcon} alt="Apple" />
+            </button>
+        </div>
+    </div>
+    -->
+    <!-- Privacy Policy Link -->
+    <div class="privacy-section">
+        <a href="javascript:void(0);" onclick={openPrivacyPolicy}>
+            Privacy Policy
+        </a>
+    </div>
+
+    <!-- App Store Download Badges — hidden inside native mobile app -->
+    <template if:false={isMobileApp}>
+    <div class="app-store-section">
+        <!-- Google Play Badge -->
+        <a href={label.androidAppUrl} target="_blank" rel="noopener noreferrer" class="store-badge-link">
+            <img src={images.googlePlayBadge} alt="Get it on Google Play" class="store-badge" />
+        </a>
+
+        <!-- Apple App Store Badge -->
+        <div class="coming-soon-wrapper">
+            <img src={images.appStoreBadge} alt="Download on the App Store" class="store-badge store-badge--disabled" />
+            <span class="coming-soon-tooltip">Coming Soon</span>
+        </div>
+    </div>
+    </template>
+<!-- Modal -->
+    <template if:true={showModal}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-modal="true"
+            class="slds-modal slds-fade-in-open">
+
+            <!-- <div class="slds-modal__container"> -->
+            <div class="modal-container">
+
+                <!-- Header -->
+                        <!-- class="slds-button slds-button_icon slds-modal__close" -->
+                <header class="slds-modal__header">
+                    <button
+                    class="my-cross-btn"
+                        onclick={closeModal}>
+
+                        ✕
+                    </button>
+
+                    <!-- <h2 class="slds-text-heading_medium"> -->
+                    <h2 class="heading_medium">
+                        HAMILTON
+                    </h2>
+                </header>
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium modal-body">
+
+                    <!-- Privacy Policy -->
+                 <!-- <embed
+                        src={privacyPolicyUrl}
+                        type="application/pdf"
+                        width="100%"
+                        height="100%" />-->
+                        <c-ham-privacy-policy></c-ham-privacy-policy>
+
+                </div>
+
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    
+</template>

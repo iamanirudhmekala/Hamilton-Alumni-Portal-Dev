@@ -1,0 +1,16 @@
+/* Badge styling to match hamProspectGivingOverview component */
+.icon-image-small {
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.slds-image_badge {
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Is_Dismissed__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>If True, hidden from Web UI &quot;Mark All Read&quot; logic but exists in DB</description>
+    <inlineHelpText>If True, hidden from Web UI &quot;Mark All Read&quot; logic but exists in DB</inlineHelpText>
+    <label>HAM Is Dismissed</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

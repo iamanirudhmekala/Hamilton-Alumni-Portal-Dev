@@ -1,0 +1,160 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "FAQ",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"5ca715d9-c14c-4f4e-ade7-0700ad45534d\",\"columns\":[{\"UUID\":\"6c855017-1989-4567-bd4b-3ccaa55237a8\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : {
+                  "padding" : {
+                    "bottom" : "5px",
+                    "left" : "5px",
+                    "right" : "5px",
+                    "top" : "5px"
+                  }
+                }
+              },
+              "children" : [ {
+                "children" : [ {
+                  "attributes" : {
+                    "activeLineWeight" : "3px",
+                    "backgroundColor" : "rgba(255, 255, 255, 0)",
+                    "dropdownAccordionIconSize" : "xx-small",
+                    "dropdownActiveLineWeight" : "5px",
+                    "dropdownBackgroundActiveColor" : "rgba(0, 0, 0, 0)",
+                    "dropdownBackgroundColor" : "",
+                    "dropdownBackgroundHoverColor" : "",
+                    "dropdownBottomBorderRadius" : "5px",
+                    "dropdownFontSizeOverride" : "",
+                    "dropdownFontWeightOverride" : "300",
+                    "dropdownItemPadding" : "{\"top\":\"10px\",\"right\":\"10px\",\"bottom\":\"10px\",\"left\":\"10px\"}",
+                    "dropdownLineHeightOverride" : "",
+                    "dropdownMenuPadding" : "{\"top\":\"0px\",\"right\":\"0px\",\"bottom\":\"0px\",\"left\":\"0px\"}",
+                    "dropdownOverrideTextStyle" : true,
+                    "dropdownShowDividerLines" : false,
+                    "dropdownTextDecorationOverride" : "",
+                    "dropdownTextStyle" : "body-regular",
+                    "dropdownTopBorderRadius" : "5px",
+                    "fontSizeOverride" : "",
+                    "fontWeightOverride" : "",
+                    "iconSize" : "xx-small",
+                    "itemBackgroundActiveColor" : "rgba(255, 255, 255, 0)",
+                    "itemBackgroundHoverColor" : "rgba(255, 255, 255, 0)",
+                    "lineHeightOverride" : "",
+                    "menuHorizontalAlignment" : "left",
+                    "overrideTextStyle" : false,
+                    "showHomeLink" : false,
+                    "showParentMenuIcon" : true,
+                    "spaceBetweenMenuItems" : "30px",
+                    "textDecorationOverride" : "",
+                    "textStyle" : "body-regular"
+                  },
+                  "definition" : "community_navigation:customizableNavigationBarContainer",
+                  "id" : "9932f0e5-c36f-4c90-96a8-c8c8bb70b80b",
+                  "type" : "component"
+                } ],
+                "id" : "226cd4bd-95f6-4d92-9caf-efd05110a6e5",
+                "name" : "desktop",
+                "title" : "Desktop View",
+                "type" : "region"
+              }, {
+                "children" : [ {
+                  "attributes" : {
+                    "burgerIconHorizontalAlignment" : "right",
+                    "modalAccordionIconSize" : "xx-small",
+                    "modalActiveBackgroundColor" : "rgba(255, 255, 255, 0)",
+                    "modalActiveLineWeight" : "5px",
+                    "modalFontSizeOverride" : "",
+                    "modalFontWeightOverride" : "",
+                    "modalItemPadding" : "{\"top\":\"10px\",\"right\":\"10px\",\"bottom\":\"10px\",\"left\":\"15px\"}",
+                    "modalLineHeightOverride" : "",
+                    "modalMenuPadding" : "{\"top\":\"0px\",\"right\":\"0px\",\"bottom\":\"0px\",\"left\":\"0px\"}",
+                    "modalOverrideTextStyle" : false,
+                    "modalShowDividerLines" : true,
+                    "modalSubmenuFontSizeOverride" : "",
+                    "modalSubmenuFontWeightOverride" : "300",
+                    "modalSubmenuLineHeightOverride" : "",
+                    "modalSubmenuOverrideTextStyle" : true,
+                    "modalSubmenuTextDecorationOverride" : "",
+                    "modalSubmenuTextStyle" : "body-regular",
+                    "modalTextDecorationOverride" : "",
+                    "modalTextStyle" : "body-regular",
+                    "showHomeLink" : false
+                  },
+                  "definition" : "community_navigation:customizableNavigationHamburgerMenuContainer",
+                  "id" : "a64de921-873d-491f-b35a-d0ca4e92d127",
+                  "type" : "component"
+                } ],
+                "id" : "205d189e-bf87-43fb-9a7c-d267d282e425",
+                "name" : "mobile",
+                "title" : "Mobile View",
+                "type" : "region"
+              } ],
+              "definition" : "community_navigation:customizableNavigationMenu",
+              "id" : "910870a2-7583-4a36-8f53-3326cac429b5",
+              "type" : "component"
+            }, {
+              "attributes" : {
+                "imageInfos" : "",
+                "richTextValue" : "<div class=\"hq-faq-wrap\">\n\n  <h1 class=\"page-title\">FAQs</h1>\n\n  <div class=\"ck-container\">\n\n    <div class=\"top-image\">\n      <img alt=\"\" src=\"https://d1ctk4ronrg3qz.cloudfront.net/cluster-landing-page%2FND5pbpcUQgKD3fb9DcUk_PG-faq-Landing-Page-Top-Image.jpg\">\n    </div>\n\n    <div class=\"row\">\n\n      <!-- LEFT COLUMN -->\n      <section class=\"col-md-6\">\n\n        <div class=\"page-tags\">\n          <h3>Is this different from the Alumni Directory, My Hamilton, and My Hamilton Connect?</h3>\n          <p>Hamilton Quad is a full featured directory and engagement platform, designed to help network and engage with your community.</p>\n        </div>\n\n        <div class=\"page-tags\">\n          <h3>Do I need to sign up if I already have a Hamilton Account?</h3>\n          <p>You already have an active account. All you need to do is login with your Hamilton single-sign-on credentials and you'll be able to take advantage of everything the HQ has to offer.</p>\n        </div>\n\n        <div class=\"page-tags\">\n          <h3>What steps do I need to take to activate/register an account if I don't have Hamilton credentials?</h3>\n          <p>To request an account, please contact <a href=\"mailto:infoserv@hamilton.edu\">infoserv@hamilton.edu</a> and include your name, email and relationship to the College.</p>\n        </div>\n\n      </section>\n\n      <!-- RIGHT COLUMN -->\n      <section class=\"col-md-6\">\n\n        <a href=\"#\" class=\"hub-cta-button\">JOIN TODAY</a>\n\n        <div class=\"page-tags\">\n          <h3>I can't log in using My Hamilton credentials. Help.</h3>\n          <p class=\"subhead upper\">Alumni</p>\n          <p>Please visit the <a href=\"#\">Forgotten Password</a> page if you have forgotten your username or password.</p>\n        </div>\n\n        <div class=\"page-tags\">\n          <p class=\"subhead\">GUESTS, PARENTS, AND TRUSTEES</p>\n          <p><strong>(who did not graduate from Hamilton)</strong><br>\n          Please visit the Guest Account <a href=\"#\">Forgotten Password</a> page to request a temporary password that allows you to reset your password.</p>\n        </div>\n\n        <div class=\"page-tags\">\n          <p class=\"subhead upper\">Students</p>\n          <p>Students already enrolled in <a href=\"#\">Hamilton Password Manager</a> should visit <a href=\"#\">password.hamilton.edu</a>. Otherwise, email the HelpDesk or call 315-859-4181.</p>\n        </div>\n\n      </section>\n\n    </div>\n  </div>\n</div>"
+              },
+              "definition" : "community_builder:htmlEditor",
+              "id" : "691576fa-34a7-4537-9d8b-ac85250193f9",
+              "type" : "component"
+            } ],
+            "id" : "6c855017-1989-4567-bd4b-3ccaa55237a8",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "5ca715d9-c14c-4f4e-ade7-0700ad45534d",
+          "type" : "component"
+        } ],
+        "id" : "d24c9d8a-04f6-4db8-9036-22f97c0b9936",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "pageTitle" : "FAQ",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "65ee7886-6592-488e-870b-064ee9531e33",
+          "type" : "component"
+        } ],
+        "id" : "66d9b280-509a-429c-8cf3-d0e41a2af8b3",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "77c03620-7935-4de9-bbba-ffedcfac221d",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-faq"
+  },
+  "urlName" : "faq"
+}

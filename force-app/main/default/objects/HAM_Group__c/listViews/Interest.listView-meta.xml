@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Interest</fullName>
+    <columns>NAME</columns>
+    <columns>About__c</columns>
+    <columns>Active_Member_Count__c</columns>
+    <columns>Banner_Image_URL__c</columns>
+    <columns>Category__c</columns>
+    <columns>is_Active__c</columns>
+    <columns>Visibility__c</columns>
+    <columns>What_We_Offer__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Category__c</field>
+        <operation>equals</operation>
+        <value>Interests</value>
+    </filters>
+    <label>Interest</label>
+</ListView>

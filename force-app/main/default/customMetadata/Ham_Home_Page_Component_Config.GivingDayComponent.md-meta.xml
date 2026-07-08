@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>GivingDayComponent</label>
+    <protected>false</protected>
+    <values>
+        <field>CMP_Key__c</field>
+        <value xsi:type="xsd:string">GivingDayComponent</value>
+    </values>
+    <values>
+        <field>CMP_Type__c</field>
+        <value xsi:type="xsd:string">GivingDay</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Max_Records__c</field>
+        <value xsi:type="xsd:double">1.0</value>
+    </values>
+    <values>
+        <field>Sort_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Source_Object__c</field>
+        <value xsi:type="xsd:string">Campaign</value>
+    </values>
+    <values>
+        <field>WHERE_Clause__c</field>
+        <value xsi:type="xsd:string">EndDate &gt;= TODAY AND StartDate &lt;= TODAY  AND IsActive = true AND Name = &apos;Giving Day Campaign 2026&apos;</value>
+    </values>
+</CustomMetadata>

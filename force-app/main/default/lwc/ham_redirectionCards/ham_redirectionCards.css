@@ -1,0 +1,158 @@
+/* ── Section wrapper ───────────────────────────────────── */
+.redir-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 25px 8px 25px;
+    box-sizing: border-box;
+    width: 100%;
+    /* Card width = (section - 2 arrows - 2 arrow-gaps - 3 inter-card gaps) / 4 */
+    --card-width: calc((100% - 96px - 48px) / 4);
+}
+
+/* ── Scrollable track ───────────────────────────────────── */
+.card-track-wrapper {
+    flex: 1;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.card-track-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.card-track {
+    display: flex;
+    gap: 16px;
+}
+
+/* ── Individual card ───────────────────────────────────── */
+.redir-card {
+    flex: 0 0 var(--card-width);
+    height: 190px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.redir-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+/* ── Placeholder color backgrounds (replace with images when client provides them) ── */
+.card-bg-1 { background: linear-gradient(150deg, #002F86 0%, #1a3a6b 100%); }
+.card-bg-2 { background: linear-gradient(150deg, #003366 0%, #0e4d80 100%); }
+.card-bg-3 { background: linear-gradient(150deg, #0e5680 0%, #0a3d5e 100%); }
+.card-bg-4 { background: linear-gradient(150deg, #1a5276 0%, #154360 100%); }
+.card-bg-5 { background: linear-gradient(150deg, #145a32 0%, #0d3d28 100%); }
+.card-bg-6 { background: linear-gradient(150deg, #4a235a 0%, #2d1a3e 100%); }
+.card-bg-7 { background: linear-gradient(150deg, #6b2d1a 0%, #4a1f0d 100%); }
+
+/* ── Text overlay ───────────────────────────────────── */
+.card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 14px 16px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 100%);
+}
+
+.card-explore {
+    margin: 0 0 3px 0;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-family: 'Mallory-main', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    font-family: 'Mallory-main', sans-serif;
+    line-height: 1.25;
+}
+
+/* ── Arrow buttons ───────────────────────────────────── */
+.arrow-btn {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid #E0E0E0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.2s ease, box-shadow 0.2s ease;
+    padding: 0;
+}
+
+.arrow-btn:hover:not(.arrow-disabled) {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.arrow-btn.arrow-disabled {
+    opacity: 0.3;
+    cursor: default;
+    pointer-events: none;
+}
+
+.arrow-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+/* ── Kirkland override ───────────────────────────────── */
+.kirkland-override .card-bg-1 { background: linear-gradient(150deg, #166837 0%, #065124 100%); }
+
+/* ── Mobile: hide arrows, natural touch scroll ───────── */
+
+
+@media  (min-width: 1600px) {
+    .redir-card {
+    height: 450px !important;
+}
+}
+@media  (min-width: 2500px) {
+    .redir-card {
+    height: 650px !important;
+}
+}
+
+@media (max-width: 768px) {
+    .redir-card {
+        height: 150px;
+    }
+}
+@media (max-width: 1023px) {
+    .redir-section {
+        padding: 0 16px 8px 16px;
+        gap: 0;
+        --card-width: 70vw;
+    }
+    .redir-card {
+        height: 290px;
+    }
+
+    .arrow-btn {
+        display: none;
+    }
+
+
+    .card-title {
+        font-size: 0.9rem;
+    }
+}

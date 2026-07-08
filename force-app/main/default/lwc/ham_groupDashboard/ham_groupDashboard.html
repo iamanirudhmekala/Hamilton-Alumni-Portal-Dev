@@ -1,0 +1,419 @@
+<template>
+    <div class={dashboardRootClass}>
+
+        <!-- Loading -->
+        <template if:true={isLoading}>
+            <div class="spinner-container">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:true={group}>
+
+            <!-- Banner -->
+            <div class="group-banner">
+                <template if:true={group.bannerUrl}>
+                    <img src={group.bannerUrl} alt={group.name} class="banner-img" />
+                </template>
+                <template if:false={group.bannerUrl}>
+                    <div class="banner-fallback"></div>
+                </template>
+            </div>
+
+            <!-- Group Header -->
+            <div class="group-header slds-p-around_medium">
+                <!-- Back Button at the very top -->
+                <div class="header-top-row slds-m-bottom_small">
+                    <button class="btn-back" onclick={handleBackAction}>&#8592; Back</button>
+                </div>
+
+                <!-- Group Name (left) and Member Count (far right) -->
+                <div class="header-middle-row slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                    <h1 class="group-name">{group.name}</h1>
+                    <span class="member-count">
+                        <lightning-icon icon-name="utility:groups" size="x-small" class="meta-icon"></lightning-icon>
+                        {group.memberCount} members
+                    </span>
+                </div>
+
+                <!-- Category badge below group name -->
+                <div class="header-category-row slds-m-vertical_small">
+                    <template if:true={group.category}>
+                        <span class="badge-category">{group.category}</span>
+                    </template>
+                </div>
+
+                <!-- Action buttons side-by-side below category badge -->
+                <div class="header-bottom-row slds-grid slds-grid_vertical-align-center">
+                    <template if:false={isBlockedFromGroup}>
+                        <button class={membershipBtnClass} onclick={handleMembershipAction} disabled={isMembershipLoading}>
+                            {membershipBtnLabel}
+                        </button>
+                    </template>
+                    <template if:true={isMember}>
+                        <div class="notification-dropdown-container slds-m-left_small">
+                            <button class="btn-notification" onclick={toggleNotificationDropdown} title="Notification Settings">
+                                <lightning-icon icon-name="utility:notification" size="x-small" class="bell-icon"></lightning-icon>
+                                <span class="caret">&#9662;</span>
+                            </button>
+                            <template if:true={isNotificationDropdownOpen}>
+                                <div class="notification-dropdown">
+                                    <h4 class="notif-dropdown-title">Notification Settings</h4>
+                                    <div class="notif-option">
+                                        <div class="notif-info">
+                                            <span class="notif-label">Send me Notifications</span>
+                                            <span class="notif-desc">Receive notifications from this group</span>
+                                        </div>
+                                        <lightning-input type="toggle" variant="label-hidden" 
+                                            checked={receiveNotifications} onchange={handleNotificationToggle}
+                                            data-field="Receive_Notifications__c">
+                                        </lightning-input>
+                                    </div>
+                                    <div class="notif-option">
+                                        <div class="notif-info">
+                                            <span class="notif-label">Tagged Notifications</span>
+                                            <span class="notif-desc">When you're tagged in a post or comment</span>
+                                        </div>
+                                        <lightning-input type="toggle" variant="label-hidden"
+                                            checked={notifyOnTagged} onchange={handleNotificationToggle}
+                                            data-field="Notify_on_Tagged__c" disabled={isReceiveNotificationsDisabled}>
+                                        </lightning-input>
+                                    </div>
+                                    <div class="notif-option">
+                                        <div class="notif-info">
+                                            <span class="notif-label">Amplified post Notifications</span>
+                                            <span class="notif-desc">When a post is amplified in this group</span>
+                                        </div>
+                                        <lightning-input type="toggle" variant="label-hidden"
+                                            checked={notifyOnAmplified} onchange={handleNotificationToggle}
+                                            data-field="Notify_on_Amplified__c" disabled={isReceiveNotificationsDisabled}>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Body: Main + Sidebar -->
+            <div class="group-body slds-grid slds-wrap slds-gutters slds-p-horizontal_medium slds-p-bottom_large">
+
+                <!-- ── Main Column ──────────────────────────────────────── -->
+                <div class={mainColumnClass} style="box-sizing: border-box;">
+
+                    <template if:true={isDashboardTab}>
+                        <!-- Dashboard Landing View -->
+                        <div class="dashboard-main-view">
+                            
+                            <!-- About -->
+                            <template if:true={group.about}>
+                                <div class="about-block slds-m-bottom_medium info-card">
+                                    <h3 class="section-heading">About This Group</h3>
+                                    <lightning-formatted-rich-text class="section-body" value={group.about}></lightning-formatted-rich-text>
+                                </div>
+                            </template>
+
+                            <!-- What We Offer & Guidelines -->
+                            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                                <template if:true={group.whatWeOffer}>
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-m-bottom_small guidelines-grid-col">
+                                        <div class="info-card">
+                                            <h4 class="info-card-title">What We Offer:</h4>
+                                            <lightning-formatted-rich-text class="info-card-body" value={group.whatWeOffer}></lightning-formatted-rich-text>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template if:true={group.communityGuidelines}>
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-m-bottom_small guidelines-grid-col">
+                                        <div class="info-card">
+                                            <h4 class="info-card-title">Community Guidelines:</h4>
+                                            <lightning-formatted-rich-text class="info-card-body" value={group.communityGuidelines}></lightning-formatted-rich-text>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Discussion preview -->
+                            <div class="info-card slds-m-bottom_medium">
+                                <div class="section-header-row slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                    <h3 class="section-heading">Discussion</h3>
+                                    <button class="icon-link-btn" onclick={handleGoToDiscussion} title="Full Feed">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
+                                            <path d="M15 3h6v6"></path>
+                                            <path d="M10 14L21 3"></path>
+                                            <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <template if:true={isMember}>
+                                    <c-ham_group-post-composer
+                                       group-id={groupId}
+                                       user-contact-id={userContactId}
+                                       hide-header="true"
+                                       is-override={isOverride}
+                                       onpostcreated={handlePostCreated}>
+                                    </c-ham_group-post-composer>
+                                </template>
+                                <c-ham_group-feed
+                                   data-id="groupFeed"
+                                   group-id={groupId}
+                                   user-contact-id={userContactId}
+                                   is-admin={isAdmin}
+                                   is-override={isOverride}
+                                   limit-count="5">
+                                </c-ham_group-feed>
+                            </div>
+
+                            <!-- Resources preview -->
+                            <div class="info-card slds-m-bottom_medium">
+                                <div class="section-header-row slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                    <h3 class="section-heading">Resources</h3>
+                                    <button class="icon-link-btn" onclick={handleGoToResources} title="All Resources">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
+                                            <path d="M15 3h6v6"></path>
+                                            <path d="M10 14L21 3"></path>
+                                            <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <c-ham_group-resources
+                                    group-id={groupId}
+                                    contact-id={userContactId}
+                                    is-admin={isAdmin}
+                                    is-override={isOverride}
+                                    member-count={group.memberCount}
+                                    limit-count="3">
+                                </c-ham_group-resources>
+                            </div>
+
+                        </div>
+                    </template>
+
+                    <!-- Full-page Subviews -->
+                    <template if:true={isDiscussionTab}>
+                        <div class="full-view-panel">
+                            <template if:true={isMember}>
+                                <c-ham_group-post-composer
+                                   group-id={groupId}
+                                   user-contact-id={userContactId}
+                                   is-override={isOverride}
+                                   isdiscussiontab ="true"
+                                   onpostcreated={handlePostCreated}>
+                                </c-ham_group-post-composer>
+                            </template>
+                            <c-ham_group-feed
+                               data-id="groupFeedFull"
+                               group-id={groupId}
+                               user-contact-id={userContactId}
+                               show-filter="true"
+                               isdiscussiontab="true"
+                               is-admin={isAdmin}
+                               is-override={isOverride}>
+                            </c-ham_group-feed>
+                        </div>
+                    </template>
+
+                    <template if:true={isMembersTab}>
+                        <div class="full-view-panel">
+                            <c-ham_group-members
+                                group-id={groupId}
+                                contact-id={userContactId}
+                                is-override={isOverride}>
+                            </c-ham_group-members>
+                        </div>
+                    </template>
+
+                    <template if:true={isResourcesTab}>
+                        <div class="full-view-panel">
+                            <c-ham_group-resources
+                                group-id={groupId}
+                                contact-id={userContactId}
+                                is-admin={isAdmin}
+                                is-override={isOverride}
+                                member-count={group.memberCount}>
+                            </c-ham_group-resources>
+                        </div>
+                    </template>
+
+                    <template if:true={isAdminTab}>
+                        <div class="full-view-panel">
+                            <c-ham_group-admin
+                                group-id={groupId}
+                                contact-id={userContactId}
+                                is-override={isOverride}>
+                            </c-ham_group-admin>
+                        </div>
+                    </template>
+
+                </div>
+
+                <!-- ── Right Column (Sidebar, only visible on dashboard view) ──── -->
+                <template if:true={isDashboardTab}>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 group-sidebar" style="box-sizing: border-box;">
+
+                        <!-- Group Admin -->
+                        <div class="sidebar-card">
+                            <h3 class="sidebar-heading">Group Admin</h3>
+                            <template if:true={group.admin}>
+                                <div class="admin-card">
+                                    <template if:true={group.admin.photoUrl}>
+                                        <img src={group.admin.photoUrl} alt={group.admin.name} class="admin-avatar" />
+                                    </template>
+                                    <template if:false={group.admin.photoUrl}>
+                                        <div class="admin-avatar admin-avatar-fallback">
+                                            <lightning-icon icon-name="standard:person_account" size="small"></lightning-icon>
+                                        </div>
+                                    </template>
+                                    <div class="admin-info">
+                                        <p class="admin-name">{group.admin.name}</p>
+                                        <p class="admin-title">{adminJobTitle}</p>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Members Preview -->
+                        <div class="sidebar-card">
+                            <div class="sidebar-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                <h3 class="sidebar-heading">Members</h3>
+                                <button class="icon-link-btn" onclick={handleSeeMoreMembers} title="All Members">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
+                                        <path d="M15 3h6v6"></path>
+                                        <path d="M10 14L21 3"></path>
+                                        <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="member-preview-avatars">
+                                <template for:each={group.memberPreviews} for:item="preview">
+                                    <template if:true={preview.photoUrl}>
+                                        <img key={preview.name} src={preview.photoUrl}
+                                             alt={preview.name} class="preview-avatar" title={preview.name} />
+                                    </template>
+                                    <template if:false={preview.photoUrl}>
+                                        <div key={preview.name} class="preview-avatar preview-avatar-fallback" title={preview.name}>
+                                            <lightning-icon icon-name="standard:person_account" size="xx-small"></lightning-icon>
+                                        </div>
+                                    </template>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Content Moderation Preview (Admins only) -->
+                        <template if:true={isAdmin}>
+                            <div class="sidebar-card">
+                                <div class="sidebar-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                    <h3 class="sidebar-heading">Content Moderation</h3>
+                                    <button class="icon-link-btn" onclick={handleGoToAdmin} title="Full Moderation">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
+                                            <path d="M15 3h6v6"></path>
+                                            <path d="M10 14L21 3"></path>
+                                            <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <c-ham_group-admin
+                                    group-id={groupId}
+                                    contact-id={userContactId}
+                                    is-preview="true"
+                                    is-override={isOverride}>
+                                </c-ham_group-admin>
+                            </div>
+                        </template>
+
+                    </div>
+                </template>
+
+            </div>
+        </template>
+
+        <!-- Leave Group Confirmation -->
+        <template if:true={showLeaveModal}>
+            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open leave-modal">
+                <div class="slds-modal__container leave-modal-container">
+                    <header class="slds-modal__header leave-modal-header">
+                        <p class="leave-modal-eyebrow">Leave</p>
+                        <h2 class="leave-modal-title">{group.name}</h2>
+                        <p class="leave-modal-subtitle">Are you sure you want to leave this group?</p>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium leave-modal-content">
+                        <p class="leave-reasons-label">Why are you leaving? <span class="leave-required-mark">*</span></p>
+                        <div class="leave-reasons-list">
+                            <template for:each={leaveReasonOptions} for:item="reason">
+                                <label key={reason.value} class="leave-reason-option">
+                                    <input type="checkbox"
+                                           data-value={reason.value}
+                                           checked={reason.checked}
+                                           onchange={handleLeaveReasonChange} />
+                                    <span class="leave-reason-text">{reason.label}</span>
+                                </label>
+                            </template>
+                        </div>
+                        <template if:true={isOtherReasonSelected}>
+                            <textarea class="leave-other-textarea"
+                                      placeholder="Please tell us more..."
+                                      maxlength="255"
+                                      value={otherReasonText}
+                                      onchange={handleOtherReasonChange}
+                                      oninput={handleOtherReasonChange}></textarea>
+                        </template>
+                    </div>
+                    <footer class="slds-modal__footer leave-modal-footer">
+                        <button class="btn-leave-cancel" onclick={closeLeaveModal} disabled={isMembershipLoading}>Cancel</button>
+                        <button class="btn-leave-confirm" onclick={confirmLeaveGroup} disabled={isLeaveConfirmDisabled}>Leave Group</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <!-- Join Group Request -->
+        <template if:true={showJoinModal}>
+            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open join-modal">
+                <div class="slds-modal__container join-modal-container">
+                    <header class="slds-modal__header join-modal-header">
+                        <p class="join-modal-eyebrow">Request to join</p>
+                        <h2 class="join-modal-title">{group.name}</h2>
+                        <p class="join-modal-subtitle">Please confirm that you would like to submit a request to join this group.</p>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium join-modal-content">
+                        <textarea class="join-message-textarea"
+                                  placeholder="Type your message here..."
+                                  maxlength="500"
+                                  onchange={handleJoinMessageChange}
+                                  oninput={handleJoinMessageChange}></textarea>
+                    </div>
+                    <footer class="slds-modal__footer join-modal-footer">
+                        <button class="btn-join-cancel" onclick={closeJoinModal} disabled={isMembershipLoading}>Cancel</button>
+                        <button class="btn-join-send" onclick={confirmJoinRequest} disabled={isMembershipLoading}>Send Request</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <!-- Join Group Request: Confirmation -->
+        <template if:true={showJoinConfirmation}>
+            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open join-confirm-modal">
+                <div class="slds-modal__container join-confirm-container">
+                    <div class="slds-modal__content slds-p-around_medium join-confirm-content">
+                        <p class="join-confirm-text">Your request to join this group has been sent. You&rsquo;ll be notified once it&rsquo;s approved.</p>
+                    </div>
+                    <footer class="slds-modal__footer join-confirm-footer">
+                        <button class="btn-join-confirm-ok" onclick={closeJoinConfirmation}>OK</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <!-- Error -->
+        <template if:true={hasError}>
+            <div class="error-panel slds-p-around_medium">
+                <p>Could not load group. Please try again.</p>
+            </div>
+        </template>
+
+    </div>
+</template>

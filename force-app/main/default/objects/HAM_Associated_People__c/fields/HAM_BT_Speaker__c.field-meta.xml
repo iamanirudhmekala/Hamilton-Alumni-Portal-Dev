@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_BT_Speaker__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Lookup to the originating Blackthorn speaker record. Null on sponsor records.</description>
+    <inlineHelpText>Click to navigate to the original Blackthorn speaker record.</inlineHelpText>
+    <label>BT Speaker</label>
+    <referenceTo>conference360__Speaker__c</referenceTo>
+    <relationshipLabel>Associated People</relationshipLabel>
+    <relationshipName>Associated_People</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Organization__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Identifies the organization associated with this record.</description>
+    <inlineHelpText>Select the Account representing the organization related to this receipt or transaction. Use this field when the gift or receipt is associated with an organization rather than an individual constituent.</inlineHelpText>
+    <label>Organization</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Receipts</relationshipLabel>
+    <relationshipName>Receipts</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

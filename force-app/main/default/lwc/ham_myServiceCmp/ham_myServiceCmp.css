@@ -1,0 +1,239 @@
+/* new addition - service */
+
+.card-service {
+  /* background-color: #e9f4fd; */
+  background-color: #F4F4F4;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  /* min-width: 725px; */
+  height: 100%;
+}
+
+.service-wrapper{
+  height: 100%;
+}
+
+.card-service.collapsed-service{
+  background-color: transparent !important;
+}
+
+.my-service-section{
+  display: flex;
+  justify-content: space-between;
+}
+
+.my-service-section-first-child{
+  width: 100%;
+}
+
+.my-services-title-and-btn{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.card-header-service {
+  background-color: #002f87;
+  color: white;
+  padding: 0.75rem 1rem;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+
+  font-family: 'Mallory', sans-serif;
+font-weight: 500;
+font-size: 20px;
+}
+
+.card-body-service {
+  padding: 1rem;
+}
+
+ul {
+  margin: 0 0 1rem 0;
+  padding-left: 1.25rem;
+  list-style-type: disc;
+}
+
+.section-label {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+  color: #231F20;
+}
+
+.accordian-text-new{
+  color: #231F20;
+  font-weight: 400;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.label-line {
+  margin-top: 1rem;
+}
+
+.collapsed-service .card-header-service {
+  background-color: #F4F4F4;
+  color: #002F85;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  font-family: 'Mallory', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.info-group {
+    margin-bottom: 1rem;
+}
+
+.info-spacing {
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+    font-size: 14px;
+}
+
+.clickable-contact {
+    background-color: #f6f6f6;
+    padding: 8px;
+    padding-left: 0px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    color: #231F20;
+    font-size: 16px;
+}
+.clickable-contact:hover {
+    background-color: #002F86;
+    color:white;
+    padding-left: 8px;
+}
+
+.relative-for-popup{
+  position: relative;
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+  /* width: max-content; */
+}
+
+.popup-card {
+  position: absolute;
+  background-color: white;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  z-index: 10;
+  min-width: 250px;
+  font-size: 14px;
+  top: -20px;
+  left: 105%;
+}
+
+.slds-popover {
+  background-color: white;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  min-width: 250px;
+  position: relative;
+  z-index: 10;
+}
+
+.popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  background: transparent;
+}
+
+.popup-close {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #002F86;
+}
+
+.popup-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.popup-icon {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.popup-item a, .slds-popover__body a{
+  color: #002F86;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.view-activity{
+  background-color: #002F86;
+  color:white;
+  font-size: 14px;
+  font-weight:500;
+  padding:5px 10px;
+  border:none;
+  border-radius:4px;
+  margin-top:15px;
+  width: 210px;
+}
+
+.view-buttom{
+  background-color: #002F86;
+  color:white;
+  font-size: 14px;
+  font-weight:500;
+  padding:5px 10px;
+  border:none;
+  border-radius:4px;
+  width: 210px;
+}
+
+@media screen and (max-width: 1024px) {
+  .card-service {
+    /* min-width: 400px; */
+  }
+
+  .info-group {
+        text-align: left;
+        margin-bottom: 1.5rem;
+    }
+
+    .info-group .relative-for-popup p {
+      margin-bottom: 0.5rem;
+  }
+
+    .info-group p {
+        margin-bottom: 0.5rem;
+    }
+
+    .info-group .relative-for-popup{
+          flex-direction: column !important;
+          align-items: flex-start !important;
+    }
+}
+
+/* ── Kirkland Override ───────────────────────────────────────── */
+.kirkland-override .card-header-service { background-color: #166837 !important; }
+.kirkland-override .collapsed-service .card-header-service { color: #166837 !important; background-color: #F4F4F4 !important; }
+.kirkland-override .clickable-contact:hover { background-color: #166837 !important; }
+.kirkland-override .popup-close { color: #166837 !important; }
+.kirkland-override .popup-item a { color: #166837 !important; }
+.kirkland-override .slds-popover__body a { color: #166837 !important; }
+.kirkland-override .view-activity { background-color: #166837 !important; }
+.kirkland-override .view-buttom { background-color: #166837 !important; }

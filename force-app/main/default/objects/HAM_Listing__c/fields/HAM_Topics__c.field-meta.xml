@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Topics__c</fullName>
+    <label>HAM Topics</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>College News</fullName>
+                <default>false</default>
+                <label>College News</label>
+            </value>
+            <value>
+                <fullName>Student Experience</fullName>
+                <default>false</default>
+                <label>Student Experience</label>
+            </value>
+            <value>
+                <fullName>Student Research</fullName>
+                <default>false</default>
+                <label>Student Research</label>
+            </value>
+            <value>
+                <fullName>Student Internships</fullName>
+                <default>false</default>
+                <label>Student Internships</label>
+            </value>
+            <value>
+                <fullName>Outcomes</fullName>
+                <default>false</default>
+                <label>Outcomes</label>
+            </value>
+            <value>
+                <fullName>Alumni</fullName>
+                <default>false</default>
+                <label>Alumni</label>
+            </value>
+            <value>
+                <fullName>Faculty</fullName>
+                <default>false</default>
+                <label>Faculty</label>
+            </value>
+            <value>
+                <fullName>Staff</fullName>
+                <default>false</default>
+                <label>Staff</label>
+            </value>
+            <value>
+                <fullName>Students</fullName>
+                <default>false</default>
+                <label>Students</label>
+            </value>
+            <value>
+                <fullName>Hamilton In the News</fullName>
+                <default>false</default>
+                <label>Hamilton In the News</label>
+            </value>
+            <value>
+                <fullName>Athletics</fullName>
+                <default>false</default>
+                <label>Athletics</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

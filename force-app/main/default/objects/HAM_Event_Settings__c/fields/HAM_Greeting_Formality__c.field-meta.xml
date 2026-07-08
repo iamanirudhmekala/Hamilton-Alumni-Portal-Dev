@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Greeting_Formality__c</fullName>
+    <description>How attendee names are displayed in greetings.</description>
+    <inlineHelpText>Controls name formatting in greetings: Formal (Mr./Ms. Last), Informal First (First), or Informal Full (First Last).</inlineHelpText>
+    <label>Greeting Name Formality</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Formal</fullName>
+                <default>false</default>
+                <label>Formal</label>
+            </value>
+            <value>
+                <fullName>Informal First</fullName>
+                <default>false</default>
+                <label>Informal First</label>
+            </value>
+            <value>
+                <fullName>Informal Full</fullName>
+                <default>false</default>
+                <label>Informal Full</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

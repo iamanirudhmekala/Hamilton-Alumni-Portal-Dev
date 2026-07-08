@@ -1,0 +1,299 @@
+/* Thank You Page Styles */
+.single-page-form {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    padding: 2rem 3rem;
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+}
+
+.form-section-compact {
+    padding-bottom: 2rem;
+}
+
+/* Hero Section */
+.thank-you-hero {
+    margin: 0 0 1.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.thank-you-hero-image-simple {
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(135deg, #00205b 0%, #003571 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    zoom: 1.16;
+    object-fit: cover;
+    object-position: center;
+}
+
+.thank-you-hero-placeholder {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Amount Card */
+.thank-you-amount-card {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 3px solid #0056b3;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+    margin-bottom: 1.5rem;
+}
+
+.thank-you-amount-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #00205b;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.lucide-heart {
+    color: rgb(0, 32, 91);
+}
+
+.thank-you-amount-value {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #0056b3;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.thank-you-amount-type {
+    font-size: 1.125rem;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+.thank-you-gift-message {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px solid rgba(0, 86, 179, 0.2);
+    font-size: 1rem;
+    color: #00205b;
+    font-weight: 500;
+    font-style: italic;
+}
+
+/* Designations */
+.thank-you-designations {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.thank-you-section-title {
+    margin: 0 0 1rem 0;
+    color: #00205b;
+    font-size: 1.125rem;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.thank-you-designation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.thank-you-designation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.875rem 1rem;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.thank-you-designation-name {
+    color: #00205b;
+    font-weight: 600;
+}
+
+.thank-you-designation-amount {
+    font-weight: 700;
+    color: #0056b3;
+    font-size: 1.125rem;
+}
+
+/* Details */
+.thank-you-details {
+    margin-bottom: 2rem;
+}
+
+.thank-you-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.thank-you-detail-item {
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.thank-you-detail-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.thank-you-detail-label {
+    display: block;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+}
+
+.thank-you-detail-value {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #00205b;
+}
+
+/* Email Notice */
+.thank-you-email-notice {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    border: 2px solid #10b981;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.thank-you-email-icon {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #10b981;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.thank-you-email-notice p {
+    margin: 0;
+    color: #065f46;
+    font-size: 0.9375rem;
+}
+
+.thank-you-email-notice strong {
+    font-weight: 600;
+}
+
+/* Actions */
+.thank-you-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.btn {
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #00205b 0%, #003571 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 32, 91, 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 12px rgba(0, 32, 91, 0.3);
+}
+
+.btn-outline {
+    background: white;
+    color: #00205b;
+    border: 2px solid #00205b;
+}
+
+.btn-outline:hover {
+    background: #f9fafb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 32, 91, 0.1);
+}
+
+.btn-large {
+    padding: 1.125rem 2rem;
+    font-size: 1.0625rem;
+}
+
+/* Impact Message */
+.thank-you-impact {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 2px solid #f59e0b;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.thank-you-impact p {
+    margin: 0;
+    color: #78350f;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .single-page-form {
+        padding: 1.5rem;
+    }
+    
+    .thank-you-amount-value {
+        font-size: 2.5rem;
+    }
+    
+    .thank-you-details-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .thank-you-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+.download-receipt-blocked {
+    opacity: 0.4;
+    cursor: not-allowed;
+}

@@ -1,0 +1,61 @@
+<template>
+    <template if:true={displayToast}>
+        <c-ham-giving-toast-util toast-title={toastTitle} toast-message={toastMessage}></c-ham-giving-toast-util>
+    </template>
+
+    <template lwc:if={hasPledges}>
+
+        <div class="pledge-list">
+            <template for:each={pledges} for:item="pledge">
+                <label key={pledge.id} class={pledge.cssClass}>
+                    <lightning-input type="checkbox" variant="label-hidden" checked={pledge.isSelected} value={pledge.id}
+                        onchange={handlePledgeSelection} data-id={pledge.id}>
+                    </lightning-input>
+                    <div class="pledge-content">
+                        <div class="pledge-header">
+                            <div class="pledge-designation">{pledge.designationName}</div>
+                            <div class="pledge-date">Pledged: {pledge.pledgeDate}</div>
+                        </div>
+                        <div class="pledge-details">
+                            <div class="pledge-detail-row">
+                                <span class="pledge-label">Total Pledge:</span>
+                                <span class="pledge-value">${pledge.formattedTotal}</span>
+                            </div>
+                            <div class="pledge-detail-row">
+                                <span class="pledge-label">Paid:</span>
+                                <span class="pledge-value">${pledge.formattedPaid}</span>
+                            </div>
+                            <div class="pledge-detail-row">
+                                <span class="pledge-label">Remaining:</span>
+                                <span class="pledge-value pledge-remaining">${pledge.formattedRemaining}</span>
+                            </div>
+                            <div class="pledge-detail-row">
+                                <span class="pledge-label">Pledge Amount:</span>
+                                <div class="custom-input-field">
+                                    <input type="number" id="wallet-name" value={pledge.amt} placeholder="Pledge Amount" data-id={pledge.id} oninput={handlePledgeAmountChange} min="1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </label>
+            </template>
+    
+            <template if:true={hasSelectedPledges}>
+                <div class="slds-var-m-top_medium">
+                    <div class="selected-amount-compact pledge-total-display">
+                        Total Suggested Payment: <strong>${formattedPledgeTotal}</strong>
+                        <template if:true={hasMultiplePledges}>
+                            <div class="pledge-count slds-var-p-top_small"> ({pledgeCount} pledges selected)</div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </template>
+    <template lwc:else>
+        <div class="no-search-result">
+            <p>No pledges found.</p>
+        </div>
+    </template>
+
+</template>

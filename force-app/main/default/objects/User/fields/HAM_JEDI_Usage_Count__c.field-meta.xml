@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_JEDI_Usage_Count__c</fullName>
+    <description>Counts the number of unique days user has accessed the JEDI page. This increases at most once per day when you visit JEDI.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Counts the number of unique days user has accessed the JEDI page. This increases at most once per day when you visit JEDI.</inlineHelpText>
+    <label>JEDI Usage Count</label>
+    <precision>10</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

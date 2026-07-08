@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Free__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates whether this session is available at no additional cost when included with the associated ticket type.</description>
+    <inlineHelpText>Check if this session is free of charge with the associated ticket.</inlineHelpText>
+    <label>Free</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

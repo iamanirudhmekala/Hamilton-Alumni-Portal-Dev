@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Event_Form__c</fullName>
+    <description>Master-detail relationship linking this form element to its parent form.</description>
+    <inlineHelpText>The form this element belongs to.</inlineHelpText>
+    <label>Event Form</label>
+    <referenceTo>HAM_Event_Form__c</referenceTo>
+    <relationshipLabel>Event Form Elements</relationshipLabel>
+    <relationshipName>Event_Form_Elements</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

@@ -1,0 +1,83 @@
+<template>
+    <div class={wrapperClass}>
+        <!-- Spinner Overlay -->
+        <template lwc:if={isLoading}>
+            <div class="spinner-overlay">
+                <div class="spinner-ring">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Blurred content when loading -->
+        <div class={contentClass}>
+            <div class={containerClass}>
+                <div class="header-row">
+                    <h2 class="title">{labels.heading}</h2>
+                    <!--div class="header-left">
+                        
+                        
+                    </@div-->
+                    <div class="points-badge">
+                        {labels.points} <span> {constituentScore} </span> ⭐
+                    </div>
+                </div>
+                <div class="sub-title">{labels.subHeading}</div>
+                <template lwc:if={trivia}>
+                    <!-- Question -->
+                    <p class="question">{trivia.Question__c}</p>
+
+                    <!-- Options -->
+                    <div class="options-grid">
+                        <template for:each={triviaOptions} for:item="triviaOption">
+                            <label key={triviaOption.Id} class={triviaOption.className}>
+                                <input type="radio" name="answer" value={triviaOption.Option__c}
+                                    onchange={handleOptionSelect} disabled={hasSubmitted} />
+                                <span class="option-label">{triviaOption.Display_Order__c}</span>
+                                <span class="option-text">{triviaOption.Option__c}</span>
+                            </label>
+                        </template>
+                    </div>
+
+                    <!-- Right, wrong messages or Submit Button -->
+                    <template lwc:if={hasSubmitted}>
+                        <template lwc:if={answeredCorrectly}>
+                            <h2 class="response-text">{labels.rightAnswer}</h2>
+                        </template>
+                        <template lwc:else>
+                            <h2 class="response-text">{labels.wrongAnswer}</h2>
+                        </template>
+                    </template>
+                    <template lwc:else>
+                        <button class="submit-btn" onclick={handleSubmit}>Submit</button>
+                    </template>
+                    <!--No Option selected and clicked submit-->
+                    <template lwc:if={noOptionSelected}>
+                        <br />
+                        <h2 class="response-text error-text">{labels.noOption}</h2>
+                    </template>
+                </template>
+                <!-- for some reason, when there is no trivia data, we just show an image -->
+                <template lwc:else>
+                    <div class="image-wrapper slds-var-m-bottom_small ">
+                        <img src={newTrivia} loading="lazy" class="img-border" />
+                    </div>
+                </template>
+            </div>
+        </div> <!-- end contentClass -->
+    </div> <!-- end trivia-wrapper -->
+
+    <!-- Toasts
+    <template lwc:if={showCustomToast}>
+        <c-ham_custom-toast-cmp
+            title={toastTitle}
+            message={toastMessage}
+            variant={toastVariant}
+            duration={toastDuration}
+            onclose={handleErrorClose}>
+        </c-ham_custom-toast-cmp>
+    </template> -->
+</template>

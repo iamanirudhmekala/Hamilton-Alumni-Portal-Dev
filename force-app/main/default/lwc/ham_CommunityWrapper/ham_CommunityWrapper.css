@@ -1,0 +1,189 @@
+/* ==========================================================================
+   OUTER CONTAINER
+   ========================================================================== */
+
+.community-wrapper {
+    margin-top: 40px;              /* keep vertical spacing only */
+    background-color: #F4F4F4;
+    border-radius: 28px;
+    padding: 12px 16px 16px 16px;
+}
+
+
+/* Gray container with rounded corners — matches directory module */
+.component-container-main {
+    background-color: #F4F4F4;
+    border-radius: 28px;
+    padding: 12px 16px 0 16px;
+}
+
+/* ==========================================================================
+   TAB ROW — tabs left, view toggle right
+   ========================================================================== */
+
+.tab-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+/* Tab strip */
+.component-container-tabset {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    overflow-x: auto;
+}
+
+/* Active tab — identical to directory module branding */
+.main-tab-active {
+    background-color: #002F86;
+    color: white;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    min-width: 160px;
+    text-align: center;
+    cursor: default;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+/* Inactive tab */
+.main-tab-inactive {
+    background-color: transparent;
+    color: #000;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 400;
+    min-width: 160px;
+    text-align: center;
+    cursor: pointer;
+    font-family: 'Mallory-main', sans-serif;
+}
+
+.main-tab-inactive:hover {
+    color: #002F86;
+}
+
+/* Blue separator line — connects active tab flush to content area */
+.main-tab-line {
+    background-color: #002F86;
+    height: 2px;
+    width: 100%;
+    margin-top: -1px;
+}
+
+/* ==========================================================================
+   CONTENT AREA
+   ========================================================================== */
+
+.community-content {
+    background-color: #ffffff;
+    border-radius: 0 0 20px 20px;
+    padding: 24px 20px;
+    min-height: 400px;
+}
+
+/* ==========================================================================
+   VIEW TOGGLE BUTTONS
+   ========================================================================== */
+
+.view-toggle {
+    display: flex;
+    height: max-content;
+    border: 2px solid #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2px;
+}
+
+.view-toggle button {
+    height: 40px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: width 0.25s ease, background-color 0.25s ease;
+    padding: 0 16px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.view-toggle button img {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* Active view button */
+.view-toggle .active {
+    width: 64px;
+    background: #002f86;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* White icons on active state */
+.view-toggle .active img {
+    filter: brightness(0) invert(1);
+}
+
+/* Check icon (smaller overlay) */
+.check-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    transform: scale(0.7);
+    transform-origin: center;
+    flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+    .view-toggle{
+        display: none;
+    }
+
+    .community-wrapper{
+    padding: 12px 20px 16px 20px;
+    background-color: #fff;
+}
+
+    .component-container-main {
+    background-color: #F4F4F4;
+    padding: 0px;
+}
+
+    .main-tab-active {
+    padding: 12px 0px;
+    min-width: unset;
+    width: 31%;
+}
+
+/* Inactive tab */
+.main-tab-inactive {
+    padding: 12px 0px;
+    min-width: unset;
+    width: 31%;
+}
+
+.component-container-tabset{
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.community-content {
+    background-color: #F4F4F4;
+    padding: 24px 0px;
+    margin-bottom: 100px;
+}
+
+}
+
+/* ── Kirkland Override ───────────────────────────────────────── */
+.kirkland-override .main-tab-active { background-color: #166837 !important; }
+.kirkland-override .main-tab-inactive:hover { color: #166837 !important; }
+.kirkland-override .main-tab-line { background-color: #166837 !important; }
+.kirkland-override .view-toggle .active { background: #166837 !important; }

@@ -1,0 +1,48 @@
+<template>
+    <!-- Header -->
+    <div class="slds-page-header" style="background-color: #0066cc;">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-standard-contact">
+                            <template if:true={isAlumni}>
+                                 <lightning-icon icon-name="standard:contact" size="small" alternative-text="Contact Icon"></lightning-icon>
+                            </template>
+                            <template if:false={isAlumni}>
+                                 <lightning-icon icon-name="standard:contact" size="small" alternative-text="Contact Icon"></lightning-icon>
+                            </template>
+                           
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span class="slds-page-header__title slds-truncate" style="color: white;"> 
+                                        
+                                        <template if:true={isAlumni}>
+                                            Jabba - Alumni/Parent Profile
+                                        </template>
+
+                                        <template if:false={isAlumni}>
+                                            Jabba - Employer Profile
+                                        </template>
+                                        
+                                    </span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-page-header__col-actions">
+                <lightning-button
+                    label="Share Feedback"
+                    variant="neutral"
+                    onclick={openFeedbackForm}>
+                </lightning-button>
+            </div>
+        </div>
+    </div>
+</template>

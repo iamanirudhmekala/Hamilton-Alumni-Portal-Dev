@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Question__c</fullName>
+    <description>The question text displayed to attendees on the event page.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Enter the FAQ question as it should appear to attendees (max 255 characters).</inlineHelpText>
+    <label>Question</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

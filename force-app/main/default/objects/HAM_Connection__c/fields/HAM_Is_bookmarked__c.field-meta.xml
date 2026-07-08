@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Is_bookmarked__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This Flag indicates someone has been bookmarked for future connections or interactions</description>
+    <inlineHelpText>This Flag indicates someone has been bookmarked for future connections or interactions</inlineHelpText>
+    <label>HAM Is bookmarked</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

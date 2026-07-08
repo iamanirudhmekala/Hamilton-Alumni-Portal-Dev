@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Get_Constituent_IDs</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>ucinn_ascendv2__PRM__c</columns>
+    <columns>CONTACT.PHONE1</columns>
+    <columns>CONTACT.EMAIL</columns>
+    <columns>CONTACT.TITLE</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <filterScope>Everything</filterScope>
+    <label>Get Constituent IDs</label>
+    <sharedTo>
+        <group>HAM_AisAdmin</group>
+    </sharedTo>
+</ListView>

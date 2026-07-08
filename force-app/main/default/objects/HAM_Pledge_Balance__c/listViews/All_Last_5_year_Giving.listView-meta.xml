@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_Last_5_year_Giving</fullName>
+    <columns>NAME</columns>
+    <columns>Constituent__c</columns>
+    <columns>HAM_Paid__c</columns>
+    <columns>HAM_Pledge_Balance__c</columns>
+    <columns>HAM_Designation__c</columns>
+    <columns>HAM_Pledged__c</columns>
+    <columns>HAM_Status__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>HAM_Pledge_Balance__c.Last_5_year_Giving</value>
+    </filters>
+    <label>All Last 5 year Giving</label>
+</ListView>

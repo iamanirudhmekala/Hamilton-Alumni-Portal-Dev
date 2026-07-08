@@ -1,0 +1,86 @@
+.filters-container {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.filter-pill {
+    position: relative;
+}
+
+.pill-btn {
+    height: 40px;                 /* consistent pill height */
+    padding: 0 16px;              /* vertical padding removed */
+    background: #ffffff;
+    border: 1px solid #d8dde6;
+    border-radius: 999px;
+    font-size: 14px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.pill-label {
+    line-height: 1;
+}
+
+.pill-btn:hover {
+    background: #f3f6f9;
+}
+
+.chevron {
+    --slds-c-icon-color-foreground-default: #7a869a;
+}
+
+.dropdownicon-wrapper {
+    position: relative;
+    width: 16px;      /* smaller than pill height */
+    height: 16px;
+    flex-shrink: 0;   /* prevents layout distortion */
+}
+
+.outer-icon {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.inner-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;       /* adjust visually */
+    height: 8px;
+    transform: translate(-50%, -50%);
+}
+
+
+.dropdown {
+    position: absolute;
+    top: 48px; /* ⬅ closer to Figma */
+    left: 0;
+    min-width: 240px;
+    max-height: 260px;
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid #d8dde6;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+    z-index: 1000;
+}
+
+.dropdown-item {
+    padding: 10px 14px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background: #f4f6f9;
+}

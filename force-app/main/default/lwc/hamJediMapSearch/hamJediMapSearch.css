@@ -1,0 +1,308 @@
+/* ===== Layout ===== */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.section-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 1.25rem;
+}
+
+/* ===== Search Section ===== */
+.search-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.city-input-wrap {
+    max-width: 600px;
+}
+
+.radius-row {
+    max-width: 600px;
+}
+
+.radius-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.radius-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #3e3e3c;
+}
+
+.radius-value {
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: #032d60;
+}
+
+.search-btn-row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ===== Map ===== */
+.map-section lightning-map {
+    height: 420px;
+    display: block;
+}
+
+/* ===== Filters ===== */
+.filters-section {
+    background: #eef4ff;
+    padding: 0;
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+}
+
+.filter-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #032d60;
+}
+
+.filter-body {
+    padding: 0.5rem 1.25rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.filter-field {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.compound-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #3e3e3c;
+    display: block;
+    margin-bottom: 0.35rem;
+}
+
+.compound-field {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.compound-field > * {
+    flex: 1;
+}
+
+.filter-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 0.5rem;
+}
+
+/* ===== Prospects Header ===== */
+.prospects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.prospects-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #032d60;
+}
+
+.prospects-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.select-all-row {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* ===== Cards Grid ===== */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.prospect-card {
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 1rem;
+    background: #fff;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease;
+}
+
+.prospect-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.card-name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.card-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #032d60;
+}
+
+.card-id {
+    font-size: 0.8rem;
+    color: #706e6b;
+    display: block;
+    margin-top: 0.15rem;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+}
+
+.card-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: #3e3e3c;
+}
+
+.email-link {
+    color: #0070d2;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.card-giving {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.giving-amount {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #032d60;
+}
+
+.card-type {
+    font-size: 0.8rem;
+    color: #706e6b;
+}
+
+/* ===== Badges ===== */
+.badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.badge-principal {
+    background: #fef3cd;
+    color: #856404;
+}
+
+.badge-major {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.badge-leadership {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* ===== List View ===== */
+.list-view {
+    overflow-x: auto;
+}
+
+.list-view table th {
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #706e6b;
+}
+
+/* ===== No Results ===== */
+.no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 768px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .prospects-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .prospects-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .map-section lightning-map {
+        height: 300px;
+    }
+
+    .compound-field {
+        flex-direction: column;
+    }
+
+    .search-btn-row {
+        justify-content: stretch;
+    }
+}

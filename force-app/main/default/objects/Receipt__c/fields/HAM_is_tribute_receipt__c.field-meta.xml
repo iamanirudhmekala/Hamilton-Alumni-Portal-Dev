@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_is_tribute_receipt__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates whether this receipt includes tribute information.</description>
+    <inlineHelpText>Indicates whether this receipt includes tribute information.</inlineHelpText>
+    <label>HAM is tribute receipt</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

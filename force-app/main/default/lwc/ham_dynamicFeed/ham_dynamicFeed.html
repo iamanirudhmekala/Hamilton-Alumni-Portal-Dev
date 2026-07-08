@@ -1,0 +1,237 @@
+<template>
+    <div class={kirklandOverrideClass}>
+
+    <!--Desktop view -->
+    <template lwc:if={isDesktopView}>
+    <div class="dynamic-feed-container slds-p-around_medium">
+
+        <div class="slds-grid slds-grid_align-spread slds-wrap slds-var-m-bottom_medium">
+            <!-- Component Heading-->
+            <template lwc:if={isEventsComponent}>
+                   <h2 class="section-header">{label.eventstitle}</h2>
+            </template>
+            <template lwc:else>
+                   <h2 class="section-header">{label.newstitle}</h2>
+            </template>
+           
+        
+                <a  title="View All" class="slds-p-top_x-small"  onclick={handleMyImpactNavigation}>
+                    <template lwc:if={isOverride}>
+                        <img src={images.widgetRedirectGreen} height="20px" width="20px"/>
+                    </template>
+                    <template lwc:else>
+                    <img src={images.widgetRedirect} height="20px" width="20px"/>
+                    </template>
+                </a>
+       
+        </div>
+
+        <template lwc:if={isEventsComponent}>
+        
+
+        <div class="event-btn-container">
+                <button class={inPersonClass} label="In Person" data-filter="In Person" onclick={handleFilterChange} >
+                    <template lwc:if={isOverride}>
+                        <img src={kirklandinpersonimg} class="btn-icon" data-filter="In Person" onclick={handleFilterChange} />
+                    </template>
+                    <template lwc:else>
+                        <img src={inpersonimg} class="btn-icon" data-filter="In Person" onclick={handleFilterChange} />
+                    </template>
+                    In Person
+                    
+                </button>
+                <button class={virtualClass} label="Virtual" data-filter="Virtual" onclick={handleFilterChange} >
+                    <template lwc:if={isOverride}>
+                        <img src={kirklandvirtualimg} class="btn-icon" data-filter="Virtual" onclick={handleFilterChange} />
+                    </template>
+                    <template lwc:else>
+                        <img src={virtualimg} class="btn-icon" data-filter="Virtual" onclick={handleFilterChange} />
+                    </template>
+                    Virtual
+                </button>
+        </div>
+        </template>
+
+        <template lwc:if={isLoading}>
+            <div class="slds-grid slds-wrap slds-grid_pull-padded">
+                <template for:each={placeholders} for:item="p">
+                    <div key={p}
+                        class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-max-small-size_1-of-1 slds-p-horizontal_x-small">
+                        <div class="news-card-placeholder">
+                            <div class="image-placeholder"></div>
+                            <div class="content-placeholder">
+                                <div class="text-placeholder-line text-placeholder-title"></div>
+                                <div class="text-placeholder-line text-placeholder-title"></div>
+                                <div class="text-placeholder-line"></div>
+                                <div class="text-placeholder-line text-placeholder-short"></div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <template lwc:else>
+            <template lwc:if={filteredArticles.length}>
+                <div class="slds-grid slds-wrap slds-grid_pull-padded">
+                  
+                        <template for:each={filteredArticles} for:item="article">
+                            <div key={article.id}
+                                class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-max-small-size_1-of-1 slds-p-horizontal_x-small">
+                                <div class="dynamic-card" onclick={handleCardClick} data-link={article.linkUrl}>
+                                    <!-- <a href={article.linkUrl} target="_blank" onclick={handleCardClick}
+                                        class="slds-text-link_reset"> -->
+
+                                        <div class="content-body">
+
+                                            <template for:each={article.displayItems} for:item="item">
+                                                <div key={item.key} class="feed-item">
+
+                                                    <template if:true={item.isImage}>
+                                                        <div class="image-wrapper slds-var-m-bottom_small slds-var-p-top_small ">
+                                                            <img src={article.imageUrl} alt={article.title}
+                                                                onerror={handleImageError} loading="lazy" class="img-border"/>
+                                                        </div>
+                                                    </template>
+
+                                                    <template if:true={item.isTitle}>
+                                                        <h3>
+                                                            <span title={item.value}>{item.value}</span>
+                                                        </h3>
+                                                    </template>
+
+                                                    <template if:true={item.isEventDetails}>
+                                                        <div class="event-additionals">
+                                                            <div class="article-event-date">{item.dateLine}</div>
+                                                            <div class="article-event-location">{item.locationLine}</div>
+                                                        </div>
+                                                    </template>
+
+                                                    <template if:true={item.isDescription}>
+                                                        <p
+                                                            class="article-description" title={item.fullDescription}>
+                                                            {item.value}
+                                                        </p>
+                                                    </template>
+                                                  
+                                                   <template lwc:if={isNewsComponent}>
+                                                        <template if:true={item.isPostedDate}>
+                                                                <div class="news-posted-date slds-var-m-bottom_medium">
+                                                                    <span>{item.value}</span>
+                                                                </div>
+                                                        </template>
+                                                    </template>
+
+                                                    <template if:true={item.isLink}>
+                                                        <div class="article-footer">
+                                                            <template if:true={article.showLink}>
+                                                                <template lwc:if={isEventsComponent}>
+                                                                    <div class="seemoreandregister-row">
+                                                                        <!-- <button
+                                                                            class="my-card-btn"
+                                                                            onclick={handleSeeMoreClick}
+                                                                            data-url={article.linkUrl}
+                                                                            title={buttonLabel}>
+                                                                            {buttonLabel}
+                                                                        </button> -->
+                                                                        <button
+                                                                            class="my-card-btn"
+                                                                            onclick={handleSeeMoreClick}
+                                                                            data-url={article.linkUrl}
+                                                                            title="Register Now">
+                                                                            {registerButtonLabel}
+                                                                        </button>
+                                                                    </div>
+                                                                </template>
+                                                                <template lwc:else>
+                                                                     <button
+                                                                        class="my-card-btn"
+                                                                        onclick={handleSeeMoreClick}
+                                                                        data-url={article.linkUrl}
+                                                                        title={buttonLabel}>
+                                                                        {buttonLabel}
+                                                                    </button> 
+                                                                </template>
+                                                            </template>
+                                                        </div>
+                                                    </template>
+
+                                                </div>
+                                            </template>
+                                        </div>
+                                    <!-- </a> -->
+                                </div>
+                            </div>
+                        </template>
+                    
+                </div>
+            </template>
+            <template lwc:else>
+                <div class="slds-notify slds-notify_alert slds-theme_info slds-m-top_small" role="alert">
+                    <span class="slds-icon_container slds-icon-utility-info slds-m-right_x-small" title="Information">
+                        <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
+                    </span>
+                    <h2>No {componentType} are available.</h2>
+                </div>
+            </template>
+        </template>
+    </div>
+    </template>
+
+     <!--New Mobile Template-->
+    <template lwc:if={isMobileView}>
+     
+        <template lwc:if={isEventsComponent}>
+            <a onclick={handleMyImpactNavigation} class="slds-text-link_reset">
+                <div class="content-body">
+                    
+                    <div class="feed-item">
+                        <div class="image-wrapper slds-var-m-bottom_small">
+                            <img src={mobileImageUrl} alt="Event" onerror={handleImageError} loading="lazy" class={mobileImageClass}/>
+                        </div>
+                    </div>
+                        
+                    <div> 
+                        <h3 class="my-card-title">
+                            <span>{label.eventmobile} <img src={mobileArrow} class="arrow-icon" /></span> 
+                        </h3>
+                    </div>
+
+                    <div> 
+                        <p class="article-description slds-text-body_small slds-var-m-bottom_small">
+                            {label.eventsdescmobile}
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </template>
+
+        <template lwc:if={isNewsComponent}> 
+            <a onclick={handleMyImpactNavigation} class="slds-text-link_reset">
+                <div class="content-body">
+                    
+                    <div class="feed-item">
+                        <div class="image-wrapper slds-var-m-bottom_small">
+                            <img src={mobileImageUrl} alt="News" onerror={handleImageError} loading="lazy" class={mobileImageClass}/>
+                        </div>
+                    </div>
+
+                    <div> 
+                        <h3 class="my-card-title">
+                            <span>{label.newsmobile} <img src={mobileArrow} class="arrow-icon" /> </span>
+                        </h3>
+                    </div>
+
+                    <div> 
+                        <p class="article-description slds-text-body_small slds-var-m-bottom_small">
+                            {label.newdescmobile}
+                        </p>
+                    </div>
+
+                </div>
+            </a>
+        </template>
+       
+    </template>
+   </div>   
+</template>

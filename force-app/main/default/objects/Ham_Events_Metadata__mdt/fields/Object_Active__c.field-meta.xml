@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Object_Active__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Only checked object records are retrieved</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Only checked object records are retrieved</inlineHelpText>
+    <label>Object Active?</label>
+    <type>Checkbox</type>
+</CustomField>

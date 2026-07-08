@@ -1,0 +1,387 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   ham_upcomingEvents.css
+   All event card styles live here now that this component renders its own
+   cards (no longer delegating to ham_dynamicFeed).
+   Styles are identical to ham_dynamicFeed.css — copied here so ham_dynamicFeed
+   remains completely untouched and news continues to work as before.
+───────────────────────────────────────────────────────────────────────── */
+
+/* Container */
+.dynamic-feed-container {
+    background-color: #F4F4F4;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+    margin: 0 auto;
+}
+
+.section-header {
+    font-weight: 700;
+    color: #111C24;
+    font-family: 'Mallory', sans-serif;
+    font-size: 1.75rem;
+    letter-spacing: 1px;
+}
+
+/* ── Toggle buttons ────────────────────────────────────────────────────── */
+.event-btn-container {
+    margin-bottom: 10px;
+}
+
+.event-btn-container .custom-btn {
+    background: white;
+    border: 1px solid #efeff5;
+    padding: 4px 12px;
+    border-radius: 6px;
+    margin-right: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #002F86;
+    display: inline-flex;
+    align-items: center;
+}
+
+.kirkland-override .event-btn-container .custom-btn {
+    background: white;
+    border: 1px solid #efeff5;
+    padding: 4px 12px;
+    border-radius: 6px;
+    margin-right: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #166837;
+    display: inline-flex;
+    align-items: center;
+}
+
+.custom-btn.kirkland-inactive {
+    color: #166837;
+}
+
+.custom-btn.active {
+    background: #002F86 !important;
+    color: #e7f3ff !important;
+}
+
+.kirkland-override .custom-btn.active {
+    background: #166837 !important;
+    color: #e7f3ff !important;
+}
+
+.custom-btn .btn-icon {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    margin-right: 6px;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.kirkland-override .custom-btn .btn-icon {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    margin-right: 6px;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.kirkland-override .content-body h3:hover {
+    color: #166837;
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────── */
+.dynamic-card {
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #E0E0E0;
+    overflow: hidden;
+    height: 100%;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.dynamic-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* ── Image ─────────────────────────────────────────────────────────────── */
+.image-wrapper {
+    width: 100%;
+    position: relative;
+    background-color: white;
+    border-radius: 20px;
+    margin-bottom: 0 !important;
+}
+
+.image-wrapper img {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin-top: 0px;
+}
+
+.img-border {
+    border-radius: 10px;
+}
+
+/* Forces 16:9 on the fallback image */
+.fallback-img-16-9 {
+    aspect-ratio: 16 / 9;
+    height: auto !important;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* ── Card body ─────────────────────────────────────────────────────────── */
+.content-body {
+    display: block;
+    flex-grow: 1;
+    padding: 0 10px;
+}
+
+.content-body h3 {
+    line-height: 19px;
+    font-family: 'Mallory', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #111C24;
+    margin-top: 10px;
+    height: 30px;
+}
+
+.content-body h3:hover {
+    color: #002F86;
+}
+.kirkland-override .content-body h3:hover {
+    color: #166837;
+}
+
+/* ── Event date + location lines ───────────────────────────────────────── */
+.event-additionals {
+    display: flex;
+    flex-direction: column;
+    margin-right: 4px;
+    min-height: 50px;
+}
+
+.article-event-date {
+    color: #111C24;
+    font-size: 1rem;
+    font-family: 'Mallory', sans-serif;
+    margin-top: 10px;
+    min-height: 1.2rem;
+    line-height: 1.2rem;
+}
+
+.article-event-location {
+    color: #111C24;
+    font-size: 1rem;
+    font-family: 'Mallory', sans-serif;
+    margin-top: 4px;
+    min-height: 1.2rem;
+    line-height: 1.2rem;
+}
+
+/* ── Description ───────────────────────────────────────────────────────── */
+.article-description {
+    color: #344054;
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: 'Mallory', sans-serif;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    margin-top: 5px;
+    min-height: 75px;
+}
+
+/* ── Footer / Register button ──────────────────────────────────────────── */
+.article-footer {
+    display: flex;
+    justify-content: flex-start;
+    padding-bottom: 10px;
+}
+
+.seemoreandregister-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.my-card-btn {
+    background-color: #3FB3FF;
+    padding: 14px 30px;
+    border-radius: 8px;
+    font-family: 'Mallory', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #002F86;
+    border: none;
+}
+
+.my-card-btn:hover {
+    border: 1px solid #002F86;
+    color: #FFFFFF;
+    background-color: #002F86;
+}
+
+.kirkland-override .my-card-btn {
+    background-color: #166837;
+    color: #fff;
+}
+
+.kirkland-override .my-card-btn:hover {
+    background-color: #fff;
+    color: #166837;
+    border: 1px solid #166837;
+}
+
+/* ── Grid spacing ──────────────────────────────────────────────────────── */
+.slds-grid_pull-padded {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+}
+
+.slds-p-horizontal_x-small {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
+
+/* ── Loading skeleton ──────────────────────────────────────────────────── */
+.news-card-placeholder {
+    height: 100%;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #E0E0E0;
+    overflow: hidden;
+}
+
+.image-placeholder {
+    width: 100%;
+    padding-top: 56.25%;
+    background-color: #e8e8e8;
+    animation: loading-pulse 1.5s infinite ease-in-out;
+}
+
+.content-placeholder {
+    padding: 1rem;
+}
+
+.text-placeholder-line {
+    height: 0.75rem;
+    margin-bottom: 0.5rem;
+    background-color: #f3f3f3;
+    border-radius: 4px;
+    animation: loading-pulse 1.5s infinite ease-in-out;
+}
+
+.text-placeholder-title {
+    height: 1rem;
+    width: 85%;
+}
+
+.text-placeholder-short {
+    width: 60%;
+}
+
+@keyframes loading-pulse {
+    0%   { opacity: 0.6; }
+    50%  { opacity: 0.9; }
+    100% { opacity: 0.6; }
+}
+
+/* ── Mobile navigation labels ──────────────────────────────────────────── */
+.arrow-icon {
+    width: 14px;
+    height: 14px;
+    margin-left: 40px;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media  (min-width: 1600px) {
+    .image-wrapper img {
+    height: 350px !important;
+}
+}
+@media  (min-width: 2000px) {
+    .image-wrapper img {
+    height: 450px !important;
+}
+}
+@media  (min-width: 2500px) {
+    .image-wrapper img {
+    height: 550px !important;
+}
+}
+@media  (min-width: 3000px) {
+    .image-wrapper img {
+    height: 750px !important;
+}
+}
+@media (max-width: 1025px) and (min-width: 768px) {
+    .content-body {
+        padding: 0px 10px;
+    }
+}
+
+@media (max-width: 1500px) and (min-width: 1024px) {
+    .image-wrapper img {
+        height: 200px;
+    }
+}
+
+@media (max-width: 1023px) {
+    .image-wrapper {
+        padding-top: 0;
+    }
+    .image-wrapper img {
+        height: 100%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .image-wrapper {
+        margin-bottom: 16px !important;
+    }
+
+    .content-body {
+        padding: 0 !important;
+    }
+
+    .my-card-title {
+        margin-top: 10px;
+    }
+
+    .my-card-title span {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .arrow-icon {
+        margin-left: 0px !important;
+    }
+
+    .article-description {
+        -webkit-line-clamp: 3;
+        color: #111C24;
+        min-height: 60px;
+    }
+
+    .content-body h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #111C24;
+        font-family: 'Mallory-main-bold', sans-serif;
+        line-height: unset;
+        margin-top: 0px;
+    }
+}

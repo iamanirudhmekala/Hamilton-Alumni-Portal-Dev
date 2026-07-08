@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Trustee_or_Donor_Name_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Used for Daily Contribution Report to suppress Full Name</description>
+    <externalId>false</externalId>
+    <formula>IF (INCLUDES(ucinn_ascendv2__Contact__r.ucinn_ascendv2__Contact_Type__c ,&quot;Voting Trustee&quot;) || INCLUDES(ucinn_ascendv2__Contact__r.ucinn_ascendv2__Contact_Type__c ,&quot;Former Trustee&quot;) || INCLUDES(ucinn_ascendv2__Contact__r.ucinn_ascendv2__Contact_Type__c ,&quot;Life Trustee&quot;) || INCLUDES(ucinn_ascendv2__Contact__r.ucinn_ascendv2__Contact_Type__c ,&quot;Trustee Spouse&quot;) || INCLUDES(ucinn_ascendv2__Contact__r.ucinn_ascendv2__Contact_Type__c ,&quot;Honorary Trustee&quot;), &quot;Trustee&quot;,  ucinn_ascendv2__Contact__r.ucinn_ascendv2__Full_Name_Formula__c +  Account.Name)</formula>
+    <label>Trustee or Donor Name</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

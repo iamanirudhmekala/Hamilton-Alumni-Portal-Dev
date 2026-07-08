@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>conference360__BT_External_ID__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>true</externalId>
+    <inlineHelpText>Used by the Blackthorn Mobile Check In app to identify Contacts with a matching ID found in a non-Blackthorn QR Code.</inlineHelpText>
+    <label>BT External ID</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

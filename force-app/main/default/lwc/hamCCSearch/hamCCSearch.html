@@ -1,0 +1,420 @@
+<template>
+    <div class="jabba-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="slds-container_large slds-container_center slds-p-around_medium">
+                <div class="slds-grid slds-grid_vertical-align-center slds-gutters_small">
+                    <div class="slds-col_initial">
+                        <div class="logo-container">
+                            <lightning-icon icon-name="utility:groups" alternative-text="New Group Icon" size="medium" fill="#002855" stroke="#002855"></lightning-icon>
+                        </div>
+                    </div>
+                    <div class="slds-col">
+                        <h1 class="header-title">Jabba Search</h1>
+                    </div>
+                    <div class="slds-col_bump-left">
+                        <lightning-button
+                            label="Share Feedback"
+                            variant="neutral"
+                            onclick={openFeedbackForm}>
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Quick Actions Section -->
+            <lightning-card class="quick-actions-card">
+                <div class="quick-actions-grid">
+                    <c-ham-j-e-d-i-quick-btn></c-ham-j-e-d-i-quick-btn>
+                </div>
+            </lightning-card>
+
+            <!-- Tab Section -->
+            <lightning-tabset active-tab-value={activeTab} onselect={handleTabChange} class="constituent-tabs main-tabs" variant="scoped">
+
+                <!-- ── Tab 1: Constituent Search ──────────────────────────────── -->
+                <lightning-tab label="Constituent Search" value="search">
+                    <lightning-card class="search-card">
+                        <div class="card-content bar-chart-container">
+                            <!-- Quick Search -->
+                            <div class="quick-search-box slds-m-bottom_medium">
+                                <lightning-record-picker
+                                    label="Quick Search"
+                                    placeholder="Search by Name or Donor ID..."
+                                    object-api-name="Contact"
+                                    value={selectedContactId}
+                                    onchange={handleContactRecordPickerChange}
+                                    display-info={contactDisplayInfo}
+                                    matching-info={contactMatchingInfo}>
+                                </lightning-record-picker>
+                            </div>
+
+                            <!-- OR Divider -->
+                            <div class="or-divider">
+                                <span class="or-label">OR</span>
+                            </div>
+
+                            <!-- Search Inputs -->
+                            <div class="search-inputs-grid">
+                                <div class="input-group">
+                                    <label class="input-label">Constituent name</label>
+                                    <lightning-input
+                                        type="search"
+                                        id="constituent-name"
+                                        name="constituentName"
+                                        placeholder="Search first or Last Name..."
+                                        value={constituentName}
+                                        onchange={handleChange}
+                                        onkeyup={handleKeyUp}
+                                        class="search-input">
+                                    </lightning-input>
+                                </div>
+                                <div class="input-group">
+                                    <label class="input-label">Donor Id</label>
+                                    <lightning-input
+                                        type="search"
+                                        id="donor-id"
+                                        name="donorId"
+                                        placeholder="Search by Donor Id..."
+                                        value={donorId}
+                                        onchange={handleChange}
+                                        onkeyup={handleKeyUp}
+                                        class="search-input">
+                                    </lightning-input>
+                                </div>
+                            </div>
+
+                            <!-- Filters -->
+                            <div class="filters-grid">
+                                <lightning-layout multiple-rows="true" pull-to-boundary="small" class="slds-m-top_medium">
+                                    <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                        <lightning-combobox
+                                            name="classYear"
+                                            label="Class Year"
+                                            value={classYear}
+                                            placeholder="Select Class Year"
+                                            options={classYearOptions}
+                                            onchange={handleChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                        <lightning-combobox
+                                            name="sportsAssociation"
+                                            label="Sports Association"
+                                            value={sportsAssociation}
+                                            placeholder="Select Sports Associa..."
+                                            options={sportsAssociationOptions}
+                                            onchange={handleChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                        <lightning-combobox
+                                            name="primaryOrganization"
+                                            label="Primary Organization"
+                                            value={primaryOrganization}
+                                            placeholder="Select Primary Organiz..."
+                                            options={primaryOrganizationOptions}
+                                            onchange={handleChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="action-buttons">
+                                <lightning-button
+                                    variant="neutral"
+                                    label="Clear"
+                                    icon-name="utility:close"
+                                    onclick={handleClear}>
+                                </lightning-button>
+                                <lightning-button
+                                    variant="brand"
+                                    label="Search"
+                                    icon-name="utility:search"
+                                    onclick={searchConstituents}>
+                                </lightning-button>
+                            </div>
+
+                            <!-- Results Table -->
+                            <div class="results-section">
+                                <template lwc:if={pageConstituents}>
+                                    <lightning-datatable
+                                        key-field="id"
+                                        data={pageConstituents}
+                                        columns={searchColumns}
+                                        onrowaction={handleRowAction}
+                                        sorted-by={sortBy}
+                                        sorted-direction={sortDirection}
+                                        onsort={doSorting}
+                                        hide-checkbox-column>
+                                    </lightning-datatable>
+                                    <template if:false={pageConstituents}>
+                                        <div class="empty-state">
+                                            Page 1 of 1 - 0 total
+                                        </div>
+                                    </template>
+                                </template>
+                            </div>
+                        </div>
+                    </lightning-card>
+
+                    <!-- Recent Constituents Section -->
+                    <lightning-card title="Recent Constituents" class="recent-prospects-card">
+                        <div slot="actions"></div>
+                        <div class="recent-prospects-table employers-section">
+                            <lightning-datatable
+                                key-field="id"
+                                data={recentProspectsRecords}
+                                columns={recentProspectsColumns}
+                                hide-checkbox-column
+                                sorted-by={recentSortBy}
+                                sorted-direction={recentSortDirection}
+                                onsort={handleRecentSort}>
+                            </lightning-datatable>
+                        </div>
+                    </lightning-card>
+                </lightning-tab>
+
+                <!-- ── Tab 2: Employer Impact ──────────────────────────────────── -->
+                <lightning-tab label="Employer Impact" value="employer">
+                    <lightning-card class="employer-card">
+                        <div class="employer-content">
+                            <h2 class="section-title">Employer Engagement Overview</h2>
+
+                            <!-- Quick Employer Search -->
+                            <div class="slds-m-bottom_medium slds-m-top_small">
+                                <lightning-record-picker
+                                    label="Search Organizations"
+                                    placeholder="Search and select an organization..."
+                                    object-api-name="Account"
+                                    value={selectedAccountId}
+                                    onchange={handleAccountRecordPickerChange}
+                                    display-info={accountDisplayInfo}
+                                    matching-info={accountMatchingInfo}
+                                    filter={accountFilter}>
+                                </lightning-record-picker>
+                            </div>
+
+                            <!-- Bar Chart -->
+                            <div class="bar-chart-container">
+                                <template for:each={chartData} for:item="bar">
+                                    <div key={bar.id} class="bar-wrapper" onclick={handleBarClick} data-category={bar.category}>
+                                        <div class="bar-label">{bar.label}</div>
+                                        <div class="bar-background">
+                                            <div class="bar-fill" style={bar.style}>
+                                                <span class="bar-value">{bar.value}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Employers Table -->
+                            <template if:true={showEmployersTable}>
+                                <div class="employers-section">
+                                    <div class="table-header">
+                                        <h3 class="table-title">{selectedCategory}</h3>
+                                        <lightning-button
+                                            variant="base"
+                                            label="Close"
+                                            icon-name="utility:close"
+                                            onclick={handleCloseTable}>
+                                        </lightning-button>
+                                    </div>
+                                    <div class="slds-m-bottom_small">
+                                        <lightning-input
+                                            type="search"
+                                            label="Filter results"
+                                            placeholder="Filter by name, donor ID, or contact..."
+                                            value={employerFilterText}
+                                            onchange={handleEmployerFilter}>
+                                        </lightning-input>
+                                    </div>
+                                    <lightning-datatable
+                                        key-field="id"
+                                        data={employersPageData}
+                                        columns={employersColumns}
+                                        hide-checkbox-column
+                                        sorted-by={employerSortBy}
+                                        sorted-direction={employerSortDirection}
+                                        onsort={handleEmployerSort}
+                                        onrowaction={handleEmployerClick}>
+                                    </lightning-datatable>
+                                    <div class="slds-grid slds-grid_align-spread slds-m-top_small slds-p-horizontal_small">
+                                        <div class="slds-col">
+                                            <lightning-button
+                                                label="Previous"
+                                                icon-name="utility:chevronleft"
+                                                onclick={prevEmployerPage}
+                                                disabled={isFirstEmployerPage}>
+                                            </lightning-button>
+                                        </div>
+                                        <div class="slds-col slds-align-middle">
+                                            <p class="slds-text-body_small">
+                                                Page {employerPageNumber} of {employerTotalPages} ({employerTotalRecords} records)
+                                            </p>
+                                        </div>
+                                        <div class="slds-col">
+                                            <lightning-button
+                                                label="Next"
+                                                icon-name="utility:chevronright"
+                                                icon-position="right"
+                                                onclick={nextEmployerPage}
+                                                disabled={isLastEmployerPage}>
+                                            </lightning-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </lightning-card>
+                </lightning-tab>
+
+                <!-- ── Tab 3: Assigned Constituents & Organizations ────────────── -->
+                <lightning-tab label="Assigned Constituents &amp; Organizations" value="assigned">
+                    <lightning-card class="assigned-card">
+                        <div class="assigned-content">
+                            <!-- Constituents Table -->
+                            <div class="slds-m-bottom_large">
+                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_small">
+                                    <h3 class="slds-text-heading_small" style="color: var(--primary-blue); font-weight: 600;">Constituents</h3>
+                                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick={handleToggleConstituents} aria-expanded={isConstituentsExpanded}>
+                                        <lightning-icon icon-name={constituentsExpandIcon} size="x-small"></lightning-icon>
+                                        <span class="slds-assistive-text">{constituentsExpandLabel}</span>
+                                    </button>
+                                </div>
+                                <template if:true={isConstituentsExpanded}>
+                                    <template if:true={assignedConstituents.length}>
+                                        <lightning-datatable
+                                            key-field="Id"
+                                            data={constituentsPageData}
+                                            columns={assignedConstituentsColumns}
+                                            hide-checkbox-column
+                                            sorted-by={assignedConstituentsSortBy}
+                                            sorted-direction={assignedConstituentsSortDirection}
+                                            onsort={handleAssignedConstituentsSort}>
+                                        </lightning-datatable>
+                                        <div class="slds-m-top_small">
+                                            <template if:true={showConstituentsPagination}>
+                                                <div class="slds-grid slds-grid_align-center slds-gutters_x-small">
+                                                    <div class="slds-col_padded">
+                                                        <lightning-button
+                                                            label="Previous"
+                                                            icon-name="utility:chevronleft"
+                                                            onclick={prevConstituentsPage}
+                                                            disabled={isFirstConstituentsPage}>
+                                                        </lightning-button>
+                                                    </div>
+                                                    <div class="slds-col_padded">
+                                                        <lightning-button
+                                                            label="Next"
+                                                            icon-name="utility:chevronright"
+                                                            icon-position="right"
+                                                            onclick={nextConstituentsPage}
+                                                            disabled={isLastConstituentsPage}>
+                                                        </lightning-button>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            <div class={constituentsPaginationClass}>
+                                                <p class="slds-text-body_small">{constituentsTotalRecords} {constituentsRecordLabel}</p>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template if:false={assignedConstituents.length}>
+                                        <div class="slds-text-align_center slds-p-around_medium">
+                                            <p class="slds-text-body_regular">No assigned constituents found.</p>
+                                        </div>
+                                    </template>
+                                </template>
+                            </div>
+
+                            <!-- Organizations Table -->
+                            <div class="slds-m-top_medium">
+                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_small">
+                                    <h3 class="slds-text-heading_small" style="color: var(--primary-blue); font-weight: 600;">Organizations</h3>
+                                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" onclick={handleToggleOrganizations} aria-expanded={isOrganizationsExpanded}>
+                                        <lightning-icon icon-name={organizationsExpandIcon} size="x-small"></lightning-icon>
+                                        <span class="slds-assistive-text">{organizationsExpandLabel}</span>
+                                    </button>
+                                </div>
+                                <template if:true={isOrganizationsExpanded}>
+                                    <template if:true={assignedOrganizations.length}>
+                                        <lightning-datatable
+                                            key-field="Id"
+                                            data={organizationsPageData}
+                                            columns={assignedOrganizationsColumns}
+                                            hide-checkbox-column
+                                            sorted-by={assignedOrganizationsSortBy}
+                                            sorted-direction={assignedOrganizationsSortDirection}
+                                            onsort={handleAssignedOrganizationsSort}>
+                                        </lightning-datatable>
+                                        <div class="slds-m-top_small">
+                                            <template if:true={showOrganizationsPagination}>
+                                                <div class="slds-grid slds-grid_align-center slds-gutters_x-small">
+                                                    <div class="slds-col_padded">
+                                                        <lightning-button
+                                                            label="Previous"
+                                                            icon-name="utility:chevronleft"
+                                                            onclick={prevOrganizationsPage}
+                                                            disabled={isFirstOrganizationsPage}>
+                                                        </lightning-button>
+                                                    </div>
+                                                    <div class="slds-col_padded">
+                                                        <lightning-button
+                                                            label="Next"
+                                                            icon-name="utility:chevronright"
+                                                            icon-position="right"
+                                                            onclick={nextOrganizationsPage}
+                                                            disabled={isLastOrganizationsPage}>
+                                                        </lightning-button>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            <div class={organizationsPaginationClass}>
+                                                <p class="slds-text-body_small">{organizationsTotalRecords} {organizationsRecordLabel}</p>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template if:false={assignedOrganizations.length}>
+                                        <div class="slds-text-align_center slds-p-around_medium">
+                                            <p class="slds-text-body_regular">No assigned organizations found.</p>
+                                        </div>
+                                    </template>
+                                </template>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </lightning-tab>
+
+                <!-- ── Tab 4: Volunteer Dashboard ── NEW ─────────────────────── -->
+                <lightning-tab label="Volunteer Dashboard" value="volunteerDashboard">
+                    <lightning-card class="employer-card">
+                        <div class="employer-content">
+                            <h2 class="section-title">Alumni/Parent Dashboard</h2>
+                        </div>
+                        <div class="dashboard-tab-wrapper">
+                            Moved to HomePage
+                        </div>
+                    </lightning-card>
+                    <div class="dashboard-tab-wrapper">
+                        
+                        <template if:true={isDashboardTabActive}>
+                            <p>This is Placeholder</p>
+                        </template>
+                    </div>
+                </lightning-tab>
+
+            </lightning-tabset>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">Hamilton College Career Center</p>
+        </footer>
+    </div>
+</template>

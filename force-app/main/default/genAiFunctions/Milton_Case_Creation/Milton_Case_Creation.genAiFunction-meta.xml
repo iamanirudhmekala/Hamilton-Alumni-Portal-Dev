@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Invoke this action when a customer expresses frustration due to repeated issues or unsatisfactory responses during the conversation. Before invoking, the agent must acknowledge the customer&apos;s concern, apologize for the inconvenience, and ask whether they would like a support case to be created. This action should only be triggered after the customer explicitly confirms their request. Once confirmed, the agent invokes this action to successfully create a support case on the customer&apos;s behalf.</description>
+    <developerName>Milton_Case_Creation</developerName>
+    <invocationTarget>Create_Case_from_Milton_Agent</invocationTarget>
+    <invocationTargetType>flow</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+    <localDeveloperName>Milton_Case_Creation</localDeveloperName>
+    <masterLabel>Milton Case Creation</masterLabel>
+</GenAiFunction>

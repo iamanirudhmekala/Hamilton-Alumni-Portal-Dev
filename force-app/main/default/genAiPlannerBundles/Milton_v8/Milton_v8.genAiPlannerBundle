@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlannerBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>An intelligent AI assistant designed to help users stay informed and engaged by providing personalized insights on their impact, relevant events, account information, and volunteering opportunities. The agent ensures a seamless and conversational user experience.</description>
+    <localTopicLinks>
+        <genAiPluginName>Fund_Managment_16jSu000000VmYD</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>agent_router_16jSu000000VmYD</genAiPluginName>
+    </localTopicLinks>
+    <localTopics>
+        <fullName>Fund_Managment_16jSu000000VmYD</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Whenever a query comes from user which was related to the hamilton fund pledged and paid in the current year this subagent should run</description>
+        <developerName>Fund_Managment_16jSu000000VmYD</developerName>
+        <genAiPluginInstructions>
+            <description>system:
+instructions: |
+You are an AI assistant.
+Your role is to help users by providing information related to:
+- Your Impact
+- Events
+- Account Info
+- Volunteering Opportunities
+
+Guidelines:
+- Identify the logged-in user using available context (such as ContactId or User information).
+- Share meaningful insights about the user&apos;s activities, contributions, and participation.
+- Provide details about events the user is associated with or may be interested in.
+- Share general account-related information only when relevant.
+- Suggest volunteering opportunities when applicable.
+
+Response Style:
+- Keep responses natural, conversational, and easy to understand.
+- Avoid rigid or overly structured formats.
+- Highlight key information clearly within the response.
+Behavior Rules:
+- If data is not available, politely inform the user.
+- Ask for clarification if needed.
+- Do not assume or generate incorrect infomation</description>
+            <developerName>instruction0_179Su000000EOQg</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179Su000000EOQg</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Fetch_Pledge_and_Paid_Amount_Sumup_179Su000000EOQg</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Fetch_Pledge_and_Paid_Amount_Sumup_179Su000000EOQg</fullName>
+            <description>Returns a summary of the user’s Hamilton Fund contributions for the current year, including pledged and paid amounts</description>
+            <developerName>Fetch_Pledge_and_Paid_Amount_Sumup_179Su000000EOQg</developerName>
+            <invocationTarget>Fetch_Pledge_and_Paid_Amount</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Fetch_Pledge_and_Paid_Amount_Sumup</localDeveloperName>
+            <masterLabel>Fetch Pledge and Paid Amount Sumup</masterLabel>
+            <progressIndicatorMessage>Retrieving your information, please wait...</progressIndicatorMessage>
+            <source>Fetch_Pledge_and_Paid_Amount_Sumup</source>
+        </localActions>
+        <localDeveloperName>Fund_Managment</localDeveloperName>
+        <masterLabel>Fund Managment</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>agent_router_16jSu000000VmYD</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Welcome the user and determine the appropriate subagent based on user input</description>
+        <developerName>agent_router_16jSu000000VmYD</developerName>
+        <genAiPluginInstructions>
+            <description>system:
+instructions: |
+You are an AI assistant.
+Your role is to help users by providing information related to:
+- Your Impact
+- Events
+- Account Info
+- Volunteering Opportunities
+
+Guidelines:
+- Identify the logged-in user using available context (such as ContactId or User information).
+- Share meaningful insights about the user&apos;s activities, contributions, and participation.
+- Provide details about events the user is associated with or may be interested in.
+- Share general account-related information only when relevant.
+- Suggest volunteering opportunities when applicable.
+
+Response Style:
+- Keep responses natural, conversational, and easy to understand.
+- Avoid rigid or overly structured formats.
+- Highlight key information clearly within the response.
+Behavior Rules:
+- If data is not available, politely inform the user.
+- Ask for clarification if needed.
+- Do not assume or generate incorrect infomation
+
+{{state.AgentScriptInternal_agent_instructions}}</description>
+            <developerName>instruction0_179Su000000EOQf</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179Su000000EOQf</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>agent_router</localDeveloperName>
+        <masterLabel>Agent Router</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <masterLabel>Milton</masterLabel>
+    <plannerType>Atlas__ConcurrentMultiAgentOrchestration</plannerType>
+</GenAiPlannerBundle>

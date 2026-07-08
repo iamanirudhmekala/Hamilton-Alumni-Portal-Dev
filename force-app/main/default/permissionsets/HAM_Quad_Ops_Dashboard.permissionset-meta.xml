@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>HAM_ConnectionsDashboardCtrl</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HAM_FundingInterestDashboardCtrl</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HAM_LoginHistoryDashboardCtrl</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HAM_ServiceIndicatorDashboardCtrl</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>Grants access to the Hamilton Quad Ops Dashboard. Assign to AIS/IT staff only — this dashboard shows login-error detail with names/emails and is not intended for the public Experience Cloud site.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>HAM Quad Ops Dashboard</label>
+</PermissionSet>

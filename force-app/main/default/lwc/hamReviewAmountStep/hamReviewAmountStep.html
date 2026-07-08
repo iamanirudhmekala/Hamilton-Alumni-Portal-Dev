@@ -1,0 +1,81 @@
+<template>
+    <div class="ham-amount-step">
+        <!-- Frequency -->
+        <div class="ham-section-label">GIFT FREQUENCY</div>
+        <div class="ham-freq-group">
+            <button class={onceClass} data-freq="once" onclick={handleFrequencyClick}>Give Once</button>
+            <button class={monthlyClass} data-freq="monthly" onclick={handleFrequencyClick}>Monthly</button>
+        </div>
+
+        <!-- Amount Input -->
+        <div class="ham-amount-container">
+            <div class="ham-amount-label">{amountLabel}</div>
+            <div class="ham-amount-input-wrapper">
+                <span class="ham-dollar-sign">$</span>
+                <input
+                    type="number"
+                    class="ham-amount-input"
+                    value={_amount}
+                    placeholder="250"
+                    min="1"
+                    step="0.01"
+                    oninput={handleAmountInput}
+                />
+            </div>
+        </div>
+
+        <!-- Total Display -->
+        <div class="ham-total-box">Total: ${formattedTotal}</div>
+
+        <!-- Suggested Amounts -->
+        <div class="ham-section-label">SUGGESTED AMOUNTS</div>
+        <div class="ham-suggested-grid">
+            <button class="ham-suggested-btn" data-amount="25" onclick={handleSuggestedAmount}>$25</button>
+            <button class="ham-suggested-btn" data-amount="50" onclick={handleSuggestedAmount}>$50</button>
+            <button class="ham-suggested-btn" data-amount="100" onclick={handleSuggestedAmount}>$100</button>
+            <button class="ham-suggested-btn" data-amount="250" onclick={handleSuggestedAmount}>$250</button>
+            <button class="ham-suggested-btn" data-amount="500" onclick={handleSuggestedAmount}>$500</button>
+        </div>
+
+        <!-- Tribute Toggle -->
+        <div class="ham-tribute-toggle" onclick={handleTributeToggle}>{tributeToggleLabel}</div>
+
+        <template lwc:if={tributeExpanded}>
+            <div class="ham-tribute-panel">
+                <div class="ham-tribute-type-group">
+                    <button class={honorBtnClass} data-type="honor" onclick={handleTributeTypeClick}>In Honor Of</button>
+                    <button class={memoryBtnClass} data-type="memory" onclick={handleTributeTypeClick}>In Memory Of</button>
+                </div>
+                <div class="ham-field-group">
+                    <label class="ham-field-label">
+                        <template lwc:if={isHonorType}>Honoree Name</template>
+                        <template lwc:else>Name</template>
+                    </label>
+                    <input type="text" class="ham-text-input" value={tributeName} oninput={handleTributeNameInput} placeholder="Full name" />
+                </div>
+                <div class="ham-field-group">
+                    <label class="ham-field-label">Notify by Email (optional)</label>
+                    <input type="email" class="ham-text-input" value={tributeNotifyEmail} oninput={handleTributeEmailInput} placeholder="email@example.com" />
+                </div>
+                <div class="ham-field-group">
+                    <label class="ham-field-label">Message (optional)</label>
+                    <textarea class="ham-textarea" value={tributeMessage} oninput={handleTributeMessageInput} placeholder="Personal message..."></textarea>
+                </div>
+            </div>
+        </template>
+
+        <!-- Anonymous -->
+        <div class="ham-checkbox-row">
+            <input type="checkbox" id="anonCheck" class="ham-checkbox" checked={isAnonymous} onchange={handleAnonymousChange} />
+            <label for="anonCheck" class="ham-checkbox-label">Make this gift anonymous</label>
+        </div>
+
+        <!-- Tip -->
+        <div class="ham-tip-box">
+            Switch to Monthly for a recurring gift — designation split carries over automatically.
+        </div>
+
+        <!-- Continue -->
+        <button class="ham-primary-btn" onclick={handleContinue}>Continue to Designations →</button>
+    </div>
+</template>

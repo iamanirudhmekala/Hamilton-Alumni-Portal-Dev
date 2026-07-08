@@ -1,0 +1,179 @@
+{
+  "type" : "sfdc_cms__themeLayout",
+  "title" : "Forgot Password Layout",
+  "contentBody" : {
+    "component" : {
+      "attributes" : { },
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "0rem",
+            "dxpStyle" : {
+              "margin" : {
+                "bottom" : "0px",
+                "left" : "0px",
+                "right" : "0px",
+                "top" : "0px"
+              },
+              "padding" : {
+                "bottom" : "0px",
+                "left" : "0px",
+                "right" : "0px",
+                "top" : "0px"
+              }
+            },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "0rem",
+            "sectionConfig" : "{\"UUID\":\"db3a4463-fe3f-4d66-acf7-c9b6dda173db\",\"columns\":[{\"UUID\":\"58f1df8e-1bb9-473c-8ee6-bee39703576a\",\"columnName\":\"Column 1\",\"columnKey\":\"headerSection\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "id" : "58f1df8e-1bb9-473c-8ee6-bee39703576a",
+            "name" : "headerSection",
+            "title" : "Theme Header",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "db3a4463-fe3f-4d66-acf7-c9b6dda173db",
+          "type" : "component"
+        } ],
+        "id" : "5f5282c8-343a-4a05-9f92-914ba7ed3b9a",
+        "name" : "header",
+        "title" : "Theme Header",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "0rem",
+            "dxpStyle" : {
+              "margin" : {
+                "bottom" : "0px",
+                "left" : "0px",
+                "right" : "0px",
+                "top" : "0px"
+              },
+              "padding" : {
+                "bottom" : "0px",
+                "left" : "0px",
+                "right" : "0px",
+                "top" : "0px"
+              }
+            },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "0rem",
+            "sectionConfig" : "{\"UUID\":\"faa8be86-7875-47ac-9c81-b71cc9bcf289\",\"columns\":[{\"UUID\":\"8fea22bb-5900-49c9-8d17-04400746c142\",\"columnName\":\"Column 1\",\"columnKey\":\"footerSection\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "id" : "8fea22bb-5900-49c9-8d17-04400746c142",
+            "name" : "footerSection",
+            "title" : "Theme Footer",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "faa8be86-7875-47ac-9c81-b71cc9bcf289",
+          "type" : "component"
+        } ],
+        "id" : "9bfcf452-4d7f-41ce-8526-e4c6591ad6e6",
+        "name" : "footer",
+        "title" : "Theme Footer",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "columnGutterWidth" : "0rem",
+            "columnMinHeight" : "",
+            "columnVerticalAlign" : "flex-start",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "sectionConfig" : "{\"UUID\":\"3469ad0e-60eb-4158-83be-d58a7417166d\",\"columns\":[{\"UUID\":\"b496c0fd-b234-487d-8f0e-df33f8d3dd0b\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"6\",\"seedComponents\":[]},{\"UUID\":\"eb1ec2c5-359b-4c68-8b84-c1400c1988bd\",\"columnName\":\"Column 2\",\"columnKey\":\"col2\",\"columnWidth\":\"6\",\"seedComponents\":[]}]}"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "alignment" : "center",
+                "dxpStyle" : {
+                  "margin" : {
+                    "bottom" : "0%",
+                    "left" : "3%",
+                    "right" : "",
+                    "top" : "20%"
+                  },
+                  "padding" : {
+                    "bottom" : "0px",
+                    "left" : "0px",
+                    "right" : "0px",
+                    "top" : "0px"
+                  }
+                },
+                "imageInfo" : "{\"imageInfoV1\":{\"url\":\"/sfsites/c/resource/Ham_LoginPageLogo\",\"altText\":\"\",\"contentKey\":\"\",\"contentType\":null}}",
+                "imageInfoMobile" : "{\"imageInfoV1\":{\"url\":\"/sfsites/c/resource/Ham_LoginPageLogo\",\"altText\":\"\",\"contentKey\":\"\",\"contentType\":null}}",
+                "logoWidth" : 250
+              },
+              "definition" : "dxp_content_layout:siteLogo",
+              "id" : "cee16485-e69e-4fc6-9c32-1e9dcb774c88",
+              "type" : "component"
+            }, {
+              "attributes" : {
+                "dxpStyle" : {
+                  "margin" : {
+                    "bottom" : "0px",
+                    "left" : "0px",
+                    "right" : "0px",
+                    "top" : "0px"
+                  }
+                },
+                "loginUrl" : ""
+              },
+              "definition" : "c:ham_ForgotPasswordLwc",
+              "id" : "a2797f3c-9e10-4328-ae46-15449d404e26",
+              "type" : "component"
+            } ],
+            "id" : "b496c0fd-b234-487d-8f0e-df33f8d3dd0b",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          }, {
+            "children" : [ {
+              "attributes" : {
+                "imageInfos" : "",
+                "richTextValue" : "<img src=\"/sfsites/c/resource/Ham_LoginPageImage?v=2\" style=\"width: 100%; height: 100vh; object-fit: fill;\"/>"
+              },
+              "definition" : "community_builder:htmlEditor",
+              "id" : "4ae10562-a881-4783-8d87-2f110400301a",
+              "type" : "component"
+            } ],
+            "id" : "eb1ec2c5-359b-4c68-8b84-c1400c1988bd",
+            "name" : "col2",
+            "title" : "Column 2",
+            "type" : "region"
+          } ],
+          "definition" : "dxp_layout:columns",
+          "id" : "3469ad0e-60eb-4158-83be-d58a7417166d",
+          "type" : "component"
+        } ],
+        "id" : "aad2a123-19c7-4cdf-b5f5-c5aad66f43ee",
+        "name" : "slot1",
+        "type" : "region"
+      } ],
+      "definition" : "c:ham_ForgotPasswordTheme",
+      "id" : "43485d14-fcd2-4919-8e28-579bf1a935c3",
+      "type" : "component"
+    }
+  },
+  "urlName" : "forgot-password-layout"
+}

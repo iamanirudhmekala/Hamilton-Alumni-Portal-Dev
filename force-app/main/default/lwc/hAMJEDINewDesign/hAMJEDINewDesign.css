@@ -1,0 +1,86 @@
+/* Custom CSS to replicate Tailwind utilities not covered by SLDS
+*/
+
+/* Main card: sticky positioning */
+.bio-card {
+    position: sticky;
+    top: 1rem; /* Replicates sticky top-6 */
+    border-radius: 0.75rem; /* rounded-xl */
+    overflow: hidden;
+    background-color: white;
+}
+
+/* Header: Gradient and grid pattern */
+.bio-header {
+    /* Gradient from-blue-900 via-blue-800 to-blue-900 */
+    background-image: linear-gradient(to bottom right, #1e3a8a, #1e40af, #1e3a8a);
+    color: white;
+    overflow: hidden;
+}
+
+.grid-pattern {
+    position: absolute;
+    inset: 0;
+    /* A simple CSS grid pattern */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 10px 10px;
+    opacity: 0.5;
+}
+
+/* Profile Image: Circular, bordered */
+.profile-image-container {
+    width: 9rem; /* w-36 */
+    height: 9rem; /* h-36 */
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #DBEAFE; /* bg-blue-100 */
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Footer: Gradient */
+.engagement-footer {
+    background-image: linear-gradient(to right, #1e3a8a, #1e40af);
+    color: white;
+}
+
+/* Utility classes for text colors */
+.text-white {
+    color: white;
+}
+.text-blue-100 {
+    color: #dbeafe;
+}
+.text-blue-200 {
+    color: #bfdbfe;
+}
+.text-blue-300 {
+    color: #93c5fd;
+}
+
+/* Utility class for icons */
+.icon-blue {
+    fill: #1E3A8A; /* text-blue-900 */
+}
+
+/* Relationship Card: light background */
+.relationship-card {
+    background-color: #f3f4f6; /* bg-slate-50 */
+    border: 1px solid #e5e7eb; /* border-slate-200 */
+    border-radius: 0.5rem; /* rounded-lg */
+    padding: 1rem; /* p-4 */
+}
+
+/* Remove default LWC box border */
+.slds-border_none {
+    border: none;
+}

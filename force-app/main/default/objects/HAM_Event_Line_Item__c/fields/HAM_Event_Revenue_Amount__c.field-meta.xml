@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Event_Revenue_Amount__c</fullName>
+    <description>Hamilton-specific event revenue amount for this line item, used for GL reporting.</description>
+    <inlineHelpText>Event revenue amount allocated to this line item for GL reporting purposes.</inlineHelpText>
+    <label>Event Revenue Amount</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

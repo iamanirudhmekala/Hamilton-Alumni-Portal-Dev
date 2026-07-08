@@ -1,0 +1,60 @@
+<template>
+    <div class="stats-container">
+        
+        <!-- Header -->
+        <div class="slds-p-bottom_medium">
+            <h2 class="header-title">Career Center Engagement Overview</h2>
+            <p class="header-subtitle">Internal View • FY 2025</p>
+        </div>
+
+        <!-- Stats Grid (6 Boxes) -->
+        <div class="slds-grid slds-wrap slds-gutters_small slds-m-bottom_large">
+            <template for:each={stats} for:item="stat">
+                <div key={stat.label} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3 slds-m-bottom_small">
+                    <div class="stat-card">
+                        <div class="slds-media slds-media_center">
+                            <div class="slds-media__figure">
+                                <div class={stat.iconClass}>
+                                    <lightning-icon icon-name={stat.icon} size="small" class="stat-icon-svg"></lightning-icon>
+                                </div>
+                            </div>
+                            <div class="slds-media__body">
+                                <p class="stat-label">{stat.label}</p>
+                                <h3 class="stat-value">{stat.value}</h3>
+                                <p class={stat.trendClass}>{stat.trend}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Unique Involvements Chart -->
+        <div class="chart-section">
+            <div class="slds-grid slds-grid_align-spread slds-m-bottom_medium">
+                <div>
+                    <h3 class="chart-title">Unique Involvements by Type</h3>
+                    <p class="chart-subtitle">Breakdown of engagement activities</p>
+                </div>
+                <div class="slds-text-align_right">
+                    <p class="chart-total-label">Total Unique Types</p>
+                    <p class="chart-total-value">{totalUniqueTypes}</p>
+                </div>
+            </div>
+
+            <!-- CSS Bar Chart -->
+            <div class="chart-container">
+                <template for:each={chartData} for:item="bar">
+                    <div key={bar.label} class="chart-bar-group">
+                        <div class="bar-track">
+                            <div class="bar-fill" style={bar.style}>
+                                <span class="bar-tooltip">{bar.value}</span>
+                            </div>
+                        </div>
+                        <div class="bar-label" title={bar.label}>{bar.label}</div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

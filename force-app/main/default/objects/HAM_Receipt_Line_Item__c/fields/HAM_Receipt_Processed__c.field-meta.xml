@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Receipt_Processed__c</fullName>
+    <description>Indicates whether the receipt has been processed based on the Receipt checkbox value.</description>
+    <formula>HAM_Receipt__r.HAM_Is_Processed__c</formula>
+    <inlineHelpText>Automatically set to true when the Receipt checkbox is selected and false when it is not selected. This field reflects the processed status and cannot be edited manually.</inlineHelpText>
+    <label>HAM Receipt Processed</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

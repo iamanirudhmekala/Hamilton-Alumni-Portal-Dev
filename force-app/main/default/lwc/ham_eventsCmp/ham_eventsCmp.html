@@ -1,0 +1,623 @@
+<template>
+
+    <div class={wrapperClass}>
+
+        <!-- HEADER -->
+        <div class="header-row">
+            <h1 class="page-title">{labels.tabHeading}</h1>
+        </div>
+
+        <div class="search-row">
+
+            <template lwc:if={isMobileView}>
+
+                <!-- Host button -->
+                <button class="host-btn" onclick={handleHostanEvent}>
+                    {labels.hostEventButton}
+                </button>
+
+                <!-- Search row -->
+                <div class="mobile-search-row">
+                    <input type="text" class="search-input" value={searchKey} placeholder={searchPlaceHolder}
+                        oninput={handleSearchInput} onkeydown={handleSearchKeydown} />
+
+                    <button class="search-btn" onclick={handleSearchClick}>
+                        <lightning-icon icon-name="utility:search" size="x-small" class="search-icon"></lightning-icon>
+                    </button>
+                </div>
+
+                <div class="filters-row-scroll-wrapper">
+                    <!-- Filters -->
+                    <div class="filters-row">
+                        <template for:each={filters} for:item="filter">
+                            <div key={filter.order} class="filter-pill">
+
+                                <div class="pill-wrapper" data-order={filter.order} onclick={toggleDropdown}>
+
+                                    <input type="text" class="pill-input" data-order={filter.order}
+                                        value={filter.displayValue} placeholder={filter.placeholder}
+                                        title={filter.hoverText} readonly />
+
+                                    <template lwc:if={filter.isOpen}>
+                                        <div class="dropdown-mobilebase" data-droporder={filter.order}>
+                                            <div class="dropdown-search">
+                                                <input type="text" placeholder="Search..." data-order={filter.order}
+                                                    value={filter.searchKey} oninput={handleDropdownSearch}
+                                                    onclick={stopPropagation} />
+                                            </div>
+
+                                            <template lwc:if={filter.values.length}>
+                                                <template for:each={filter.values} for:item="opt">
+                                                    <label key={opt.label} class="dropdown-item checkbox-item"
+                                                        onclick={stopPropagation}>
+
+                                                        <input type="checkbox" data-order={filter.order}
+                                                            data-value={opt.label} checked={opt.checked}
+                                                            onchange={handleCheckboxToggle} />
+
+                                                        <span>{opt.label}</span>
+                                                    </label>
+                                                </template>
+                                            </template>
+
+                                            <template lwc:else>
+                                                <div class="dropdown-empty">No Option Found</div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+
+                                <div class="icon-wrapper">
+                                    <template lwc:if={filter.hasSelectedValues}>
+                                        <lightning-icon icon-name="utility:close" size="xx-small"
+                                            data-order={filter.order} onclick={handleClearFilter}>
+                                        </lightning-icon>
+                                    </template>
+                                    <template lwc:else>
+                                        <img src={icons.dropDownOuter} class="outer-icon" />
+                                        <img src={icons.dropDownInner} class="inner-icon" />
+                                    </template>
+                                </div>
+
+
+
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+            </template>
+            <template lwc:if={isDesktopView}>
+                <div class="search-left">
+
+                    <!-- Search Input -->
+                    <input type="text" class="search-input" value={searchKey} placeholder={searchPlaceHolder}
+                        oninput={handleSearchInput} onkeydown={handleSearchKeydown} />
+
+                    <!-- Search Icon -->
+                    <button class="search-btn" onclick={handleSearchClick} title="Search">
+                        <lightning-icon icon-name="utility:search" size="x-small" class="search-icon">
+                        </lightning-icon>
+                    </button>
+
+                    <!-- Filters -->
+                    <template for:each={filters} for:item="filter">
+                        <div key={filter.order} class="filter-pill">
+                            <div class="pill-wrapper">
+                                <input type="text" class="pill-input" data-order={filter.order}
+                                    value={filter.displayValue} placeholder={filter.placeholder}
+                                    onclick={toggleDropdown} title={filter.hoverText} readonly />
+                            </div>
+                            <div class="icon-wrapper">
+                                <template lwc:if={filter.hasSelectedValues}>
+                                    <lightning-icon icon-name="utility:close" size="xx-small" data-order={filter.order}
+                                        onclick={handleClearFilter}>
+                                    </lightning-icon>
+                                </template>
+                                <template lwc:else>
+                                    <img src={icons.dropDownOuter} class="outer-icon" />
+                                    <img src={icons.dropDownInner} class="inner-icon" />
+                                </template>
+                            </div>
+
+                            <template lwc:if={filter.isOpen}>
+                                <div class="dropdown">
+                                    <div class="dropdown-search">
+                                        <input type="text" placeholder="Search..." data-order={filter.order}
+                                            value={filter.searchKey} oninput={handleDropdownSearch}
+                                            onclick={stopPropagation} />
+                                    </div>
+                                    <template lwc:if={filter.values.length}>
+                                        <template for:each={filter.values} for:item="opt">
+                                            <label key={opt.label} class="dropdown-item checkbox-item"
+                                                onclick={stopPropagation}>
+                                                <input type="checkbox" data-order={filter.order} data-value={opt.label}
+                                                    checked={opt.checked} onchange={handleCheckboxToggle} />
+                                                <span>{opt.label}</span>
+                                            </label>
+                                        </template>
+                                    </template>
+                                    <template lwc:else>
+                                        <div class="dropdown-empty">No Option Found</div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Host an event button -->
+                <button class="host-btn" onclick={handleHostanEvent}>
+                    {labels.hostEventButton}
+                </button>
+            </template>
+        </div>
+
+        <!-- MAIN CONTAINER -->
+        <div class="component-container-main">
+
+            <!--Spinner-->
+            <template lwc:if={isLoading}>
+                <div class="loading-overlay">
+                    <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- MAIN TABS -->
+            <div class="tabs-header">
+                <div class="tabs">
+                    <div class={upcomingTabClass} data-tab={labels.upcomingEvents} onclick={handleMainTabClick}>
+                        {labels.upcomingEvents}
+                    </div>
+
+                    <div class={pastTabClass} data-tab={labels.pastEvents} onclick={handleMainTabClick}>
+                        {labels.pastEvents}
+                    </div>
+                </div>
+
+                <div class="tab-underline"></div>
+            </div>
+
+            <!-- SUB TABS -->
+            <div class="subtabs-row">
+                <div class={subtabsClass}>
+
+                    <!-- UPCOMING SUBTABS -->
+                    <template if:true={isUpcomingTab}>
+                        <div class={myUpcomingClass} data-subtab={labels.myUpcomingEvents} onclick={handleSubTabClick}>
+                            <img src={myUpcomingIcon} class="subtab-icon" />
+                            {labels.myUpcomingEvents}
+                        </div>
+
+                        <div class={otherUpcomingClass} data-subtab={labels.otherUpcomingEvents}
+                            onclick={handleSubTabClick}>
+                            <img src={otherUpcomingIcon} class="subtab-icon" />
+                            {labels.otherUpcomingEvents}
+                        </div>
+                    </template>
+
+                    <!-- PAST SUBTABS -->
+                    <template if:true={isPastTab}>
+                        <div class={registeredPastClass} data-subtab={labels.registeredPastEvents}
+                            onclick={handleSubTabClick}>
+                            <img src={registeredPastIcon} class="subtab-icon" />
+                            {labels.registeredPastEvents}
+                        </div>
+
+                        <div class={nonRegisteredPastClass} data-subtab={labels.nonRegisteredPastEvents}
+                            onclick={handleSubTabClick}>
+                            <img src={nonRegisteredPastIcon} class="subtab-icon" />
+                            {labels.nonRegisteredPastEvents}
+                        </div>
+                    </template>
+
+                </div>
+
+            </div>
+
+            <!-- EVENTS GRID -->
+            <div class="events-grid">
+                <template lwc:if={eventsExist}>
+                    <template for:each={events} for:item="event">
+                        <div key={event.eventId} class="event-card">
+
+                            <!-- Image -->
+                            <template lwc:if={event.image}>
+                                <img src={event.image} class="event-image" />
+                            </template>
+                            <template lwc:else>
+                                <img src={defaultImageUrl} class="event-image" />
+                            </template>
+
+                            <div class="event-body">
+                                <div class="event-title">{event.name}</div>
+                                <div class="event-desc">{event.description}</div>
+
+                                <!-- Events Meta fields-->
+                                <div class="event-meta">
+
+                                    <div class="meta-item">
+                                        <img class="icon" src={icons.clock} />
+                                        <span class="meta-date-text">{event.startDate} at {event.startTime}</span>
+                                    </div>
+
+                                    <div class="meta-item">
+                                        <img class="icon" src={icons.location} />
+                                        <span>{event.place}</span>
+                                    </div>
+
+                                </div>
+
+                                <!--Divider-->
+                                <div class="divider"></div>
+
+                                <div class="attendees-section">
+
+                                    <template lwc:if={event.attendees.length}>
+
+                                        <!--Clickable profile pics-->
+                                        <div class="attendees clickable-attendees" data-eventid={event.eventId}
+                                            onclick={handleAttendeesClick}>
+
+                                            <div class="avatars" style={event.avatarsContainerStyle}>
+                                                <template for:each={event.attendeesPreview} for:item="att">
+                                                    <template lwc:if={att.profilePic}>
+                                                        <img key={att.attendeeId} src={att.profilePic} class="avatar"
+                                                            style={att.style} />
+                                                    </template>
+                                                    <template lwc:else>
+                                                        <img key={att.attendeeId} src={icons.fallbackAvatar}
+                                                            class="avatar" style={att.style} />
+                                                    </template>
+                                                </template>
+                                            </div>
+
+                                            <div class="attendee-text">
+                                                {event.attendeeText}
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template lwc:else>
+                                        <div class="attendee-text">
+                                            {event.attendeeText}
+                                        </div>
+                                    </template>
+                                </div>
+
+                                <template if:true={event.buttonLabel}>
+                                    <div class="event-btn-row">
+
+                                        <!-- Primary Button -->
+                                        <button disabled={event.disableRecordingRequest} class={event.buttonClass}
+                                            data-url={event.redirectionURL} data-label={event.buttonLabel}
+                                            data-eventid={event.eventId} data-eventobjectapi={event.eventObjectAPI}
+                                            onclick={handleEventAction}>
+
+                                            {event.buttonLabel}
+                                        </button>
+
+                                        <!-- Secondary Button for Attendees -->
+                                        <template lwc:if={event.isUpcomingEvent}>
+                                            <button class="event-secondary-btn" data-eventid={event.eventId}
+                                                data-eventobjectapi={event.eventObjectAPI}
+                                                onclick={handleShowAllAttendees}>
+                                                {labels.showAllAttendees}
+                                            </button>
+                                        </template>
+
+                                    </div>
+                                </template>
+                            </div>
+
+                        </div>
+                    </template>
+                </template>
+            </div>
+            <template lwc:if={eventsDoesntExist}>
+                <div class="no-events-wrapper">
+                    <div class="slds-notify slds-notify_alert slds-theme_info no-events-banner" role="alert">
+                        <span class="slds-assistive-text">No Events</span>
+                        <lightning-icon icon-name="utility:info" size="small"
+                            class="slds-m-right_x-small"></lightning-icon>
+                        <!--{labels.noEvents}-->
+                        {tabStateMessage}
+                    </div>
+                </div>
+            </template>
+
+            <!--Help text on past events-->
+            <template lwc:if={isPastTab}>
+                <div class="custom-info-banner">
+                    <lightning-icon icon-name="utility:info" size="x-small" class="info-icon"></lightning-icon>
+                    <span>{labels.pastEventsHelpText}&nbsp;<a
+                            href={emailHref}>{labels.volunteerInfoTextEmail}</a></span>
+                </div>
+            </template>
+
+            <!-- Pagination Component -->
+            <div class="pagination-container">
+                <c-ham_-pagination-util total-records={totalRecordsForChild} page-size={pageSizeForChild}
+                    current-page={currentPage} result-label="Records" is-override={isOverride}
+                    onpagechange={handlePageChange}>
+                </c-ham_-pagination-util>
+            </div>
+        </div>
+
+        <template lwc:if={showCustomToast}>
+            <c-ham_custom-toast-cmp title={toastTitle} message={toastMessage} variant={toastVariant}
+                duration={toastDuration} onclose={handleToastClose}>
+            </c-ham_custom-toast-cmp>
+        </template>
+
+        <!-- Host an Event Modal-->
+        <template lwc:if={isHostanEvent}>
+            <div class="modal-overlay host-event-modal">
+                <div class="modal">
+                    <!-- <div class="close-btn" onclick={handleCloseModal}>&times;</div> -->
+                    <img class="close-btn" onclick={handleCloseModal} src={icons.cross} />
+                    <h2>{labels.hostEventTitle}</h2>
+                    <!--
+                    <div class="subtext">
+                        {labels.hostEventSubText}
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Please note:</strong> {labels.hostEventInfoBox}
+                    </div>
+                -->
+                    <div class="actions">
+                        <button class="btn btn-primary" onclick={handleConfRequest}>{labels.hostEventBtn1}</button>
+                        <button class="btn btn-secondary" onclick={handleCloseModal}>{labels.hostEventBtn2}</button>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- CONNECTIONS/ALL ATTENDEES MODAL -->
+        <template lwc:if={showAttendeesModal}>
+            <div class="modal-overlay">
+                <div class="modal attendees-modal">
+
+                    <template lwc:if={isLoading}>
+                        <div class="attendee-modal-loading-overlay">
+                            <lightning-spinner alternative-text="Loading" size="medium"
+                                variant="brand"></lightning-spinner>
+                        </div>
+                    </template>
+
+                    <div class="modal-header">
+                        <h2>{modalHeading}</h2>
+                        <!-- <span class="close-btn" onclick={closeAttendeesModal}>&times;</span> -->
+                        <img class="close-btn" onclick={closeAttendeesModal} src={icons.cross} />
+                    </div>
+
+                    <!-- Attendee search bar -->
+                    <div class="attendee-search-row">
+                        <input type="text" class="attendee-search-input" placeholder={attendeeSearchPlaceholder}
+                            value={attendeeSearchKey} oninput={handleAttendeeSearchInput}
+                            onkeydown={handleAttendeeSearchKeydown} />
+                        <button class="attendee-search-btn" onclick={handleAttendeeSearch} title="Search">
+                            <lightning-icon icon-name="utility:search" size="x-small"
+                                class="search-icon"></lightning-icon>
+                        </button>
+                    </div>
+
+                    <!-- Rows -->
+                    <div class="attendees-list">
+                        <template lwc:if={selectedAttendees.length}>
+                            <template for:each={selectedAttendees} for:item="att">
+
+                                <div key={att.attendeeId} class={att.attendeeRowClass} data-id={att.attendeeId}
+                                    onclick={handleViewProfile} title={att.profileRowTitle}>
+
+                                    <!-- LEFT: Bookmark + Favorite icons -->
+                                    <div class="col-left-icons">
+                                        <template lwc:if={att.isSelf}>
+                                        </template>
+                                        <template lwc:else>
+                                            <img src={att.bookmarkIcon} class="bookmark-icon" data-id={att.attendeeId}
+                                                data-state={att.isBookmarked} data-actiontype="bookmark"
+                                                onclick={handleAttendeeAction} title={att.bookmarkTitle} />
+                                            <template lwc:if={att.isConnected}>
+                                                <img src={att.favoriteIcon} class="favorite-icon"
+                                                    data-id={att.attendeeId} data-state={att.isFavorite}
+                                                    data-actiontype="favorite" onclick={handleAttendeeAction}
+                                                    title={att.favoriteIconTitle} />
+                                            </template>
+                                        </template>
+                                    </div>
+
+                                    <!-- Avatar -->
+                                    <div class="avatar-container">
+                                        <template lwc:if={att.profilePic}>
+                                            <img src={att.profilePic} class="attendee-avatar" />
+                                        </template>
+                                        <template lwc:else>
+                                            <img src={icons.fallbackAvatar} class="attendee-avatar" />
+                                        </template>
+                                    </div>
+
+                                    <!-- MOBILE: name + year stacked -->
+                                    <template lwc:if={isMobileView}>
+                                        <div class="col-info">
+                                            <span class="attendee-name">{att.name}</span>
+                                            <span class="col-year">Graduation Year: <b>{att.graduationYear}</b></span>
+                                        </div>
+                                    </template>
+
+                                    <!-- DESKTOP: name | year as separate columns -->
+                                    <template lwc:if={isDesktopView}>
+                                        <div class="col-name">
+                                            <span class="attendee-name">{att.name}</span>
+                                        </div>
+                                        <div class="col-year">Graduation Year: <b>{att.graduationYear}</b></div>
+                                    </template>
+
+                                    <template lwc:if={att.isSelf}>
+                                    </template>
+                                    <template lwc:else>
+                                        <div class="attendee-btn-group">
+                                            <template lwc:if={att.showConnectionBtn}>
+                                                <button class={att.connectionBtnClass} data-id={att.attendeeId}
+                                                    data-action={att.connectionBtnLabel}
+                                                    data-isnecrology={att.isNecrology}
+                                                    disabled={att.connectionBtnDisabled} onclick={handleAttendeeAction}
+                                                    title={att.connectionBtnHover}>
+                                                    {att.connectionBtnLabel}
+                                                </button>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </template>
+                        <template lwc:else>
+                            <div class="no-events-wrapper">
+                                <div class="slds-notify slds-notify_alert slds-theme_info no-events-banner"
+                                    role="alert">
+                                    <span class="slds-assistive-text">No Attendees</span>
+                                    <lightning-icon icon-name="utility:info" size="small"
+                                        class="slds-m-right_x-small"></lightning-icon>
+                                    {labels.noEventAttendees}
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="attendee-pagination-wrapper">
+                        <c-ham_-pagination-util total-records={attendeeTotalRecords} page-size={attendeePageSize}
+                            current-page={attendeeCurrentPage} result-label="Attendees" is-override={isOverride}
+                            onpagechange={handleAttendeePageChange}>
+                        </c-ham_-pagination-util>
+                    </div>
+
+                </div>
+            </div>
+        </template>
+
+        <!-- Task created confirmation -->
+        <template lwc:if={showTaskConfirmation}>
+            <!-- Backdrop -->
+            <div class="custom-backdrop" onclick={handleCloseTaskConfirmation}></div>
+
+            <!-- Modal Card -->
+            <section class="custom-modal" role="dialog" aria-modal="true">
+                <div class="custom-modal-container" onclick={stopPropagation}>
+
+                    <!-- Close icon -->
+                    <!-- <button class="modal-close-btn" onclick={handleCloseTaskConfirmation}
+                        title="Close"><b>✕</b></button> -->
+                    <img class="modal-close-btn" onclick={handleCloseTaskConfirmation} title="Close"
+                        src={icons.cross} />
+
+                    <!-- Body -->
+                    <div class="custom-modal-body">
+                        <div class="slds-m-bottom_medium">
+                            <span>
+                                <img src={icons.confirmedIcon} />
+                            </span>
+                        </div>
+                        <!-- Modal Title -->
+                        <h2 class="slds-text-heading_medium slds-m-bottom_medium confirmation-modal-text">
+                            {labels.recordingRequestSent}
+                        </h2>
+                    </div>
+
+                </div>
+            </section>
+        </template>
+
+        <!-- Host an Event confirmation -->
+        <template lwc:if={isShowSuccessMsg}>
+            <!-- Backdrop -->
+            <div class="custom-backdrop" onclick={handleCloseHostanEvntConfirmation}></div>
+
+            <!-- Modal Card -->
+            <section class="custom-modal" role="dialog" aria-modal="true">
+                <div class="custom-modal-container" onclick={stopPropagation}>
+
+                    <!-- Close icon -->
+                    <!-- <button class="modal-close-btn" onclick={handleCloseTaskConfirmation}
+                        title="Close"><b>✕</b></button> -->
+                    <img class="modal-close-btn" onclick={handleCloseHostanEvntConfirmation} title="Close"
+                        src={icons.cross} />
+
+                    <!-- Body -->
+                    <div class="custom-modal-body">
+                        <div class="slds-m-bottom_medium">
+                            <span>
+                                <img src={icons.confirmedIcon} />
+                            </span>
+                        </div>
+                        <!-- Modal Title -->
+                        <h2 class="slds-text-heading_medium slds-m-bottom_medium confirmation-modal-text">
+                            {labels.hostanEventConfirmReq}
+                        </h2>
+                    </div>
+
+                </div>
+            </section>
+        </template>
+
+
+        <!-- Profile Overview — full-page overlay -->
+        <template lwc:if={showProfileOverview}>
+            <div class="profile-overlay">
+                <c-ham_alumni-profile-overview-cmp contact-id={selectedAttendeeContactId}
+                    current-user-contact-id={userContactId} main-resource={mainResource} images={profileImages}
+                    label={label} is-override={isOverride} onback={handleProfileOverviewBack}>
+                </c-ham_alumni-profile-overview-cmp>
+            </div>
+        </template>
+
+        <!-- ATTENDEE ACTION CONFIRMATION MODAL
+             Sits on top of the attendees modal.
+             Used for: Send Request (with textarea), Cancel Request,
+             Remove Connection, Remove Bookmark. -->
+        <template lwc:if={showAttendeeActionModal}>
+            <div class="attendee-action-backdrop" onclick={closeAttendeeActionModal}></div>
+            <section class="attendee-action-modal-wrapper" role="dialog" aria-modal="true">
+                <div class="attendee-action-modal-container" onclick={stopPropagation}>
+
+                    <!-- Close icon -->
+                    <img class="modal-close-btn" onclick={closeAttendeeActionModal} title="Close" src={icons.cross} />
+
+                    <!-- Title -->
+                    <h2 class="attendee-action-modal-title">{attendeeModalHeader}</h2>
+
+                    <!-- Personalised message textarea (Send Request only) -->
+                    <template lwc:if={isAttendeeModalRequest}>
+                        <div class="attendee-modal-textarea-wrapper">
+                            <textarea class="attendee-modal-textarea" value={attendeePersonalizedMsg}
+                                onchange={handleAttendeeMessageChange} rows="4"
+                                placeholder="Add a personalized message (optional)...">
+                            </textarea>
+                        </div>
+                    </template>
+
+                    <!-- Inactive user banner (shown when linked user's SF account is inactive) -->
+                    <template lwc:if={isAttendeeModalInactive}>
+                        <div class="attendee-inactive-banner">
+                            <lightning-icon icon-name="utility:info" size="x-small" class="info-icon"></lightning-icon>
+                            <span>{labels.inActiveUserMessage}</span>
+                        </div>
+                    </template>
+
+                    <!-- Buttons -->
+                    <div class="attendee-modal-btn-group">
+                        <button disabled={isAttendeeModalInactive} class={attendeeModalPrimaryClass}
+                            onclick={handleAttendeeModalConfirm} data-name={attendeeModalPrimary}>
+                            {attendeeModalPrimary}
+                        </button>
+                        <button disabled={isAttendeeModalInactive} class={attendeeModalSecondaryClass}
+                            onclick={closeAttendeeActionModal} data-name={attendeeModalSecondary}>
+                            {attendeeModalSecondary}
+                        </button>
+                    </div>
+
+                </div>
+            </section>
+        </template>
+
+    </div>
+</template>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Recurring_Gift_End_Date</fullName>
+    <active>false</active>
+    <description>End Date should be in the future, not today or in the past</description>
+    <errorConditionFormula>$Setup.ucinn_ascendv2__Bypass_Settings__c.ucinn_ascendv2__Bypass_Validation_Rules__c &lt;&gt; TRUE &amp;&amp; !ISNULL(ucinn_ascendv2__End_Date__c) &amp;&amp; ucinn_ascendv2__End_Date__c &lt;= TODAY() &amp;&amp; ISPICKVAL(Type, &apos;Recurring&apos;) &amp;&amp; RecordType.DeveloperName = &quot;Recurring_Gift&quot; &amp;&amp;
+RecordType.NamespacePrefix = &apos;ucinn_ascendv2&apos;</errorConditionFormula>
+    <errorDisplayField>ucinn_ascendv2__End_Date__c</errorDisplayField>
+    <errorMessage>End Date must be set in the future</errorMessage>
+</ValidationRule>

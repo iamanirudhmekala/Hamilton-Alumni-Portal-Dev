@@ -1,0 +1,156 @@
+<template>
+    <header class={headerClass}>
+        <div
+            class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-p-horizontal_medium slds-p-vertical_large">
+            <div class="slds-col my-spacing-right">
+                <a class="hamilton-logo">
+                    <img src={logo} alt="Hamilton College" onclick={handleNavLinkClick} data-name={label.hometitle}>
+                </a>
+            </div>
+
+            <template lwc:if={isDesktopView}>
+                <template lwc:if={label}>
+                    <div class="slds-col nav-links-section">
+
+                        <!-- Alumni nav (non-student): all modules -->
+                        <template if:false={isStudent}>
+                            <nav class="nav-links">
+                                <a class="nav-link" style={computeHomeStyle} data-name={label.hometitle}
+                                    onclick={handleNavLinkClick}>{label.hometitle}</a>
+                                <a class="nav-link" style={computealumnidirectory} data-name={label.alumnidirectory}
+                                    onclick={handleNavLinkClick}>{label.alumnidirectory}</a>
+                                <a class="nav-link" style={computeMyImpactStyle} data-name={label.myimpact}
+                                    onclick={handleNavLinkClick}>{label.myimpact}</a>
+                                <a class="nav-link" style={computeEventsStyle} data-name={label.events}
+                                    onclick={handleNavLinkClick}>{label.events}</a>
+                                <!-- <a class="nav-link" style={computeNewsStyle} data-name={label.news}
+                                    onclick={handleNavLinkClick}>{label.news}</a> -->
+                                <a class="nav-link" style={computeCommunityStyle} data-name={label.community} 
+                                    onclick={handleNavLinkClick}>{label.community}</a> 
+                                <a class="nav-link" style={computeVolunteerOppStyle} data-name={label.volunteerOpportunity}
+                                    onclick={handleNavLinkClick}>{label.volunteerOpportunity}</a>
+                                <a target="_blank" class="nav-link" data-link={label.makeagiftlink}
+                                    onclick={handleMakeGiftClick}>{label.makeagift}</a>
+                            </nav>
+                        </template>
+
+                        <!-- Student nav: Homepage, Directory, News, Groups -->
+                        <template if:true={isStudent}>
+                            <nav class="nav-links">
+                                <a class="nav-link" style={computeHomeStyle} data-name={label.hometitle}
+                                    onclick={handleNavLinkClick}>{label.hometitle}</a>
+                                <a class="nav-link" style={computealumnidirectory} data-name={label.alumnidirectory}
+                                    onclick={handleNavLinkClick}>{label.alumnidirectory}</a>
+                                <!-- <a class="nav-link" style={computeNewsStyle} data-name={label.news}
+                                    onclick={handleNavLinkClick}>{label.news}</a> -->
+                                <a class="nav-link" style={computeCommunityStyle} data-name={label.community} onclick={handleNavLinkClick}>{label.community}</a>
+                                <!-- No longer needed since addition of community -->
+                                <!-- <a class="nav-link" style={computeGroupsStyle} data-name={label.groups}
+                                    onclick={handleNavLinkClick}>{label.groups}</a> -->
+                            </nav>
+                        </template>
+
+                    </div>
+                </template>
+            </template>
+
+            <div class="slds-col slds-no-flex">
+                <div class="slds-grid slds-grid_vertical-align-center header-icons">
+                    <template if:false={isDesktopView}>
+                        <div class="slds-m-right_xx-small">
+                            <div class="header-icon-button">
+                                <template lwc:if={label}>
+                                    <a target="_blank" class="header-icon-link" data-link={label.makeagiftlink}
+                                        onclick={handleMakeGiftClick}>
+                                        <img src={images.makeaGiftImage} alt="Make a Gift" class="header-icon-img">
+                                    </a>
+                                </template>
+                            </div>
+                        </div>
+
+                    </template>
+
+
+                    <div class="slds-m-right_xx-small">
+                        <button class="feedback-header-btn" onclick={handleFeedbackClick}>
+                            <b>{feedbackLabel}</b>
+                        </button>
+                    </div>
+
+                    <div class="slds-m-right_xx-small">
+                        <c-ham_notification-bell selected-tab={activeTab} is-override={isOverride} images={images}></c-ham_notification-bell>
+                    </div>
+
+                    <div class="profile-dropdown-container">
+                        <button class="profile-button" onclick={toggleSettings}>
+                            <template lwc:if={userProfileUrl}>
+                                <img src={userProfileUrl} alt="User Profile" class="user-profile-image">
+                            </template>
+                            <template lwc:else>
+                                <lightning-icon icon-name="action:user" alternative-text="User"
+                                    size="small"></lightning-icon>
+                            </template>
+                        </button>
+
+                        <template lwc:if={isSettingsOpen}>
+                            <template lwc:if={label}>
+                                <div class="slds-dropdown slds-dropdown_right settings-dropdown">
+                                    <ul class="slds-dropdown__list" role="menu">
+                                        <li class="my-settings-menu" role="presentation">
+                                            <a role="menuitem" onclick={handleEditProfile}>
+                                                <span class="icon settings-popup-icon">
+                                                    <template lwc:if={isOverride}>
+                                                        <img src={images.editProfileImageGreen} alt={label.editprofile}></img>
+                                                    </template>
+                                                    <template lwc:else>
+                                                    <img src={images.editProfileImage} alt={label.editprofile}></img>
+                                                    </template>
+                                                </span>
+                                                <span class="menu-label">{label.editprofile}</span>
+                                            </a>
+                                        </li>
+                                        <li class="my-settings-menu" role="presentation">
+                                            <a role="menuitem" onclick={handleFeedbackClick}>
+                                                <span class="icon settings-popup-icon">
+                                                    <span class="feedback-icon" style={feedbackIconStyle}></span>
+                                                </span>
+                                                <span class="menu-label">{feedbackLabel}</span>
+                                            </a>
+                                        </li>
+                                        <li class="my-settings-menu" role="presentation">
+                                            <a role="menuitem" onclick={handlePreferencesClick}>
+                                                <span class="icon settings-popup-icon">
+                                                    <template lwc:if={isOverride}>
+                                                        <img src={images.manageSubscriptionImageGreen} alt={label.managesubscription}></img>
+                                                    </template>
+                                                    <template lwc:else>
+                                                    <img src={images.manageSubscriptionImage}
+                                                        alt={label.managesubscription}></img>
+                                                    </template>
+                                                </span>
+                                                <span class="menu-label">{label.managesubscription}</span>
+                                            </a>
+                                        </li>
+                                        <li class="my-settings-menu" role="presentation">
+                                            <a role="menuitem" onclick={handleLogout}>
+                                                <span class="icon settings-popup-icon">
+                                                    <template lwc:if={isOverride}>
+                                                        <img src={images.logoutImageGreen} alt={label.logout}></img>
+                                                    </template>
+                                                    <template lwc:else>
+                                                    <img src={images.logoutImage} alt={label.logout}></img>
+                                                    </template>
+                                                </span>
+                                                <span class="menu-label">{label.logout}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </template>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</template>

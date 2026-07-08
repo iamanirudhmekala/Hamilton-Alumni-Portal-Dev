@@ -1,0 +1,53 @@
+<template>
+    <div class={wrapperClass}>
+    <!-- Grid View (3-column) -->
+    <template lwc:if={isGridView}>
+        <div class="card-grid">
+            <template for:each={records} for:item="item">
+                <div key={item.id} class="card-item">
+                    <div class="card-image">
+                        <img src={item.imageUrl} alt={item.title} onerror={handleImageError}  class="my-default-icon"/>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">{item.title}</h3>
+                        <p class="card-description">{item.description}</p>                        
+                        <div class={footerClass}>
+                            <template lwc:if={item.date}>
+                                <span class="card-date">{item.date}</span>
+                            </template>                            
+                            <button class="read-more-btn" data-link={item.linkUrl} onclick={handleReadMore}>
+                                {buttonLabel}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </template>
+
+    <!-- List View (horizontal rows) -->
+    <template lwc:if={isListView}>
+        <div class="card-list">
+            <template for:each={records} for:item="item">
+                <div key={item.id} class="list-item">
+                    <div class="list-image">
+                        <img src={item.imageUrl} alt={item.title} onerror={handleImageError} />
+                    </div>
+                    <div class="list-content">
+                        <h3 class="list-title">{item.title}</h3>
+                        <p class="card-description">{item.description}</p> 
+                        <div class={footerClass}>
+                            <template lwc:if={item.date}>
+                                <span class="card-date">{item.date}</span>
+                            </template> 
+                            <button class="read-more-btn" data-link={item.linkUrl} onclick={handleReadMore}>
+                                {buttonLabel}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </template>
+    </div>
+</template>

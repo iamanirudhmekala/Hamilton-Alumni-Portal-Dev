@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Change_Donor_ID</fullName>
+    <active>false</active>
+    <description>Donor ID/CRS ID can only be changed by a system administrator</description>
+    <errorConditionFormula>$Setup.ucinn_ascendv2__Bypass_Settings__c.ucinn_ascendv2__Bypass_Validation_Rules__c &lt;&gt; TRUE &amp;&amp;
+ISCHANGED(ucinn_ascendv2__Donor_ID__c) &amp;&amp;
+OR(
+RecordType.DeveloperName = &quot;Edit_Contact&quot;,
+RecordType.DeveloperName = &quot;New_Contact&quot;
+)&amp;&amp;
+RecordType.NamespacePrefix = &apos;ucinn_ascendv2&apos;</errorConditionFormula>
+    <errorDisplayField>ucinn_ascendv2__Donor_ID__c</errorDisplayField>
+    <errorMessage>The Donor ID can only be changed by the system administrator.</errorMessage>
+</ValidationRule>

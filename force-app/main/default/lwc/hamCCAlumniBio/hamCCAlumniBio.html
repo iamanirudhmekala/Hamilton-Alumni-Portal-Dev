@@ -1,0 +1,220 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-contact" style="background-color: #6b5cab;">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                            <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#contact"></use>
+                        </svg>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span>Alumni Profile</span>
+                    </h2>
+                </div>
+            </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <!-- Profile Image -->
+             <template lwc:if={contactData}>
+                <div class="slds-align_absolute-center slds-m-bottom_medium">
+                    <template lwc:if={contactData.HAM_Profile_Picture_URL__c}>
+                        <img src={contactData.HAM_Profile_Picture_URL__c} alt="Profile Photo" class="circle-photo" />
+                    </template>
+                    <template lwc:else>
+                        <img src="https://hamiltoncollege.my.salesforce.com/file-asset-public/Hamiltonbannerjpg?oid=00D3t000005Ydd0" alt="Hamilton College" class="circle-photo" />
+                    </template>
+                </div>
+
+                <!-- Basic Info -->
+                <div class="slds-form slds-form_stacked">
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <label class="slds-form-element__label">Name</label>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">{contactData.HAM_Name_w_Suffix__c}</div>
+                        </div>
+                    </div>
+
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <label class="slds-form-element__label">Email</label>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">{contactData.Email}</div>
+                        </div>
+                    </div>
+
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <label class="slds-form-element__label">Phone</label>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">{contactData.Phone}</div>
+                        </div>
+                    </div>
+
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <label class="slds-form-element__label">Class Year</label>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">{contactData.HAM_Reunion_Year__c}</div>
+                        </div>
+                    </div>
+
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <label class="slds-form-element__label">Major</label>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">{major}</div>
+                        </div>
+                    </div>
+
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <label class="slds-form-element__label">Current Company</label>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">
+                                <a href={companyLink} class="slds-text-link_reset" style="color: #0176d3; text-decoration: none;">
+                                    {contactData.HAM_LiveAlumni_Employer__c}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slds-form-element slds-m-bottom_medium">
+                        <label class="slds-form-element__label">Role</label>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">{contactData.HAM_LiveAlumni_Job_Title__c}</div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Relationships -->
+            <div class="slds-section slds-is-open slds-m-bottom_medium">
+                <h3 class="slds-section__title slds-theme_shade">
+                    <span class="slds-truncate slds-p-horizontal_small">Relationships</span>
+                </h3>
+                <div class="slds-section__content slds-p-top_small">
+                    <ul class="slds-list_vertical slds-has-dividers_top-space">
+                        <template lwc:if={prmData}>
+                            <li key={prmData.id} class="slds-item slds-p-vertical_xx-small" data-id={prmData.id}>
+                                <div class="slds-grid slds-grid_vertical-align-center">
+                                    <div class="slds-col">
+                                        <button class="slds-button slds-text-link_reset" data-id={prmData.id} onclick={handleRelationshipClick}>
+                                            <span class="slds-text-body_small" style="color:#0176d3; text-decoration:none;">{prmData.name}</span>
+                                        </button>
+                                        <div class="slds-text-color_weak slds-text-body_small">{prmData.relationship}</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </template>
+                        <template lwc:if={relationshipData}>
+                            <template for:each={relationshipData} for:item="relationship">
+                                <li key={relationship.id} class="slds-item slds-p-vertical_xx-small" data-id={relationship.id}>
+                                    <div class="slds-grid slds-grid_vertical-align-center">
+                                        <div class="slds-col">
+                                            <button class="slds-button slds-text-link_reset" data-id={relationship.id} onclick={handleRelationshipClick}>
+                                                <span class="slds-text-body_small" style="color:#0176d3; text-decoration:none;">{relationship.name}</span>
+                                            </button>
+                                            <div class="slds-text-color_weak slds-text-body_small">{relationship.relationship}</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </template>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Open Tasks -->
+            <div class="slds-section slds-is-open slds-m-bottom_medium">
+               <h3 class="slds-section__title slds-theme_shade">
+                    <div class="slds-grid slds-grid_vertical-align-center" style="width:100%;">
+                        <span class="slds-col slds-truncate slds-p-horizontal_small">Open Tasks</span>
+                        <div class="slds-col slds-no-flex slds-p-right_small slds-text-align_right">
+                            <lightning-button label="Add" variant="neutral" onclick={handleAddTask}></lightning-button>
+                        </div>
+                    </div>
+                </h3>
+                <div class="slds-section__content slds-p-top_small">
+                    <ul class="slds-list_vertical slds-has-dividers_top-space">
+                        <template lwc:if={tasksPage}>
+                            <template for:each={tasksPage} for:item="task">
+                                <li key={task.Id} class="slds-item slds-p-vertical_xx-small">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-grid_vertical-stretch">
+                                        <div class="slds-col">
+                                            <button class="slds-button slds-text-link_reset" data-id={task.Id} onclick={handleTaskClick}>
+                                                <span class="slds-text-body_small" style="color:#0176d3; text-decoration:none;">{task.Subject}</span>
+                                            </button>
+                                            <div class="slds-text-color_weak slds-text-body_small">Due: {task.ActivityDate}</div>
+                                        </div>
+                                        <div class="slds-col slds-no-flex">
+                                            <span class={task.badgeClass}>{task.Priority}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </template>
+                        </template>
+                    </ul>
+
+                    <!-- Client-side pagination controls -->
+                    <div class="slds-m-top_small">
+                        <div class="slds-grid slds-grid_vertical-align-center">
+                            <div class="slds-col slds-no-flex">
+                                <div class="slds-button-group" role="group">
+                                    <button class="slds-button slds-button_neutral" onclick={handlePrevTasks} disabled={disablePrevTasks}>Previous</button>
+                                    <button class="slds-button slds-button_neutral" onclick={handleNextTasks} disabled={disableNextTasks}>Next</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Career Center Badges -->
+            <div class="slds-section slds-is-open">
+                <h3 class="slds-section__title slds-theme_shade">
+                    <span class="slds-truncate slds-p-horizontal_small">Career Center Badges</span>
+                </h3>
+                <div class="slds-section__content slds-p-top_small">
+                    <div class="slds-grid slds-wrap slds-gutters_xx-small">
+                        <!-- Engagement badges (Prospect, Engaged, etc.) -->
+                        <template for:each={badges} for:item="badge">
+                            <div key={badge.id} class="slds-col slds-size_1-of-2 slds-p-bottom_xx-small">
+                                <span class={badge.badgeClass}>{badge.label}</span>
+                            </div>
+                        </template>
+                        
+                        <!-- FIX: use lwc:if (not if:true), uncomment img, use correct property name -->
+                        <template lwc:if={isVolunteer}>
+                            <div class="slds-col slds-size_1-of-2 slds-p-bottom_xx-small slds-p-around_x-small slds-text-align_center">
+                                <img src={volunteerBadgeUrl} alt="Volunteer badge" title="Volunteer badge" class="icon-image-small" />
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Create New Task Flow Modal -->
+    <template lwc:if={isFlowOpen}>
+        <div role="dialog" class="slds-modal slds-fade-in-open" aria-modal="true" aria-label="Create New Task">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <h2 class="slds-modal__title slds-hyphenate">Create New Task</h2>
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleFlowClose}>
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-flow
+                        flow-api-name="HAM_Task_Create_New_Task"
+                        onstatuschange={handleFlowStatusChange}>
+                    </lightning-flow>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+</template>

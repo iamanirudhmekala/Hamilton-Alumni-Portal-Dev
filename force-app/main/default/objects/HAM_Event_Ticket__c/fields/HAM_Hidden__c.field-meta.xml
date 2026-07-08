@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Hidden__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates whether this ticket type is hidden from the public registration page.</description>
+    <inlineHelpText>Check if this ticket type should be hidden from the public event registration page.</inlineHelpText>
+    <label>Hidden</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

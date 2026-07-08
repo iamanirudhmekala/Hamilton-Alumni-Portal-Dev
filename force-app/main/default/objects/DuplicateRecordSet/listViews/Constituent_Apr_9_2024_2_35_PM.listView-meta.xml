@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Constituent_Apr_9_2024_2_35_PM</fullName>
+    <columns>Name</columns>
+    <columns>RecordCount</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Parent</field>
+        <operation>equals</operation>
+        <value>&quot;Constituent Apr 9, 2024 2:35 PM&quot;</value>
+    </filters>
+    <label>Constituent Apr 9, 2024 2:35 PM</label>
+</ListView>

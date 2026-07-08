@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrated from the: Assignment - End Date workflow rule
+Workflow rule description: Used to remove the Primary Relationship Manager from the Contact record when the Assignment end date passes.&quot;</description>
+    <label>Assignment - End Date</label>
+    <migratedFromWorkflowRuleName>Assignment - End Date</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Updates the flag on an Assignment record causing the trigger to update the current PRN on the Contact record.</description>
+        <name>ScheduledPath1Update</name>
+        <label>ScheduledPath1Update</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>ucinn_ascendv2__Update_PRN__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterFormula>{!$Setup.ucinn_ascendv2__Bypass_Settings__c.ucinn_ascendv2__Bypass_Workflows__c} &lt;&gt; TRUE &amp;&amp; ISPICKVAL({!$Record.ucinn_ascendv2__Assignment_Type__c}, &apos;Primary Relationship Manager&apos;) &amp;&amp; {!$Record.ucinn_ascendv2__Assignment_End_Date__c} &gt;= TODAY() &amp;&amp;  OR( {!$Record.RecordType.DeveloperName} = &quot;Account_Assignment&quot;,  {!$Record.RecordType.DeveloperName} = &quot;Contact_Assignment&quot; )</filterFormula>
+        <object>ucinn_ascendv2__Assignment__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>ScheduledPath1</name>
+            <connector>
+                <targetReference>ScheduledPath1Update</targetReference>
+            </connector>
+            <label>ScheduledPath1</label>
+            <offsetNumber>1</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <recordField>ucinn_ascendv2__Assignment_End_Date__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>

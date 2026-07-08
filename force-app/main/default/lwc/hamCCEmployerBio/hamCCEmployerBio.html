@@ -1,0 +1,185 @@
+<template>
+    <lightning-card title="Employer Details" icon-name="standard:account" class="employer-card">
+        
+        <template lwc:if={accountData}>
+            <div class="slds-card__body slds-card__body_inner">
+                <!-- Company Logo -->
+                <div class="slds-align_absolute-center slds-m-bottom_medium">
+                    <lightning-avatar 
+                        size="large" 
+                        initials={companyInitials}
+                        src={accountData.PhotoUrl}
+                        variant="circle"
+                        class="company-avatar">
+                    </lightning-avatar>
+                </div>
+
+                <!-- Basic Info -->
+                <div class="slds-form slds-form_stacked">
+                    <lightning-layout multiple-rows="true" vertical-align="start">
+                        <lightning-layout-item size="12" class="slds-m-bottom_small">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Company Name</label>
+                                <div class="slds-form-element__control">
+                                    {accountData.Name}
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item size="12" class="slds-m-bottom_small">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Industry</label>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-text-body_regular">{accountData.Industry}</div>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item size="12" class="slds-m-bottom_small">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Type</label>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-text-body_regular">{accountData.Type}</div>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" class="slds-m-bottom_small">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Account Number</label>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-text-body_regular">{accountData.AccountNumber}</div>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item size="12" class="slds-m-bottom_medium">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Account Address</label>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-text-body_regular">
+                                        <lightning-formatted-rich-text value={accountData.ucinn_ascendv2__Preferred_Address_Formula__c} read-only></lightning-formatted-rich-text>
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+
+                <!-- Key Contacts -->
+                <div class="slds-section slds-is-open slds-m-bottom_medium">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small">Key Contacts</span>
+                    </h3>
+                    <template lwc:if={relationshipData}>
+                        <div class="slds-section__content slds-p-top_small">
+                            <ul class="slds-list_vertical slds-has-dividers_top-space">
+                                <template for:each={relationshipData} for:item="relation">
+                                    <li key={relation.id} class="slds-item slds-p-vertical_xx-small">
+                                        <div class="slds-grid slds-grid_vertical-align-center">
+                                            <div class="slds-col">
+                                                <div class="slds-text-body_small">
+                                                    <a href={relation.recordUrl} class="slds-text-link" data-contact-id={relation.id} onclick={handleContactClick}>
+                                                        {relation.name}
+                                                    </a>
+                                                </div>
+                                                <div class="slds-text-color_weak slds-text-body_small">{relation.relationship}</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Open Tasks -->
+                <div class="slds-section slds-is-open slds-m-bottom_medium">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <div class="slds-grid slds-grid_vertical-align-center" style="width:100%;">
+                            <span class="slds-col slds-truncate slds-p-horizontal_small">Open Tasks</span>
+                            <div class="slds-col slds-no-flex slds-p-right_small slds-text-align_right">
+                                <lightning-button label="Add" variant="neutral" onclick={handleAddTask}></lightning-button>
+                            </div>
+                        </div>
+                    </h3>
+                    <div class="slds-section__content slds-p-top_small">
+                        <template lwc:if={tasksPage}>
+                            <ul class="slds-list_vertical slds-has-dividers_top-space">
+                                <template for:each={tasksPage} for:item="task">
+                                    <li key={task.Id} class="slds-item slds-p-vertical_xx-small">
+                                        <div class="slds-grid slds-grid_vertical-align-center slds-grid_vertical-stretch">
+                                            <div class="slds-col">
+                                                <div class="slds-text-body_small">
+                                                    <a href={task.recordUrl} class="slds-text-link task-link">
+                                                        {task.Subject}
+                                                    </a>
+                                                </div>
+                                                <div class="slds-text-color_weak slds-text-body_small">Due: {task.ActivityDate}</div>
+                                            </div>
+                                            <div class="slds-col slds-no-flex">
+                                                <lightning-badge label={task.Priority} class={task.badgeClass}></lightning-badge>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+
+                        <!-- Client-side pagination controls -->
+                        <div class="slds-m-top_small">
+                            <div class="slds-grid slds-grid_vertical-align-center">
+                                <div class="slds-col slds-no-flex">
+                                    <div class="slds-button-group" role="group">
+                                        <button class="slds-button slds-button_neutral" onclick={handlePrevTasks} disabled={disablePrevTasks}>Previous</button>
+                                        <button class="slds-button slds-button_neutral" onclick={handleNextTasks} disabled={disableNextTasks}>Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Career Center Badges -->
+                <div class="slds-section slds-is-open">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small">Career Center Badges</span>
+                    </h3>
+                    <div class="slds-section__content slds-p-top_small">
+                        <div class="slds-grid slds-wrap slds-gutters_xx-small">
+                            <template for:each={careerBadges} for:item="badge">
+                                <div key={badge.id} class="slds-col slds-size_1-of-2 slds-p-bottom_xx-small">
+                                    <lightning-badge label={badge.label} class={badge.badgeClass}></lightning-badge>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+
+    <!-- Create New Task Flow Modal -->
+    <template lwc:if={isFlowOpen}>
+        <div role="dialog" class="slds-modal slds-fade-in-open" aria-modal="true" aria-label="Create New Task">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <h2 class="slds-modal__title slds-hyphenate">Create New Task</h2>
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleFlowClose}>
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-flow
+                        flow-api-name="HAM_Task_Create_New_Task_Accounts"
+                        onstatuschange={handleFlowStatusChange}>
+                    </lightning-flow>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+</template>

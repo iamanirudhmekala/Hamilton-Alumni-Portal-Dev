@@ -1,0 +1,241 @@
+<template>
+    <div class="single-page-form">
+        <div class="form-layout-with-carousel">
+            <!-- Main Form Content -->
+            <div class="form-content-main">
+                <div class="form-header">
+                   
+                    <c-ham-Giving-Image-Carousel></c-ham-Giving-Image-Carousel>
+                </div>
+
+                <!-- Main Navigation Tabs -->
+                <section class="form-section-compact" style="padding-bottom: 0;">
+                    <div class="gift-type-tabs gift-type-tabs-header arrow-tabs" style="margin-bottom: 0;">
+                        <lightning-button
+                            variant={amountTabVariant}
+                            label="Amount"
+                            class={amountTabClass}
+                            onclick={handleAmountTabClick}>
+                        </lightning-button>
+                        <lightning-button
+                            variant={designationTabVariant}
+                            label="Designation"
+                            class={designationTabClass}
+                            onclick={handleDesignationTabClick}>
+                        </lightning-button>
+                        <lightning-button
+                            variant={paymentTabVariant}
+                            label="Payment"
+                            class={paymentTabClass}
+                            onclick={handlePaymentTabClick}>
+                        </lightning-button>
+                    </div>
+                </section>
+
+                <!-- AMOUNT TAB -->
+                <template if:true={isAmountTab}>
+                    <section class="form-section-compact gift-module">
+                        <!-- Gift Type Tabs -->
+                        <div class="gift-type-tabs gift-type-tabs-header">
+                            <lightning-button
+                                variant={oneTimeVariant}
+                                label="Give Once"
+                                class={oneTimeClass}
+                                onclick={handleOneTimeClick}>
+                            </lightning-button>
+                            <lightning-button
+                                variant={recurringVariant}
+                                label="Monthly"
+                                class={recurringClass}
+                                onclick={handleRecurringClick}>
+                            </lightning-button>
+                            <lightning-button
+                                variant={pledgeVariant}
+                                label="Pay Pledge"
+                                class={pledgeClass}
+                                onclick={handlePledgeClick}>
+                            </lightning-button>
+                        </div>
+
+                        <!-- Gift Amount Content -->
+                        <div class="gift-amount-content">
+                            <!-- ONE-TIME GIFT -->
+                            <template if:true={isOneTime}>
+                                <div class="custom-amount-engaging">
+                                    <div class="custom-amount-header">
+                                        <h3>Your Gift Amount</h3>
+                                    </div>
+                                    <div class="amount-input-wrapper-large">
+                                        <span class="currency-symbol-large">$</span>
+                                        <lightning-input
+                                            type="number"
+                                            variant="label-hidden"
+                                            value={customAmount}
+                                            onchange={handleCustomAmountChange}
+                                            placeholder="0"
+                                            min="1"
+                                            class="amount-input-large">
+                                        </lightning-input>
+                                    </div>
+                                </div>
+
+                                <template if:true={hasAmount}>
+                                    <div class="selected-amount-compact">
+                                        Total: <strong>${formattedAmount}</strong>
+                                    </div>
+                                </template>
+                            </template>
+
+                            <!-- MONTHLY GIFT -->
+                            <template if:true={isRecurring}>
+                                <div class="custom-amount-engaging">
+                                    <div class="custom-amount-header">
+                                        <h3>Your Monthly Gift Amount</h3>
+                                    </div>
+                                    <div class="amount-input-wrapper-large">
+                                        <span class="currency-symbol-large">$</span>
+                                        <lightning-input
+                                            type="number"
+                                            variant="label-hidden"
+                                            value={customAmount}
+                                            onchange={handleCustomAmountChange}
+                                            placeholder="0"
+                                            min="1"
+                                            class="amount-input-large">
+                                        </lightning-input>
+                                    </div>
+                                </div>
+
+                                <template if:true={hasAmount}>
+                                    <div class="selected-amount-compact">
+                                        Total: <strong>${formattedAmount}</strong>
+                                        <span class="recurring-label"> per month</span>
+                                    </div>
+                                </template>
+                            </template>
+
+                            <!-- PAY PLEDGE -->
+                            <template if:true={isPledge}>
+                                <div class="pledge-list">
+                                    <template for:each={mockPledges} for:item="pledge">
+                                        <label key={pledge.id} class={pledge.cssClass}>
+                                            <lightning-input
+                                                type="checkbox"
+                                                variant="label-hidden"
+                                                checked={pledge.isSelected}
+                                                value={pledge.id}
+                                                onchange={handlePledgeSelection}
+                                                data-id={pledge.id}>
+                                            </lightning-input>
+                                            <div class="pledge-content">
+                                                <div class="pledge-header">
+                                                    <div class="pledge-designation">{pledge.designation}</div>
+                                                    <div class="pledge-date">Pledged: {pledge.pledgeDate}</div>
+                                                </div>
+                                                <div class="pledge-details">
+                                                    <div class="pledge-detail-row">
+                                                        <span class="pledge-label">Total Pledge:</span>
+                                                        <span class="pledge-value">${pledge.formattedTotal}</span>
+                                                    </div>
+                                                    <div class="pledge-detail-row">
+                                                        <span class="pledge-label">Paid:</span>
+                                                        <span class="pledge-value">${pledge.formattedPaid}</span>
+                                                    </div>
+                                                    <div class="pledge-detail-row">
+                                                        <span class="pledge-label">Remaining:</span>
+                                                        <span class="pledge-value pledge-remaining">${pledge.formattedRemaining}</span>
+                                                    </div>
+                                                    <div class="pledge-detail-row">
+                                                        <span class="pledge-label">Suggested Payment:</span>
+                                                        <span class="pledge-value pledge-suggested">${pledge.formattedInstallment}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </template>
+                                </div>
+
+                                <!-- Total and Custom pledge payment amount -->
+                                <template if:true={hasSelectedPledges}>
+                                    <div class="pledge-total-section">
+                                        <div class="selected-amount-compact pledge-total-display">
+                                            Total Suggested Payment: <strong>${formattedPledgeTotal}</strong>
+                                            <template if:true={hasMultiplePledges}>
+                                                <span class="pledge-count"> ({pledgeCount} pledges selected)</span>
+                                            </template>
+                                        </div>
+                                        
+                                        <div class="custom-amount-compact">
+                                            <label for="customPledgeAmount">Or enter a custom amount:</label>
+                                            <div class="amount-input-wrapper">
+                                                <span class="currency-symbol">$</span>
+                                                <lightning-input
+                                                    type="number"
+                                                    variant="label-hidden"
+                                                    value={customAmount}
+                                                    onchange={handleCustomAmountChange}
+                                                    placeholder="Enter Custom Amount"
+                                                    min="1"
+                                                    class="amount-input-custom">
+                                                </lightning-input>
+                                            </div>
+                                        </div>
+                                        
+                                        <template if:true={hasCustomPledgeAmount}>
+                                            <div class="selected-amount-compact">
+                                                Final Payment Amount: <strong>${formattedAmount}</strong>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </template>
+                        </div>
+
+                        <div class="form-submit" style="margin-top: 1.5rem;">
+                            <lightning-button
+                                variant="brand"
+                                label="Continue to Designation →"
+                                class="btn btn-primary btn-large"
+                                disabled={isAmountTabIncomplete}
+                                onclick={handleContinueToDesignation}>
+                            </lightning-button>
+                        </div>
+                    </section>
+                </template>
+
+                <!-- DESIGNATION TAB 
+                <template if:true={isDesignationTab}>
+                    <c-hamilton-designation-section
+                        form-data={formData}
+                        designation-tab={designationTab}
+                        selected-designations={selectedDesignations}
+                        search-term={searchTerm}
+                        show-dedication={showDedication}
+                        dedication-type={dedicationType}
+                        onback={handleBackFromDesignation}
+                        ondesignationtabchange={handleDesignationTabChange}
+                        onsearchchange={handleSearchChange}
+                        ondesignationadd={handleDesignationAdd}
+                        ondesignationremove={handleDesignationRemove}
+                        ondesignationamountchange={handleDesignationAmountChange}
+                        ondedicationchange={handleDedicationChange}
+                        oncontinue={handleContinueToPayment}>
+                    </c-hamilton-designation-section>
+                </template>
+-->
+                <!-- PAYMENT TAB 
+                <template if:true={isPaymentTab}>
+                    <c-hamilton-payment-section
+                        form-data={formData}
+                        card-details={cardDetails}
+                        onback={handleBackFromPayment}
+                        onpaymentmethodchange={handlePaymentMethodChange}
+                        oncardinputchange={handleCardInputChange}
+                        ondonorinfochange={handleDonorInfoChange}
+                        onsubmit={handleFormSubmit}>
+                    </c-hamilton-payment-section>
+                </template>-->
+            </div>
+        </div>
+    </div>
+</template>

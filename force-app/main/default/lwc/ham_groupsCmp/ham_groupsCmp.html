@@ -1,0 +1,54 @@
+<template>
+    <div class="groups-container info-card">
+        <div class="groups-header">
+            <h2 class="groups-title">Alumni Groups</h2>
+            <button class="discover-btn" onclick={handleDiscoverClick}>Discover All</button>
+        </div>
+        
+        <!-- Search bar -->
+        <div class="groups-search">
+            <div class="search-icon-wrapper">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+            <input type="text" class="search-input" value={searchValue} oninput={handleInputChange} onkeydown={handleKeyDown} placeholder="Search Groups..." />
+            <button class="widget-search-btn" onclick={handleSearchClick}>Search</button>
+        </div>
+
+        <!-- Groups list -->
+        <div class="widget-groups-list">
+            <template if:true={isLoading}>
+                <div class="widget-spinner">
+                    <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                </div>
+            </template>
+            <template if:false={isLoading}>
+                <template if:true={hasGroups}>
+                    <template for:each={displayGroups} for:item="group">
+                        <div key={group.groupId} class="widget-group-row" data-id={group.groupId} onclick={handleGroupClick}>
+                            <template if:true={group.bannerUrl}>
+                                <img src={group.bannerUrl} alt={group.name} class="widget-group-banner" />
+                            </template>
+                            <template if:false={group.bannerUrl}>
+                                <div class="widget-group-banner-fallback"></div>
+                            </template>
+                            <div class="widget-group-info">
+                                <h4 class="widget-group-name">{group.name}</h4>
+                                <span class="widget-group-members">{group.memberCount} members</span>
+                            </div>
+                            <button class="widget-group-view-btn" data-id={group.groupId} onclick={handleGroupClick}>View</button>
+                        </div>
+                    </template>
+                </template>
+                <template if:false={hasGroups}>
+                    <div class="widget-empty-state">
+                        <p class="empty-text">You haven't joined any groups yet.</p>
+                        <button class="btn-discover-large" onclick={handleDiscoverClick}>Explore Groups</button>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Date_Distribution_Received__c</fullName>
+    <description>Date funds/assets were received by Hamilton</description>
+    <inlineHelpText>The date on which Hamilton College received the distributed funds or assets from the estate.</inlineHelpText>
+    <label>Date Distribution Received</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

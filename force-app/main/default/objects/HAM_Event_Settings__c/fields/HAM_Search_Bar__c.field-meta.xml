@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Search_Bar__c</fullName>
+    <description>Enable/disable search bar on event page.</description>
+    <inlineHelpText>Controls whether the search bar is displayed on the event registration page.</inlineHelpText>
+    <label>Search Bar</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>On</fullName>
+                <default>false</default>
+                <label>On</label>
+            </value>
+            <value>
+                <fullName>Off</fullName>
+                <default>false</default>
+                <label>Off</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

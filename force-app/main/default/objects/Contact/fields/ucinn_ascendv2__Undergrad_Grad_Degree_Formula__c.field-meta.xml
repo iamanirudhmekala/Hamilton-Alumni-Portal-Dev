@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Undergrad_Grad_Degree_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Concatenates Earliest Undergrad and Grad Degree for Daily Contribution Report</description>
+    <externalId>false</externalId>
+    <formula>ucinn_ascendv2__Earliest_UG_Degree_Info__c + &quot;/&quot; +  ucinn_ascendv2__Earliest_Grad_Degree_Info__c</formula>
+    <label>Undergrad / Grad Degree</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

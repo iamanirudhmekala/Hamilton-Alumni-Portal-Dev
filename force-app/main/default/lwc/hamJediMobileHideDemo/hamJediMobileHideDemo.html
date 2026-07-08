@@ -1,0 +1,73 @@
+<template>
+    <div class="backgroundWhite">
+        <lightning-accordion
+            allow-multiple-sections-open="true"
+            active-section-name={activeSection}
+            onsectiontoggle={handleSectionToggle}>
+            <lightning-accordion-section name="Mobile Hide Demo" label="Mobile Hide Demo">
+                <div class="slds-p-around_small">
+                    <div class="label slds-text-title_caps slds-text-color_brand">
+                        MVP: Viewport + Preference Demo
+                    </div>
+
+                    <div class="slds-grid slds-gutters slds-wrap slds-m-top_small">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <lightning-combobox
+                                label="Mobile Behavior (saved to this browser)"
+                                value={preference}
+                                options={preferenceOptions}
+                                onchange={handlePreferenceChange}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-align-bottom">
+                            <p class="slds-m-top_x-small">
+                                Viewport: <strong>{viewportLabel}</strong> ({width}px)
+                                &nbsp;·&nbsp;
+                                Preference: <strong>{preference}</strong>
+                            </p>
+                        </div>
+                    </div>
+
+                    <template lwc:if={showTable}>
+                        <div style="overflow-x: auto;" class="slds-m-top_small">
+                            <lightning-datatable
+                                key-field="Id"
+                                data={sampleRows}
+                                columns={columns}
+                                hide-checkbox-column>
+                            </lightning-datatable>
+                        </div>
+                    </template>
+
+                    <template lwc:if={showCards}>
+                        <div class="mobile-card-container slds-m-top_small">
+                            <template for:each={mobileCards} for:item="r">
+                                <div key={r.Id} class="mobile-card">
+                                    <div class="card-header">{r.Name}</div>
+                                    <div class="card-row">
+                                        <span class="card-label">Type</span>
+                                        <span>{r.Type}</span>
+                                    </div>
+                                    <div class="card-row">
+                                        <span class="card-label">Date</span>
+                                        <span>{r.Date}</span>
+                                    </div>
+                                    <div class="card-row">
+                                        <span class="card-label">Amount</span>
+                                        <span class="card-value-bold">{r.displayAmount}</span>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template lwc:if={showHiddenMessage}>
+                        <p class="slds-m-top_small slds-text-color_weak">
+                            <em>Data hidden on mobile per user preference.</em>
+                        </p>
+                    </template>
+                </div>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </div>
+</template>

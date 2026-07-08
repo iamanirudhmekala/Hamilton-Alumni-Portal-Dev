@@ -1,0 +1,1257 @@
+<template>
+<div class={componentClass}>
+    <!-- ============================================ -->
+    <!-- DESKTOP VIEW: Tabbed interface for larger screens -->
+    <!-- ============================================ -->
+    <template lwc:if={isDesktop}>
+
+        <div class="component-container-main">
+            <div class="component-container-tabset">
+                <div class={opportunitiesClass} onclick={handleMainTabClick} data-name={label.volunteerOpportunity}>
+                    <span class="main-tab-heading">{label.volOppTab}</span>
+                </div>
+                <div class={activitiesClass} onclick={handleMainTabClick} data-name={label.volActTab}>
+                    <span class="main-tab-heading">{label.volActTab}</span>
+                </div>
+
+                <div class="view-toggle">
+                    <button class={listViewClass} data-view="list" onclick={handleViewToggle} title="List View">
+                        <template lwc:if={isListView}>
+                            <img src={icons.viewCheckIcon} class="check-icon" />
+                        </template>
+                        <img src={icons.listViewIcon} alt="List view" />
+                    </button>
+
+                    <button class={gridViewClass} data-view="grid" onclick={handleViewToggle} title="Grid View">
+                        <template lwc:if={isGridView}>
+                            <img src={icons.viewCheckIcon} class="check-icon" />
+                        </template>
+                        <img src={icons.gridViewIcon} alt="Grid view" />
+                    </button>
+                </div>
+            </div>
+            <div class="main-tab-line"></div>
+            <!-- ============================================ -->
+            <!-- TAB 1: VOLUNTEERING OPPORTUNITIES -->
+            <!-- Displays all available volunteer opportunities with Interest/Withdraw actions -->
+            <!-- ============================================ -->
+            <template lwc:if={opportunitiesActive}>
+                <div class="opportunities-tab">
+                    <template if:true={opportunities}>
+                        <template lwc:if={isGridView}>
+                            <div class="grid-container">
+                                <template for:each={opportunities} for:item="item">
+                                    <div key={item.opp.Id} class='vol-opp-card'>
+                                        <!-- Column 1: Image with 16:9 aspect ratio -->
+                                        <div class="image-column">
+                                            <div class="image-wrapper">
+                                                <img
+                                                    src={item.displayImage}
+                                                    alt={item.opp.Name}
+                                                    class="opp-image"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <!-- Column 2: Content (title, description, button) -->
+                                        <div class="content-column">
+                                            <!-- Title -->
+                                            <h3 class="opp-title" title={item.opp.Name}>{item.trimmedTitle}</h3>
+
+                                            <!-- Description -->
+                                            <p class="opp-description" title={item.opp.HAM_Description__c}>{item.trimmedDescription}</p>
+
+                                            <!-- Action Buttons -->
+                                            <div class="button-container">
+                                                <!-- "I'm Interested" button -->
+                                                <template if:false={item.isInterested}>
+                                                    <button
+                                                        class="slds-button-brand"
+                                                        data-value-id={item.opp.Id}
+                                                        data-opp-name={item.opp.Name}
+                                                        onclick={openInterestedModal}
+                                                        disabled={item.isProcessing}>
+                                                        <template if:true={item.isProcessing}>
+                                                            <lightning-spinner
+                                                                size="small"
+                                                                alternative-text="Processing">
+                                                            </lightning-spinner>
+                                                        </template>
+                                                        <template if:false={item.isProcessing}>
+                                                            {label.volImInterested}
+                                                        </template>
+                                                    </button>
+                                                </template>
+
+                                                <!-- "Withdraw" button -->
+                                                <template if:true={item.isInterested}>
+                                                    <template if:true={item.isProcessing}>
+                                                        <lightning-spinner size="small" alternative-text="Processing">
+                                                        </lightning-spinner>
+                                                    </template>
+                                                    <template if:false={item.isProcessing}>
+                                                        <button
+                                                            class="slds-button-destructive"
+                                                            data-interest-id={item.activeInterestId}
+                                                            data-opp-name={item.opp.Name}
+                                                            data-value-id={item.opp.Id}
+                                                            onclick={openWithdrawModal}
+                                                            disabled>
+                                                            {label.volImInterested}
+                                                        </button>
+                                                    </template>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                                <!-- Empty state message -->
+                                <template if:false={opportunities.length}>
+                                    <div class="slds-p-around_medium slds-text-color_weak">No volunteer opportunities found.</div>
+                                </template>
+                            </div>
+                            <div class="custom-info-banner">
+                                <lightning-icon icon-name="utility:info" size="x-small" class="info-icon"></lightning-icon>
+                                <span>{labels.volunteerInfoText}&nbsp;<a href={emailHref} >{labels.volunteerInfoTextEmail}</a>
+                                </span>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                            <div class="list-class">
+                                <!-- Loop through all volunteer opportunities -->
+                                <template for:each={opportunities} for:item="item">
+                                    <div key={item.opp.Id} class="list-class-element">
+
+                                        <!-- DESKTOP CARD: Full card layout with image, description, and action button -->
+                                        <template if:true={isDesktop}>
+                                                <!-- Opportunity image -->
+                                                <div class="my-img-container-list">
+                                                    <img
+                                                        src={item.displayImage}
+                                                        alt="Volunteer"
+                                                        class="list-desktop-image"
+                                                    />
+                                                </div>
+
+                                                <!-- Text content in the middle (title + description stacked) -->
+                                                <div class="my-text-container-list">
+                                                    <h3 title={item.opp.Name}>{item.trimmedTitle}</h3>
+                                                </div>
+
+                                                <!-- Text content in the middle (title + description stacked) -->
+                                                <div class="my-text-container-list-desc">
+                                                    <p title={item.opp.HAM_Description__c}>{item.trimmedDescription}</p>
+                                                </div>
+                                                
+                                                    
+                                                    <!-- "I'm Interested" button: Shows when user hasn't expressed interest yet -->
+                                                
+                                                <div>
+                                                    <template if:false={item.isInterested}>
+                                                        <button
+                                                            class="slds-button-brand"
+                                                            data-value-id={item.opp.Id}
+                                                            data-opp-name={item.opp.Name}
+                                                            onclick={openInterestedModal}
+                                                            disabled={item.isProcessing}>
+                                                            <!-- Loading spinner during API call -->
+                                                            <template if:true={item.isProcessing}>
+                                                                <lightning-spinner
+                                                                    size="medium"
+                                                                    alternative-text="Processing">
+                                                                </lightning-spinner>
+                                                            </template>
+
+                                                            <!-- Button text when not processing -->
+                                                            <template if:false={item.isProcessing}>
+                                                                {label.volImInterested}
+                                                            </template>
+                                                        </button>
+                                                    </template>
+
+                                                    <!-- "Withdraw" button: Shows when user has already expressed interest -->
+                                                    <template if:true={item.isInterested}>
+                                                        <!-- Show spinner if processing -->
+                                                        <template if:true={item.isProcessing}>
+                                                            <lightning-spinner size="medium" alternative-text="Processing">
+                                                            </lightning-spinner>
+                                                        </template>
+                                                        
+                                                        <!-- Show withdraw button if not processing -->
+                                                        <template if:false={item.isProcessing}>
+                                                            <button
+                                                                class="slds-button-destructive"
+                                                                data-interest-id={item.activeInterestId}
+                                                                data-opp-name={item.opp.Name}
+                                                                data-value-id={item.opp.Id}
+                                                                onclick={openWithdrawModal}
+                                                                disabled>
+
+                                                                <template if:false={item.isProcessing}>
+                                                                    {label.volImInterested}
+                                                                </template>
+                                                            </button>
+                                                        </template>
+                                                    </template>
+                                                </div>
+                                        </template>
+                                    </div>
+                                </template>
+                                <!-- Empty state message -->
+                                <template if:false={opportunities.length}>
+                                    <div class="slds-p-around_medium slds-text-color_weak">No volunteer opportunities found.</div>
+                                </template>
+                            </div>
+                             <div class="custom-info-banner">
+                                <lightning-icon icon-name="utility:info" size="x-small" class="info-icon"></lightning-icon>
+                                <span>{labels.volunteerInfoText} &nbsp;<a href={emailHref} >{labels.volunteerInfoTextEmail}</a></span>
+                            </div>
+                        </template>
+                        
+                        <!-- Pagination Component -->
+                        <c-ham_-pagination-util
+                            total-records={volTotalRecords}
+                            page-size={resolvedRecordLimit}
+                            current-page={volCurrentPage}
+                            result-label="Records"
+                            is-override={isOverride}
+                            onpagechange={handlePaginationPageChange}>
+                        </c-ham_-pagination-util>
+
+
+
+                    </template>
+                </div>
+                
+            </template>
+
+            <!-- ============================================ -->
+            <!-- TAB 2: MY VOLUNTEER ACTIVITIES -->
+            <!-- Shows user's current, upcoming, and past volunteer activities -->
+            <!-- ============================================ -->
+            <template lwc:if={activitiesActive}>
+                <!-- Nested tabset for activity categories -->
+                <div class="nested-tabset">
+                    <div class="component-container-sub-tabset">
+                        <div class={currentClass} onclick={handleSubTabClick} data-name={labels.volunteerOppCurr}>
+                            <span class="sub-tab-heading">{label.volCurrentTab}</span>
+                        </div>
+                        <div class={upcomingClass} onclick={handleSubTabClick} data-name={labels.volunteerOppUp}>
+                            <span class="sub-tab-heading">{label.volUpcomingTab}</span>
+                        </div>
+                        <div class={pastClass} onclick={handleSubTabClick} data-name={labels.volunteerPast}>
+                            <span class="sub-tab-heading">{label.volPastTab}</span>
+                        </div>
+                        <div class={committeesClass} onclick={handleSubTabClick} data-name={labels.volunteerCommittees}>
+                            <span class="sub-tab-heading">{labels.volunteerCommittees}</span>
+                        </div>
+                    </div>
+                    <div class="sub-tab-line"></div>
+                </div>
+                <div class="opportunities-tab">
+                    <!-- ============================================ -->
+                    <!-- SUB-TAB: CURRENT ACTIVITIES -->
+                    <!-- Activities that are currently ongoing -->
+                    <!-- ============================================ -->
+                    <template lwc:if={currentActive}>
+
+                        <template lwc:if={isGridView}>
+                            
+                            <div class="grid-container">
+                                <!-- Loop through current activities -->
+                                <template for:each={myCurrentActivities} for:item="activity">
+                                    <div key={activity.id} class="vol-opp-card">
+                                            <!-- Activity image -->
+                                            <div class="image-column">
+                                                <div class="image-wrapper">
+                                                    <img
+                                                        src={activity.imageUrl}
+                                                        class="opp-image"
+                                                    />
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Activity details -->
+                                            <div class="content-column">
+                                                <!-- Activity name -->
+                                                <h3 class="opp-title" title={activity.name}>
+                                                    {activity.trimmedTitle}</h3>
+                                                
+                                                <!-- Activity description -->
+                                                <p class="opp-description" title={activity.description}>
+                                                    {activity.trimmedDescription}</p>
+                                                
+                                                <!-- Date range with calendar icon -->
+                                                <div class="slds-m-top_auto slds-grid slds-grid_vertical-align-center slds-text-color_weak">
+                                                    <!-- <lightning-icon icon-name="utility:event" size="x-small"
+                                                        class="slds-m-right_x-small"></lightning-icon> -->
+                                                        <img src={images.calendarImage} alt="Date" class="my-date-range-img"  />
+                                                    <span class="my-date-range-1">{activity.dateRange}</span>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </template>
+                                
+                                <!-- Empty state message -->
+                                <template if:false={myCurrentActivities.length}>
+                                    <div class="slds-p-around_medium slds-text-color_weak">No current activities found.</div>
+                                </template>
+                            </div>
+                            
+                        </template>
+                        <template lwc:else>
+                             <div class="list-class">
+                                    <!-- Loop through current activities -->
+                                    <template for:each={myCurrentActivities} for:item="activity">
+                                        <div key={activity.id} class="list-class-element">
+                                            <!-- Activity image -->
+                                            <div class="my-img-container-list">
+                                                <img src={activity.imageUrl} class="list-desktop-image" />
+                                            </div>
+                                            
+                                             <!-- Text content in the middle (title + description stacked) -->
+                                            <div class="my-text-container-list" title={activity.name}>
+                                                <h3>{activity.trimmedTitle}</h3>
+                                            </div>
+
+                                            <!-- Text content in the middle (title + description stacked) -->
+                                            <div class="my-text-container-list-desc" title={activity.description}>
+                                                <p>{activity.trimmedDescription}</p>
+                                            </div>
+                                            
+
+                                            <!-- Date range with calendar icon -->
+                                            <div>
+                                                <!-- <lightning-icon icon-name="utility:event" size="x-small"
+                                                    class="slds-m-right_x-small"></lightning-icon> -->
+                                                    <img src={images.calendarImage} alt="Date" class="my-date-range-img"  />
+                                                <span class="my-date-range-1">{activity.dateRange}</span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    
+                                    <!-- Empty state message -->
+                                    <template if:false={myCurrentActivities.length}>
+                                        <div class="slds-p-around_medium slds-text-color_weak">No current activities found.</div>
+                                    </template>
+                             </div>
+                        </template>
+                    </template>
+
+                    <!-- ============================================ -->
+                    <!-- SUB-TAB: UPCOMING ACTIVITIES -->
+                    <!-- Activities scheduled for the future -->
+                    <!-- ============================================ -->
+                    <template lwc:if={upcomingActive}>
+                        <template lwc:if={isGridView}>
+                            <div class="grid-container">
+                                <!-- Loop through upcoming activities -->
+                                <template for:each={myUpcomingActivities} for:item="activity">
+                                    <div key={activity.id} class="vol-opp-card">
+                                            <!-- Activity image -->
+                                            <div class="image-column">
+                                                <div class="image-wrapper">
+                                                    <img
+                                                        src={activity.imageUrl}
+                                                        class="opp-image"
+                                                    />
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Activity details -->
+                                            <div class="content-column">
+                                                <!-- Activity name -->
+                                                <h3 class="opp-title" title={activity.name}>
+                                                  {activity.trimmedTitle}</h3>
+                                                
+                                                <!-- Activity description -->
+                                                <p class="opp-description" title={activity.description}>
+                                                  {activity.trimmedDescription}</p>
+                                                
+                                                <!-- Date range with calendar icon -->
+                                                <div class="slds-m-top_auto slds-grid slds-grid_vertical-align-center slds-text-color_weak">
+                                                    <!-- <lightning-icon icon-name="utility:event" size="x-small"
+                                                        class="slds-m-right_x-small"></lightning-icon> -->
+                                                        <img src={images.calendarImage} alt="Date" class="my-date-range-img"  />
+                                                    <span class="my-date-range-1">{activity.dateRange}</span>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </template>
+                                
+                                <!-- Empty state message -->
+                                <template if:false={myUpcomingActivities.length}>
+                                    <div class="slds-p-around_medium slds-text-color_weak">No upcoming activities found.</div>
+                                </template>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                              <div class="list-class">
+                                <!-- Loop through upcoming activities -->
+                                <template for:each={myUpcomingActivities} for:item="activity">
+                                    <div key={activity.id} class="list-class-element">
+                                            <!-- Activity image -->
+                                            <div class="my-img-container-list">
+                                            <img src={activity.imageUrl} class="list-desktop-image" />
+                                            </div>
+                                            
+                                             <!-- Text content in the middle (title + description stacked) -->
+                                            <div class="my-text-container-list">
+                                                <h3 title={activity.name}>{activity.trimmedTitle}</h3>
+                                            </div>
+
+                                            <!-- Text content in the middle (title + description stacked) -->
+                                            <div class="my-text-container-list-desc">
+                                                <p title={activity.description}>{activity.trimmedDescription}</p>
+                                            </div>
+
+                                            <!-- Date range with calendar icon -->
+                                            <div>
+                                                <img src={images.calendarImage} alt="Date" class="my-date-range-img"  />
+                                                <span class="my-date-range-1">{activity.dateRange}</span>
+                                            </div>
+                                    </div>
+                                </template>
+                                
+                                <!-- Empty state message -->
+                                <template if:false={myUpcomingActivities.length}>
+                                    <div class="slds-p-around_medium slds-text-color_weak">No upcoming activities found.</div>
+                                </template>
+                            </div>
+                        </template>
+                    </template>
+
+                    <!-- ============================================ -->
+                    <!-- SUB-TAB: PAST ACTIVITIES -->
+                    <!-- Completed activities with filtering and pagination -->
+                    <!-- ============================================ -->
+                    <template lwc:if={pastActive}>
+                        <div class="slds-position_relative">
+                            <!-- ============================================ -->
+                            <!-- DATE FILTER DROPDOWN -->
+                            <!-- Allows filtering by "All Time" or custom date range -->
+                            <!-- ============================================ -->
+                            <div class="sort-box-container">
+                                <label>Sort by Date</label>
+                                <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                                    <!-- Filter button showing current selection -->
+                                    <button 
+                                    class="sort-by-btn"
+                                        aria-haspopup="true" 
+                                        onclick={toggleFilterDropdown} >
+                                        <span>{filterLabel}</span>
+                                        <img src={images.dropdownImage} />
+                                        <!-- <lightning-icon icon-name="utility:down" size="x-small" class="slds-m-left_small"></lightning-icon> -->
+                                    </button>
+                                    
+                                    <!-- Dropdown menu with filter options -->
+                                    <template if:true={isFilterOpen}>
+                                        <div class="slds-dropdown slds-dropdown_left my-dropdown-container"
+                                            style="z-index: 999;">
+                                            <ul class="slds-dropdown__list" role="menu">
+                                                <!-- "All Time" option -->
+                                                <li class={allTimeClass} role="presentation">
+                                                    <a href="#" role="menuitem" tabindex="0" onclick={handleAllTimeClick} data-range="all">
+                                                        <span class="slds-truncate" title="All Time">All Time</span>
+                                                    </a>
+                                                </li>
+
+                                                <!-- "Last 30 days" option -->
+                                                <li class={last30Class} role="presentation">
+                                                    <a href="#" role="menuitem" tabindex="0" onclick={handleAllTimeClick} data-range="30">
+                                                        <span class="slds-truncate" title="Last 30 Days">Last 30 Days</span>
+                                                    </a>
+                                                </li>
+
+                                                <!-- "Last 6 Months" option -->
+                                                <li class={last6MonthsClass} role="presentation">
+                                                    <a href="#" role="menuitem" tabindex="0" onclick={handleAllTimeClick} data-range="180">
+                                                        <span class="slds-truncate" title="Last 6 Months">Last 6 Months</span>
+                                                    </a>
+                                                </li>
+
+                                                <!-- "Last Year" option -->
+                                                <li class={lastYearClass} role="presentation">
+                                                    <a href="#" role="menuitem" tabindex="0" onclick={handleAllTimeClick} data-range="365">
+                                                        <span class="slds-truncate" title="Last Year">Last Year</span>
+                                                    </a>
+                                                </li>
+                                                
+                                                <!-- Divider -->
+                                                <!-- <li class="slds-has-divider_top-space" role="separator"></li> -->
+                                                
+                                                <!-- Custom date range inputs -->
+                                                <li class="list-date-container">
+                                                    <span class="list-date-title-small" style="display:block;">Or Select Date Range</span>
+                                                    
+                                                    <!-- From date picker -->
+                                                    <lightning-input type="date" label="From Date"
+                                                        name="fromDate" value={filterFromDate}
+                                                        onchange={handleDateChange} variant="label-hidden"
+                                                        placeholder="From Date" class="slds-m-bottom_small from-date-input-container">
+                                                    </lightning-input>
+                                                    
+                                                    <!-- To date picker -->
+                                                    <lightning-input type="date" label="To Date" name="toDate"
+                                                        value={filterToDate} onchange={handleDateChange}
+                                                        variant="label-hidden" placeholder="To Date">
+                                                    </lightning-input>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Backdrop to close dropdown when clicking outside -->
+                                        <div class="fixed-overlay" onclick={toggleFilterDropdown}></div>
+                                    </template>
+                                </div>
+                            </div>
+                            
+                            <!-- ============================================ -->
+                            <!-- PAST ACTIVITIES GRID -->
+                            <!-- Displays paginated list of completed activities -->
+                            <!-- ============================================ -->
+                            <template lwc:if={isGridView}>
+                                <template lwc:if={paginatedPastActivities.length}>
+                                    <div class="grid-container">
+                                        <template for:each={paginatedPastActivities} for:item="activity">
+                                            <div key={activity.id} class="vol-opp-card">
+                                                    <!-- Activity image -->
+                                                <div class="image-column">
+                                                    <div class="image-wrapper">
+                                                        <img
+                                                            src={activity.imageUrl}
+                                                            class="opp-image"
+                                                        />
+                                                    </div>
+                                                </div>
+                                
+                                                    <!-- Activity details -->
+                                                    <div class="content-column">
+                                                        <!-- Activity name -->
+                                                        <h3 class="opp-title" title={activity.name}>
+                                                            {activity.trimmedTitle}</h3>
+                                                        
+                                                        <!-- Activity description -->
+                                                        <p class="opp-description" title={activity.description}>
+                                                            {activity.trimmedDescription}</p>
+                                                        
+                                                        <!-- Date range with calendar icon -->
+                                                        <div class="slds-m-top_auto slds-grid slds-grid_vertical-align-center slds-text-color_weak">
+                                                            <!-- <lightning-icon icon-name="utility:event" size="x-small"
+                                                                class="slds-m-right_x-small"></lightning-icon> -->
+                                                            <img src={images.calendarImage} alt="Date" class="my-date-range-img"  />
+                                                        <span class="my-date-range-1">{activity.dateRange}</span>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                                <template lwc:else>
+                                    <div class="slds-p-around_medium slds-text-color_weak">No past activities found for the selected filter.</div>
+                                </template>
+                            </template>
+                            <template lwc:else>
+                                <template lwc:if={paginatedPastActivities.length}>
+                                    <div class="list-class">
+                                        <template for:each={paginatedPastActivities} for:item="activity">
+                                            <div key={activity.id} class="list-class-element">
+                                                    <!-- Activity image -->
+                                                <div class="my-img-container-list">
+                                                    <img src={activity.imageUrl} class="list-desktop-image" />
+                                                </div>
+                                                    
+                                                <!-- Text content in the middle (title + description stacked) -->
+                                                <div class="my-text-container-list">
+                                                    <h3 title={activity.name}>{activity.trimmedTitle}</h3>
+                                                </div>
+
+                                                <!-- Text content in the middle (title + description stacked) -->
+                                                <div class="my-text-container-list-desc">
+                                                    <p title={activity.description}>{activity.trimmedDescription}</p>
+                                                </div>
+
+                                                    <!-- Date range with calendar icon -->
+                                                    <div>
+                                                        <img src={images.calendarImage} alt="Date" class="my-date-range-img"  />
+                                                        <span class="my-date-range-1">{activity.dateRange}</span>
+                                                    </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                                <template lwc:else>
+                                    <div class="slds-p-around_medium slds-text-color_weak">No past activities found for the selected filter.</div>
+                                </template>
+                            </template>
+                            <!-- ============================================ -->
+                            <!-- PAGINATION CONTROLS -->
+                            <!-- Shows page numbers and navigation buttons -->
+                            <!-- ============================================ -->
+
+                            <c-ham_-pagination-util
+                                total-records={totalRecordsForChild}
+                                page-size={resolvedRecordLimit}
+                                current-page={currentPageVolActivity}
+                                result-label="Records"
+                                is-override={isOverride}
+                                onpagechange={handlePageChange}>
+                            </c-ham_-pagination-util>
+                        </div>
+                    </template>
+                    <!-- ============================================ -->
+                    <!-- SUB-TAB: COMMITTEES -->
+                    <!-- Displays Board of Trustees and Committees -->
+                    <!-- ============================================ -->
+                    <template lwc:if={committeesActive}>
+                        <!-- GRID VIEW -->
+                        <template lwc:if={isGridView}>
+                            <div class="grid-container">
+                                <template for:each={myCommitteeActivities} for:item="activity">
+                                    <div key={activity.id} class="vol-opp-card">
+                                        <div class="image-column">
+                                            <div class="image-wrapper">
+                                                <img src={activity.imageUrl} class="opp-image" alt="Committee" />
+                                            </div>
+                                        </div>
+                                        <div class="content-column">
+                                            <h3 class="opp-title" title={activity.name}>{activity.trimmedTitle}</h3>
+                                            <!-- Description uses non-breaking space if null to keep equal height -->
+                                            <p class="opp-description" title={activity.description}>{activity.trimmedDescription}</p>
+                                            <div class="slds-m-top_auto slds-grid slds-grid_vertical-align-center slds-text-color_weak">
+                                                <img src={images.calendarImage} alt="Date" class="my-date-range-img" />
+                                                <span class="my-date-range-1">{activity.dateRange}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template if:false={myCommitteeActivities.length}>
+                                    <div class="slds-p-around_medium slds-text-color_weak">No committees found.</div>
+                                </template>
+                            </div>
+                        </template>
+                        
+                        <!-- LIST VIEW -->
+                        <template lwc:else>
+                            <div class="list-class">
+                                <template for:each={myCommitteeActivities} for:item="activity">
+                                    <div key={activity.id} class="list-class-element">
+                                        <div class="my-img-container-list">
+                                            <img src={activity.imageUrl} class="list-desktop-image" alt="Committee" />
+                                        </div>
+                                        <div class="my-text-container-list" title={activity.name}>
+                                            <h3>{activity.trimmedTitle}</h3>
+                                        </div>
+                                        <div class="my-text-container-list-desc" title={activity.description}>
+                                            <p>{activity.trimmedDescription}</p>
+                                        </div>
+                                        <div>
+                                            <img src={images.calendarImage} alt="Date" class="my-date-range-img" />
+                                            <span class="my-date-range-1">{activity.dateRange}</span>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template if:false={myCommitteeActivities.length}>
+                                    <div class="slds-p-around_medium slds-text-color_weak">No committees found.</div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <!-- Pagination for Committees -->
+                        <template if:true={myCommitteeActivities.length}>
+                            <div class="my-pagination-container-cmp">
+                                <c-ham_-pagination-util
+                                    total-records={commTotalRecords}
+                                    page-size={resolvedRecordLimit}
+                                    current-page={commCurrentPage}
+                                    result-label="Records"
+                                    is-override={isOverride}
+                                    onpagechange={handleCommPaginationPageChange}>
+                                </c-ham_-pagination-util>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- MOBILE VIEW: Simplified layout for small screens -->
+    <!-- ============================================ -->
+    <template lwc:else>
+        <template lwc:if={isMobile}>
+            
+            <!-- ============================================ -->
+            <!-- MOBILE: VOLUNTEER OPPORTUNITIES LIST -->
+            <!-- Horizontal card layout optimized for mobile -->
+            <!-- ============================================ -->
+            <template lwc:if={volunteerOpportunityVisible}>
+                <template if:true={opportunities}>
+                    <div class="volunteer-opp-parent-container">
+                        <div class={containerClass}>
+                            <!-- Loop through opportunities -->
+                            <template for:each={opportunities} for:item="item">
+                                <div key={item.opp.Id} class={itemClass}>
+                                    <!-- MOBILE CARD: Horizontal layout with image on left -->
+                                    <article class="my-article-section-mobile-vol">
+                                        <!-- Opportunity image -->
+                                        <img
+                                            src={item.displayImage}
+                                            alt="Volunteer"
+                                            class="mobile-image"
+                                        />
+
+                                        <!-- Card content on the right -->
+                                        <div class="my-article-text-container">
+                                            <!-- Opportunity title -->
+                                            <h3 title={item.opp.Name}>
+                                                {item.trimmedTitle}
+                                            </h3>
+
+                                            <!-- Opportunity description (2-line clamp for mobile) -->
+                                            <p title={item.opp.HAM_Description__c}>
+                                                {item.trimmedDescription}
+                                            </p>
+
+                                            <!-- "I'm Interested" button -->
+                                            <template if:false={item.isInterested}>
+                                                <button
+                                                    class="slds-button slds-button-brand slds-m-top_small"
+                                                    data-value-id={item.opp.Id}
+                                                    data-opp-name={item.opp.Name}
+                                                    onclick={openInterestedModal}
+                                                    disabled={item.isProcessing}>
+                                                    <!-- Loading spinner -->
+                                                    <template if:true={item.isProcessing}>
+                                                        <lightning-spinner
+                                                            size="medium"
+                                                            alternative-text="Processing">
+                                                        </lightning-spinner>
+                                                    </template>
+
+                                                    <!-- Button text -->
+                                                    <template if:false={item.isProcessing}>
+                                                        {label.volImInterested}
+                                                    </template>
+                                                </button>
+                                            </template>
+                                            
+                                            <!-- "Withdraw" button -->
+                                            <template if:true={item.isInterested}>
+                                                <button
+                                                    class="slds-button slds-button-destructive slds-m-top_small"
+                                                    data-interest-id={item.activeInterestId}
+                                                    data-opp-name={item.opp.Name}
+                                                    data-value-id={item.opp.Id}
+                                                    onclick={openWithdrawModal}
+                                                    disabled>
+                                                    <!-- Loading spinner -->
+                                                    <template if:true={item.isProcessing}>
+                                                        <lightning-spinner
+                                                            size="medium"
+                                                            alternative-text="Processing">
+                                                        </lightning-spinner>
+                                                    </template>
+
+                                                    <!-- Button text -->
+                                                    <template if:false={item.isProcessing}>
+                                                        {label.volImInterested}
+                                                    </template>
+                                                </button>
+                                            </template>
+                                        </div>
+                                    </article>
+                                </div>
+                            </template>
+                            <!-- Empty state message -->
+                            <template if:false={opportunities.length}>
+                                <div class="slds-p-around_medium slds-text-color_weak">No volunteer opportunities found.</div>
+                            </template>
+                            <div class="custom-info-banner">
+                                <lightning-icon icon-name="utility:info" size="x-small" class="info-icon"></lightning-icon>
+                                <span>{labels.volunteerInfoText} &nbsp;<a href={emailHref} >{labels.volunteerInfoTextEmail}</a></span>
+                            </div>
+                        </div>
+                        <!-- Pagination Component -->
+                        <div class="my-pagination-container-cmp">
+                        <c-ham_-pagination-util
+                            total-records={volTotalRecords}
+                            page-size={resolvedRecordLimit}
+                            current-page={volCurrentPage}
+                            result-label="Records"
+                            is-override={isOverride}
+                            onpagechange={handlePaginationPageChange}>
+                        </c-ham_-pagination-util>
+                        </div>
+                    </div>
+                </template>
+            </template>
+            
+            <!-- ============================================ -->
+            <!-- MOBILE: MY VOLUNTEER ACTIVITIES -->
+            <!-- Collapsible accordion sections for each activity type -->
+            <!-- ============================================ -->
+            <template lwc:else>
+                
+                <!-- ============================================ -->
+                <!-- COLLAPSIBLE SECTION: CURRENT ACTIVITIES -->
+                <!-- ============================================ -->
+                <div class="current-news-container">
+                    <!-- Collapsible header with toggle icon -->
+                    <div class="current-news-span" onclick={handleCurrentNewsToggle}>
+                        <h1 class="current-news-heading">{label.volCurrentTab}</h1>
+                        <div class="current-news-toggle-icon">
+                            <img 
+                                src={currentNewsIcon} 
+                                alt="icon" 
+                            />                                
+                            <!-- <lightning-icon icon-name={currentNewsIcon} size="x-small"></lightning-icon> -->
+                        </div>
+                    </div>
+
+                    <!-- Expandable content -->
+                    <template lwc:if={showCurrentNews}>
+                        <div class={containerClass}>
+                            <!-- Loop through current activities -->
+                            <template for:each={myCurrentActivities} for:item="activity">
+                                <div key={activity.id} class={itemClass}>
+                                    <article class="my-article-section-mobile">
+                                        <!-- Activity image -->
+                                        <img
+                                            src={activity.imageUrl}
+                                            alt="Volunteer"
+                                            class="mobile-image"
+                                        />
+                                        
+                                        
+                                    <!-- Activity details -->
+                                        <div class="my-article-text-container">
+                                            <!-- Activity name -->
+                                            <h3>
+                                                {activity.trimmedTitle}</h3>
+                                            
+                                            <!-- Activity description -->
+                                            <p>
+                                                {activity.trimmedDescription}</p>
+                                            
+                                            <!-- Date range with calendar icon -->
+                                            <div class="slds-grid slds-grid_vertical-align-center slds-text-color_weak">
+                                                <!-- <lightning-icon icon-name="utility:event" size="x-small"
+                                                    class="slds-m-right_x-small"></lightning-icon> -->
+                                                    <img src={images.calendarImage} alt="Date" class="my-date-range-img"  />
+                                                <span class="my-date-range-1">{activity.dateRange}</span>
+                                            </div>
+                                        </div>
+                                     </article>
+                                </div>
+                            </template>
+                            
+                            <!-- Empty state message -->
+                            <template if:false={myCurrentActivities.length}>
+                                <div class="slds-text-color_weak">No {label.volCurrentTab}.</div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- COLLAPSIBLE SECTION: UPCOMING ACTIVITIES -->
+                <!-- ============================================ -->
+                <div class="current-news-container">
+                    <!-- Collapsible header with toggle icon -->
+                    <div class="current-news-span" onclick={handleupcomingActivityToggle}>
+                        <h1 class="current-news-heading">{label.volUpcomingTab}</h1>
+                        <div class="current-news-toggle-icon">
+                            <img 
+                                src={upcomingActivityIcon} 
+                                alt="icon" 
+                            />
+                            <!-- <lightning-icon icon-name={upcomingActivityIcon} size="x-small"></lightning-icon> -->
+                        </div>
+                    </div>
+
+                    <!-- Expandable content -->
+                    <template lwc:if={showUpcomingActivity}>
+                        <div class={containerClass}>
+                            <!-- Loop through upcoming activities -->
+                            <template for:each={myUpcomingActivities} for:item="activity">
+                                <div key={activity.id} class={itemClass}>
+                                     <article class="my-article-section-mobile">
+                                        <!-- Activity image -->
+                                        <img
+                                            src={activity.imageUrl}
+                                            alt="Volunteer"
+                                            class="mobile-image"
+                                        />
+                                        
+
+                                    <!-- Activity details -->
+                                        <div class="my-article-text-container">
+                                            <!-- Activity name -->
+                                            <h3>
+                                                {activity.trimmedTitle}</h3>
+                                            
+                                            <!-- Activity description -->
+                                            <p>
+                                                {activity.trimmedDescription}</p>
+                                            
+                                            <!-- Date range with calendar icon -->
+                                            <div class="slds-grid slds-grid_vertical-align-center slds-text-color_weak">
+                                                <!-- <lightning-icon icon-name="utility:event" size="x-small"
+                                                    class="slds-m-right_x-small"></lightning-icon> -->
+                                                    <img src={images.calendarImage} alt="Date" class="my-date-range-img"  />
+                                                <span class="my-date-range-1">{activity.dateRange}</span>
+                                            </div>
+                                        </div>
+                                     </article>
+                                </div>
+                            </template>
+                            
+                            <!-- Empty state message -->
+                            <template if:false={myUpcomingActivities.length}>
+                                <div class="slds-text-color_weak">No {label.volUpcomingTab}.</div>
+                            </template>    
+                        </div>
+                    </template>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- COLLAPSIBLE SECTION: PAST ACTIVITIES -->
+                <!-- Includes date filtering and pagination -->
+                <!-- ============================================ -->
+                <div class="current-news-container">
+                    <!-- Collapsible header with toggle icon -->
+                    <div class="current-news-span" onclick={handlePastActivityToggle}>
+                        <h1 class="current-news-heading">{label.volPastTab}</h1>
+                        <div class="current-news-toggle-icon">
+                             <img 
+                                src={pastActivityIcon} 
+                                alt="icon" 
+                            />
+                            <!-- <lightning-icon icon-name={pastActivityIcon} size="x-small"></lightning-icon> -->
+                        </div>
+                    </div>
+
+                    <!-- Expandable content -->
+                    <template lwc:if={showPastActivity}>
+                        <!-- <div class="grid-container"> -->
+                        <div class="my-vertical-tab-container">
+                            <div class="slds-position_relative">
+
+                                <!-- ============================================ -->
+                                <!-- MOBILE DATE FILTER DROPDOWN -->
+                                <!-- ============================================ -->
+                               
+
+
+                                 <div class="sort-box-container">
+                                <label>Sort by Date</label>
+                                <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                                    <!-- Filter button showing current selection -->
+                                    <button 
+                                    class="sort-by-btn"
+                                        aria-haspopup="true" 
+                                        onclick={toggleFilterDropdown} >
+                                        <span>{filterLabel}</span>
+                                        <img src={images.dropdownImage} />
+                                        <!-- <lightning-icon icon-name="utility:down" size="x-small" class="slds-m-left_small"></lightning-icon> -->
+                                    </button>
+                                    
+                                    <!-- Dropdown menu with filter options -->
+                                    <template if:true={isFilterOpen}>
+                                        <div class="slds-dropdown slds-dropdown_left my-dropdown-container" >
+                                            <ul class="slds-dropdown__list" role="menu">
+                                                <!-- "All Time" option -->
+                                                <li class={allTimeClass} role="presentation">
+                                                    <a href="#" role="menuitem" tabindex="0" onclick={handleAllTimeClick} data-range="all">
+                                                        <span class="slds-truncate" title="All Time">All Time</span>
+                                                    </a>
+                                                </li>
+
+                                                <!-- "Last 30 days" option -->
+                                                <li class={last30Class} role="presentation">
+                                                    <a href="#" role="menuitem" tabindex="0" onclick={handleAllTimeClick} data-range="30">
+                                                        <span class="slds-truncate" title="Last 30 Days">Last 30 Days</span>
+                                                    </a>
+                                                </li>
+
+                                                <!-- "Last 6 Months" option -->
+                                                <li class={last6MonthsClass} role="presentation">
+                                                    <a href="#" role="menuitem" tabindex="0" onclick={handleAllTimeClick} data-range="180">
+                                                        <span class="slds-truncate" title="Last 6 Months">Last 6 Months</span>
+                                                    </a>
+                                                </li>
+
+                                                <!-- "Last Year" option -->
+                                                <li class={lastYearClass} role="presentation">
+                                                    <a href="#" role="menuitem" tabindex="0" onclick={handleAllTimeClick} data-range="365">
+                                                        <span class="slds-truncate" title="Last Year">Last Year</span>
+                                                    </a>
+                                                </li>
+                                                
+                                                <!-- Divider -->
+                                                <!-- <li class="slds-has-divider_top-space" role="separator"></li> -->
+                                                
+                                                <!-- Custom date range inputs -->
+                                                <li class="list-date-container">
+                                                    <span class="list-date-title-small" style="display:block;">Or Select Date Range</span>
+                                                    
+                                                    <!-- From date picker -->
+                                                    <lightning-input type="date" label="From Date"
+                                                        name="fromDate" value={filterFromDate}
+                                                        onchange={handleDateChange} variant="label-hidden"
+                                                        placeholder="From Date" class="slds-m-bottom_small from-date-input-container">
+                                                    </lightning-input>
+                                                    
+                                                    <!-- To date picker -->
+                                                    <lightning-input type="date" label="To Date" name="toDate"
+                                                        value={filterToDate} onchange={handleDateChange}
+                                                        variant="label-hidden" placeholder="To Date" class="date-input">
+                                                    </lightning-input>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Backdrop to close dropdown when clicking outside -->
+                                        <div class="fixed-overlay" onclick={toggleFilterDropdown}></div>
+                                    </template>
+                                </div>
+                            </div>
+
+                                <!-- ============================================ -->
+                                <!-- MOBILE PAST ACTIVITIES LIST -->
+                                <!-- ============================================ -->
+                                <div class={containerClass} style="padding: 40px 8px !important;">
+                                        <template for:each={paginatedPastActivities} for:item="activity">
+                                            <div key={activity.id} class={itemClass}>
+                                                <article class="my-article-section-mobile">
+                                                    <!-- Activity image -->
+                                                    <img
+                                                        src={activity.imageUrl}
+                                                        alt="Volunteer"
+                                                        class="mobile-image"
+                                                    />
+                                                    
+                                            
+                                            
+                                            <!-- Activity details -->
+                                                <div class="my-article-text-container">
+                                                    <!-- Activity name -->
+                                                    <h3>
+                                                        {activity.trimmedTitle}</h3>
+                                                    
+                                                    <!-- Activity description -->
+                                                    <p>
+                                                        {activity.trimmedDescription}</p>
+                                                    
+                                                    <!-- Date range with calendar icon -->
+                                                    <div class="slds-grid slds-grid_vertical-align-center slds-text-color_weak">
+                                                        <!-- <lightning-icon icon-name="utility:event" size="x-small"
+                                                            class="slds-m-right_x-small"></lightning-icon> -->
+                                                            <img src={images.calendarImage} alt="Date" class="my-date-range-img"  />
+                                                        <span class="my-date-range-1">{activity.dateRange}</span>
+                                                    </div>
+                                                </div>
+
+
+
+                                                </article>
+                                            </div>
+                                        </template>
+                                        <!-- Empty state message -->
+                                        <template if:false={paginatedPastActivities.length}>
+                                            <div class="slds-p-around_medium slds-text-color_weak">No past activities found for the selected filter.</div>
+                                        </template>
+                                </div>
+
+                                <!-- ============================================ -->
+                                <!-- MOBILE PAGINATION CONTROLS -->
+                                <!-- Compact layout for smaller screens -->
+                                <!-- ============================================ -->
+                                <c-ham_-pagination-util
+                                    total-records={totalRecordsForChild}
+                                    page-size={resolvedRecordLimit}
+                                    current-page={currentPageVolActivity}
+                                    result-label="Records"
+                                    is-override={isOverride}
+                                    onpagechange={handlePageChange}>
+                                </c-ham_-pagination-util>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                <!-- ============================================ -->
+                <!-- MOBILE COLLAPSIBLE SECTION: COMMITTEES -->
+                <!-- ============================================ -->
+                <div class="current-news-container committees-class">
+                    <!-- Collapsible header with toggle icon -->
+                    <div class="current-news-span" onclick={handleCommitteesToggle}>
+                        <h1 class="current-news-heading">{labels.volunteerCommittees}</h1>
+                        <div class="current-news-toggle-icon">
+                            <img src={committeesActivityIcon} alt="icon" />
+                        </div>
+                    </div>
+
+                    <!-- Expandable content controlled by showCommitteesActivity -->
+                    <template lwc:if={showCommitteesActivity}>
+                        <div class={containerClass}>
+                            <template for:each={myCommitteeActivities} for:item="activity">
+                                <div key={activity.id} class={itemClass}>
+                                    <article class="my-article-section-mobile">
+                                        <!-- Activity image -->
+                                        <img src={activity.imageUrl} alt="Committee" class="mobile-image" />
+                                        
+                                        <!-- Activity details -->
+                                        <div class="my-article-text-container">
+                                            <h3>{activity.trimmedTitle}</h3>
+                                            <p>{activity.trimmedDescription}</p>
+                                            <div class="slds-grid slds-grid_vertical-align-center slds-text-color_weak">
+                                                <img src={images.calendarImage} alt="Date" class="my-date-range-img" />
+                                                <span class="my-date-range-1">{activity.dateRange}</span>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </template>
+                            
+                            <!-- Empty state message -->
+                            <template if:false={myCommitteeActivities.length}>
+                                <div class="slds-text-color_weak slds-p-around_medium">No {labels.volunteerCommittees} found.</div>
+                            </template>
+                            
+                            <!-- Mobile Pagination -->
+                            <template if:true={myCommitteeActivities.length}>
+                                <div class="my-pagination-container-cmp slds-m-top_medium">
+                                    <c-ham_-pagination-util
+                                        total-records={commTotalRecords}
+                                        page-size={resolvedRecordLimit}
+                                        current-page={commCurrentPage}
+                                        result-label="Records"
+                                        is-override={isOverride}
+                                        onpagechange={handleCommPaginationPageChange}>
+                                    </c-ham_-pagination-util>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </template>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- MODAL: CONFIRM INTEREST IN OPPORTUNITY -->
+    <!-- Asks user to confirm they want to express interest -->
+    <!-- ============================================ -->
+    <template if:true={showInterestedModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="interested-modal-heading"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container custom-modal-container">
+                <div class="slds-modal__content slds-p-around_large slds-text-align_center custom-modal-content">
+                    <!-- Close button (X icon in top right) -->
+                    <button class="slds-button slds-button_icon custom-close-button" onclick={closeInterestedModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    
+                    <!-- Icon/Image -->
+                    <div class="slds-m-bottom_medium">
+                        <span>
+                            <img 
+                                src={images.volPopupIcon} 
+                                alternative-text="icon" 
+                            />
+                        </span>
+                    </div>
+                    
+                    <!-- Modal title -->
+                    <h2 id="interested-modal-heading" class="slds-text-heading_medium slds-m-bottom_medium">
+                        {label.volOppInterestTitle}
+                    </h2>
+                    
+                    <!-- Modal message -->
+                    <p class="slds-text-body_regular slds-m-bottom_large">
+                        {label.volOppInterestDesc}
+                        <strong> {selectedOpportunityName}</strong>?
+                    </p>
+                    
+                    <!-- Action buttons: Yes / No -->
+                    <div class="slds-grid slds-grid_align-center slds-gutters_small">
+                        <div class="slds-col">
+                            <button class="slds-button slds-button_brand modal-button" onclick={confirmInterested}>Yes</button>
+                        </div>
+                        <div class="slds-col">
+                            <button class="slds-button slds-button_outline-brand modal-button" onclick={closeInterestedModal}>No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Modal backdrop: Closes modal when clicked -->
+        <div class="slds-backdrop slds-backdrop_open" onclick={closeInterestedModal}></div>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- MODAL: CONFIRM WITHDRAW FROM OPPORTUNITY -->
+    <!-- Asks user to confirm they want to withdraw their interest -->
+    <!-- ============================================ -->
+    <template if:true={showWithdrawModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="withdraw-modal-heading"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container custom-modal-container">
+                <div class="slds-modal__content slds-p-around_large slds-text-align_center custom-modal-content">
+                    <!-- Close button (X icon in top right) -->
+                    <button class="slds-button slds-button_icon custom-close-button" onclick={closeWithdrawModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    
+                    <!-- Icon/Image -->
+                    <div class="slds-m-bottom_medium">
+                        <span>
+                            <img 
+                                src={images.volPopupIcon} 
+                                alternative-text="icon" 
+                            />
+                        </span>
+                    </div>
+                    
+                    <!-- Modal title -->
+                    <h2 id="withdraw-modal-heading" class="slds-text-heading_medium slds-m-bottom_medium">
+                        {label.volOppWithdrawTitle}
+                    </h2>
+                    
+                    <!-- Modal message -->
+                    <p class="slds-text-body_regular slds-m-bottom_large">
+                        {label.volOppWithdrawDesc}
+                        <strong> {selectedOpportunityName}</strong>
+                    </p>
+                    
+                    <!-- Action buttons: No / Yes (reversed order - No is primary) -->
+                    <div class="slds-grid slds-grid_align-center slds-gutters_small">
+                        <div class="slds-col">
+                            <button class="slds-button slds-button_brand modal-button" onclick={closeWithdrawModal}>No</button>
+                        </div>
+                        <div class="slds-col">
+                            <button class="slds-button slds-button_outline-brand modal-button" onclick={confirmWithdraw}>Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Modal backdrop: Closes modal when clicked -->
+        <div class="slds-backdrop slds-backdrop_open" onclick={closeWithdrawModal}></div>
+    </template>
+
+    <!--Spinner-->
+    <template lwc:if={isLoading}>
+        <div class="spinner-fixed" style="height: 15rem">
+            <lightning-spinner alternative-text="Loading" size="medium"
+                variant="brand"></lightning-spinner>
+        </div>
+    </template>
+</div>
+</template>

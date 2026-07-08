@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Numeric_Order__c</fullName>
+    <description>Numeric value of the auto number field &apos;Order&apos;</description>
+    <externalId>false</externalId>
+    <formula>VALUE( Order__c )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Numeric value of the auto number field &apos;Order&apos;</inlineHelpText>
+    <label>Numeric Order</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

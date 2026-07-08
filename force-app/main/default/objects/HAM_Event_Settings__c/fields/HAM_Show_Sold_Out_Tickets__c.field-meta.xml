@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Show_Sold_Out_Tickets__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Display sold-out tickets on event page.</description>
+    <inlineHelpText>When true, sold-out tickets remain visible (marked as Sold Out) on the event page.</inlineHelpText>
+    <label>Show Sold Out Tickets</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

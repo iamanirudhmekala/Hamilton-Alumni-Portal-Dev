@@ -1,0 +1,63 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Login",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"139b991a-1554-4ec0-b3c6-6d708fcfbfdd\",\"columns\":[{\"UUID\":\"8189cd54-fe29-43d7-9b32-e5942ceb96aa\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "id" : "8189cd54-fe29-43d7-9b32-e5942ceb96aa",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "139b991a-1554-4ec0-b3c6-6d708fcfbfdd",
+          "type" : "component"
+        } ],
+        "id" : "e87432b5-fd8e-40bd-824b-b01b21298e1c",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"https://www.hamilton.edu/v22/favicons/favicon-32x32.png\">",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Login",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "a1a5e8eb-1ec7-40b9-8012-0e043b5663a8",
+          "type" : "component"
+        } ],
+        "id" : "7ceb41ed-77f3-445a-8a65-228060781544",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "e881c8fa-7645-41a9-9979-72eda0f0cffa",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "vDJxkHthNWLoqKxBZUejxi2C5qSexs",
+    "viewType" : "login-main"
+  },
+  "urlName" : "login"
+}

@@ -1,0 +1,44 @@
+<template>
+    <!-- Mobile View: Renders a Tabset to switch between apps -->
+    <template lwc:if={isMobile}>
+        <lightning-tabset>
+            <lightning-tab label="Main App">
+                <div class="iframe-container">
+                    <template lwc:if={isMainAppLoading}>
+                        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                    </template>
+                    <iframe src={mainAppUrl} width="100%" frameborder="0"
+                        sandbox="allow-scripts allow-same-origin allow-forms" onload={handleMainAppLoad}></iframe>
+                </div>
+            </lightning-tab>
+            <lightning-tab label="Webform">
+                <div class="iframe-container">
+                    <template lwc:if={isWebformLoading}>
+                        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                    </template>
+                    <iframe src={webformUrl} width="100%" frameborder="0"
+                        sandbox="allow-scripts allow-same-origin allow-forms" onload={handleWebformLoad}></iframe>
+                </div>
+            </lightning-tab>
+        </lightning-tabset>
+    </template>
+    <!-- Desktop View: Renders apps side-by-side using Flexbox -->
+    <template lwc:else>
+        <div class="desktop-container">
+            <div class="iframe-wrapper">
+                <template lwc:if={isMainAppLoading}>
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </template>
+                <iframe src={mainAppUrl} width="100%" frameborder="0"
+                    sandbox="allow-scripts allow-same-origin allow-forms" onload={handleMainAppLoad}></iframe>
+            </div>
+            <div class="iframe-wrapper">
+                <template lwc:if={isWebformLoading}>
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </template>
+                <iframe src={webformUrl} width="100%" frameborder="0"
+                    sandbox="allow-scripts allow-same-origin allow-forms" onload={handleWebformLoad}></iframe>
+            </div>
+        </div>
+    </template>
+</template>

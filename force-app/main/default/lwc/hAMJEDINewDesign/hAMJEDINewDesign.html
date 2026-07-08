@@ -1,0 +1,227 @@
+<template>
+    <template lwc:if={contactrecord}>
+        <div class="slds-box slds-theme_default bio-card slds-has-shadow slds-border_none">
+            
+            <div class="bio-header slds-p-around_large slds-text-align_center slds-relative-layout">
+                <div class="grid-pattern"></div>
+                <div class="slds-z-index_1 slds-relative-layout_container">
+                    
+                    <div class="profile-image-container slds-m-bottom_medium">
+                        <img src={contactrecord.HAM_Profile_Picture_URL__c} alt="Profile Photo" class="profile-image" />
+                    </div>
+                    
+                    <h2 class="slds-text-heading_medium slds-m-bottom_x-small text-white">{contactrecord.HAM_Name_w_Suffix__c}</h2>
+                    <p class="text-blue-200 slds-m-bottom_small">{contactrecord.ucinn_ascendv2__Contact_Type__c}</p>
+                    
+                    <div classs="slds-grid slds-grid_align-center slds-gutters_x-small text-blue-100">
+                        <lightning-icon icon-name="utility:education" size="x-small" variant="inverse" class="slds-m-right_xx-small"></lightning-icon>
+                        <span>{contactrecord.HAM_Current_Chapters__c}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slds-p-around_large slds-border_bottom">
+                <h3 class="slds-text-heading_small slds-m-bottom_medium slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
+                    <lightning-icon icon-name="utility:user" size="small" class="icon-blue"></lightning-icon>
+                    <span>Biographical Information</span>
+                </h3>
+
+                <div class="slds-grid slds-grid_vertical">
+                    <div class="slds-grid slds-gutters_small slds-m-bottom_medium">
+                        <div class="slds-col slds-shrink-none slds-p-top_xx-small">
+                            <lightning-icon icon-name="utility:email" size="x-small" class="icon-blue"></lightning-icon>
+                            <p class="slds-text-body_small slds-text-color_weak">Primary Email</p>
+                        </div>
+                        <div class="slds-col">
+                            <p class="slds-text-body_regular slds-text-color_primary">{contactrecord.HAM_PreferredEmail__c}</p>
+                        </div>
+                    </div>
+
+                    <div class="slds-grid slds-gutters_small slds-m-bottom_medium">
+                        <div class="slds-col slds-shrink-none slds-p-top_xx-small">
+                            <lightning-icon icon-name="utility:call" size="x-small" class="icon-blue"></lightning-icon>
+                        </div>
+                        <div class="slds-col">
+                            <!-- <p class="slds-text-body_small slds-text-color_weak">Phone</p> -->
+                            <p class="slds-text-body_regular slds-text-color_primary">{contactrecord.HAM_Phone_and_Type__c}</p>
+                        </div>
+                    </div>
+
+                    <div class="slds-grid slds-gutters_small slds-m-bottom_medium">
+                        <div class="slds-col slds-shrink-none slds-p-top_xx-small">
+                            <lightning-icon icon-name="utility:location" size="x-small" class="icon-blue"></lightning-icon>
+                        </div>
+                        <div class="slds-col">
+                            <p class="slds-text-body_small slds-text-color_weak">Address</p>
+                            <p class="slds-text-body_regular slds-text-color_primary">
+                                <lightning-formatted-rich-text value={contactrecord.ucinn_ascendv2__Preferred_Address_Formula__c}></lightning-formatted-rich-text>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="slds-grid slds-gutters_small slds-m-bottom_medium">
+                        <div class="slds-col slds-shrink-none slds-p-top_xx-small">
+                            <lightning-icon icon-name="utility:event" size="x-small" class="icon-blue"></lightning-icon>
+                        </div>
+                        <div class="slds-col">
+                            <p class="slds-text-body_small slds-text-color_weak">Date of Birth</p>
+                            <p class="slds-text-body_regular slds-text-color_primary">
+                                <lightning-formatted-date-time value={contactrecord.Birthdate} year="numeric" month="long" day="2-digit" time-zone="UTC"></lightning-formatted-date-time>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="slds-grid slds-gutters_small slds-m-bottom_medium">
+                        <div class="slds-col slds-shrink-none slds-p-top_xx-small">
+                            <lightning-icon icon-name="utility:work_bag" size="x-small" class="icon-blue"></lightning-icon>
+                        </div>
+                        <div class="slds-col">
+                            <p class="slds-text-body_small slds-text-color_weak">Occupation</p>
+                            <p class="slds-text-body_regular slds-text-color_primary">{contactrecord.HAM_LiveAlumni_Job_Title__c}</p>
+                        </div>
+                    </div>
+
+                    <div class="slds-grid slds-gutters_small">
+                        <div class="slds-col slds-shrink-none slds-p-top_xx-small">
+                            <lightning-icon icon-name="utility:company" size="x-small" class="icon-blue"></lightning-icon>
+                        </div>
+                        <div class="slds-col">
+                            <p class="slds-text-body_small slds-text-color_weak">Employer</p>
+                            <p class="slds-text-body_regular slds-text-color_primary">{contactrecord.HAM_LiveAlumni_Employer__c}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slds-p-around_large slds-border_bottom slds-theme_shade">
+                <h3 class="slds-text-heading_small slds-m-bottom_medium">Demographics</h3>
+                <div class="slds-grid slds-wrap slds-gutters_medium">
+                    
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-m-bottom_small">
+                        <p class="slds-text-body_small slds-text-color_weak">Donor ID</p>
+                        <p class="slds-text-body_regular slds-text-color_primary">{contactrecord.ucinn_ascendv2__Donor_ID__c}</p>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-m-bottom_small">
+                        <p class="slds-text-body_small slds-text-color_weak">PRM</p>
+                        <p class="slds-text-body_regular slds-text-color_primary">
+                            <template if:true={contactrecord.ucinn_ascendv2__PRM__c}>
+                                <a href={prmLink} target="_blank">{contactrecord.ucinn_ascendv2__PRM__r.Name}</a>
+                            </template>
+                            <template if:false={contactrecord.ucinn_ascendv2__PRM__c}>
+                                <div>Hamily</div>
+                            </template>
+                        </p>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-m-bottom_small">
+                        <p class="slds-text-body_small slds-text-color_weak">Alternate Chapter</p>
+                        <p class="slds-text-body_regular slds-text-color_primary">
+                            <template if:true={contactrecord.HAM_Alternate_Chapter__c}>
+                                <a href={chapterLink} target="_blank">{contactrecord.HAM_Alternate_Chapter__r.Name}</a>
+                            </template>
+                            <template if:false={contactrecord.HAM_Alternate_Chapter__c}>
+                                <div>Not Available</div>
+                            </template>
+                        </p>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-m-bottom_small">
+                        <p class="slds-text-body_small slds-text-color_weak">Profile</p>
+                        <p class="slds-text-body_regular slds-text-color_primary">
+                            <a href={ascendProfileLink} target="_blank" class="slds-text-link">View Ascend Profile</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slds-p-around_large">
+                <h3 class="slds-text-heading_small slds-m-bottom_medium slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
+                    <lightning-icon icon-name="utility:like" size="small" class="icon-blue"></lightning-icon>
+                    <span>Family Relationships</span>
+                </h3>
+                
+                <div class="slds-grid slds-grid_vertical">
+                    
+                    <template if:true={contactrecord.ucinn_ascendv2__Preferred_Spouse__c}>
+                        <div class="relationship-card slds-m-bottom_small">
+                            <div class="slds-grid slds-grid_spread slds-m-bottom_x-small">
+                                <div class="slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
+                                    <lightning-icon icon-name="utility:groups" size="x-small" class="icon-blue slds-m-right_xx-small"></lightning-icon>
+                                    <span class="slds-badge" style="background-color: #DBEAFE; color: #1E3A8A;">Spouse</span>
+                                </div>
+                                
+                            </div>
+                            <div class="slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
+                                <ul class="slds-list_dotted slds-p-left_medium">
+                                        <li>
+                                        <a href={spouseLink} target="_blank" class="slds-text-body_regular slds-text-color_primary slds-text-weight_bold">{contactrecord.ucinn_ascendv2__Preferred_Spouse__r.Name}</a>
+                                        </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </template>
+                    
+                    <template if:true={childrenLinks.length}>
+                        <div class="relationship-card slds-m-bottom_small">
+                            <div class="slds-grid slds-grid_spread slds-m-bottom_x-small">
+                                <div class="slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
+                                    <lightning-icon icon-name="utility:groups" size="x-small" class="icon-blue slds-m-right_xx-small"></lightning-icon>
+                                    <span class="slds-badge" style="background-color: #DBEAFE; color: #1E3A8A;">Children</span>
+                                </div>
+                                
+                            </div>
+                            <ul class="slds-list_dotted slds-p-left_medium">
+                                <template for:each={childrenLinks} for:item="child">
+                                    <li key={child.displayName}>
+                                        <template if:true={child.contactId}>
+                                            <a href="javascript:void(0);" data-child-id={child.contactId} onclick={handleChildClick}>{child.displayName}</a>
+                                        </template>
+                                        <template if:false={child.contactId}>
+                                            <span>{child.displayName}</span>
+                                        </template>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </template>
+
+                    <template if:true={parentsLinks.length}>
+                        <div class="relationship-card slds-m-bottom_small">
+                            <div class="slds-grid slds-grid_spread slds-m-bottom_x-small">
+                                <div class="slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
+                                    <lightning-icon icon-name="utility:groups" size="x-small" class="icon-blue slds-m-right_xx-small"></lightning-icon>
+                                    <span class="slds-badge" style="background-color: #DBEAFE; color: #1E3A8A;">Parents</span>
+                                </div>
+                            </div>
+                             <ul class="slds-list_dotted slds-p-left_medium">
+                                <template for:each={parentsLinks} for:item="parent">
+                                    <li key={parent.displayName}>
+                                        <template if:true={parent.contactId}>
+                                            <a href="javascript:void(0);" data-parent-id={parent.contactId} onclick={handleParentClick}>{parent.displayName}</a>
+                                        </template>
+                                        <template if:false={parent.contactId}>
+                                            <span>{parent.displayName}</span>
+                                        </template>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div class="engagement-footer slds-p-around_large">
+                <h3 class="slds-text-heading_small slds-m-bottom_medium">Engagement Score</h3>
+                <div class="slds-grid slds-grid_vertical-align-end slds-gutters_medium">
+                    <div class="slds-col slds-text-heading_large" style="font-size: 3rem; line-height: 1;">94</div>
+                    <div class="slds-col slds-p-bottom_xx-small">
+                        <p class="text-blue-200 slds-text-body_small">out of 100</p>
+                        <p class="text-blue-300 slds-text-body_x-small">Highly Engaged</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </template>
+</template>

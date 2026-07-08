@@ -1,0 +1,154 @@
+/* Chart Containers */
+.chart-container {
+    position: relative;
+    height: 350px;
+    margin: 1rem 0;
+}
+
+.trend-chart-container {
+    position: relative;
+    height: 280px;
+    margin: 0.5rem 0;
+}
+
+.engagement-chart,
+.trend-chart {
+    max-width: 100%;
+    height: 100%;
+}
+
+.chart-section {
+    background: linear-gradient(135deg, #f6f9fc 0%, #ffffff 100%);
+    border: 1px solid #e5e7eb;
+}
+
+/* Metric Cards */
+.metric-card {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    background: white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.metric-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.metric-card-purple {
+    border-left: 4px solid #8B5CF6;
+}
+
+.metric-card-blue {
+    border-left: 4px solid #3B82F6;
+}
+
+.metric-card-green {
+    border-left: 4px solid #10B981;
+}
+
+.metric-card-amber {
+    border-left: 4px solid #F59E0B;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0.5rem 0;
+    color: #111827;
+}
+
+.trend-up {
+    color: #10B981;
+    font-weight: 600;
+}
+
+.trend-down {
+    color: #EF4444;
+    font-weight: 600;
+}
+
+/* Icon Containers */
+.slds-icon_container {
+    border-radius: 0.5rem;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Table Enhancements */
+lightning-datatable {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 300px;
+        padding: 0 0.5rem;
+    }
+
+    .trend-chart-container {
+        height: 250px;
+    }
+
+    .metric-value {
+        font-size: 1.5rem;
+    }
+
+    .metric-card {
+        margin-bottom: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart-container {
+        height: 280px;
+    }
+
+    .metric-value {
+        font-size: 1.25rem;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.metric-card,
+.chart-section,
+lightning-datatable {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Info Box */
+.slds-theme_shade {
+    border-left: 3px solid #0176d3;
+}
+
+/* Button Group Spacing */
+lightning-button-group {
+    display: flex;
+    gap: 0.25rem;
+}
+
+/* Custom Badge Styles */
+lightning-badge {
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+}

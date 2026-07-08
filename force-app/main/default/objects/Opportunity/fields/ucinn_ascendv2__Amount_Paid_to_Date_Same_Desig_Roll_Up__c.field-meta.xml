@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Amount_Paid_to_Date_Same_Desig_Roll_Up__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Aggregation of Designation Detail&apos;s Amount Paid to Date Roll up. It is the total amount/face_value paid towards designations listed in the opportunity.</description>
+    <label>Amount Paid to Date (Same Designation)</label>
+    <summarizedField>ucinn_ascendv2__Designation_Detail__c.ucinn_ascendv2__Amt_Paid_to_Date_Same_Desig_Roll_Up__c</summarizedField>
+    <summaryForeignKey>ucinn_ascendv2__Designation_Detail__c.ucinn_ascendv2__Opportunity__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

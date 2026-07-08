@@ -1,0 +1,114 @@
+<template>
+    <div class="tab-content">
+        <div class="section-header">
+            <div>
+                <div class="eyebrow">User + LoginHistory</div>
+                <h2 class="section-title">Portal &amp; staff login activity</h2>
+            </div>
+            <lightning-button
+                variant="neutral"
+                label="Refresh"
+                icon-name="utility:refresh"
+                onclick={handleRefresh}
+                disabled={isLoading}
+            ></lightning-button>
+        </div>
+
+        <template if:true={hasError}>
+            <div class="error-banner">{errorMessage}</div>
+        </template>
+
+        <div class="kpi-row">
+            <template for:each={kpiTiles} for:item="tile">
+                <c-ham-quad-kpi-tile
+                    key={tile.label}
+                    label={tile.label}
+                    value={tile.value}
+                    sub={tile.sub}
+                    tone={tile.tone}
+                    big={tile.big}
+                ></c-ham-quad-kpi-tile>
+            </template>
+        </div>
+
+        <div class="grid-two">
+            <div class="card">
+                <div class="card-title">Daily unique logins (last 31 days)</div>
+                <div class="chart-wrap">
+                    <canvas lwc:ref="dailyCanvas"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Weekly logins (rolling 7-day)</div>
+                <div class="chart-wrap">
+                    <canvas lwc:ref="weeklyCanvas"></canvas>
+                </div>
+                <div class="footnote">* Most recent week is partial (through today).</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px;">
+            <div class="card-title">Login outcomes, last 30 days ({formattedTotal30} total attempts)</div>
+            <div class="chart-wrap-tall">
+                <canvas lwc:ref="statusCanvas"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Who's currently facing a login issue</div>
+            <div class="card-subnote">
+                Last {lookbackDays} days. A user only appears here if they have <b>not yet had a successful login that calendar day</b> —
+                once they get in, earlier failures from that day drop off the list. Sorted latest to oldest.
+            </div>
+
+            <div class="chart-wrap" style="height:auto;overflow-x:auto;">
+                <table class="status-table">
+                    <thead>
+                        <tr style="border-bottom:2px solid #0A2E5C;">
+                            <th style="text-align:left;padding:6px 8px;">User</th>
+                            <th style="text-align:left;padding:6px 8px;">Role</th>
+                            <th style="text-align:left;padding:6px 8px;">Issue</th>
+                            <th style="text-align:left;padding:6px 8px;">Date</th>
+                            <th style="text-align:left;padding:6px 8px;">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={issuePage.records} for:item="row">
+                            <tr key={row.rowKey}>
+                                <td style="padding:7px 8px;">
+                                    <div style="font-weight:600;">{row.userName}</div>
+                                    <div style="color:#5B6472;font-size:11px;">{row.email}</div>
+                                </td>
+                                <td style="padding:7px 8px;color:#5B6472;">{row.profileName}</td>
+                                <td style="padding:7px 8px;">
+                                    <span class={row.statusPillClass}>{row.status}</span>
+                                </td>
+                                <td style="padding:7px 8px;color:#5B6472;">{row.loginDate}</td>
+                                <td style="padding:7px 8px;color:#5B6472;">{row.loginTimeOfDay}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination-bar">
+                <span>{paginationLabel}</span>
+                <div class="pagination-controls">
+                    <lightning-button
+                        label="Previous"
+                        variant="neutral"
+                        onclick={handlePrevPage}
+                        disabled={isPrevDisabled}
+                    ></lightning-button>
+                    <lightning-button
+                        label="Next"
+                        variant="neutral"
+                        onclick={handleNextPage}
+                        disabled={isNextDisabled}
+                    ></lightning-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

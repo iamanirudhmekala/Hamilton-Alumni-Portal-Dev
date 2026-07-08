@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "Login Test",
+  "contentBody" : {
+    "activeViewId" : "Login_Test",
+    "configurationTags" : [ ],
+    "pageAccess" : "Public",
+    "routeType" : "custom-login-test",
+    "urlPrefix" : "login-test"
+  },
+  "urlName" : "login-test"
+}

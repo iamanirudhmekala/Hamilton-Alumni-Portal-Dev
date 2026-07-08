@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Bill_To_Account__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The account responsible for billing for this attendee group, carried over from Blackthorn.</description>
+    <inlineHelpText>The account to bill for this group&apos;s registrations.</inlineHelpText>
+    <label>Bill To Account</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Event Attendee Groups</relationshipLabel>
+    <relationshipName>Event_Attendee_Groups</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

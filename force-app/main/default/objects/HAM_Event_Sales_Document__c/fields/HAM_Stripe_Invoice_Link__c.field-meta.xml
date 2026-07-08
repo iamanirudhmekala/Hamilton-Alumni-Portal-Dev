@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Stripe_Invoice_Link__c</fullName>
+    <description>Stripe hosted invoice URL for support lookups. Migrated from bt_stripe__Stripe_Hosted_Invoice_Link__c on bt_stripe__Sales_Document__c.</description>
+    <inlineHelpText>Direct link to the hosted Stripe invoice from the Blackthorn record.</inlineHelpText>
+    <label>Stripe Invoice Link</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Url</type>
+</CustomField>

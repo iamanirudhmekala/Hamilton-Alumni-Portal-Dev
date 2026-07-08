@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Character_Length__c</fullName>
+    <description>Maximum character length allowed for text answers, carried over from Blackthorn.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The maximum number of characters the attendee can enter.</inlineHelpText>
+    <label>Character Length</label>
+    <precision>6</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

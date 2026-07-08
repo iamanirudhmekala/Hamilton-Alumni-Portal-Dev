@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Is_Default__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Whether this is the org-wide default event settings.</description>
+    <inlineHelpText>When true, this settings profile is automatically applied to new events that don&apos;t specify one.</inlineHelpText>
+    <label>Is Default</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

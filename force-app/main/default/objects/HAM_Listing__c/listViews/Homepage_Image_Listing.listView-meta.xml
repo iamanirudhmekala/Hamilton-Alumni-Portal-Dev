@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Homepage_Image_Listing</fullName>
+    <columns>NAME</columns>
+    <columns>HAM_Title__c</columns>
+    <columns>HAM_Is_Trending__c</columns>
+    <columns>HAM_Is_Active__c</columns>
+    <columns>HAM_Image_URL__c</columns>
+    <columns>HAM_Display_Order__c</columns>
+    <columns>HAM_Category__c</columns>
+    <columns>HAM_Short_Description__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>HAM_Category__c</field>
+        <operation>equals</operation>
+        <value>Homepage image</value>
+    </filters>
+    <label>Homepage Image Listing</label>
+</ListView>

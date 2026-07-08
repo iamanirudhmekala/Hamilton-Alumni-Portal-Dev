@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Remaining_Amount_due__c</fullName>
+    <description>The outstanding monetary amount that remains unpaid for this record.</description>
+    <inlineHelpText>Enter or view the remaining balance due after subtracting payments made to date. This value may be used to calculate totals on the parent record.</inlineHelpText>
+    <label>Remaining Amount due</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

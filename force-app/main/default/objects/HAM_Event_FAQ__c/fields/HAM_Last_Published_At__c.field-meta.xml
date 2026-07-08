@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Last_Published_At__c</fullName>
+    <description>Timestamp of when this FAQ was last requested to be published to the external event platform. Mirrors conference360__Last_Publish_To_Platform_Requested_At__c.</description>
+    <inlineHelpText>Auto-populated when a publish request is triggered. Used to track sync status with the event platform.</inlineHelpText>
+    <label>Last Published At</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

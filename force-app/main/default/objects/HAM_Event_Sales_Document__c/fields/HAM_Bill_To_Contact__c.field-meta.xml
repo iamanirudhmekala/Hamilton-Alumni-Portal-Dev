@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Bill_To_Contact__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Lookup to the contact responsible for payment on this sales document.</description>
+    <inlineHelpText>The bill-to contact for this sales document.</inlineHelpText>
+    <label>Bill To Contact</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>HAM Event Sales Documents</relationshipLabel>
+    <relationshipName>HAM_Event_Sales_Documents_BillTo</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

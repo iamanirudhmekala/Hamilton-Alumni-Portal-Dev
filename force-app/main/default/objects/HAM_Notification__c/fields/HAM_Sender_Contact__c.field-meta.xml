@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Sender_Contact__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This is a lookup to sender contact to fetch name and profile photo to be displayed in notification</description>
+    <inlineHelpText>This is a lookup to sender contact to fetch name and profile photo to be displayed in notification</inlineHelpText>
+    <label>HAM Sender Contact</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>HAM Notifications (HAM Sender Contact)</relationshipLabel>
+    <relationshipName>HAM_Notifications1</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

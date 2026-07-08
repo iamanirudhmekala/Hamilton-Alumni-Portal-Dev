@@ -1,0 +1,378 @@
+.dashboard-container {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.profile-section-container{
+    width: 29%;
+}
+.philanthropy-section-container{
+    width: 69%;
+}
+
+.accordions-container {
+    display: flex;  
+    gap: 1.5rem; 
+    padding: 1rem;
+}
+
+.my-service-container, .my-affinities-container{
+    width: 49%;
+}
+
+.philanthropy-detail-container{
+    padding: 0 1rem !important;
+    width: 100%;
+}
+
+
+@media (min-height: 1400px) {
+    .web-view-cmp-container{
+        min-height: 85vh;
+    }
+}
+@media (max-height: 500px) {
+    .tab-child-container{
+        height: 60vh !important;
+        overflow-y: scroll;
+        padding-bottom: 40px;
+    }
+} 
+@media (max-width: 1024px) {
+    .hamtab-wrapper {
+        z-index: 999 !important;
+    }
+
+    .dashboard-container {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 0.75rem;
+    }
+
+    .philanthropy-detail-container{
+        padding: 0 0.75rem !important;
+        margin-bottom: 80px;
+    }
+
+    
+    
+    .profile-section-container{
+        width: 100%;
+    }
+    .philanthropy-section-container{
+        width: 100%;
+    }
+
+
+    .accordions-container {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.75rem;
+    }
+
+    .my-service-container, .my-affinities-container{
+        width: 100%;
+    }
+
+
+    .tab-wrapper {
+        position: sticky;
+        top: 80px;
+        z-index: 100;
+        background-color: white;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+
+        /* Firefox */
+        scrollbar-width: none;
+    }
+
+    /* Chrome, Safari, iOS */
+    .tab-wrapper::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Inner container stays in one row */
+    .tab-container {
+        display: flex;
+        flex-wrap: nowrap;       /* Prevent wrapping */
+        gap: 0.5rem;
+        padding: 0.5rem;
+        min-width: max-content; /* Forces horizontal scroll */
+    }
+
+    /* Base tab style */
+    .nav-tab {
+        white-space: nowrap;    /* Text stays in one line */
+        /* border: none; */
+        cursor: pointer;
+        flex-shrink: 0;         /* Prevent shrinking */
+        transition: background 0.2s ease;
+        border-radius: 6px;
+        padding: 10px 14px;
+        font-size: 16px;
+        font-family: 'Mallory-main', sans-serif;
+        
+        border: 1px solid #002F861A;
+    }
+
+    .sticky{
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: #ffffff;
+    }
+
+    /* Active tab */
+    .nav-active {
+        background-color: #002F86 !important;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 700;
+        border-radius:0px;
+    }
+
+    /* Inactive tab */
+    .nav-inactive {
+        background-color: #F4F4F4;
+        color: #002F86;
+        text-decoration: none;
+        font-weight: 400;
+    }
+
+    .tab-container a:hover {
+        text-decoration: none;;
+    }
+
+    .tab-container a:active {
+        text-decoration: none;;
+    }
+
+    .tab-container a:visited {
+        text-decoration: none;;
+    }
+
+  
+
+
+}
+
+
+.hamtab-wrapper.menu-open {
+    padding: 16px 0px !important;
+}
+.hamtab-wrapper {
+    display: flex;
+    justify-content: flex-end; /* move to right */
+    align-items: center;
+    padding: 5px 16px 0px 16px;
+    position: sticky;
+    top: 80px;
+    background-color: white;
+       
+    z-index: 1000;
+}
+/* Desktop tabs */
+/* .hamtab-container { */
+.tab-child-container {
+    display: flex;
+    gap: 12px;
+    
+}
+
+/* Hamburger icon */
+.hamburger {
+    display: none;
+    width: 35px;
+    cursor: pointer;
+    
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    background: #002f87;
+    margin: 5px 0;
+}
+
+/* Mobile menu */
+/* .hamtab-container.mobile {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 1px;
+    margin-top: 90px;
+    width: 100%;
+    background: #00000070;
+    z-index: 1201;
+    height: 90vh;
+    padding-bottom: 10px;
+    align-items: flex-end;
+} */
+
+.hamtab-container.mobile {
+    position: fixed;
+    inset: 0;
+    margin-top: 90px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    background: #00000070;
+    height: 100vh;
+    padding-bottom: 10px;
+
+    /* Hide by default */
+    opacity: 0;
+    visibility: hidden;
+
+    transition: opacity 0.3s ease;
+
+    z-index: 1201;
+}
+
+/* .tab-child-container{
+    width: 70%;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    padding-bottom: 10px;
+    height: 100%;
+    flex-direction: column;
+} */
+
+.tab-child-container {
+    position: fixed;
+    /* top: 0; */
+    right: 0;
+
+    width: 70%;
+    /* max-width: 420px; */
+
+    height: 100vh;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+
+    display: flex;
+    flex-direction: column;
+
+    /* 🔑 Start hidden off-screen */
+    transform: translateX(100%);
+    transition: transform 0.35s ease-in-out;
+
+    z-index: 1000;
+}
+
+.tab-child-container.open {
+    transform: translateX(0);
+}
+
+.hamtab-container.mobile.open {
+    /* display: flex; */
+    opacity: 1;
+    visibility: visible;
+}
+
+/* .hamtab-container button { */
+.tab-child-container button {
+    padding: 12px;
+    background: none;
+    /* border: none; */
+    /* text-align: left; */
+}
+
+    .hamburger {
+        display: block;
+    }
+
+    .hamtab-container {
+        display: none;
+    }
+/* Responsive */
+/* @media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .hamtab-container {
+        display: none;
+    }
+} */
+
+.hamburger-img {
+    margin-left: auto; /* 👈 pushes image to right */
+    /* width: 25px; */
+    cursor: pointer;
+    height: 50px;
+}
+
+.hamberger-header {
+    display: flex;
+    width: 100%;
+}
+
+.hamburger-icon {
+   margin-left: auto;
+    width: 35px;
+    cursor: pointer;
+    height: 50px;
+    margin-right: 16px;
+    margin-top: 2px;
+    
+}
+
+ .nav-headertab span{
+    font-size: 13px;
+ }
+/* Base tab style */
+    .nav-headertab {
+        white-space: nowrap;    /* Text stays in one line */
+        /* border: none; */
+        cursor: pointer;
+        flex-shrink: 0;         /* Prevent shrinking */
+        transition: background 0.2s ease;
+        border-radius: 0%;
+        padding: 10px 14px;
+        font-size: 16px;
+        font-family: 'Mallory-main', sans-serif;
+        background-color: #002F86;
+        color: white;
+        
+        border: 1px solid #002F861A;
+    }
+    .header-row {
+    display: flex;
+    align-items: center;      /* Vertical alignment */
+    justify-content: space-between; /* Button left, icon right */
+    width: 100%;
+    text-align: center; 
+    padding: 0 0 0 0.75rem;
+    }
+
+    .tab-btn {
+       flex: 1;              /* Takes all available space */
+       margin-right: 5px;   /* Small gap before icon */
+       margin-left: 5px;
+    }
+
+    .tab-menubtn {
+       flex: 1;  
+       margin-left: 30px;            
+       padding-top: 10px;
+    }
+
+    .hamburger {
+        margin: 0;
+    }
+
+/* ── Kirkland Override ───────────────────────────────────────── */
+.kirkland-override .hamburger-img, .kirkland-override .hamburger-icon{ height: 15px !important; width: 15px !important;}
+.kirkland-override .nav-headertab { background-color: #166837 !important; }
+.kirkland-override .header-row { padding-top: 10px !important;}
+.kirkland-override .tab-menubtn { padding-top: 0px !important; margin-left: 0 !important;}
+.kirkland-override .nav-active { background-color: #166837 !important; }
+.kirkland-override .nav-inactive { background-color: transparent !important; color: #166837 !important; }
+.kirkland-override .hamburger span { background: #166837 !important; }

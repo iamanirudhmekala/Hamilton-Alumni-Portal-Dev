@@ -1,0 +1,229 @@
+<template>
+    <div class="jabba-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="slds-container_large slds-container_center slds-p-around_medium">
+                <div class="slds-grid slds-grid_vertical-align-center slds-gutters_small">
+                    <div class="slds-col_initial">
+                        <div class="logo-container">
+                           
+                            <lightning-icon icon-name="utility:groups" alternative-text="New Group Icon" size="medium" fill="#002855" stroke="#002855"></lightning-icon>
+
+                        </div>
+                    </div>
+                    <div class="slds-col">
+                        <h1 class="header-title">Jabba Search</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- UPDATED: Quick Actions Section (Matched to Figma) -->
+        
+         
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Quick Actions Section -->
+            
+                <lightning-card title="Quick Actions" class="quick-actions-card">
+                    <div class="quick-actions-grid">
+                        <!-- <lightning-button
+                            variant="brand"
+                            label="Create Contact Report"
+                            icon-name="utility:file"
+                            class="action-button"
+                            onclick={handleCreateContactReport}>
+                        </lightning-button>
+                        
+                        <lightning-button
+                            variant="brand"
+                            label="Create Task"
+                            icon-name="utility:task"
+                            class="action-button"
+                            onclick={handleCreateTask}>
+                        </lightning-button> -->
+                    </div>
+                </lightning-card>
+            
+            <!-- Tab Section -->
+            <lightning-tabset active-tab-value={activeTab} onselect={handleTabChange} class="constituent-tabs main-tabs"  variant="scoped">
+                <!-- Constituent Search Tab -->
+                <lightning-tab label="Constituent Search" value="search">
+                    <lightning-card class="search-card">
+                        <div class="card-content bar-chart-container">
+                            <!-- Search Inputs -->
+                            <div class="search-inputs-grid">
+                                <div class="input-group">
+                                    <label class="input-label">Constituent name</label>
+                                    <lightning-input
+                                        type="search"
+                                        id="constituent-name"
+                                        name="constituentName"
+                                        placeholder="Search first or Last Name..."
+                                        value={constituentName}
+                                         onchange={handleChange}
+                                        class="search-input">
+                                    </lightning-input>
+                                </div>
+
+                                <div class="input-group">
+                                    <label class="input-label">Donor Id</label>
+                                    <lightning-input
+                                        type="search"
+                                        id="donor-id"
+                                        name="donorId"
+                                        placeholder="Search by Donor Id..."
+                                        value={donorId}
+                                         onchange={handleChange}
+                                        class="search-input">
+                                    </lightning-input>
+                                </div>
+                            </div>
+
+                            <!-- Filters -->
+                            <div class="filters-grid">
+                                <lightning-layout multiple-rows="true" pull-to-boundary="small" class="slds-m-top_medium">
+                                    <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                        <lightning-combobox
+                                            name="classYear"
+                                            label="Class Year"
+                                            value={classYear}
+                                            placeholder="Select Class Year"
+                                            options={classYearOptions}
+                                            onchange={handleChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                        <lightning-combobox
+                                            name="sportsAssociation"
+                                            label="Sports Association"
+                                            value={sportsAssociation}
+                                            placeholder="Select Sports Associa..."
+                                            options={sportsAssociationOptions}
+                                            onchange={handleChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                                        <lightning-combobox
+                                            name="primaryOrganization"
+                                            label="Primary Organization"
+                                            value={primaryOrganization}
+                                            placeholder="Select Primary Organiz..."
+                                            options={primaryOrganizationOptions}
+                                            onchange={handleChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="action-buttons">
+                                <lightning-button
+                                    variant="neutral"
+                                    label="Clear"
+                                    icon-name="utility:close"
+                                    onclick={handleClear}>
+                                </lightning-button>
+                                <lightning-button
+                                    variant="brand"
+                                    label="Search"
+                                    icon-name="utility:search"
+                                    onclick={searchConstituents}>
+                                </lightning-button>
+                            </div>
+
+                            <!-- Results Table -->
+                            <div class="results-section">
+                                <template lwc:if={pageConstituents}>
+                                    <lightning-datatable
+                                        key-field="id"
+                                        data={pageConstituents}
+                                        columns={searchColumns}
+                                        onrowaction={handleRowAction}
+                                        sorted-by={sortBy}
+                                        sorted-direction={sortDirection}
+                                        onsort={doSorting}
+                                        hide-checkbox-column>
+                                    </lightning-datatable>
+                                    <template if:false={pageConstituents}>
+                                        <div class="empty-state">
+                                            Page 1 of 1 - 0 total
+                                        </div>
+                                    </template>
+                                </template>
+                            </div>
+                        </div>
+                    </lightning-card>
+
+                    <!-- Recent Constituents Section -->
+                    <lightning-card title="Recent Constituents" class="recent-prospects-card">
+                        <div slot="actions">
+                            
+                        </div>
+                        <div class="recent-prospects-table employers-section">
+                            <lightning-datatable
+                                key-field="id"
+                                data={recentProspectsRecords}
+                                columns={recentProspectsColumns}
+                                hide-checkbox-column
+                                onrowaction={handleRowAction}>
+                            </lightning-datatable>
+                        </div>
+                    </lightning-card>
+                </lightning-tab>
+
+                <!-- Employer Impact Tab -->
+                <lightning-tab label="Employer Impact" value="employer">
+                    <lightning-card class="employer-card">
+                        <div class="employer-content">
+                            <h2 class="section-title">Employer Engagement Overview</h2>
+                            
+                            <!-- Bar Chart -->
+                            <div class="bar-chart-container">
+                                <template for:each={chartData} for:item="bar">
+                                    <div key={bar.id} class="bar-wrapper" onclick={handleBarClick} data-category={bar.category}>
+                                        <div class="bar-label">{bar.label}</div>
+                                        <div class="bar-background">
+                                            <div class="bar-fill" style={bar.style}>
+                                                <span class="bar-value" >{bar.value}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            
+
+                            <!-- Employers Table -->
+                            <template if:true={showEmployersTable}>
+                                <div class="employers-section">
+                                    <div class="table-header">
+                                        <h3 class="table-title">{selectedCategory}</h3>
+                                        <lightning-button
+                                            variant="base"
+                                            label="Close"
+                                            icon-name="utility:close"
+                                            onclick={handleCloseTable}>
+                                        </lightning-button>
+                                    </div>
+                                    <lightning-datatable
+                                        key-field="id"
+                                        data={employersData}
+                                        columns={employersColumns}
+                                        hide-checkbox-column
+                                        onrowaction={handleEmployerClick}>
+                                    </lightning-datatable>
+                                </div>
+                            </template>
+                        </div>
+                    </lightning-card>
+                </lightning-tab>
+            </lightning-tabset>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">Hamilton College Career Center</p>
+        </footer>
+    </div>
+</template>

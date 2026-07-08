@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
+    <appleTeam>KS8X9R96LG</appleTeam>
+    <consumerKey>com.mysalesforce.mycommunity.C00D3t000005Ydd0EAC</consumerKey>
+    <ecKey>QGYZNH3HZ2</ecKey>
+    <executionUser>sfdcc84@cube84.com.ham.prod.advdev</executionUser>
+    <friendlyName>Login with Apple</friendlyName>
+    <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
+    <isPkceEnabled>false</isPkceEnabled>
+    <providerType>Apple</providerType>
+    <registrationHandler>HAM_SocialSignOnRegistrationHandler</registrationHandler>
+    <requireMfa>false</requireMfa>
+    <sendAccessTokenInHeader>false</sendAccessTokenInHeader>
+    <sendClientCredentialsInHeader>false</sendClientCredentialsInHeader>
+    <sendSecretInApis>false</sendSecretInApis>
+</AuthProvider>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Subtotal_Amount__c</fullName>
+    <description>Subtotal amount before tax and discounts are applied.</description>
+    <inlineHelpText>Pre-tax, pre-discount subtotal for this sales document.</inlineHelpText>
+    <label>Subtotal Amount</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

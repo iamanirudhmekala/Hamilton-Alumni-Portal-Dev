@@ -1,0 +1,504 @@
+<template>
+    <div class="payment-section">
+        <section class="form-section-compact gift-module slds-var-p-around_xx-large" style="border: 2px solid #e5e7eb;">
+            <!-- <div class="stripe-card-container"></div> -->
+            <template lwc:if={showSpinner}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+            <template if:true={displayToast}>
+                <c-ham-giving-toast-util toast-title={toastTitle} toast-message={toastMessage} toast-variant={toastVariant} onclose={handleCloseToast}></c-ham-giving-toast-util>
+            </template>
+            <button type="button" class="back-button" onclick={handleBackToDesignation}>
+                <lightning-icon icon-name="utility:back"
+                                class="slds-m-right_x-small back-button-icon"
+                                alternative-text="Back"
+                                title="Back"
+                                size="x-small"
+                                variant="inverse">
+                </lightning-icon>
+                Back to Designation
+            </button>
+
+            <div class="payment-tab slds-var-p-top_xx-large">
+                <!-- <button class="payment-tab__button" data-btn="digitalWallet" onclick={tabClicked}>
+                    <lightning-icon icon-name="utility:phone_portrait"
+                                    data-btn="digitalWallet"
+                                    class="slds-m-right_x-small payment-button-icon"
+                                    alternative-text="Digital Wallet"
+                                    title="Digital Wallet"
+                                    size="x-small"
+                                    variant="inverse">
+                    </lightning-icon>
+                    <template if:false={isSmallScreen}>
+                        Digital Wallet
+                    </template>
+                </button> -->
+                <button class="payment-tab__button" data-btn="card" onclick={tabClicked}>
+                    <lightning-icon icon-name="utility:card_details"
+                                    data-btn="card"
+                                    class="slds-m-right_x-small payment-button-icon"
+                                    alternative-text="Card"
+                                    title="Card"
+                                    size="x-small"
+                                    variant="inverse">
+                    </lightning-icon>
+                    <template if:false={isSmallScreen}>
+                        Digital Wallet | Credit Card | ACH | Wire
+                    </template>
+                </button>
+                <!-- <button class="payment-tab__button" data-btn="achWire" onclick={tabClicked}>
+                    <lightning-icon icon-name="utility:account"
+                                    data-btn="achWire"
+                                    class="slds-m-right_x-small payment-button-icon"
+                                    alternative-text="ACH/Wire"
+                                    title="ACH/Wire"
+                                    size="x-small"
+                                    variant="inverse">
+                    </lightning-icon>
+                    <template if:false={isSmallScreen}>
+                        ACH/Wire
+                    </template>
+                </button> -->
+                <button class="payment-tab__button" data-btn="daf" onclick={tabClicked}>
+                    <lightning-icon icon-name="utility:heart"
+                                    data-btn="daf"
+                                    class="slds-m-right_x-small payment-button-icon"
+                                    alternative-text="DAF"
+                                    title="DAF"
+                                    size="x-small"
+                                    variant="inverse">
+                    </lightning-icon>
+                    <template if:false={isSmallScreen}>
+                        DAF
+                    </template>
+                </button>
+                <button class="payment-tab__button" data-btn="stock" onclick={tabClicked}>
+                    <lightning-icon icon-name="utility:trending"
+                                    data-btn="stock"
+                                    class="slds-m-right_x-small payment-button-icon"
+                                    alternative-text="Stock"
+                                    title="Stock"
+                                    size="x-small"
+                                    variant="inverse">
+                    </lightning-icon>
+                    <template if:false={isSmallScreen}>
+                        Stock
+                    </template>
+                </button>
+            </div>
+
+            <template lwc:if={paymentMethodNotAvailable}>
+                <template lwc:if={isSmallScreen}>
+                    <div class="slds-theme_info" style="border-radius: 0.25rem; margin-top: 1rem; padding: 1rem; background-color: var(--slds-g-color-neutral-base-50, var(--lwc-colorBackgroundToast,rgb(116, 116, 116)));">
+                        <h2 class="slds-text-heading_small">{getStaticToastMessage}</h2>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <!-- <div class="static-toast">
+                        <div class="slds-notify_container custom-container">
+                            <div class="slds-notify slds-notify_toast slds-theme_info" role="status">
+                            <span class="slds-assistive-text">info</span>
+                            <span class="slds-icon_container slds-icon-utility-info slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed">
+                                <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+                                </svg>
+                            </span>
+                            <div class="slds-notify__content">
+                                <h2 class="slds-text-heading_small">{getStaticToastMessage}</h2>
+                            </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="security-note info-static-toast">
+                        <div class="info-static-toast-block">
+                            <lightning-icon icon-name="utility:info"
+                                            class="security-note-icon info-static-toast-icon"
+                                            alternative-text="Secure payment via Stripe. We don't store card details."
+                                            title="Secure payment via Stripe. We don't store card details."
+                                            size="x-small"
+                                            variant="inverse">
+                            </lightning-icon>
+                            <p class="info-static-toast-text">{getStaticToastMessage}</p>
+                        </div>
+                    </div>
+                </template>
+            </template>
+
+            <div class={getHiddenClass}>   
+                    <!-- getDisabledClass   -   USE THIS TO JUST DISABLE INPUT FIELDS   -->
+                <div class="slds-grid slds-wrap slds-var-m-top_xx-large custom-grid">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div class="slds-p-right_x-small">
+                            <div class="custom-input-field">
+                                <label for="wallet-name">Name <span class="required">*</span></label>
+                                <input class="wallet-name" type="text" id="wallet-name" placeholder="Full name" required value={personName} onchange={personNameChange}>
+                                <span data-id="name-error" class="validation-message"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div class="slds-p-left_x-small">
+                            <div class="custom-input-field">
+                                <label for="wallet-email">Email <span class="required">*</span></label>
+                                <input class="wallet-email" type="email" id="wallet-email" placeholder="email@example.com" required value={personEmail} onchange={personEmailChange}>
+                                <span data-id="email-error" class="validation-message"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <template lwc:if={displayAlumniRegistrationBox}>
+                        <div class="slds-col slds-size_12-of-12">
+                            <div class="slds-var-m-around_large alumni-registration">
+                                <input id="alumni-registration" type="checkbox" class="slds-var-m-right_medium" checked={requireAlumniRegistration}>
+                                <label for="alumni-registration" class="slds-text-heading_small">Register me for an Alumni Account if I don't already have one</label>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- <template lwc:if={isDigitalWallet}>
+                <div class="wallet-label">Select your preferred digital wallet</div>
+
+                <div class="wallet-buttons-no-grid">
+                    <button type="button" class="wallet-btn full-width-button" data-btn="stripeLink" onclick={paymentMethodSelected}>
+                        <img class="wallet-btn-icon" src={stripeLinkImage}/>
+                        Digital Payment
+                    </button>
+                </div> -->
+
+
+                
+                <!-- <div class="wallet-buttons">
+                    <div class="inline-grid-item">
+                        <button type="button" class="wallet-btn" data-btn="stripeLink" onclick={paymentMethodSelected}>
+                            <img class="wallet-btn-icon" src={stripeLinkImage}/>
+                            Digital Payment
+                        </button>
+                    </div>
+                    <div class="section-disabled div-with-hover inline-grid-item" title="Implementation in progress for Phase 2">
+                        <span class="tooltip-text">Implementation in progress for Phase 2</span>
+                        <button type="button" class="wallet-btn wallet-btn-disabled" data-btn="googlePay" onclick={paymentMethodSelected}>
+                            <img class="wallet-btn-icon" src={gPayImage}/>
+                            Google Pay
+                        </button>
+                    </div>
+                    <div class="section-disabled div-with-hover inline-grid-item" title="Implementation in progress for Phase 2">
+                        <button type="button" class="wallet-btn wallet-btn-disabled" data-btn="applePay" onclick={paymentMethodSelected}>
+                            <img class="wallet-btn-icon" src={applePayImage}/>
+                            Apple Pay
+                        </button>
+                    </div>
+                    <div class="section-disabled div-with-hover inline-grid-item" title="Implementation in progress for Phase 2">
+                        <button type="button" class="wallet-btn wallet-btn-disabled" data-btn="payPal" onclick={paymentMethodSelected}>
+                            <img class="wallet-btn-icon" src={payPalImage}/>
+                            PayPal
+                        </button>
+                    </div>
+                </div> -->
+                <!-- <div class="security-note">
+                    <lightning-icon icon-name="utility:lock"
+                                    class="security-note-icon"
+                                    alternative-text="Secure payment via Stripe. We don't store card details."
+                                    title="Secure payment via Stripe. We don't store card details."
+                                    size="x-small"
+                                    variant="inverse">
+                    </lightning-icon>
+                    Select your preferred digital wallet and then click Complete Gift to process your payment.
+                </div>
+            </template> -->
+
+            <template lwc:if={isCard}>
+                <div class="wallet-buttons-no-grid">
+                    <button type="button" class="wallet-btn full-width-button" data-btn="card" onclick={paymentMethodSelected}>
+                        <lightning-icon icon-name="utility:card_details"
+                                data-btn="card"
+                                class="slds-m-right_x-small payment-button-icon wallet-btn-icon"
+                                alternative-text="Card"
+                                title="Card"
+                                size="x-small">
+                        </lightning-icon>
+                        Digital Wallet | Credit Card | ACH | Wire
+                    </button>
+                </div>
+                <div class="security-note">
+                    <lightning-icon icon-name="utility:lock"
+                                    class="security-note-icon"
+                                    alternative-text="Secure payment via Stripe. We don't store card details."
+                                    title="Secure payment via Stripe. We don't store card details."
+                                    size="x-small"
+                                    variant="inverse">
+                    </lightning-icon>
+                    Secure payment via Stripe. We don't store credit card or bank information. Click the button below and select Card to process a card payment or Bank Account to process an ACH/Wire transfer.
+                </div>
+                <!-- <div class="slds-grid slds-wrap slds-var-m-top_xx-large">
+                    <div class="slds-col slds-size_12-of-12">
+                        <div>
+                            <div class="custom-input-field">
+                                <label for="cardholder-name">Cardholder Name</label>
+                                <input type="text" id="cardholder-name" placeholder="Name on card" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_12-of-12">
+                        <div class="custom-field-padding-top">
+                            <div class="custom-input-field">
+                                <label for="card-number">Card Number</label>
+                                <input type="email" id="card-number" placeholder="1234 5678 9012 3456" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div class="slds-p-right_x-small">
+                            <div class="custom-input-field custom-field-padding-top">
+                                <label for="expiry-date">Expiry</label>
+                                <input type="text" id="expiry-date" placeholder="MM/YY" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div class="slds-p-right_x-small">
+                            <div class="custom-input-field custom-field-padding-top">
+                                <label for="cvc">CVC</label>
+                                <input type="text" id="cvc" placeholder="123" value="">
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </template>
+
+            <!-- <template lwc:if={isACHWire}>
+                <div class="wallet-buttons-no-grid">
+                    <button type="button" class="wallet-btn full-width-button" data-btn="achWire" onclick={paymentMethodSelected}>
+                        <lightning-icon icon-name="utility:account"
+                                    data-btn="achWire"
+                                    class="slds-m-right_x-small payment-button-icon"
+                                    alternative-text="ACH/Wire"
+                                    title="ACH/Wire"
+                                    size="x-small">
+                        </lightning-icon>
+                        ACH/Wire
+                    </button>
+                </div>
+                <div class="security-note">
+                    <lightning-icon icon-name="utility:lock"
+                                    class="security-note-icon"
+                                    alternative-text="Secure payment via Stripe. We don't store card details."
+                                    title="Secure payment via Stripe. We don't store card details."
+                                    size="x-small"
+                                    variant="inverse">
+                    </lightning-icon>
+                    Secure payment via Stripe. We don't store bank information.
+	                Click the button below and select Bank Account to process an ACH/Wire transfer.
+                </div> -->
+
+
+
+                <!-- <div class="stock-info-note">
+                    <lightning-icon icon-name="utility:info"
+                                    class="slds-m-right_x-small stock-info-note-icon"
+                                    alternative-text="For ACH or wire transfers, please use the banking information below. Wire transfers typically process same day, while ACH transfers may take 2-3 business days."
+                                    title="For ACH or wire transfers, please use the banking information below. Wire transfers typically process same day, while ACH transfers may take 2-3 business days."
+                                    size="x-small"
+                                    variant="inverse">
+                    </lightning-icon>
+                    For ACH or wire transfers, please use the banking information below. Wire transfers typically process same day, while ACH transfers may take 2-3 business days.
+                </div>
+
+                <div class="stock-transfer-info">
+                    <h4 class="bank-information-header">
+                        Bank Account Information
+                    </h4>
+                    <div class="bank-information-body">
+                        <p class="bank-information-body-item">
+                            <strong>Bank Name:</strong> Hamilton Trust Bank
+                        </p>
+                        <p class="bank-information-body-item">
+                            <strong>Account Name:</strong> Hamilton College
+                        </p>
+                        <p class="bank-information-body-item">
+                            <strong>Account Number:</strong> 123456789
+                        </p>
+                        <p style="">
+                            <strong>Routing Number:</strong> 021000021
+                        </p>
+                        <p class="bank-information-body-item">
+                            <strong>Account Type:</strong> Checking
+                        </p>
+                        <p class="bank-information-body-item">
+                            <strong>SWIFT Code:</strong> HAMIUS33 (for international transfers)
+                        </p>
+                        <p class="bank-information-body-item">
+                            Please include your name and "Hamilton College Gift" in the transfer memo.
+                        </p>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="custom-input-field custom-field-padding-top">
+                        <label for="transfer-amount">Transfer Amount</label>
+                        <input type="number" id="transfer-amount" placeholder="$ 0.00" step="0.01" value="">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="custom-input-field custom-field-padding-top">
+                        <label for="transfer-notes">Transfer Reference/Notes (Optional)</label>
+                        <textarea id="transfer-notes"
+                                rows="3"
+                                placeholder="Include any reference information for your transfer..."
+                                class="transfer-notes">
+                        </textarea>
+                    </div>
+                </div> -->
+
+
+
+
+            <!-- </template> -->
+
+            <template lwc:if={isDAF}>
+                <!-- <div class="stock-info-note section-disabled">
+                    <lightning-icon icon-name="utility:info"
+                                    class="slds-m-right_x-small stock-info-note-icon"
+                                    alternative-text="To make a gift from your Donor Advised Fund (DAF), please provide your DAF information below. We'll send you instructions to complete the grant recommendation to Hamilton College."
+                                    title="To make a gift from your Donor Advised Fund (DAF), please provide your DAF information below. We'll send you instructions to complete the grant recommendation to Hamilton College."
+                                    size="x-small"
+                                    variant="inverse">
+                    </lightning-icon>
+                    To make a gift from your Donor Advised Fund (DAF), please provide your DAF information below. We'll send you instructions to complete the grant recommendation to Hamilton College. Fully integrated system to be developed - phase 4 & 5.
+                </div>
+
+                <div class="slds-grid slds-wrap slds-var-m-top_xx-large section-disabled">
+                    <div class="slds-col slds-size_12-of-12">
+                        <div>
+                            <div class="custom-input-field">
+                                <label for="dafSponsor">DAF Sponsor Organization</label>
+                                <select id="dafSponsor" required="">
+                                    <option value="">Select your DAF sponsor</option>
+                                    <option value="fidelity">Fidelity Charitable</option>
+                                    <option value="schwab">Schwab Charitable</option>
+                                    <option value="vanguard">Vanguard Charitable</option>
+                                    <option value="npt">National Philanthropic Trust</option>
+                                    <option value="american-endowment">American Endowment Foundation</option>
+                                    <option value="community-foundation">Community Foundation</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div class="custom-input-field custom-field-padding-top slds-m-right_x-small">
+                            <label for="grant-amount">Recommended Grant Amount</label>
+                            <input type="number" id="grant-amount" placeholder="$ 0.00" step="0.01" value="">
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div class="custom-input-field custom-field-padding-top slds-m-left_x-small">
+                            <label for="daf-account-name">DAF Account Name</label>
+                            <input type="text" id="daf-account-name" placeholder="Your DAF account name" value="">
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_12-of-12">
+                        <div class="custom-input-field custom-field-padding-top">
+                            <label for="dafAccountNumber">DAF Account Number (Optional)</label>
+                            <input type="text" id="dafAccountNumber" placeholder="Account number if available">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stock-transfer-info section-disabled">
+                    <h4 class="stock-transfer-info-header">Grant Recommendation Information</h4>
+                    <div class="stock-transfer-info-body">
+                        <p class="stock-transfer-info-body-item">
+                            <strong>Legal Name:</strong> Hamilton College
+                        </p>
+                        <p class="stock-transfer-info-body-item">
+                            <strong>Tax ID (EIN):</strong> 15-0532082
+                        </p>
+                        <p class="stock-transfer-info-body-item">
+                            <strong>Address:</strong> 198 College Hill Road, Clinton, NY 13323
+                        </p>
+                        <p class="stock-transfer-info-footer">After submitting this form, you'll receive detailed instructions to complete your grant recommendation through your DAF sponsor's online portal.</p>
+                    </div>
+                </div> -->
+            </template>
+
+            <template lwc:if={isStock}>
+                <!-- <div class="stock-info-note section-disabled">
+                    <lightning-icon icon-name="utility:info"
+                                    class="slds-m-right_x-small stock-info-note-icon stock-info-note-icon-custom"
+                                    alternative-text="To transfer stock or securities, please use the information below. Our development team will contact you to complete the transfer."
+                                    title="To transfer stock or securities, please use the information below. Our development team will contact you to complete the transfer."
+                                    size="x-small"
+                                    variant="inverse">
+                    </lightning-icon>
+                    To transfer stock or securities, please use the information below. Our development team will contact you to complete the transfer. Fully integrated system to be developed - phase 4 & 5.
+                </div>
+
+                <div class="slds-grid slds-wrap slds-var-m-top_xx-large section-disabled">
+                    <div class="slds-col slds-size_12-of-12">
+                        <div>
+                            <div class="custom-input-field">
+                                <label for="stockType">Stock/Security Name</label>
+                                <input type="text" id="stockType" placeholder="e.g., Apple Inc. (AAPL)" required="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div class="custom-input-field custom-field-padding-top slds-m-right_x-small">
+                            <label for="stockShares">Number of Shares</label>
+                            <input type="number" id="stockShares" placeholder="0" min="1" required="">
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div class="custom-input-field custom-field-padding-top slds-m-left_x-small">
+                            <label for="stockValue">Estimated Value per Share</label>
+                            <input type="number" id="stockValue" placeholder="$ 0.00" min="0" step="0.01" required="">
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_12-of-12">
+                        <div class="custom-input-field custom-field-padding-top">
+                            <label for="stockBroker">Brokerage Firm</label>
+                            <input type="text" id="stockBroker" placeholder="e.g., Fidelity, Charles Schwab" required="">
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_12-of-12">
+                        <div class="custom-input-field custom-field-padding-top">
+                            <label for="stockNotes">Additional Notes (Optional)</label>
+                            <textarea id="stockNotes"
+                                    rows="3"
+                                    placeholder="Any additional information about the stock transfer..." 
+                                    class="stock-notes">
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stock-transfer-info section-disabled">
+                    <h4 class="stock-transfer-info-header">Transfer Instructions</h4>
+                    <div class="stock-transfer-info-body">
+                        <p class="stock-transfer-info-body-item">
+                            <strong>DTC Number:</strong> 0123
+                        </p>
+                        <p class="stock-transfer-info-body-item">
+                            <strong>Account Name:</strong> Hamilton College
+                        </p>
+                        <p class="stock-transfer-info-body-item">
+                            <strong>Account Number:</strong> 12345678
+                        </p>
+                        <p class="stock-transfer-info-body-item">
+                            <strong>For benefit of:</strong> Hamilton College Annual Fund
+                        </p>
+                        <p class="stock-transfer-info-footer">Please notify our office before initiating the transfer.</p>
+                    </div>
+                </div> -->
+            </template>
+    
+        </section>
+
+        <div class="form-submit">
+            <button class={submitBtnClasses} onclick={handlePayment}>Complete Gift of ${paymentAmountStringFormatted}</button>
+        </div>
+    </div>
+</template>

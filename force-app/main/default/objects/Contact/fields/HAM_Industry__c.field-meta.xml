@@ -1,0 +1,1311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Industry__c</fullName>
+    <description>Stores the industry associated with the individual or organization.</description>
+    <inlineHelpText>Select the appropriate industry value. This field may be populated from external sources such as LiveAlumni or LinkedIn, or updated manually when needed.</inlineHelpText>
+    <label>HAM LiveAlumni  Industry</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Higher Education</fullName>
+                <default>false</default>
+                <label>Higher Education</label>
+            </value>
+            <value>
+                <fullName>Internet</fullName>
+                <default>false</default>
+                <label>Internet</label>
+            </value>
+            <value>
+                <fullName>Information Technology and Services</fullName>
+                <default>false</default>
+                <label>Information Technology and Services</label>
+            </value>
+            <value>
+                <fullName>Non-profit Organizations</fullName>
+                <default>false</default>
+                <label>Non-profit Organizations</label>
+            </value>
+            <value>
+                <fullName>Government Administration</fullName>
+                <default>false</default>
+                <label>Government Administration</label>
+            </value>
+            <value>
+                <fullName>Hospitals and Health Care</fullName>
+                <default>false</default>
+                <label>Hospitals and Health Care</label>
+            </value>
+            <value>
+                <fullName>Financial Services</fullName>
+                <default>false</default>
+                <label>Financial Services</label>
+            </value>
+            <value>
+                <fullName>Law Practice</fullName>
+                <default>false</default>
+                <label>Law Practice</label>
+            </value>
+            <value>
+                <fullName>Furniture</fullName>
+                <default>false</default>
+                <label>Furniture</label>
+            </value>
+            <value>
+                <fullName>Primary and Secondary Education</fullName>
+                <default>false</default>
+                <label>Primary and Secondary Education</label>
+            </value>
+            <value>
+                <fullName>Computers and Electronics Manufacturing</fullName>
+                <default>false</default>
+                <label>Computers and Electronics Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Pharmaceutical Manufacturing</fullName>
+                <default>false</default>
+                <label>Pharmaceutical Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Software Development</fullName>
+                <default>false</default>
+                <label>Software Development</label>
+            </value>
+            <value>
+                <fullName>Public Policy</fullName>
+                <default>false</default>
+                <label>Public Policy</label>
+            </value>
+            <value>
+                <fullName>Insurance</fullName>
+                <default>false</default>
+                <label>Insurance</label>
+            </value>
+            <value>
+                <fullName>Restaurants</fullName>
+                <default>false</default>
+                <label>Restaurants</label>
+            </value>
+            <value>
+                <fullName>Management Consulting</fullName>
+                <default>false</default>
+                <label>Management Consulting</label>
+            </value>
+            <value>
+                <fullName>Computer Software</fullName>
+                <default>false</default>
+                <label>Computer Software</label>
+            </value>
+            <value>
+                <fullName>Banking</fullName>
+                <default>false</default>
+                <label>Banking</label>
+            </value>
+            <value>
+                <fullName>Medical Equipment Manufacturing</fullName>
+                <default>false</default>
+                <label>Medical Equipment Manufacturing</label>
+            </value>
+            <value>
+                <fullName>IT Services and IT Consulting</fullName>
+                <default>false</default>
+                <label>IT Services and IT Consulting</label>
+            </value>
+            <value>
+                <fullName>Professional Services</fullName>
+                <default>false</default>
+                <label>Professional Services</label>
+            </value>
+            <value>
+                <fullName>Business Consulting and Services</fullName>
+                <default>false</default>
+                <label>Business Consulting and Services</label>
+            </value>
+            <value>
+                <fullName>Primary/Secondary Education</fullName>
+                <default>false</default>
+                <label>Primary/Secondary Education</label>
+            </value>
+            <value>
+                <fullName>Education Management</fullName>
+                <default>false</default>
+                <label>Education Management</label>
+            </value>
+            <value>
+                <fullName>Philanthropy</fullName>
+                <default>false</default>
+                <label>Philanthropy</label>
+            </value>
+            <value>
+                <fullName>Music</fullName>
+                <default>false</default>
+                <label>Music</label>
+            </value>
+            <value>
+                <fullName>Legal Services</fullName>
+                <default>false</default>
+                <label>Legal Services</label>
+            </value>
+            <value>
+                <fullName>E-Learning Providers</fullName>
+                <default>false</default>
+                <label>E-Learning Providers</label>
+            </value>
+            <value>
+                <fullName>Hospital &amp; Health Care</fullName>
+                <default>false</default>
+                <label>Hospital &amp; Health Care</label>
+            </value>
+            <value>
+                <fullName>Museums and Institutions</fullName>
+                <default>false</default>
+                <label>Museums and Institutions</label>
+            </value>
+            <value>
+                <fullName>Marketing and Advertising</fullName>
+                <default>false</default>
+                <label>Marketing and Advertising</label>
+            </value>
+            <value>
+                <fullName>Real Estate</fullName>
+                <default>false</default>
+                <label>Real Estate</label>
+            </value>
+            <value>
+                <fullName>Technology, Information and Internet</fullName>
+                <default>false</default>
+                <label>Technology, Information and Internet</label>
+            </value>
+            <value>
+                <fullName>Computer and Network Security</fullName>
+                <default>false</default>
+                <label>Computer and Network Security</label>
+            </value>
+            <value>
+                <fullName>Education Administration Programs</fullName>
+                <default>false</default>
+                <label>Education Administration Programs</label>
+            </value>
+            <value>
+                <fullName>Public Relations and Communications</fullName>
+                <default>false</default>
+                <label>Public Relations and Communications</label>
+            </value>
+            <value>
+                <fullName>International Affairs</fullName>
+                <default>false</default>
+                <label>International Affairs</label>
+            </value>
+            <value>
+                <fullName>Aviation &amp; Aerospace</fullName>
+                <default>false</default>
+                <label>Aviation &amp; Aerospace</label>
+            </value>
+            <value>
+                <fullName>Entertainment Providers</fullName>
+                <default>false</default>
+                <label>Entertainment Providers</label>
+            </value>
+            <value>
+                <fullName>Environmental Services</fullName>
+                <default>false</default>
+                <label>Environmental Services</label>
+            </value>
+            <value>
+                <fullName>Motor Vehicle Manufacturing</fullName>
+                <default>false</default>
+                <label>Motor Vehicle Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Retail</fullName>
+                <default>false</default>
+                <label>Retail</label>
+            </value>
+            <value>
+                <fullName>Investment Management</fullName>
+                <default>false</default>
+                <label>Investment Management</label>
+            </value>
+            <value>
+                <fullName>Nonprofit Organization Management</fullName>
+                <default>false</default>
+                <label>Nonprofit Organization Management</label>
+            </value>
+            <value>
+                <fullName>Market Research</fullName>
+                <default>false</default>
+                <label>Market Research</label>
+            </value>
+            <value>
+                <fullName>Pharmaceuticals</fullName>
+                <default>false</default>
+                <label>Pharmaceuticals</label>
+            </value>
+            <value>
+                <fullName>Biotechnology Research</fullName>
+                <default>false</default>
+                <label>Biotechnology Research</label>
+            </value>
+            <value>
+                <fullName>Biotechnology</fullName>
+                <default>false</default>
+                <label>Biotechnology</label>
+            </value>
+            <value>
+                <fullName>Individual &amp; Family Services</fullName>
+                <default>false</default>
+                <label>Individual &amp; Family Services</label>
+            </value>
+            <value>
+                <fullName>Civil Engineering</fullName>
+                <default>false</default>
+                <label>Civil Engineering</label>
+            </value>
+            <value>
+                <fullName>Architecture &amp; Planning</fullName>
+                <default>false</default>
+                <label>Architecture &amp; Planning</label>
+            </value>
+            <value>
+                <fullName>Marketing Services</fullName>
+                <default>false</default>
+                <label>Marketing Services</label>
+            </value>
+            <value>
+                <fullName>Defense and Space Manufacturing</fullName>
+                <default>false</default>
+                <label>Defense and Space Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Farming</fullName>
+                <default>false</default>
+                <label>Farming</label>
+            </value>
+            <value>
+                <fullName>Medical Practice</fullName>
+                <default>false</default>
+                <label>Medical Practice</label>
+            </value>
+            <value>
+                <fullName>Health, Wellness and Fitness</fullName>
+                <default>false</default>
+                <label>Health, Wellness and Fitness</label>
+            </value>
+            <value>
+                <fullName>Investment Banking</fullName>
+                <default>false</default>
+                <label>Investment Banking</label>
+            </value>
+            <value>
+                <fullName>Semiconductor Manufacturing</fullName>
+                <default>false</default>
+                <label>Semiconductor Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Packaging and Containers</fullName>
+                <default>false</default>
+                <label>Packaging and Containers</label>
+            </value>
+            <value>
+                <fullName>Computer Games</fullName>
+                <default>false</default>
+                <label>Computer Games</label>
+            </value>
+            <value>
+                <fullName>Fine Art</fullName>
+                <default>false</default>
+                <label>Fine Art</label>
+            </value>
+            <value>
+                <fullName>Entertainment</fullName>
+                <default>false</default>
+                <label>Entertainment</label>
+            </value>
+            <value>
+                <fullName>Advertising Services</fullName>
+                <default>false</default>
+                <label>Advertising Services</label>
+            </value>
+            <value>
+                <fullName>Aviation and Aerospace Component Manufacturing</fullName>
+                <default>false</default>
+                <label>Aviation and Aerospace Component Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Manufacturing</fullName>
+                <default>false</default>
+                <label>Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Oil &amp; Energy</fullName>
+                <default>false</default>
+                <label>Oil &amp; Energy</label>
+            </value>
+            <value>
+                <fullName>Utilities</fullName>
+                <default>false</default>
+                <label>Utilities</label>
+            </value>
+            <value>
+                <fullName>Executive Office</fullName>
+                <default>false</default>
+                <label>Executive Office</label>
+            </value>
+            <value>
+                <fullName>Broadcast Media Production and Distribution</fullName>
+                <default>false</default>
+                <label>Broadcast Media Production and Distribution</label>
+            </value>
+            <value>
+                <fullName>Civic and Social Organizations</fullName>
+                <default>false</default>
+                <label>Civic and Social Organizations</label>
+            </value>
+            <value>
+                <fullName>Electrical/Electronic Manufacturing</fullName>
+                <default>false</default>
+                <label>Electrical/Electronic Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Spectator Sports</fullName>
+                <default>false</default>
+                <label>Spectator Sports</label>
+            </value>
+            <value>
+                <fullName>Mental Health Care</fullName>
+                <default>false</default>
+                <label>Mental Health Care</label>
+            </value>
+            <value>
+                <fullName>Research</fullName>
+                <default>false</default>
+                <label>Research</label>
+            </value>
+            <value>
+                <fullName>Staffing and Recruiting</fullName>
+                <default>false</default>
+                <label>Staffing and Recruiting</label>
+            </value>
+            <value>
+                <fullName>Book and Periodical Publishing</fullName>
+                <default>false</default>
+                <label>Book and Periodical Publishing</label>
+            </value>
+            <value>
+                <fullName>Travel Arrangements</fullName>
+                <default>false</default>
+                <label>Travel Arrangements</label>
+            </value>
+            <value>
+                <fullName>Food Production</fullName>
+                <default>false</default>
+                <label>Food Production</label>
+            </value>
+            <value>
+                <fullName>Political Organization</fullName>
+                <default>false</default>
+                <label>Political Organization</label>
+            </value>
+            <value>
+                <fullName>Legislative Offices</fullName>
+                <default>false</default>
+                <label>Legislative Offices</label>
+            </value>
+            <value>
+                <fullName>Food and Beverage Services</fullName>
+                <default>false</default>
+                <label>Food and Beverage Services</label>
+            </value>
+            <value>
+                <fullName>Oil and Gas</fullName>
+                <default>false</default>
+                <label>Oil and Gas</label>
+            </value>
+            <value>
+                <fullName>Human Resources</fullName>
+                <default>false</default>
+                <label>Human Resources</label>
+            </value>
+            <value>
+                <fullName>Information Services</fullName>
+                <default>false</default>
+                <label>Information Services</label>
+            </value>
+            <value>
+                <fullName>Translation and Localization</fullName>
+                <default>false</default>
+                <label>Translation and Localization</label>
+            </value>
+            <value>
+                <fullName>Automotive</fullName>
+                <default>false</default>
+                <label>Automotive</label>
+            </value>
+            <value>
+                <fullName>Food and Beverage Manufacturing</fullName>
+                <default>false</default>
+                <label>Food and Beverage Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Research Services</fullName>
+                <default>false</default>
+                <label>Research Services</label>
+            </value>
+            <value>
+                <fullName>Telecommunications</fullName>
+                <default>false</default>
+                <label>Telecommunications</label>
+            </value>
+            <value>
+                <fullName>Commercial Real Estate</fullName>
+                <default>false</default>
+                <label>Commercial Real Estate</label>
+            </value>
+            <value>
+                <fullName>Venture Capital &amp; Private Equity</fullName>
+                <default>false</default>
+                <label>Venture Capital &amp; Private Equity</label>
+            </value>
+            <value>
+                <fullName>Nanotechnology</fullName>
+                <default>false</default>
+                <label>Nanotechnology</label>
+            </value>
+            <value>
+                <fullName>Government Relations</fullName>
+                <default>false</default>
+                <label>Government Relations</label>
+            </value>
+            <value>
+                <fullName>Writing and Editing</fullName>
+                <default>false</default>
+                <label>Writing and Editing</label>
+            </value>
+            <value>
+                <fullName>Physical, Occupational and Speech Therapists</fullName>
+                <default>false</default>
+                <label>Physical, Occupational and Speech Therapists</label>
+            </value>
+            <value>
+                <fullName>Airlines/Aviation</fullName>
+                <default>false</default>
+                <label>Airlines/Aviation</label>
+            </value>
+            <value>
+                <fullName>Non-profit Organization Management</fullName>
+                <default>false</default>
+                <label>Non-profit Organization Management</label>
+            </value>
+            <value>
+                <fullName>Retail Groceries</fullName>
+                <default>false</default>
+                <label>Retail Groceries</label>
+            </value>
+            <value>
+                <fullName>Museums, Historical Sites, and Zoos</fullName>
+                <default>false</default>
+                <label>Museums, Historical Sites, and Zoos</label>
+            </value>
+            <value>
+                <fullName>Technology, Information and Media</fullName>
+                <default>false</default>
+                <label>Technology, Information and Media</label>
+            </value>
+            <value>
+                <fullName>Media Production</fullName>
+                <default>false</default>
+                <label>Media Production</label>
+            </value>
+            <value>
+                <fullName>Defense &amp; Space</fullName>
+                <default>false</default>
+                <label>Defense &amp; Space</label>
+            </value>
+            <value>
+                <fullName>Publishing</fullName>
+                <default>false</default>
+                <label>Publishing</label>
+            </value>
+            <value>
+                <fullName>Maritime</fullName>
+                <default>false</default>
+                <label>Maritime</label>
+            </value>
+            <value>
+                <fullName>Administration of Justice</fullName>
+                <default>false</default>
+                <label>Administration of Justice</label>
+            </value>
+            <value>
+                <fullName>Wellness and Fitness Services</fullName>
+                <default>false</default>
+                <label>Wellness and Fitness Services</label>
+            </value>
+            <value>
+                <fullName>Renewables &amp; Environment</fullName>
+                <default>false</default>
+                <label>Renewables &amp; Environment</label>
+            </value>
+            <value>
+                <fullName>Religious Institutions</fullName>
+                <default>false</default>
+                <label>Religious Institutions</label>
+            </value>
+            <value>
+                <fullName>Book Publishing</fullName>
+                <default>false</default>
+                <label>Book Publishing</label>
+            </value>
+            <value>
+                <fullName>Luxury Goods &amp; Jewelry</fullName>
+                <default>false</default>
+                <label>Luxury Goods &amp; Jewelry</label>
+            </value>
+            <value>
+                <fullName>Paper &amp; Forest Products</fullName>
+                <default>false</default>
+                <label>Paper &amp; Forest Products</label>
+            </value>
+            <value>
+                <fullName>Online Media</fullName>
+                <default>false</default>
+                <label>Online Media</label>
+            </value>
+            <value>
+                <fullName>Internet Publishing</fullName>
+                <default>false</default>
+                <label>Internet Publishing</label>
+            </value>
+            <value>
+                <fullName>Individual and Family Services</fullName>
+                <default>false</default>
+                <label>Individual and Family Services</label>
+            </value>
+            <value>
+                <fullName>Program Development</fullName>
+                <default>false</default>
+                <label>Program Development</label>
+            </value>
+            <value>
+                <fullName>Wine and Spirits</fullName>
+                <default>false</default>
+                <label>Wine and Spirits</label>
+            </value>
+            <value>
+                <fullName>Construction</fullName>
+                <default>false</default>
+                <label>Construction</label>
+            </value>
+            <value>
+                <fullName>Consumer Goods</fullName>
+                <default>false</default>
+                <label>Consumer Goods</label>
+            </value>
+            <value>
+                <fullName>Facilities Services</fullName>
+                <default>false</default>
+                <label>Facilities Services</label>
+            </value>
+            <value>
+                <fullName>Apparel &amp; Fashion</fullName>
+                <default>false</default>
+                <label>Apparel &amp; Fashion</label>
+            </value>
+            <value>
+                <fullName>Venture Capital and Private Equity Principals</fullName>
+                <default>false</default>
+                <label>Venture Capital and Private Equity Principals</label>
+            </value>
+            <value>
+                <fullName>Design</fullName>
+                <default>false</default>
+                <label>Design</label>
+            </value>
+            <value>
+                <fullName>Warehousing and Storage</fullName>
+                <default>false</default>
+                <label>Warehousing and Storage</label>
+            </value>
+            <value>
+                <fullName>Personal Care Product Manufacturing</fullName>
+                <default>false</default>
+                <label>Personal Care Product Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Public Relations and Communications Services</fullName>
+                <default>false</default>
+                <label>Public Relations and Communications Services</label>
+            </value>
+            <value>
+                <fullName>Sports</fullName>
+                <default>false</default>
+                <label>Sports</label>
+            </value>
+            <value>
+                <fullName>Retail Luxury Goods and Jewelry</fullName>
+                <default>false</default>
+                <label>Retail Luxury Goods and Jewelry</label>
+            </value>
+            <value>
+                <fullName>Food &amp; Beverages</fullName>
+                <default>false</default>
+                <label>Food &amp; Beverages</label>
+            </value>
+            <value>
+                <fullName>International Trade and Development</fullName>
+                <default>false</default>
+                <label>International Trade and Development</label>
+            </value>
+            <value>
+                <fullName>Law Enforcement</fullName>
+                <default>false</default>
+                <label>Law Enforcement</label>
+            </value>
+            <value>
+                <fullName>Armed Forces</fullName>
+                <default>false</default>
+                <label>Armed Forces</label>
+            </value>
+            <value>
+                <fullName>Gambling Facilities and Casinos</fullName>
+                <default>false</default>
+                <label>Gambling Facilities and Casinos</label>
+            </value>
+            <value>
+                <fullName>Artists and Writers</fullName>
+                <default>false</default>
+                <label>Artists and Writers</label>
+            </value>
+            <value>
+                <fullName>Medical Practices</fullName>
+                <default>false</default>
+                <label>Medical Practices</label>
+            </value>
+            <value>
+                <fullName>Automation Machinery Manufacturing</fullName>
+                <default>false</default>
+                <label>Automation Machinery Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Human Resources Services</fullName>
+                <default>false</default>
+                <label>Human Resources Services</label>
+            </value>
+            <value>
+                <fullName>Leasing Real Estate</fullName>
+                <default>false</default>
+                <label>Leasing Real Estate</label>
+            </value>
+            <value>
+                <fullName>Hospitality</fullName>
+                <default>false</default>
+                <label>Hospitality</label>
+            </value>
+            <value>
+                <fullName>Building Materials</fullName>
+                <default>false</default>
+                <label>Building Materials</label>
+            </value>
+            <value>
+                <fullName>Online Audio and Video Media</fullName>
+                <default>false</default>
+                <label>Online Audio and Video Media</label>
+            </value>
+            <value>
+                <fullName>Animation</fullName>
+                <default>false</default>
+                <label>Animation</label>
+            </value>
+            <value>
+                <fullName>Medical Devices</fullName>
+                <default>false</default>
+                <label>Medical Devices</label>
+            </value>
+            <value>
+                <fullName>Architecture and Planning</fullName>
+                <default>false</default>
+                <label>Architecture and Planning</label>
+            </value>
+            <value>
+                <fullName>Retail Apparel and Fashion</fullName>
+                <default>false</default>
+                <label>Retail Apparel and Fashion</label>
+            </value>
+            <value>
+                <fullName>Fundraising</fullName>
+                <default>false</default>
+                <label>Fundraising</label>
+            </value>
+            <value>
+                <fullName>Political Organizations</fullName>
+                <default>false</default>
+                <label>Political Organizations</label>
+            </value>
+            <value>
+                <fullName>Appliances, Electrical, and Electronics Manufactur</fullName>
+                <default>false</default>
+                <label>Appliances, Electrical, and Electronics Manufactur</label>
+            </value>
+            <value>
+                <fullName>Cosmetics</fullName>
+                <default>false</default>
+                <label>Cosmetics</label>
+            </value>
+            <value>
+                <fullName>Consumer Services</fullName>
+                <default>false</default>
+                <label>Consumer Services</label>
+            </value>
+            <value>
+                <fullName>Sporting Goods Manufacturing</fullName>
+                <default>false</default>
+                <label>Sporting Goods Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Renewable Energy Power Generation</fullName>
+                <default>false</default>
+                <label>Renewable Energy Power Generation</label>
+            </value>
+            <value>
+                <fullName>Beverage Manufacturing</fullName>
+                <default>false</default>
+                <label>Beverage Manufacturing</label>
+            </value>
+            <value>
+                <fullName>E-Learning</fullName>
+                <default>false</default>
+                <label>E-Learning</label>
+            </value>
+            <value>
+                <fullName>Libraries</fullName>
+                <default>false</default>
+                <label>Libraries</label>
+            </value>
+            <value>
+                <fullName>Design Services</fullName>
+                <default>false</default>
+                <label>Design Services</label>
+            </value>
+            <value>
+                <fullName>Leasing Non-residential Real Estate</fullName>
+                <default>false</default>
+                <label>Leasing Non-residential Real Estate</label>
+            </value>
+            <value>
+                <fullName>Civic &amp; Social Organization</fullName>
+                <default>false</default>
+                <label>Civic &amp; Social Organization</label>
+            </value>
+            <value>
+                <fullName>Chemical Manufacturing</fullName>
+                <default>false</default>
+                <label>Chemical Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Wholesale Building Materials</fullName>
+                <default>false</default>
+                <label>Wholesale Building Materials</label>
+            </value>
+            <value>
+                <fullName>Motion Pictures and Film</fullName>
+                <default>false</default>
+                <label>Motion Pictures and Film</label>
+            </value>
+            <value>
+                <fullName>Computer Networking</fullName>
+                <default>false</default>
+                <label>Computer Networking</label>
+            </value>
+            <value>
+                <fullName>Accounting</fullName>
+                <default>false</default>
+                <label>Accounting</label>
+            </value>
+            <value>
+                <fullName>Airlines and Aviation</fullName>
+                <default>false</default>
+                <label>Airlines and Aviation</label>
+            </value>
+            <value>
+                <fullName>Newspapers</fullName>
+                <default>false</default>
+                <label>Newspapers</label>
+            </value>
+            <value>
+                <fullName>Mechanical or Industrial Engineering</fullName>
+                <default>false</default>
+                <label>Mechanical or Industrial Engineering</label>
+            </value>
+            <value>
+                <fullName>Think Tanks</fullName>
+                <default>false</default>
+                <label>Think Tanks</label>
+            </value>
+            <value>
+                <fullName>Professional Training &amp; Coaching</fullName>
+                <default>false</default>
+                <label>Professional Training &amp; Coaching</label>
+            </value>
+            <value>
+                <fullName>Textiles</fullName>
+                <default>false</default>
+                <label>Textiles</label>
+            </value>
+            <value>
+                <fullName>Musicians</fullName>
+                <default>false</default>
+                <label>Musicians</label>
+            </value>
+            <value>
+                <fullName>Services for Renewable Energy</fullName>
+                <default>false</default>
+                <label>Services for Renewable Energy</label>
+            </value>
+            <value>
+                <fullName>Truck Transportation</fullName>
+                <default>false</default>
+                <label>Truck Transportation</label>
+            </value>
+            <value>
+                <fullName>Renewable Energy Semiconductor Manufacturing</fullName>
+                <default>false</default>
+                <label>Renewable Energy Semiconductor Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Logistics and Supply Chain</fullName>
+                <default>false</default>
+                <label>Logistics and Supply Chain</label>
+            </value>
+            <value>
+                <fullName>Alternative Dispute Resolution</fullName>
+                <default>false</default>
+                <label>Alternative Dispute Resolution</label>
+            </value>
+            <value>
+                <fullName>Printing</fullName>
+                <default>false</default>
+                <label>Printing</label>
+            </value>
+            <value>
+                <fullName>Broadcast Media</fullName>
+                <default>false</default>
+                <label>Broadcast Media</label>
+            </value>
+            <value>
+                <fullName>Computer Hardware</fullName>
+                <default>false</default>
+                <label>Computer Hardware</label>
+            </value>
+            <value>
+                <fullName>Photography</fullName>
+                <default>false</default>
+                <label>Photography</label>
+            </value>
+            <value>
+                <fullName>Events Services</fullName>
+                <default>false</default>
+                <label>Events Services</label>
+            </value>
+            <value>
+                <fullName>Philanthropic Fundraising Services</fullName>
+                <default>false</default>
+                <label>Philanthropic Fundraising Services</label>
+            </value>
+            <value>
+                <fullName>Plastics</fullName>
+                <default>false</default>
+                <label>Plastics</label>
+            </value>
+            <value>
+                <fullName>Computer &amp; Network Security</fullName>
+                <default>false</default>
+                <label>Computer &amp; Network Security</label>
+            </value>
+            <value>
+                <fullName>Wholesale</fullName>
+                <default>false</default>
+                <label>Wholesale</label>
+            </value>
+            <value>
+                <fullName>Sporting Goods</fullName>
+                <default>false</default>
+                <label>Sporting Goods</label>
+            </value>
+            <value>
+                <fullName>Transportation/Trucking/Railroad</fullName>
+                <default>false</default>
+                <label>Transportation/Trucking/Railroad</label>
+            </value>
+            <value>
+                <fullName>Fund-Raising</fullName>
+                <default>false</default>
+                <label>Fund-Raising</label>
+            </value>
+            <value>
+                <fullName>Professional Training and Coaching</fullName>
+                <default>false</default>
+                <label>Professional Training and Coaching</label>
+            </value>
+            <value>
+                <fullName>Retail Office Equipment</fullName>
+                <default>false</default>
+                <label>Retail Office Equipment</label>
+            </value>
+            <value>
+                <fullName>Mobile Gaming Apps</fullName>
+                <default>false</default>
+                <label>Mobile Gaming Apps</label>
+            </value>
+            <value>
+                <fullName>Performing Arts</fullName>
+                <default>false</default>
+                <label>Performing Arts</label>
+            </value>
+            <value>
+                <fullName>Veterinary</fullName>
+                <default>false</default>
+                <label>Veterinary</label>
+            </value>
+            <value>
+                <fullName>Chemicals</fullName>
+                <default>false</default>
+                <label>Chemicals</label>
+            </value>
+            <value>
+                <fullName>Education</fullName>
+                <default>false</default>
+                <label>Education</label>
+            </value>
+            <value>
+                <fullName>Computer Hardware Manufacturing</fullName>
+                <default>false</default>
+                <label>Computer Hardware Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Business Content</fullName>
+                <default>false</default>
+                <label>Business Content</label>
+            </value>
+            <value>
+                <fullName>Newspaper Publishing</fullName>
+                <default>false</default>
+                <label>Newspaper Publishing</label>
+            </value>
+            <value>
+                <fullName>Capital Markets</fullName>
+                <default>false</default>
+                <label>Capital Markets</label>
+            </value>
+            <value>
+                <fullName>Import and Export</fullName>
+                <default>false</default>
+                <label>Import and Export</label>
+            </value>
+            <value>
+                <fullName>Tobacco Manufacturing</fullName>
+                <default>false</default>
+                <label>Tobacco Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Consumer Electronics</fullName>
+                <default>false</default>
+                <label>Consumer Electronics</label>
+            </value>
+            <value>
+                <fullName>Holding Companies</fullName>
+                <default>false</default>
+                <label>Holding Companies</label>
+            </value>
+            <value>
+                <fullName>Leisure, Travel &amp; Tourism</fullName>
+                <default>false</default>
+                <label>Leisure, Travel &amp; Tourism</label>
+            </value>
+            <value>
+                <fullName>Engineering Services</fullName>
+                <default>false</default>
+                <label>Engineering Services</label>
+            </value>
+            <value>
+                <fullName>Semiconductors</fullName>
+                <default>false</default>
+                <label>Semiconductors</label>
+            </value>
+            <value>
+                <fullName>Graphic Design</fullName>
+                <default>false</default>
+                <label>Graphic Design</label>
+            </value>
+            <value>
+                <fullName>Electric Power Generation</fullName>
+                <default>false</default>
+                <label>Electric Power Generation</label>
+            </value>
+            <value>
+                <fullName>Mining &amp; Metals</fullName>
+                <default>false</default>
+                <label>Mining &amp; Metals</label>
+            </value>
+            <value>
+                <fullName>Government Relations Services</fullName>
+                <default>false</default>
+                <label>Government Relations Services</label>
+            </value>
+            <value>
+                <fullName>Building Construction</fullName>
+                <default>false</default>
+                <label>Building Construction</label>
+            </value>
+            <value>
+                <fullName>Public Policy Offices</fullName>
+                <default>false</default>
+                <label>Public Policy Offices</label>
+            </value>
+            <value>
+                <fullName>Military</fullName>
+                <default>false</default>
+                <label>Military</label>
+            </value>
+            <value>
+                <fullName>Legislative Office</fullName>
+                <default>false</default>
+                <label>Legislative Office</label>
+            </value>
+            <value>
+                <fullName>Recreational Facilities and Services</fullName>
+                <default>false</default>
+                <label>Recreational Facilities and Services</label>
+            </value>
+            <value>
+                <fullName>Warehousing</fullName>
+                <default>false</default>
+                <label>Warehousing</label>
+            </value>
+            <value>
+                <fullName>Industrial Automation</fullName>
+                <default>false</default>
+                <label>Industrial Automation</label>
+            </value>
+            <value>
+                <fullName>Business Skills Training</fullName>
+                <default>false</default>
+                <label>Business Skills Training</label>
+            </value>
+            <value>
+                <fullName>Internet News</fullName>
+                <default>false</default>
+                <label>Internet News</label>
+            </value>
+            <value>
+                <fullName>Glass, Ceramics and Concrete Manufacturing</fullName>
+                <default>false</default>
+                <label>Glass, Ceramics and Concrete Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Industrial Machinery Manufacturing</fullName>
+                <default>false</default>
+                <label>Industrial Machinery Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Community Services</fullName>
+                <default>false</default>
+                <label>Community Services</label>
+            </value>
+            <value>
+                <fullName>Internet Marketplace Platforms</fullName>
+                <default>false</default>
+                <label>Internet Marketplace Platforms</label>
+            </value>
+            <value>
+                <fullName>Business Supplies and Equipment</fullName>
+                <default>false</default>
+                <label>Business Supplies and Equipment</label>
+            </value>
+            <value>
+                <fullName>Printing Services</fullName>
+                <default>false</default>
+                <label>Printing Services</label>
+            </value>
+            <value>
+                <fullName>Freight and Package Transportation</fullName>
+                <default>false</default>
+                <label>Freight and Package Transportation</label>
+            </value>
+            <value>
+                <fullName>Plastics Manufacturing</fullName>
+                <default>false</default>
+                <label>Plastics Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Public Safety</fullName>
+                <default>false</default>
+                <label>Public Safety</label>
+            </value>
+            <value>
+                <fullName>Animation and Post-production</fullName>
+                <default>false</default>
+                <label>Animation and Post-production</label>
+            </value>
+            <value>
+                <fullName>Judiciary</fullName>
+                <default>false</default>
+                <label>Judiciary</label>
+            </value>
+            <value>
+                <fullName>Mining</fullName>
+                <default>false</default>
+                <label>Mining</label>
+            </value>
+            <value>
+                <fullName>Medical Device</fullName>
+                <default>false</default>
+                <label>Medical Device</label>
+            </value>
+            <value>
+                <fullName>Transportation, Logistics, Supply Chain and Storag</fullName>
+                <default>false</default>
+                <label>Transportation, Logistics, Supply Chain and Storag</label>
+            </value>
+            <value>
+                <fullName>Packaging and Containers Manufacturing</fullName>
+                <default>false</default>
+                <label>Packaging and Containers Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Health and Human Services</fullName>
+                <default>false</default>
+                <label>Health and Human Services</label>
+            </value>
+            <value>
+                <fullName>Transportation, Logistics and Storage</fullName>
+                <default>false</default>
+                <label>Transportation, Logistics and Storage</label>
+            </value>
+            <value>
+                <fullName>Supermarkets</fullName>
+                <default>false</default>
+                <label>Supermarkets</label>
+            </value>
+            <value>
+                <fullName>Blockchain Services</fullName>
+                <default>false</default>
+                <label>Blockchain Services</label>
+            </value>
+            <value>
+                <fullName>Radio and Television Broadcasting</fullName>
+                <default>false</default>
+                <label>Radio and Television Broadcasting</label>
+            </value>
+            <value>
+                <fullName>Gambling &amp; Casinos</fullName>
+                <default>false</default>
+                <label>Gambling &amp; Casinos</label>
+            </value>
+            <value>
+                <fullName>Furniture and Home Furnishings Manufacturing</fullName>
+                <default>false</default>
+                <label>Furniture and Home Furnishings Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Alternative Medicine</fullName>
+                <default>false</default>
+                <label>Alternative Medicine</label>
+            </value>
+            <value>
+                <fullName>Machinery Manufacturing</fullName>
+                <default>false</default>
+                <label>Machinery Manufacturing</label>
+            </value>
+            <value>
+                <fullName>Social Networking Platforms</fullName>
+                <default>false</default>
+                <label>Social Networking Platforms</label>
+            </value>
+            <value>
+                <fullName>Security and Investigations</fullName>
+                <default>false</default>
+                <label>Security and Investigations</label>
+            </value>
+            <value>
+                <fullName>Courts of Law</fullName>
+                <default>false</default>
+                <label>Courts of Law</label>
+            </value>
+            <value>
+                <fullName>Ranching</fullName>
+                <default>false</default>
+                <label>Ranching</label>
+            </value>
+            <value>
+                <fullName>Recreational Facilities</fullName>
+                <default>false</default>
+                <label>Recreational Facilities</label>
+            </value>
+            <value>
+                <fullName>Maritime Transportation</fullName>
+                <default>false</default>
+                <label>Maritime Transportation</label>
+            </value>
+            <value>
+                <fullName>Information Technology &amp; Services</fullName>
+                <default>false</default>
+                <label>Information Technology &amp; Services</label>
+            </value>
+            <value>
+                <fullName>Dairy</fullName>
+                <default>false</default>
+                <label>Dairy</label>
+            </value>
+            <value>
+                <fullName>Arts and Crafts</fullName>
+                <default>false</default>
+                <label>Arts and Crafts</label>
+            </value>
+            <value>
+                <fullName>Nanotechnology Research</fullName>
+                <default>false</default>
+                <label>Nanotechnology Research</label>
+            </value>
+            <value>
+                <fullName>Robotics Engineering</fullName>
+                <default>false</default>
+                <label>Robotics Engineering</label>
+            </value>
+            <value>
+                <fullName>Outsourcing and Offshoring Consulting</fullName>
+                <default>false</default>
+                <label>Outsourcing and Offshoring Consulting</label>
+            </value>
+            <value>
+                <fullName>Claims Adjusting, Actuarial Services</fullName>
+                <default>false</default>
+                <label>Claims Adjusting, Actuarial Services</label>
+            </value>
+            <value>
+                <fullName>Machinery</fullName>
+                <default>false</default>
+                <label>Machinery</label>
+            </value>
+            <value>
+                <fullName>Embedded Software Products</fullName>
+                <default>false</default>
+                <label>Embedded Software Products</label>
+            </value>
+            <value>
+                <fullName>Executive Offices</fullName>
+                <default>false</default>
+                <label>Executive Offices</label>
+            </value>
+            <value>
+                <fullName>Nuclear Electric Power Generation</fullName>
+                <default>false</default>
+                <label>Nuclear Electric Power Generation</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

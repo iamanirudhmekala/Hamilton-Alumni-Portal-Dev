@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Presidential_Shipping_Address_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>IF(
+(OR(NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_Street_v1__c)), NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_City__c)), NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_State__c)), NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_Postal_Code__c)), NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_Country__c)))),
+
+IF(NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_Street_v1__c)), ucinn_ascendv2__Presidential_Shipping_Street_v1__c &amp; BR() , &quot;&quot;) &amp;
+
+IF(NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_City__c)),
+ucinn_ascendv2__Presidential_Shipping_City__c &amp; IF(NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_State__c)), &quot;, &quot; ,
+IF(NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_Postal_Code__c)), &quot; &quot; , BR())) ,
+&quot;&quot;) &amp;
+
+IF(NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_State__c)), ucinn_ascendv2__Presidential_Shipping_State__c &amp; IF(NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_Postal_Code__c)), &quot; &quot; , BR()) , &quot;&quot;) &amp;
+IF(NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_Postal_Code__c)), ucinn_ascendv2__Presidential_Shipping_Postal_Code__c &amp; BR() , &quot;&quot;) &amp;
+
+IF(NOT(ISBLANK(ucinn_ascendv2__Presidential_Shipping_Country__c)), ucinn_ascendv2__Presidential_Shipping_Country__c , &quot;&quot;)
+,&quot;&quot;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Presidential Shipping Address</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

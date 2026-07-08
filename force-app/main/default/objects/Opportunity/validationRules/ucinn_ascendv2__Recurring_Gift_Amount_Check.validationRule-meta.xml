@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Recurring_Gift_Amount_Check</fullName>
+    <active>true</active>
+    <description>Ensure a valid amount has been specified</description>
+    <errorConditionFormula>$Setup.ucinn_ascendv2__Bypass_Settings__c.ucinn_ascendv2__Bypass_Validation_Rules__c &lt;&gt; TRUE &amp;&amp; ISPICKVAL(Type, &quot;Recurring&quot;) &amp;&amp; (ISNULL(Amount) || Amount &lt;= 0) &amp;&amp; RecordType.DeveloperName = &quot;Recurring_Gift&quot; &amp;&amp;
+RecordType.NamespacePrefix = &apos;ucinn_ascendv2&apos;</errorConditionFormula>
+    <errorDisplayField>Amount</errorDisplayField>
+    <errorMessage>Please enter a valid amount</errorMessage>
+</ValidationRule>

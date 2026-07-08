@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>iWave_PROscores__iWave_Donations__c</fullName>
+    <deprecated>false</deprecated>
+    <description>This field is deprecated and no longer used</description>
+    <inlineHelpText>This field is deprecated and no longer used</inlineHelpText>
+    <label>iWave Donations (Deprecated)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Currency</type>
+</CustomField>

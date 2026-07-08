@@ -1,0 +1,42 @@
+<template>
+    <div class={wrapperClass}>
+
+        <div class="search-container">
+            <input type="text" 
+                   class="search-input" 
+                   oninput={handleSearchInput} 
+                   onkeydown={handleSearchKeydown}
+                   value={searchKey} 
+                   placeholder="Search resources" />
+            <button class="search-btn" onclick={handleSearch} title="Search">
+                <!-- <lightning-icon icon-name="utility:search" size="small" class="seacrh-icon"></lightning-icon> -->
+                <img src={icons.searchMobile} class="seacrh-icon" alt="search" />
+            </button>
+        </div>
+
+        <template lwc:if={hasRecords}>
+            <c-ham_content-card-renderer
+                records={pagedRecords}
+                view-mode={viewMode}
+                content-type="resource"
+                is-override={isOverride}>
+            </c-ham_content-card-renderer>
+
+            <c-ham_-pagination-util
+                total-records={totalRecords}
+                page-size={pageSize}
+                current-page={currentPage}
+                result-label="Resources"
+                is-override={isOverride}
+                onpagechange={handlePageChange}>
+            </c-ham_-pagination-util>
+        </template>
+
+        <template lwc:else>
+            <div class="empty-state">
+                No resources found.
+            </div>
+        </template>
+
+    </div>
+</template>

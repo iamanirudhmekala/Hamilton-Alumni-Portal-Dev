@@ -1,0 +1,61 @@
+<template>
+    <div class="ham-confirm-step">
+        <!-- Success Icon -->
+        <div class="ham-success-icon-wrap">
+            <div class="ham-success-icon">✓</div>
+        </div>
+
+        <!-- Thank You Heading -->
+        <div class="ham-confirm-title">Thank You, {contactName}!</div>
+
+        <template lwc:if={isGiftPath}>
+            <div class="ham-confirm-subtitle">Your gift to Hamilton College has been received.</div>
+        </template>
+        <template lwc:if={isPledgePath}>
+            <div class="ham-confirm-subtitle">Your pledge payment has been received.</div>
+        </template>
+
+        <!-- Summary Card -->
+        <div class="ham-confirm-card">
+            <template lwc:if={isGiftPath}>
+                <div class="ham-confirm-row">
+                    <span class="ham-confirm-label">Gift Type</span>
+                    <span class="ham-confirm-value">{frequencyLabel}</span>
+                </div>
+                <div class="ham-confirm-row">
+                    <span class="ham-confirm-label">Total Amount</span>
+                    <span class="ham-confirm-value ham-confirm-amount">{formattedAmount}</span>
+                </div>
+                <template lwc:if={hasDesignations}>
+                    <div class="ham-confirm-divider"></div>
+                    <div class="ham-confirm-designations-label">Designations</div>
+                    <template for:each={_selectedDesignations} for:item="d">
+                        <div key={d.id} class="ham-confirm-designation-row">
+                            <span class="ham-confirm-designation-name">{d.name}</span>
+                            <span class="ham-confirm-designation-amount">${d.amount}</span>
+                        </div>
+                    </template>
+                </template>
+            </template>
+
+            <template lwc:if={isPledgePath}>
+                <div class="ham-confirm-row">
+                    <span class="ham-confirm-label">Payment Type</span>
+                    <span class="ham-confirm-value">Pledge Payment</span>
+                </div>
+                <div class="ham-confirm-row">
+                    <span class="ham-confirm-label">Total Paid</span>
+                    <span class="ham-confirm-value ham-confirm-amount">{formattedAmount}</span>
+                </div>
+            </template>
+        </div>
+
+        <!-- Receipt Note -->
+        <div class="ham-receipt-note">
+            A tax receipt will be sent to your email address on file. Please retain it for your records.
+        </div>
+
+        <!-- Start Over -->
+        <button class="ham-secondary-btn" onclick={handleStartOver}>Make Another Gift</button>
+    </div>
+</template>

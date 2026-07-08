@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_One_Unique_Email_Per_Event__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Prevent duplicate email registrations per event.</description>
+    <inlineHelpText>When true, enforces that each email address can only register once per event.</inlineHelpText>
+    <label>One Unique Attendee Email Per Event</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

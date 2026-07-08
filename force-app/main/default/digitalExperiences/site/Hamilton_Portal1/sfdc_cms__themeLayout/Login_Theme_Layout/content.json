@@ -1,0 +1,378 @@
+{
+  "type" : "sfdc_cms__themeLayout",
+  "title" : "Login Theme Layout",
+  "contentBody" : {
+    "component" : {
+      "attributes" : { },
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "0rem",
+            "dxpStyle" : {
+              "margin" : {
+                "bottom" : "0px",
+                "left" : "0px",
+                "right" : "0px",
+                "top" : "0px"
+              },
+              "padding" : {
+                "bottom" : "0px",
+                "left" : "0px",
+                "right" : "0px",
+                "top" : "0px"
+              }
+            },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "0rem",
+            "sectionConfig" : "{\"UUID\":\"081ef3ee-b88d-44fe-a692-f5c3176bdcb8\",\"columns\":[{\"UUID\":\"16b77918-50d5-414a-a7ef-9f20a7faa253\",\"columnName\":\"Column 1\",\"columnKey\":\"headerSection\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "id" : "16b77918-50d5-414a-a7ef-9f20a7faa253",
+            "name" : "headerSection",
+            "title" : "Theme Header",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "081ef3ee-b88d-44fe-a692-f5c3176bdcb8",
+          "type" : "component"
+        } ],
+        "id" : "ddb6a89e-6bf3-452e-9399-850c49127afa",
+        "name" : "header",
+        "title" : "Theme Header",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "0rem",
+            "dxpStyle" : {
+              "margin" : {
+                "bottom" : "0px",
+                "left" : "0px",
+                "right" : "0px",
+                "top" : "0px"
+              },
+              "padding" : {
+                "bottom" : "0px",
+                "left" : "0px",
+                "right" : "0px",
+                "top" : "0px"
+              }
+            },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "0rem",
+            "sectionConfig" : "{\"UUID\":\"e176bab1-4162-429c-97fe-5dcc100998c8\",\"columns\":[{\"UUID\":\"0861f5ac-0ddf-4d3a-ac1d-bd4c7b111854\",\"columnName\":\"Column 1\",\"columnKey\":\"footerSection\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "id" : "0861f5ac-0ddf-4d3a-ac1d-bd4c7b111854",
+            "name" : "footerSection",
+            "title" : "Theme Footer",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "e176bab1-4162-429c-97fe-5dcc100998c8",
+          "type" : "component"
+        } ],
+        "id" : "1b62ace6-d6e6-45b6-974d-e08527d2c0d6",
+        "name" : "footer",
+        "title" : "Theme Footer",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "columnGutterWidth" : "0rem",
+            "columnMinHeight" : "",
+            "columnVerticalAlign" : "flex-start",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "sectionConfig" : "{\"UUID\":\"e8ddbcc0-83d9-404e-a10d-1433828b177f\",\"columns\":[{\"UUID\":\"b05a09af-a146-4142-8219-12045c25cf2b\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"6\",\"seedComponents\":[]},{\"UUID\":\"02031419-45b9-4695-adc6-f1474867fa57\",\"columnName\":\"Column 2\",\"columnKey\":\"col2\",\"columnWidth\":\"6\",\"seedComponents\":[]}]}"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "columnGutterWidth" : "0rem",
+                "columnMinHeight" : "",
+                "columnVerticalAlign" : "flex-start",
+                "dxpStyle" : { },
+                "layoutDirectionDesktop" : "column",
+                "layoutDirectionMobile" : "column",
+                "layoutDirectionTablet" : "column",
+                "sectionConfig" : "{\"UUID\":\"5e8b8d58-62a7-481e-895c-bb314285953b\",\"columns\":[{\"UUID\":\"ad5f90dd-0e68-4f7d-a67e-dcf393bbe36b\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"6\",\"seedComponents\":[]},{\"UUID\":\"34491972-8976-47b2-b7e3-eeaa6a8ac103\",\"columnName\":\"Column 2\",\"columnKey\":\"col2\",\"columnWidth\":\"6\",\"seedComponents\":[]}]}"
+              },
+              "children" : [ {
+                "children" : [ {
+                  "attributes" : {
+                    "dxpStyle" : {
+                      "padding" : {
+                        "bottom" : "5px",
+                        "left" : "5px",
+                        "right" : "5px",
+                        "top" : "5px"
+                      }
+                    }
+                  },
+                  "children" : [ {
+                    "children" : [ {
+                      "attributes" : {
+                        "activeLineWeight" : "3px",
+                        "backgroundColor" : "rgba(255, 255, 255, 0)",
+                        "dropdownAccordionIconSize" : "xx-small",
+                        "dropdownActiveLineWeight" : "5px",
+                        "dropdownBackgroundActiveColor" : "rgba(0, 0, 0, 0)",
+                        "dropdownBackgroundColor" : "",
+                        "dropdownBackgroundHoverColor" : "",
+                        "dropdownBottomBorderRadius" : "5px",
+                        "dropdownFontSizeOverride" : "",
+                        "dropdownFontWeightOverride" : "300",
+                        "dropdownItemPadding" : "{\"top\":\"10px\",\"right\":\"10px\",\"bottom\":\"10px\",\"left\":\"10px\"}",
+                        "dropdownLineHeightOverride" : "",
+                        "dropdownMenuPadding" : "{\"top\":\"0px\",\"right\":\"0px\",\"bottom\":\"0px\",\"left\":\"0px\"}",
+                        "dropdownOverrideTextStyle" : true,
+                        "dropdownShowDividerLines" : false,
+                        "dropdownTextDecorationOverride" : "",
+                        "dropdownTextStyle" : "body-regular",
+                        "dropdownTopBorderRadius" : "5px",
+                        "fontSizeOverride" : "",
+                        "fontWeightOverride" : "",
+                        "iconSize" : "xx-small",
+                        "itemBackgroundActiveColor" : "rgba(255, 255, 255, 0)",
+                        "itemBackgroundHoverColor" : "rgba(255, 255, 255, 0)",
+                        "lineHeightOverride" : "",
+                        "menuHorizontalAlignment" : "left",
+                        "navigationMenuEditor" : "Default_Navigation1",
+                        "overrideTextStyle" : false,
+                        "showHomeLink" : false,
+                        "showParentMenuIcon" : true,
+                        "spaceBetweenMenuItems" : "30px",
+                        "textDecorationOverride" : "",
+                        "textStyle" : "body-regular"
+                      },
+                      "definition" : "community_navigation:customizableNavigationBarContainer",
+                      "id" : "27ea4b1e-9348-413e-954c-ad02586f5aae",
+                      "type" : "component"
+                    } ],
+                    "id" : "f0d83e8d-655b-4512-a9df-ea02dd492d9c",
+                    "name" : "desktop",
+                    "title" : "Desktop View",
+                    "type" : "region"
+                  }, {
+                    "children" : [ {
+                      "attributes" : {
+                        "burgerIconHorizontalAlignment" : "left",
+                        "modalAccordionIconSize" : "xx-small",
+                        "modalActiveBackgroundColor" : "rgba(255, 255, 255, 0)",
+                        "modalActiveLineWeight" : "5px",
+                        "modalFontSizeOverride" : "",
+                        "modalFontWeightOverride" : "",
+                        "modalItemPadding" : "{\"top\":\"10px\",\"right\":\"10px\",\"bottom\":\"10px\",\"left\":\"15px\"}",
+                        "modalLineHeightOverride" : "",
+                        "modalMenuPadding" : "{\"top\":\"0px\",\"right\":\"0px\",\"bottom\":\"0px\",\"left\":\"0px\"}",
+                        "modalOverrideTextStyle" : false,
+                        "modalShowDividerLines" : true,
+                        "modalSubmenuFontSizeOverride" : "",
+                        "modalSubmenuFontWeightOverride" : "300",
+                        "modalSubmenuLineHeightOverride" : "",
+                        "modalSubmenuOverrideTextStyle" : true,
+                        "modalSubmenuTextDecorationOverride" : "",
+                        "modalSubmenuTextStyle" : "body-regular",
+                        "modalTextDecorationOverride" : "",
+                        "modalTextStyle" : "body-regular",
+                        "showHomeLink" : false
+                      },
+                      "definition" : "community_navigation:customizableNavigationHamburgerMenuContainer",
+                      "id" : "09e59bfc-3449-4572-b664-3dea7c4695cb",
+                      "type" : "component"
+                    } ],
+                    "id" : "bbb3b115-b3e8-4d0c-b4d2-2a1a37a6a051",
+                    "name" : "mobile",
+                    "title" : "Mobile View",
+                    "type" : "region"
+                  } ],
+                  "definition" : "community_navigation:customizableNavigationMenu",
+                  "id" : "7d90d115-c54c-4c87-b03b-90e564e05f0b",
+                  "type" : "component"
+                }, {
+                  "attributes" : {
+                    "alignment" : "center",
+                    "dxpStyle" : {
+                      "margin" : {
+                        "bottom" : "",
+                        "left" : "3%",
+                        "right" : "",
+                        "top" : "5%"
+                      }
+                    },
+                    "imageInfo" : "{\"imageInfoV1\":{\"url\":\"/sfsites/c/resource/Ham_LoginPageLogo\",\"altText\":\"\",\"contentKey\":\"\",\"contentType\":null}}",
+                    "imageInfoMobile" : "{\"imageInfoV1\":{\"url\":\"/sfsites/c/resource/Ham_LoginPageLogo\",\"altText\":\"\",\"contentKey\":\"\",\"contentType\":null}}",
+                    "logoWidth" : 250
+                  },
+                  "definition" : "dxp_content_layout:siteLogo",
+                  "id" : "12e7b06e-862e-4c53-b1d6-af644dcf69f0",
+                  "type" : "component"
+                }, {
+                  "attributes" : {
+                    "dxpStyle" : { },
+                    "forgotPasswordLabel" : "Forgot your password?",
+                    "forgotPasswordUrl" : "/ForgotPassword",
+                    "loginButtonLabel" : "Log In",
+                    "passwordLabel" : "Password",
+                    "selfRegisterLabel" : "Not a member?",
+                    "selfRegisterUrl" : "/SelfRegister",
+                    "startUrl" : "",
+                    "usernameLabel" : "Username"
+                  },
+                  "definition" : "community_login:loginForm",
+                  "id" : "96615edd-f931-45a1-bb98-dc39985d63a6",
+                  "type" : "component"
+                }, {
+                  "attributes" : { },
+                  "definition" : "c:ham_PasswordlessLoginLwc",
+                  "id" : "10857ac0-74a7-4c91-85a1-73ca1eb93cf3",
+                  "type" : "component"
+                }, {
+                  "attributes" : {
+                    "employeeLoginLinkLabel" : "Are you an employee? Log in"
+                  },
+                  "definition" : "community_login:employeeLoginLink",
+                  "id" : "a7c2b15f-b00b-42c3-b25b-340d6a08f845",
+                  "type" : "component"
+                }, {
+                  "attributes" : {
+                    "dxpStyle" : {
+                      "padding" : {
+                        "bottom" : "0px",
+                        "left" : "0px",
+                        "right" : "0px",
+                        "top" : "0px"
+                      }
+                    },
+                    "imageInfos" : "",
+                    "richTextValue" : "<p style=\"text-align: center;\">If you cannot log in with your email address, please contact <a href=\"mailto:hamily@hamilton.edu\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(102, 163, 224);\">hamily@hamilton.edu</a> for help.</p>"
+                  },
+                  "customCssClasses" : "loginHelpText",
+                  "definition" : "community_builder:richTextEditor",
+                  "id" : "3b35dc31-1f3c-49c3-bb57-44c411e80608",
+                  "type" : "component"
+                }, {
+                  "attributes" : {
+                    "employeeLoginLinkLabel" : "Are you an employee? Log in"
+                  },
+                  "definition" : "community_login:employeeLoginLink",
+                  "id" : "bb2cc29d-49e5-4c56-9ca0-5c73d6c6d38f",
+                  "type" : "component"
+                }, {
+                  "attributes" : {
+                    "showHeader" : false,
+                    "socialLoginHeader" : "Or log in using:",
+                    "useCommunityDomainSso" : true
+                  },
+                  "definition" : "community_login:socialLogin",
+                  "id" : "be99a0b3-65c5-476e-bbb2-bad9ea46a0cf",
+                  "type" : "component"
+                } ],
+                "id" : "ad5f90dd-0e68-4f7d-a67e-dcf393bbe36b",
+                "name" : "col1",
+                "title" : "Column 1",
+                "type" : "region"
+              }, {
+                "children" : [ {
+                  "attributes" : {
+                    "employeeLoginLinkLabel" : "Are you an employee? Log in"
+                  },
+                  "definition" : "community_login:employeeLoginLink",
+                  "id" : "6f967be6-15ef-4f8f-ba89-cf2256f6a016",
+                  "type" : "component"
+                }, {
+                  "attributes" : {
+                    "dxpStyle" : {
+                      "margin" : {
+                        "bottom" : "5px",
+                        "left" : "",
+                        "right" : "",
+                        "top" : "10px"
+                      },
+                      "padding" : {
+                        "bottom" : "10px",
+                        "left" : "10px",
+                        "right" : "10px",
+                        "top" : ""
+                      }
+                    }
+                  },
+                  "definition" : "c:ham_loginSocialSignOnButtons",
+                  "id" : "f90c6a98-56e9-458f-b8af-e215ff22852b",
+                  "type" : "component"
+                }, {
+                  "attributes" : {
+                    "dxpStyle" : {
+                      "isVisible" : false
+                    },
+                    "horizontalAlignment" : "center",
+                    "size" : "standard",
+                    "text" : "Login With Biometrics",
+                    "type" : "primary",
+                    "width" : "standard"
+                  },
+                  "definition" : "mobile_publisher_container:biometricsButton",
+                  "id" : "708ffceb-f84d-4b8f-baa7-95db8c99831a",
+                  "type" : "component"
+                } ],
+                "id" : "34491972-8976-47b2-b7e3-eeaa6a8ac103",
+                "name" : "col2",
+                "title" : "Column 2",
+                "type" : "region"
+              } ],
+              "definition" : "dxp_layout:columns",
+              "id" : "5e8b8d58-62a7-481e-895c-bb314285953b",
+              "type" : "component"
+            } ],
+            "id" : "b05a09af-a146-4142-8219-12045c25cf2b",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          }, {
+            "children" : [ {
+              "attributes" : {
+                "imageInfos" : "",
+                "richTextValue" : "<img class=\"loginPageImg\" src=\"/sfsites/c/resource/Ham_LoginPageImage?v=2\" />"
+              },
+              "customCssClasses" : "",
+              "definition" : "community_builder:htmlEditor",
+              "id" : "899fa5e5-caea-4053-925a-26a4d982c1e4",
+              "type" : "component"
+            } ],
+            "id" : "02031419-45b9-4695-adc6-f1474867fa57",
+            "name" : "col2",
+            "title" : "Column 2",
+            "type" : "region"
+          } ],
+          "definition" : "dxp_layout:columns",
+          "id" : "e8ddbcc0-83d9-404e-a10d-1433828b177f",
+          "type" : "component"
+        } ],
+        "id" : "8f49c9bb-d798-437e-9017-32cd22f3a30f",
+        "name" : "slot1",
+        "type" : "region"
+      } ],
+      "definition" : "c:ham_LoginThemeLayout",
+      "id" : "6c00a606-63d9-40f6-8357-7f4ef9dd2789",
+      "type" : "component"
+    }
+  },
+  "urlName" : "login-theme-layout"
+}

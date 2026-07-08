@@ -1,0 +1,227 @@
+<template>
+    <div class={wrapperClass}>
+    <template lwc:if={isDesktopView}>
+        <div class="filters-row">
+            <div class="filters-bar">
+                <div class="filters-left">
+                    <div class="filters-container">
+                        <template for:each={primaryFilters} for:item="filter">
+                            <div key={filter.order} class="filter-pill">
+                                <div class="pill-wrapper">
+                                    <input type="text" class="pill-input" data-order={filter.order}
+                                        value={filter.displayValue} placeholder={filter.placeholder}
+                                        onclick={toggleDropdown} title={filter.hoverText} readonly />
+                                </div>
+                                <div class="icon-wrapper">
+                                    <template lwc:if={filter.selectedValues.length}>
+                                        <lightning-icon icon-name="utility:close" size="xx-small"
+                                            data-order={filter.order} onclick={handleClearFilter}>
+                                        </lightning-icon>
+                                    </template>
+
+                                    <template lwc:elseif={filter.isMoreFilters}>
+                                        <img src={icons.moreFiltersIcon} alt="More Filters" />
+                                    </template>
+
+                                    <template lwc:else>
+                                        <img src={icons.dropDownOuter} class="outer-icon" />
+                                        <img src={icons.dropDownInner} class="inner-icon" />
+                                    </template>
+                                </div>
+
+                                <template lwc:if={filter.isOpen}>
+                                    <div class="dropdown">
+                                        <div class="dropdown-search">
+                                            <input type="text" placeholder="Search..." data-order={filter.order}
+                                                value={filter.searchKey} oninput={handleDropdownSearch}
+                                                onclick={stopPropagation} />
+                                        </div>
+                                        <template lwc:if={filter.values.length}>
+                                            <template for:each={filter.values} for:item="opt">
+                                                <label key={opt.label} class="dropdown-item checkbox-item"
+                                                    onclick={stopPropagation}>
+                                                    <input type="checkbox" data-order={filter.order}
+                                                        data-value={opt.label} checked={opt.checked}
+                                                        onchange={handleCheckboxToggle} />
+                                                    <span>{opt.label}</span>
+                                                </label>
+                                            </template>
+                                        </template>
+                                        <template lwc:else>
+                                            <div class="dropdown-empty">No options</div>
+                                        </template>
+                                    </div>
+                                </template>
+
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <template lwc:if={isMoreFiltersOpen}>
+            <section class="more-filters-backdrop" onclick={closeMoreFilters}>
+                <div class="more-filters-modal" onclick={handleModalClick}>
+
+                    <header class="modal-header">
+                        <h2>Filter</h2>
+                        <button class="modal-close-btn" onclick={closeMoreFilters}><b>✕</b></button>
+                    </header>
+
+                    <div class="modal-filters-grid">
+                        <template for:each={secondaryFilters} for:item="filter">
+                            <div key={filter.order} class="filter-pill">
+
+                                <input type="text" class="pill-input" data-order={filter.order}
+                                    value={filter.displayValue} placeholder={filter.placeholder}
+                                    onclick={toggleDropdown} title={filter.hoverText} readonly />
+
+                                <div class="icon-wrapper">
+                                    <template lwc:if={filter.selectedValues.length}>
+                                        <lightning-icon icon-name="utility:close" size="xx-small"
+                                            data-order={filter.order} onclick={handleClearFilter}>
+                                        </lightning-icon>
+                                    </template>
+
+                                    <template lwc:else>
+                                        <img src={icons.dropDownOuter} class="outer-icon" />
+                                        <img src={icons.dropDownInner} class="inner-icon" />
+                                    </template>
+                                </div>
+
+                                <template lwc:if={filter.isOpen}>
+                                    <div class="dropdown">
+                                        <div class="dropdown-search">
+                                            <input type="text" placeholder="Search..." data-order={filter.order}
+                                                value={filter.searchKey} oninput={handleDropdownSearch}
+                                                onclick={stopPropagation} />
+                                        </div>
+                                        <template lwc:if={filter.values.length}>
+                                            <template for:each={filter.values} for:item="opt">
+                                                <label key={opt.label} class="dropdown-item checkbox-item"
+                                                    onclick={stopPropagation}>
+                                                    <input type="checkbox" data-order={filter.order}
+                                                        data-value={opt.label} checked={opt.checked}
+                                                        onchange={handleCheckboxToggle} />
+                                                    <span>{opt.label}</span>
+                                                </label>
+                                            </template>
+                                        </template>
+                                        <template lwc:else>
+                                            <div class="dropdown-empty">No options</div>
+                                        </template>
+                                    </div>
+                                </template>
+
+                            </div>
+                        </template>
+                    </div>
+
+                    <footer class="modal-actions">
+                        <button class="apply-btn" onclick={handleApplyFilters}>{label.apply}</button>
+                        <button class="clear-btn" onclick={handleClearFilter}>{label.clearFilter}</button>
+                    </footer>
+
+                </div>
+            </section>
+        </template>
+    </template>
+
+    <!-- MOBILE VIEW - Full Screen Slide Up Panel -->
+    <template lwc:if={isMobileView}>
+        <div class="mobile-filter-container mobile-filter-slide-up">
+            <!-- Header -->
+            <div class="mobile-filter-header">
+                <h2 class="mobile-filter-title">Filters</h2>
+                <button class="mobile-close-btn" onclick={closeMobileFilters}>
+                    <span class="close-icon">✕</span>
+                </button>
+            </div>
+
+            <!-- Body with Split Panel -->
+            <div class="mobile-filter-body">
+                <!-- Left Sidebar - Filter Categories -->
+               <div class="mobile-filter-sidebar">
+                    <template for:each={allFilters} for:item="filter">
+                        <div key={filter.order} class={filter.mobileSidebarClass} data-order={filter.order}
+                            onclick={handleMobileFilterSelect}>
+                            <span class="sidebar-filter-label">{filter.placeholder}</span>
+                            <template lwc:if={filter.hasSelectedValues}>
+                                <span class="sidebar-filter-count">{filter.selectedCount}</span>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Right Panel - Filter Options -->
+                <div class="mobile-filter-options">
+                    <template lwc:if={selectedMobileFilter}>
+                        <!-- Search Box -->
+                        <div class="mobile-search-box">
+                            <lightning-icon icon-name="utility:search" size="x-small"
+                                class="mobile-search-icon"></lightning-icon>
+                            <input type="text" class="mobile-search-input" placeholder="Search..."
+                                data-order={selectedMobileFilter.order} value={selectedMobileFilter.searchKey}
+                                oninput={handleDropdownSearch} />
+                        </div>
+
+                        <!-- Options List -->
+                        <div class="mobile-options-list">
+                            <template lwc:if={hasMobileFilterValues}>
+                                <!-- Class Year - Show as Year Chips -->
+                                <template lwc:if={isClassYearFilter}>
+                                    <div class="year-chips-container">
+                                        <template for:each={mobileFilterValues} for:item="opt">
+                                            <div key={opt.label} class={opt.chipClass}
+                                                data-order={selectedMobileFilter.order} data-value={opt.label}
+                                                onclick={handleYearChipClick}>
+                                                {opt.label}
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+
+                                <!-- Other Filters - Show as Checkboxes (using click handler for better control) -->
+                                <template lwc:else>
+                                    <template for:each={mobileFilterValues} for:item="opt">
+                                        <div key={opt.label} class="mobile-checkbox-item"
+                                            data-order={selectedMobileFilter.order} data-value={opt.label}
+                                            onclick={handleMobileCheckboxClick}>
+                                            <div class={opt.checked} data-checked={opt.checked}>
+                                                <template lwc:if={opt.checked}>
+                                                    <span class="custom-checkbox checked">✓</span>
+                                                </template>
+                                                <template lwc:else>
+                                                    <span class="custom-checkbox"></span>
+                                                </template>
+                                            </div>
+                                            <span class="mobile-checkbox-label">{opt.label}</span>
+                                        </div>
+                                    </template>
+                                </template>
+                            </template>
+                            <template lwc:else>
+                                <div class="mobile-no-options">No options available</div>
+                            </template>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <div class="mobile-select-prompt">Select a filter category</div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="mobile-filter-footer">
+                <button class="mobile-clear-btn" onclick={handleClearAllFilters}>{label.clearFilter}</button>
+                <button class="mobile-apply-btn" onclick={handleApplyFilters}>{label.apply}</button>
+            </div>
+        </div>
+    </template>
+    </div>
+
+</template>

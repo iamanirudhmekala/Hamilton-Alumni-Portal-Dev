@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Payment_Gateway__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Payment gateway used for this invoice. Migrated from bt_stripe__Payment_Gateway__c on bt_stripe__Sales_Document__c.</description>
+    <inlineHelpText>The Blackthorn payment gateway record used to process this invoice.</inlineHelpText>
+    <label>Payment Gateway</label>
+    <referenceTo>bt_stripe__Payment_Gateway__c</referenceTo>
+    <relationshipLabel>Sales Documents</relationshipLabel>
+    <relationshipName>HAM_Payment_Gateway_Sales_Documents</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

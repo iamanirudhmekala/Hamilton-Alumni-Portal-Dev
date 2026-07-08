@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "FAQ",
+  "contentBody" : {
+    "activeViewId" : "FAQ",
+    "configurationTags" : [ ],
+    "pageAccess" : "Public",
+    "routeType" : "custom-faq",
+    "urlPrefix" : "faq"
+  },
+  "urlName" : "faq"
+}

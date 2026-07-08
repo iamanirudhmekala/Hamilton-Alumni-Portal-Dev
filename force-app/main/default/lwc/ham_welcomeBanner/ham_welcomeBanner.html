@@ -1,0 +1,50 @@
+<template>
+    <div class={bannerContainerClass}>
+
+        <!-- Chapel bell background image -->
+        <template lwc:if={images.chapelBellBanner}>
+            <img src={images.chapelBellBanner} alt="" class="banner-bg-image" />
+        </template>
+
+        <!-- Gradient overlay for text readability -->
+        <div class="banner-overlay"></div>
+
+        <!-- Birthday confetti (above overlay) -->
+        <template lwc:if={isBirthdayMessage}>
+            <c-ham_js-confetti size="large" number="large" auto-repeat="true"></c-ham_js-confetti>
+        </template>
+
+        <!-- Main content -->
+        <div class="banner-content">
+
+            <!-- Top row: Welcome text + Registered Users pill -->
+            <div class="banner-top-row">
+                <h3 class="banner-message">{welcomeText}&nbsp;
+                    <span class="bold-name name-with-badge">
+                        {displayNameWithYear}
+                        <template if:true={isKirklandAlumnae}>
+                            <img src={kirklandAlumnaeIcon}
+                                alt="Kirkland Alumnae"
+                                title="Kirkland Alumnae"
+                                class="kirkland-badge banner-badge" />
+                        </template>
+                    </span>
+                </h3>
+                <template lwc:if={registeredUsersCount}>
+                    <div class="registered-users-pill">Registered Users: {registeredUsersCount}</div>
+                </template>
+            </div>
+
+            <!-- Badge row at bottom -->
+            <div class="icon-row">
+                <template for:each={badgeData} for:item="badge">
+                    <div key={badge.label} class="icon-label">
+                        <span class="icon"><img src={badge.imageUrl} alt={badge.label}></img></span>
+                        <p>{badge.label}</p>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+    </div>
+</template>

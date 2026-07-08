@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ucinn_ascendv2__Lifetime_Cash_No_Trustee_Formula__c</fullName>
+    <deprecated>false</deprecated>
+    <formula>if(ucinn_ascendv2__Is_Trustee_Formula__c = true, null,  ucinn_ascendv2__Lifetime_Cash__c )</formula>
+    <label>Lifetime Cash (No Trustee)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

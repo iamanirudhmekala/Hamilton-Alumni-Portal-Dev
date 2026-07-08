@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Field_Purpose__c</fullName>
+    <description>Critical for Apex logic mapping.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Critical for Apex logic mapping. Always add purpose to identify type of this field</inlineHelpText>
+    <label>Field Purpose</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Goal</fullName>
+                <default>true</default>
+                <label>Goal</label>
+            </value>
+            <value>
+                <fullName>Raised</fullName>
+                <default>false</default>
+                <label>Raised</label>
+            </value>
+            <value>
+                <fullName>Start Date</fullName>
+                <default>false</default>
+                <label>Start Date</label>
+            </value>
+            <value>
+                <fullName>End Date</fullName>
+                <default>false</default>
+                <label>End Date</label>
+            </value>
+            <value>
+                <fullName>Link</fullName>
+                <default>false</default>
+                <label>Link</label>
+            </value>
+            <value>
+                <fullName>Image</fullName>
+                <default>false</default>
+                <label>Image</label>
+            </value>
+            <value>
+                <fullName>Description</fullName>
+                <default>false</default>
+                <label>Description</label>
+            </value>
+            <value>
+                <fullName>Title</fullName>
+                <default>false</default>
+                <label>Title</label>
+            </value>
+            <value>
+                <fullName>LocationType</fullName>
+                <default>false</default>
+                <label>LocationType</label>
+            </value>
+            <value>
+                <fullName>Location</fullName>
+                <default>false</default>
+                <label>Location</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

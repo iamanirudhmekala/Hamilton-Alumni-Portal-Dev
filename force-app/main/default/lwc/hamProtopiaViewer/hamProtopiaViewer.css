@@ -1,0 +1,28 @@
+/* Container for iframes, relative positioning needed for the loading spinner */
+.iframe-container,
+.iframe-wrapper {
+    position: relative;
+}
+
+/* Iframe styling: dynamic height, no border, and smooth scrolling for iOS */
+.iframe-container iframe,
+.iframe-wrapper iframe {
+    height: calc(100vh - 200px);
+    min-height: 600px;
+    border: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Desktop Layout: Flexbox container for side-by-side display */
+.desktop-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+}
+
+/* Wrapper for each iframe in desktop view, taking up 50% width */
+.iframe-wrapper {
+    flex: 1;
+    width: 50%;
+}

@@ -1,0 +1,61 @@
+<template>
+    <template if:true={displayToast}>
+        <c-ham-giving-toast-util toast-title={toastTitle} toast-message={toastMessage} onclose={handleCloseToast}></c-ham-giving-toast-util>
+    </template>
+    <div class="single-page-form">
+        <div class="form-layout-with-carousel">
+            <!-- Main Form Content -->
+            <div class="form-content-main">
+                <div class="form-header">
+                    <c-hamilton-image-carousel></c-hamilton-image-carousel>
+                </div>
+
+                <!-- Main Navigation Tabs -->
+                <section class="form-section-compact">
+                    <div class="gift-type-tab gift-type-tabs-header arrow-tabs" style="margin-bottom: 0;">
+                        <button class="gift-tab arrow-tab" onclick={handleMainTabChange} data-tab="amount">Amount</button>
+                        <button class="gift-tab arrow-tab" onclick={handleMainTabChange} data-tab="designation">Designation</button>
+                        <button class="gift-tab arrow-tab" onclick={handleMainTabChange} data-tab="payment">Payment</button>
+                    </div>
+                </section>
+
+                <!-- AMOUNT TAB -->
+                <template lwc:if={isDesignationTab}>
+                    <div class="slds-var-m-top_xx-large">
+                        <c-ham-designation-tab 
+                            onback={handleBack} 
+                            onmakethisgift={handleMakeThisOf}
+                            form-data={formData} 
+                            oncontinue={handleContinue}
+                            ondesignationselect={handleDesignationselect} 
+                            is-salesforce-site={isSalesforceSite}
+                            hamilton-funds={hamiltonFunds}
+                            ></c-ham-designation-tab>
+                    </div>
+                </template>
+                <template lwc:elseif={isPaymentTab}>
+                    <div class="slds-var-m-top_xx-large">
+                        <c-ham-giving-payment-tab 
+                            form-data={formData} 
+                            contact-id={contactId} 
+                            user-id={userId}
+                            is-salesforce-site={isSalesforceSite} 
+                            onback={handleBack}
+                            onpaymentcomplete={handlePaymentComplete}
+                            ></c-ham-giving-payment-tab>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="slds-var-m-top_xx-large">
+                        <c-ham-giving-amount-tab 
+                            onamountchange={handleAmountChange} 
+                            oncontinue={handleContinue}
+                            form-data={formData} 
+                            pledges={pledges}
+                            ></c-ham-giving-amount-tab>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

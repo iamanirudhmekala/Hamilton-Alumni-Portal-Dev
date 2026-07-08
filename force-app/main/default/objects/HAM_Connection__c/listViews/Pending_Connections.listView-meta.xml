@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pending_Connections</fullName>
+    <columns>NAME</columns>
+    <columns>HAM_Is_Blocked__c</columns>
+    <columns>HAM_Linked_Constituent__c</columns>
+    <columns>HAM_Portal_User__c</columns>
+    <columns>HAM_Data_Source__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>HAM_Connection_Status__c</field>
+        <operation>equals</operation>
+        <value>Request Sent</value>
+    </filters>
+    <label>Pending Connections</label>
+</ListView>

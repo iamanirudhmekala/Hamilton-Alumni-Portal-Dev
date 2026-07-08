@@ -1,0 +1,400 @@
+<template>
+    <template lwc:if={isLoading}>
+        <div class="spinner-backdrop">
+            <lightning-spinner alternative-text="Loading" size="medium">
+            </lightning-spinner>
+        </div>
+    </template>
+    <template lwc:if={isMobileView}>
+        <template lwc:if={alumniUiList.length}>
+            <div class={containerClass}>
+                <template for:each={alumniUiList} for:item="alumni">
+
+                    <div key={alumni.portalUserId} class="alumni-parent-card">
+                        <div class="alumni-card">
+
+                            <!-- Header -->
+                            <div class="card-header">
+                                <div class="profile-info" data-id={alumni.constituentId} onclick={handleViewProfile}
+                                    style="cursor:pointer;" title="Click to view the detailed profile of alumni">
+                                    <template lwc:if={alumni.header.photoUrl}>
+                                        <img src={alumni.header.photoUrl} alt="Account Name" class="my-profile-icon" />
+                                    </template>
+                                    <template lwc:else>
+                                        <img src={imageError} alt="Account Name"
+                                            class="my-profile-icon default-image" />
+                                    </template>
+
+                                </div>
+                            </div>
+                            <div class="card-body-main">
+                                <!--<span class="name">{alumni.header.name}</span>-->
+                                <span class="name name-with-badge">
+                                    <span class="name-text" data-id={alumni.constituentId} onclick={handleViewProfile}
+                                        style="cursor:pointer;" title="Click to view the detailed profile of alumni">
+                                        {alumni.header.name}
+                                        <template lwc:if={alumni.header.isKirklandAlumnae}>
+                                            <img src={images.kirklandLogo} alt="Kirkland Alumnae"
+                                                title="Kirkland Alumnae" class="kirkland-badge" />
+                                        </template>
+                                    </span>
+                                </span>
+                                <template for:each={alumni.fields} for:item="field">
+                                    <div key={field.label} class="card-body">
+                                        <p>{field.label}<strong> {field.value}</strong></p>
+                                    </div>
+                                </template>
+                            </div>
+
+
+                            <template lwc:if={notBlockedProfilesTab}>
+                                <template lwc:if={alumni.isNotCurrentUser}>
+                                    <template if:false={alumni.header.isDeseasedAlumnae}>
+                                        <div class="card-actions">
+                                            <div class="action-menu-wrapper">
+                                                <button class="more-btn" data-id={alumni.constituentId}
+                                                    onclick={handleMoreClick}>
+                                                    <img src={dotsIcon} title="more" alt="more"
+                                                        class="icon-button dot" />
+                                                </button>
+                                                <!-- Dropdown Menu -->
+                                                <template lwc:if={alumni.showDropdown}>
+                                                    <div class="dropdown-menu">
+                                                        <template lwc:if={isBookMarkTab}>
+                                                            <button class="dropdown-item"
+                                                                data-contact={alumni.constituentId}
+                                                                data-name={alumni.bookmarkStatus}
+                                                                onclick={handleButtonClick}
+                                                                title={alumni.bookmarkHover}>
+                                                                {alumni.bookmarkStatus}
+                                                            </button>
+                                                        </template>
+
+                                                        <button class="dropdown-item"
+                                                            data-contact={alumni.constituentId} data-name="Block"
+                                                            onclick={handleButtonClick} title={label.blockHoverText}>
+                                                            {label.blockProfile}
+                                                        </button>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                            <img src={alumni.bookmarkIcon} alt="BOOKMARK" onclick={handleButtonClick}
+                                                data-contact={alumni.constituentId} data-name={alumni.bookmarkStatus}
+                                                class="icon-button bookmark" title={alumni.bookmarkHover} />
+                                            <template lwc:if={showFavorite}>
+                                                <img src={alumni.favoriteIcon} alt="favorite"
+                                                    onclick={handleButtonClick} data-contact={alumni.constituentId}
+                                                    data-name={alumni.favoriteStatus} class="icon-button heart"
+                                                    title={alumni.favoriteHover} />
+                                            </template>
+                                        </div>
+                                    </template>
+                                </template>
+                            </template>
+                        </div>
+                        <!-- Footer -->
+                        <!-- Connection message only on Received sub-tab -->
+                        <template lwc:if={isReceivedSubTab}>
+                                <div class="connection-msg">
+                                    {alumni.connectionMessage}
+                                </div>
+                            </template>
+                            <div class="card-footer">
+                                <template lwc:if={alumni.header.isDeseasedAlumnae}>
+                                    <button class="btn active" onclick={handleNecrologyClick}
+                                        title={label.necrologyHelpText}>
+                                        {label.necrologyTitle}
+                                    </button>
+                                </template>
+                                <template lwc:else>
+                                    <!-- Branch on sub-tab:
+                                         Received → Accept / Ignore  |  Sent → Cancel Request -->
+                                    <template lwc:if={isManageTab}>
+                                        <template lwc:if={isReceivedSubTab}>
+                                            <button class="manage-btn active" onclick={handleButtonClick}
+                                                data-contact={alumni.constituentId} data-name="Accept"
+                                                title={label.acceptHoverText}>
+                                                Accept
+                                            </button>
+                                            <button class="manage-btn inactive" onclick={handleButtonClick}
+                                                data-contact={alumni.constituentId} data-name="Reject"
+                                                title={label.rejectHoverText}>
+                                                Ignore
+                                            </button>
+                                        </template>
+                                        <template lwc:if={isSentSubTab}>
+                                            <button class="manage-btn inactive" onclick={handleButtonClick}
+                                                data-contact={alumni.constituentId} data-name={label.cancelRequest}
+                                                title={label.cancelRequestHoverText}>
+                                                {label.cancelRequest}
+                                            </button>
+                                        </template>
+                                    </template>
+                                    <template lwc:else>
+                                        <template lwc:if={alumni.isNotCurrentUser}>
+                                            <template lwc:if={alumni.showConnectionButton}>
+                                            <button disabled={alumni.disableConnectionButton} class={alumni.buttonClass} onclick={handleButtonClick}
+                                                data-contact={alumni.constituentId} data-name={alumni.buttonLabel}
+                                                title={alumni.buttonHover}>
+                                                {alumni.buttonLabel}
+                                            </button>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </template>
+
+                                <button class="outline-btn" data-id={alumni.constituentId} onclick={handleViewProfile}
+                                    title={label.viewProfileHoverText}>{label.viewProfile}</button>
+                            </div>
+
+                    </div>
+
+                </template>
+            </div>
+        </template>
+        <template lwc:if={showEmptyState}>
+            <template lwc:if={isConnectionsTab}>
+                <div class="slds-notify slds-notify_alert slds-theme_info" role="alert">
+                    <span class="slds-assistive-text">No Records</span>
+                    <!--lightning-icon icon-name="utility:info" alternative-text="info" size="small"
+                        class="yellow-info-icon svg"></lightning-icon-->
+                    <img src={images.info} alt="info" class="yellow-info-icon" />
+                    <h2>No Connections found. <button class="dir-link-btn" onclick={handleGoToSearchDirectory}>Click
+                            here to search the directory and make connections</button></h2>
+                </div>
+            </template>
+            <template lwc:else>
+                <div class="slds-notify slds-notify_alert slds-theme_info" role="alert">
+                    <span class="slds-assistive-text">No Records</span>
+                    <lightning-icon icon-name="utility:info" alternative-text="info" size="small"
+                        class="slds-m-right_x-small"></lightning-icon>
+                    <h2>{tabStateMessage}</h2>
+                </div>
+            </template>
+        </template>
+    </template>
+
+    <template lwc:if={isDesktopView}>
+        <template lwc:if={alumniUiList.length}>
+            <div class={containerClass}>
+                <template for:each={alumniUiList} for:item="alumni">
+                    <div key={alumni.portalUserId} class="alumni-card">
+
+                        <!-- Header -->
+                        <div class="card-header">
+                            <div class="profile-info">
+                                <div data-id={alumni.constituentId} onclick={handleViewProfile} style="cursor:pointer;"
+                                    title="Click to view the detailed profile of alumni">
+                                    <lightning-avatar variant="circle" src={alumni.header.photoUrl}
+                                        fallback-icon-name="standard:user"
+                                        alternative-text="Click to view the detailed profile of alumni" class="avatar">
+                                    </lightning-avatar>
+                                </div>
+                                <span class="name name-with-badge">
+                                    <span class="name-text" data-id={alumni.constituentId} onclick={handleViewProfile}
+                                        style="cursor:pointer;" title="Click to view the detailed profile of alumni">
+                                        {alumni.header.name}
+                                        <template lwc:if={alumni.header.isKirklandAlumnae}>
+                                            <img src={images.kirklandLogo} alt="Kirkland Alumnae"
+                                                title="Kirkland Alumnae" class="kirkland-badge" />
+                                        </template>
+                                    </span>
+                                </span>
+
+                            </div>
+
+                            <template lwc:if={notBlockedProfilesTab}>
+                                <template lwc:if={alumni.isNotCurrentUser}>
+                                    <template if:false={alumni.header.isDeseasedAlumnae}>
+                                        <div class="card-actions">
+                                            <img src={alumni.bookmarkIcon} alt="BOOKMARK" onclick={handleButtonClick}
+                                                data-contact={alumni.constituentId} data-name={alumni.bookmarkStatus}
+                                                class="icon-button bookmark" title={alumni.bookmarkHover} />
+                                            <template lwc:if={showFavorite}>
+                                                <img src={alumni.favoriteIcon} alt="favorite"
+                                                    onclick={handleButtonClick} data-contact={alumni.constituentId}
+                                                    data-name={alumni.favoriteStatus} class="icon-button heart"
+                                                    title={alumni.favoriteHover} />
+                                            </template>
+                                            <div class="action-menu-wrapper">
+                                                <button class="more-btn" data-id={alumni.constituentId}
+                                                    onclick={handleMoreClick}>
+                                                    <img src={dotsIcon} title="more" alt="more"
+                                                        class="icon-button dot" />
+                                                </button>
+                                                <!-- Dropdown Menu -->
+                                                <template lwc:if={alumni.showDropdown}>
+                                                    <div class="dropdown-menu">
+                                                        <template lwc:if={isBookMarkTab}>
+                                                            <button class="dropdown-item"
+                                                                data-contact={alumni.constituentId}
+                                                                data-name={alumni.bookmarkStatus}
+                                                                onclick={handleButtonClick}
+                                                                title={alumni.bookmarkHover}>
+                                                                {alumni.bookmarkStatus}
+                                                            </button>
+                                                        </template>
+
+                                                        <button class="dropdown-item"
+                                                            data-contact={alumni.constituentId} data-name="Block"
+                                                            onclick={handleButtonClick} title={label.blockHoverText}>
+                                                            {label.blockProfile}
+                                                        </button>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </template>
+                            </template>
+                        </div>
+
+                        <template for:each={alumni.fields} for:item="field">
+                            <div key={field.label} class="card-body">
+                                <p>{field.label}<strong> {field.value}</strong></p>
+                            </div>
+                        </template>
+
+                        <!-- Footer -->
+                        <!-- [v1.4 - Anirudh] Connection message only on Received sub-tab -->
+                        <template lwc:if={isReceivedSubTab}>
+                                <div class="connection-msg">
+                                    {alumni.connectionMessage}
+                                </div>
+                            </template>
+
+                            <div class="card-footer">
+                                <template lwc:if={alumni.header.isDeseasedAlumnae}>
+                                    <button class="btn active" onclick={handleNecrologyClick}
+                                        title={label.necrologyHelpText}>
+                                        {label.necrologyTitle}
+                                    </button>
+                                </template>
+                                <template lwc:else>
+                                    <!-- [v1.4 - Anirudh] Branch on sub-tab:
+                                         Received → Accept / Ignore  |  Sent → Cancel Request -->
+                                    <template lwc:if={isManageTab}>
+                                        <template lwc:if={isReceivedSubTab}>
+                                            <button class="btn active" onclick={handleButtonClick}
+                                                data-contact={alumni.constituentId} data-name="Accept"
+                                                title={label.acceptHoverText}>
+                                                Accept
+                                            </button>
+                                            <button class="btn inactive" onclick={handleButtonClick}
+                                                data-contact={alumni.constituentId} data-name="Reject"
+                                                title={label.rejectHoverText}>
+                                                Ignore
+                                            </button>
+                                        </template>
+                                        <template lwc:if={isSentSubTab}>
+                                            <button class="btn inactive" onclick={handleButtonClick}
+                                                data-contact={alumni.constituentId} data-name={label.cancelRequest}
+                                                title={label.cancelRequestHoverText}>
+                                                {label.cancelRequest}
+                                            </button>
+                                        </template>
+                                    </template>
+                                    <template lwc:else>
+                                        <template lwc:if={alumni.isNotCurrentUser}>
+                                            <template lwc:if={alumni.showConnectionButton}>
+                                            <button disabled={alumni.disableConnectionButton} class={alumni.buttonClass}
+                                                onclick={handleButtonClick} data-contact={alumni.constituentId}
+                                                data-name={alumni.buttonLabel} title={alumni.buttonHover}>
+                                                {alumni.buttonLabel}
+                                            </button>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </template>
+
+                                <button class="outline-btn btn" data-id={alumni.constituentId}
+                                    onclick={handleViewProfile}
+                                    title={label.viewProfileHoverText}>{label.viewProfile}</button>
+                            </div>
+
+                    </div>
+                </template>
+            </div>
+        </template>
+        <template lwc:if={showEmptyState}>
+            <template lwc:if={isConnectionsTab}>
+                <div class="slds-notify slds-notify_alert slds-theme_info" role="alert">
+                    <span class="slds-assistive-text">No Records</span>
+
+                    <!-- <lightning-icon icon-name="utility:info" variant="warning" alternative-text="info" size="small"
+                        class="slds-m-right_x-small yellow-info-icon"></lightning-icon> -->
+                    <img src={images.info} alt="info" class="yellow-info-icon" />
+                    <h2>No Connections found. <button class="dir-link-btn" onclick={handleGoToSearchDirectory}>Click
+                            here to search the directory and make connections</button></h2>
+                </div>
+            </template>
+            <template lwc:else>
+                <div class="slds-notify slds-notify_alert slds-theme_info" role="alert">
+                    <span class="slds-assistive-text">No Records</span>
+                    <lightning-icon icon-name="utility:info" alternative-text="info" size="small"
+                        class="slds-m-right_x-small"></lightning-icon>
+                    <h2>{tabStateMessage}</h2>
+                </div>
+            </template>
+        </template>
+    </template>
+
+    <template lwc:if={showRequestModal}>
+        <div class="modal-backdrop" onclick={closeRequestModal}></div>
+        <div class="modal-wrapper">
+            <div class={modalClass}>
+                <!-- Close Button -->
+                <template lwc:if={isRequestModal}>
+                    <template lwc:if={isDesktopView}>
+                        <button class="close-button" onclick={closeRequestModal}>
+                            <img src={images.close} alt="close" />
+                        </button>
+                    </template>
+                </template>
+
+                <!-- Modal Title -->
+                <h2 class="modal-title">{modalHeader}</h2>
+
+                <!-- Text Area -->
+                <template lwc:if={isRequestModal}>
+                    <div class="textarea-wrapper">
+                        <textarea class="message-textarea" value={personalizedMessage} onchange={handleMessageChange}
+                            rows="4">
+                        </textarea>
+                    </div>
+                </template>
+
+                <template lwc:if={isInactiveUser}>
+                    <div class="custom-info-banner">
+                        <lightning-icon icon-name="utility:info" size="x-small" class="info-icon"></lightning-icon>
+                        <span>{label.inActiveUserMessage}</span>
+                    </div>
+                </template>
+
+
+                <!-- Modal Footer Buttons -->
+                <div class="button-group">
+                    <template lwc:if={showPrimaryButton}>
+                        <button disabled={isInactiveUser} class={primaryButtonClass} onclick={handleRequest}
+                            data-name={modalPrimaryButton}>
+                            <template lwc:if={isRequestModal}>
+                                <img src={images.person} alt="add" />
+                            </template>
+                            <span>{modalPrimaryButton}</span>
+                        </button>
+                    </template>
+
+                    <button disabled={isInactiveUser} class={secondaryButtonClass} onclick={handleRequest}
+                        data-name={modalSecondaryButton}>
+                        {modalSecondaryButton}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template lwc:if={showCustomToast}>
+        <c-ham_custom-toast-cmp title={toastTitle} message={toastMessage} variant={toastVariant}
+            duration={toastDuration} onclose={handleToastClose}>
+        </c-ham_custom-toast-cmp>
+    </template>
+</template>

@@ -1,0 +1,223 @@
+<template>
+    <article class={rootClass}>
+        <!-- Panel header: title + pop-out -->
+        <template lwc:if={showHeader}>
+            <header class="composer__head">
+                <span class="composer__title">Discussion</span>
+                <button
+                    type="button"
+                    class="composer__expand"
+                    title="Open discussion"
+                    aria-label="Open discussion"
+                    onclick={handleExpand}
+                >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                        <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+                    </svg>
+                </button>
+            </header>
+        </template>
+
+        <!-- Composer field -->
+        <section class="composer__card">
+            <!-- Body -->
+            <textarea
+                class="composer__textarea"
+                placeholder={placeholder}
+                value={body}
+                oninput={handleBodyInput}
+                rows="3"
+            ></textarea>
+
+            <!-- @Mention suggestions (shown while typing "@Name" in the body) -->
+            <template lwc:if={hasMentionSuggestions}>
+                <div class="mentionbox">
+                    <ul class="mentionbox__list" role="listbox">
+                        <template for:each={mentionSuggestions} for:item="sug">
+                            <li
+                                key={sug.contactId}
+                                class="mentionbox__option"
+                                role="option"
+                                data-contact-id={sug.contactId}
+                                data-name={sug.name}
+                                onclick={handleSelectMentionSuggestion}
+                            >
+                                <span class="mentionbox__at">@</span>{sug.name}
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+
+            <!-- Tag pop-over (toggled by the tag icon) -->
+            <template lwc:if={showTagInput}>
+                <div class="tagbox">
+                    <input
+                        type="text"
+                        class="tagbox__input"
+                        placeholder="Search or type a tag, then press Enter"
+                        value={tagSearchTerm}
+                        oninput={handleTagInput}
+                        onkeydown={handleTagKeydown}
+                        autocomplete="off"
+                    />
+                    <template lwc:if={hasSuggestions}>
+                        <ul class="tagbox__list" role="listbox">
+                            <template for:each={tagSuggestions} for:item="sug">
+                                <li
+                                    key={sug}
+                                    class="tagbox__option"
+                                    role="option"
+                                    data-tag={sug}
+                                    onclick={handleSelectSuggestion}
+                                >
+                                    <span class="tagbox__hash">#</span>{sug}
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Selected tags -->
+            <template lwc:if={hasTags}>
+                <div class="chips">
+                    <template for:each={tags} for:item="tag">
+                        <span key={tag} class="chip">
+                            <span class="chip__hash">#</span>{tag}
+                            <button
+                                type="button"
+                                class="chip__remove"
+                                data-tag={tag}
+                                onclick={handleRemoveTag}
+                                title="Remove tag"
+                                aria-label="Remove tag"
+                            >&times;</button>
+                        </span>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Selected attachments (images & documents) -->
+            <template lwc:if={hasFiles}>
+                <div class="files">
+                    <template for:each={files} for:item="file">
+                        <span key={file.documentId} class="file-chip">
+                            <svg class="file-chip__icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <template lwc:if={file.isImage}>
+                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <path d="M21 15l-5-5L5 21"></path>
+                                </template>
+                                <template lwc:else>
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <path d="M14 2v6h6"></path>
+                                </template>
+                            </svg>
+                            <span class="file-chip__name">{file.name}</span>
+                            <button
+                                type="button"
+                                class="file-chip__remove"
+                                data-id={file.documentId}
+                                onclick={handleRemoveFile}
+                                title="Remove attachment"
+                                aria-label="Remove attachment"
+                            >&times;</button>
+                        </span>
+                    </template>
+                </div>
+            </template>
+
+            <!-- File uploader (revealed by the attach/image toolbar buttons). Bound to a
+                 draft post so large files stream straight to ContentVersion. Videos are
+                 excluded from the accepted formats and blocked server-side. -->
+            <template lwc:if={showUploader}>
+                <div class="uploadbox">
+                    <lightning-file-upload
+                        label="Add attachments"
+                        name="postFiles"
+                        accept={acceptedFormats}
+                        record-id={draftPostId}
+                        multiple
+                        onuploadfinished={handleUploadFinished}>
+                    </lightning-file-upload>
+                    <p class="uploadbox__hint">Documents and images only — paste a YouTube/Vimeo link for video.</p>
+                </div>
+            </template>
+
+            <!-- Link insert (toggled by the link icon) -->
+            <template lwc:if={showLinkInput}>
+                <div class="linkbox">
+                    <input
+                        type="url"
+                        class="linkbox__input"
+                        placeholder="https://example.com"
+                        value={linkUrl}
+                        oninput={handleLinkInput}
+                    />
+                    <button type="button" class="linkbox__add" onclick={handleInsertLink}>
+                        Add
+                    </button>
+                </div>
+            </template>
+
+            <!-- Status banner (reliable feedback inside LWR). Success auto-dismisses
+                 after a few seconds; a × lets the user close it sooner. -->
+            <template lwc:if={statusMessage}>
+                <div class={statusClass} role="status">
+                    <span class="composer__status-text">{statusMessage}</span>
+                    <button
+                        type="button"
+                        class="composer__status-close"
+                        title="Dismiss"
+                        aria-label="Dismiss message"
+                        onclick={dismissStatus}
+                    >&times;</button>
+                </div>
+            </template>
+
+            <!-- Footer -->
+            <footer class="composer__footer">
+                <div class="toolbar">
+                    <button type="button" class="toolbar__btn" title="Attach file" aria-label="Attach file" onclick={handleAttachClick}>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M21.44 11.05l-9.19 9.19a5 5 0 0 1-7.07-7.07l9.19-9.19a3 3 0 0 1 4.24 4.24l-9.2 9.19a1 1 0 0 1-1.41-1.41l8.49-8.49"></path>
+                        </svg>
+                    </button>
+                    <button type="button" class="toolbar__btn" title="Attach image" aria-label="Attach image" onclick={handleImageClick}>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <path d="M21 15l-5-5L5 21"></path>
+                        </svg>
+                    </button>
+                    <button type="button" class="toolbar__btn" title="Insert link" aria-label="Insert link" onclick={toggleLinkInput}>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                    </button>
+                    <button type="button" class="toolbar__btn" title="Add tags" aria-label="Add tags" onclick={toggleTagInput}>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="actions">
+                    <label class="anon">
+                        <input type="checkbox" checked={isAnonymous} onchange={handleAnonChange} />
+                        <span>Post anonymously</span>
+                    </label>
+                    <button type="button" class="post-btn" onclick={handlePost} disabled={isPosting}>
+                        {postLabel}
+                    </button>
+                </div>
+            </footer>
+
+        </section>
+    </article>
+</template>
