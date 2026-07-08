@@ -2591,14 +2591,19 @@
         <field>HAM_Group_Member__c.Leave_Reason__c</field>
         <readable>true</readable>
     </fieldPermissions>
-       <fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_Group_Member__c.Notify_on_Amplified__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>HAM_Group_Member__c.Notify_on_Tagged__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>HAM_Group_Member__c.Notify_on_Amplified__c</field>
+        <editable>true</editable>
+        <field>HAM_Group_Post__c.Amplified_On__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2614,11 +2619,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>HAM_Group_Post__c.Is_Amplified__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>HAM_Group_Post__c.Amplified_On__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

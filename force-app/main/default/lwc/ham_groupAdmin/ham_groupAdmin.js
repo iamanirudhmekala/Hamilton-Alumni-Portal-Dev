@@ -68,6 +68,7 @@ export default class Ham_groupAdmin extends LightningElement {
     @track isLoading = false;
     @track activeMobileTab = 'reports'; // 'reports' | 'requests'
     @track isMobileView = false;
+    @track activeReportsView = 'pending'; // 'pending' | 'resolved'
 
     // Take Action modal (2-step: choose action → review/edit message)
     @track showTakeActionModal = false;
@@ -110,21 +111,23 @@ export default class Ham_groupAdmin extends LightningElement {
         return getReportedContent({ groupId: this.groupId, currentContactId: this.contactId })
             .then(data => {
                 if (data) {
-                    const mappedPending = (data.pendingReports || []).map(rep => {
-                        const isComment = !!rep.commentId;
-                        return {
-                            ...rep,
-                            reportTypeLabel: isComment ? 'Comment Report' : 'Post Report',
-                            reportTypeClass: isComment ? 'badge-report-type badge-comment' : 'badge-report-type badge-post',
-                            timeAgo: this.formatTimeAgo(rep.createdDate)
-                        };
-                    });
                     this.reportsDashboard = {
                         ...data,
-                        pendingReports: mappedPending
+                        pendingReports: (data.pendingReports || []).map(rep => this.mapReport(rep)),
+                        resolvedReports: (data.resolvedReports || []).map(rep => this.mapReport(rep))
                     };
                 }
             });
+    }
+
+    mapReport(rep) {
+        const isComment = !!rep.commentId;
+        return {
+            ...rep,
+            reportTypeLabel: 'Message Report',
+            reportTypeClass: isComment ? 'badge-report-type badge-comment' : 'badge-report-type badge-post',
+            timeAgo: this.formatTimeAgo(rep.createdDate)
+        };
     }
 
     formatTimeAgo(dateVal) {
@@ -168,6 +171,44 @@ export default class Ham_groupAdmin extends LightningElement {
             .finally(() => {
                 this.isLoading = false;
             });
+    }
+
+    handleReopenReport(event) {
+        const reportId = event.currentTarget.dataset.reportId;
+
+        this.isLoading = true;
+        resolveReport({ reportId, actionType: 'Reopen', currentContactId: this.contactId })
+            .then(() => {
+                this.showToast('Success', 'Report reopened and moved back to Pending.', 'success');
+                return this.loadReports();
+            })
+            .catch(err => {
+                console.error('Error reopening report:', err);
+                this.showToast('Error', err.body?.message || 'Could not reopen report.', 'error');
+            })
+            .finally(() => {
+                this.isLoading = false;
+            });
+    }
+
+    handleReportsViewChange(event) {
+        this.activeReportsView = event.currentTarget.dataset.view;
+    }
+
+    get isPendingReportsView() {
+        return this.activeReportsView === 'pending';
+    }
+
+    get isResolvedReportsView() {
+        return this.activeReportsView === 'resolved';
+    }
+
+    get pendingViewTabClass() {
+        return `report-view-tab ${this.isPendingReportsView ? 'active' : ''}`;
+    }
+
+    get resolvedViewTabClass() {
+        return `report-view-tab ${this.isResolvedReportsView ? 'active' : ''}`;
     }
 
     // ─── Take Action Modal (Warn / Delete / Block) ───────────────────────────
@@ -299,8 +340,11 @@ export default class Ham_groupAdmin extends LightningElement {
     handleViewContent(event) {
         const postId = event.currentTarget.dataset.postId;
         const commentId = event.currentTarget.dataset.commentId;
-        
-        let targetSearch = `?view=groups&groupId=${this.groupId}&subview=discussion&postId=${postId}`;
+
+        // Groups only render under the Community tab's Groups sub-tab (view=groups
+        // is a dead/commented-out route in ham_MainCmp) — see ham_MainCmp.js
+        // handleWidgetViewGroup for the same URL scheme.
+        let targetSearch = `?view=community&tab=Groups&groupId=${this.groupId}&subview=discussion&postId=${postId}`;
         if (commentId) {
             targetSearch += `&commentId=${commentId}`;
         }

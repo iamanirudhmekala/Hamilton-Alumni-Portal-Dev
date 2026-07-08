@@ -53,7 +53,31 @@ export default class Ham_PasswordlessLoginLwc extends LightningElement {
     storedToken = '';
     storedUserId = '';
 
+    // Public override: a parent component (e.g. a custom login page wrapper)
+    // can still explicitly set this if it already resolved a startURL itself.
     @api startUrl = '';
+
+    // Internal, dynamically-captured value read straight from the page's
+    // query string — this is what carries the mobile container's handshake.
+    @track capturedStartUrl = '';
+
+    /**
+     * @description Resolves the effective startURL sent to the server on verify.
+     * Priority order:
+     *   1. An explicitly-provided @api startUrl (parent override, if set).
+     *   2. The startURL captured from the current page's query string on
+     *      connectedCallback — this is what Mobile Publisher's remote access
+     *      handshake appends when it loads this page inside the container.
+     *   3. '/' as an absolute last resort (only relevant for direct,
+     *      non-mobile browser access with no startURL present at all).
+     * Never hardcode this to '/' directly in a handler — doing so overrides
+     * the dynamic handshake the mobile container relies on to bind the
+     * resulting session back to the URL it originally requested, which is
+     * what causes repeated login prompts and failed biometric re-auth.
+     */
+    get effectiveStartUrl() {
+        return this.startUrl || this.capturedStartUrl || '/';
+    }
 
     // Bundle custom labels inside a scannable structural property object
     label = {
@@ -75,7 +99,30 @@ export default class Ham_PasswordlessLoginLwc extends LightningElement {
     };
 
     connectedCallback() {
+        this.captureStartUrlFromContext();
         this.generateNativeCaptcha();
+    }
+
+    /**
+     * @description Reads the startURL query parameter directly off the
+     * current page URL. This is the parameter Mobile Publisher / the
+     * Salesforce Mobile SDK appends when it loads the login page inside
+     * the app container as part of its remote access handshake. Capturing
+     * it here — rather than assuming a fixed landing destination — is what
+     * lets verifyPasswordlessLogin hand the platform API the exact URL the
+     * container is expecting the session to resolve back to.
+     */
+    captureStartUrlFromContext() {
+        try {
+            const currentUrl = new URL(window.location.href);
+            const paramStartUrl = currentUrl.searchParams.get('startURL');
+            if (paramStartUrl) {
+                this.capturedStartUrl = paramStartUrl;
+            }
+        } catch (error) {
+            // Defensive: never let URL parsing break login rendering.
+            console.error('Unable to parse startURL from page context: ', error);
+        }
     }
 
     /**
@@ -223,7 +270,7 @@ export default class Ham_PasswordlessLoginLwc extends LightningElement {
                 userId: this.storedUserId,
                 token: this.storedToken,
                 otpCode: this.otpCode,
-                startUrl: this.startUrl
+                startUrl: this.effectiveStartUrl
             });
 
             if (response && response.status === 'SUCCESS') {

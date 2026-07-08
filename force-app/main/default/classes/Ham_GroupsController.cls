@@ -733,7 +733,7 @@ public without sharing class Ham_GroupsController {
             getUserActiveGroupIds(currentContactId)
         );
 
-        // Validate each incoming post and populate author contact
+        // Validate each incoming post
         for(HAM_Group_Post__c post : newPosts) {
 
             if(post == null) {
@@ -749,10 +749,9 @@ public without sharing class Ham_GroupsController {
                     'Unauthorized access to group.'
                 );
             }
-            post.Author__c = currentContactId;
         }
 
-        // Apply CRUD/FLS security
+        // Apply CRUD/FLS security to the client-supplied fields only
         SObjectAccessDecision decision = Security.stripInaccessible(
             AccessType.CREATABLE,
             newPosts
@@ -760,16 +759,23 @@ public without sharing class Ham_GroupsController {
 
         List<SObject> sanitizedRecords = decision.getRecords();
 
-        // Single DML
-        insert sanitizedRecords;
-
-        // Cast inserted records
-        List<HAM_Group_Post__c> insertedPosts =
+        // Cast before inserting
+        List<HAM_Group_Post__c> postsToInsert =
             (List<HAM_Group_Post__c>)sanitizedRecords;
 
-        dispatchPostNotifications(insertedPosts);
+        // Author__c is trusted, server-computed data (never client-supplied), so it's
+        // stamped after the FLS strip — otherwise a portal profile without field-level
+        // access to Author__c would silently insert posts with no author.
+        for (HAM_Group_Post__c post : postsToInsert) {
+            post.Author__c = currentContactId;
+        }
 
-        return insertedPosts;
+        // Single DML
+        insert postsToInsert;
+
+        dispatchPostNotifications(postsToInsert);
+
+        return postsToInsert;
     }
 
     /**
@@ -1518,6 +1524,12 @@ public without sharing class Ham_GroupsController {
         HAM_Reported_Content__c r = reports[0];
         Id groupId = r.Reported_Post__c != null ? r.Reported_Post__r.Group__c : r.Reported_Comment__r.Post__r.Group__c;
         checkModerationAccess(groupId, currentContactId);
+
+        if (actionType == 'Reopen') {
+            r.Status__c = 'Pending';
+            update r;
+            return 'Success';
+        }
 
         if (actionType == 'TakeAction') {
             if (r.Reported_Comment__c != null) {

@@ -58,67 +58,127 @@
                             </div>
                         </div>
 
-                        <!-- Pending Reports List (Matches Figma design exactly) -->
-                        <template lwc:if={reportsDashboard.pendingReports.length}>
-                            <div class="reports-list">
-                                <template for:each={reportsDashboard.pendingReports} for:item="rep">
-                                    <div key={rep.reportId} class="report-card slds-p-around_medium slds-m-bottom_medium">
-                                        <!-- Header row of the card -->
-                                        <div class="report-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
-                                            <span class={rep.reportTypeClass}>{rep.reportTypeLabel}</span>
-                                            <span class="badge-active-flag">Active Flag</span>
-                                        </div>
-                                        
-                                        <!-- Meta and Timestamp Row -->
-                                        <div class="report-card-middle slds-grid slds-grid_align-spread slds-m-bottom_small">
-                                            <div class="report-meta">
-                                                <p class="meta-row"><strong>Reported user:</strong> {rep.reportedUserName}</p>
-                                                <p class="meta-row"><strong>Reason:</strong> {rep.reason}</p>
+                        <!-- Pending / Resolved Toggle -->
+                        <div class="report-view-toggle slds-m-bottom_medium">
+                            <button type="button" class={pendingViewTabClass} data-view="pending" onclick={handleReportsViewChange}>
+                                Pending ({reportsDashboard.pendingCount})
+                            </button>
+                            <button type="button" class={resolvedViewTabClass} data-view="resolved" onclick={handleReportsViewChange}>
+                                Resolved ({reportsDashboard.resolvedCount})
+                            </button>
+                        </div>
+
+                        <!-- Pending Reports List -->
+                        <template if:true={isPendingReportsView}>
+                            <template lwc:if={reportsDashboard.pendingReports.length}>
+                                <div class="reports-list">
+                                    <template for:each={reportsDashboard.pendingReports} for:item="rep">
+                                        <div key={rep.reportId} class="report-card slds-p-around_medium slds-m-bottom_medium">
+                                            <!-- Header row of the card -->
+                                            <div class="report-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                                <span class={rep.reportTypeClass}>{rep.reportTypeLabel}</span>
+                                                <span class="badge-active-flag">Active Flag</span>
                                             </div>
-                                            <span class="report-date">{rep.timeAgo}</span>
-                                        </div>
 
-                                        <!-- Content Box -->
-                                        <div class="report-content-box slds-p-around_small slds-m-bottom_medium">
-                                            <p class="content-preview">{rep.contentBody}</p>
-                                        </div>
+                                            <!-- Meta and Timestamp Row -->
+                                            <div class="report-card-middle slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                                <div class="report-meta">
+                                                    <p class="meta-row"><strong>Reported user:</strong> {rep.reportedUserName}</p>
+                                                    <p class="meta-row"><strong>Reason:</strong> {rep.reason}</p>
+                                                    <p class="meta-row"><strong>Reported by:</strong> {rep.reportedByName}</p>
+                                                </div>
+                                                <span class="report-date">{rep.timeAgo}</span>
+                                            </div>
 
-                                        <!-- Actions Row -->
-                                        <div class="report-actions slds-grid slds-grid_align-start">
-                                            <button
-                                                type="button"
-                                                class="btn-admin btn-admin-action slds-m-right_small"
-                                                data-report-id={rep.reportId}
-                                                data-user={rep.reportedUserName}
-                                                onclick={openTakeActionModal}>
-                                                Take Action
-                                            </button>
-                                            <button 
-                                                type="button" 
-                                                class="btn-admin btn-admin-view slds-m-right_small" 
-                                                data-post-id={rep.postId} 
-                                                data-comment-id={rep.commentId} 
-                                                onclick={handleViewContent}>
-                                                View Content
-                                            </button>
-                                            <button 
-                                                type="button" 
-                                                class="btn-admin btn-admin-dismiss" 
-                                                data-report-id={rep.reportId} 
-                                                data-action="Dismiss" 
-                                                onclick={handleResolveReport}>
-                                                Dismiss
-                                            </button>
+                                            <!-- Actions Row -->
+                                            <div class="report-actions slds-grid slds-grid_align-start">
+                                                <button
+                                                    type="button"
+                                                    class="btn-admin btn-admin-action slds-m-right_small"
+                                                    data-report-id={rep.reportId}
+                                                    data-user={rep.reportedUserName}
+                                                    onclick={openTakeActionModal}>
+                                                    Take Action
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn-admin btn-admin-view slds-m-right_small"
+                                                    data-post-id={rep.postId}
+                                                    data-comment-id={rep.commentId}
+                                                    onclick={handleViewContent}>
+                                                    View Content
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn-admin btn-admin-dismiss"
+                                                    data-report-id={rep.reportId}
+                                                    data-action="Dismiss"
+                                                    onclick={handleResolveReport}>
+                                                    Dismiss
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </template>
-                            </div>
+                                    </template>
+                                </div>
+                            </template>
+                            <template lwc:else>
+                                <div class="empty-admin-state slds-p-around_large slds-text-align_center">
+                                    <lightning-icon icon-name="utility:success" size="medium" class="success-icon"></lightning-icon>
+                                    <p class="empty-admin-text slds-m-top_small">Queue is empty. No pending flags!</p>
+                                </div>
+                            </template>
                         </template>
-                        <template lwc:else>
-                            <div class="empty-admin-state slds-p-around_large slds-text-align_center">
-                                <lightning-icon icon-name="utility:success" size="medium" class="success-icon"></lightning-icon>
-                                <p class="empty-admin-text slds-m-top_small">Queue is empty. No pending flags!</p>
-                            </div>
+
+                        <!-- Resolved Reports List -->
+                        <template if:true={isResolvedReportsView}>
+                            <template lwc:if={reportsDashboard.resolvedReports.length}>
+                                <div class="reports-list">
+                                    <template for:each={reportsDashboard.resolvedReports} for:item="rep">
+                                        <div key={rep.reportId} class="report-card slds-p-around_medium slds-m-bottom_medium">
+                                            <!-- Header row of the card -->
+                                            <div class="report-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                                <span class={rep.reportTypeClass}>{rep.reportTypeLabel}</span>
+                                                <span class="badge-resolved-flag">Resolved</span>
+                                            </div>
+
+                                            <!-- Meta and Timestamp Row -->
+                                            <div class="report-card-middle slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                                <div class="report-meta">
+                                                    <p class="meta-row"><strong>Reported user:</strong> {rep.reportedUserName}</p>
+                                                    <p class="meta-row"><strong>Reason:</strong> {rep.reason}</p>
+                                                    <p class="meta-row"><strong>Reported by:</strong> {rep.reportedByName}</p>
+                                                </div>
+                                                <span class="report-date">{rep.timeAgo}</span>
+                                            </div>
+
+                                            <!-- Actions Row -->
+                                            <div class="report-actions slds-grid slds-grid_align-start">
+                                                <button
+                                                    type="button"
+                                                    class="btn-admin btn-admin-reopen slds-m-right_small"
+                                                    data-report-id={rep.reportId}
+                                                    onclick={handleReopenReport}>
+                                                    Reopen
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn-admin btn-admin-view"
+                                                    data-post-id={rep.postId}
+                                                    data-comment-id={rep.commentId}
+                                                    onclick={handleViewContent}>
+                                                    View Content
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                            <template lwc:else>
+                                <div class="empty-admin-state slds-p-around_large slds-text-align_center">
+                                    <lightning-icon icon-name="utility:success" size="medium" class="success-icon"></lightning-icon>
+                                    <p class="empty-admin-text slds-m-top_small">No resolved reports yet.</p>
+                                </div>
+                            </template>
                         </template>
                     </div>
                 </div>

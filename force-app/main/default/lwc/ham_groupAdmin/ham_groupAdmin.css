@@ -357,6 +357,51 @@
     margin-top: 4px;
 }
 
+/* Pending / Resolved report view toggle */
+.report-view-toggle {
+    display: inline-flex;
+    gap: 6px;
+    background: #f4f6f8;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.report-view-tab {
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0a2463;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.report-view-tab.active {
+    background: #0a2463;
+    color: #ffffff;
+}
+
+.badge-resolved-flag {
+    background: #ecfdf5;
+    color: #15803d;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.btn-admin-reopen {
+    background: #ffffff;
+    border: 2px solid #0a2463;
+    color: #0a2463;
+}
+.btn-admin-reopen:hover {
+    background: #f0f4ff;
+}
+
 /* Report Card layouts */
 .badge-report-type {
     font-size: 11px;
@@ -599,4 +644,18 @@
 }
 .admin-root.kirkland-override .segmented-btn.active {
     color: #166837;
+}
+.admin-root.kirkland-override .report-view-tab {
+    color: #166837;
+}
+.admin-root.kirkland-override .report-view-tab.active {
+    background: #166837;
+    color: #ffffff;
+}
+.admin-root.kirkland-override .btn-admin-reopen {
+    border-color: #166837;
+    color: #166837;
+}
+.admin-root.kirkland-override .btn-admin-reopen:hover {
+    background: #eaf6ec;
 }

@@ -4,7 +4,7 @@
  * Author          : Sachin cube84
  * Created Date    : May 26, 2026
  * Last Modified By: Sachin Cube84
- * Last Modified On: May 26, 2026
+ * Last Modified On: Jul 08, 2026
  * Description     : Enterprise Security Controller for Experience Cloud Passwordless Login.
  *                   Implements a strict rolling hourly rate-limiter, anti-enumeration generic messaging,
  *                   and server-side CAPTCHA verification validation.
@@ -12,9 +12,17 @@
  *                   tracking logs in System Mode without triggering profile access exceptions.
  *  
  * Change History  :
- *  Date          │   Author     │   Change
+ *  Date          │   Author        │   Change
  * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
  *  May 26, 2026  │ Sachin Cube84   │ Initial version
+ *  Jul 08, 2026  │ Sachin Cube84   │ Fixed destinationPath logic in verifyPasswordlessLogin.
+ *                │                 │ Previously excluded any startUrl containing 'ESWMilton',
+ *                │                 │ which is the site's own base path segment — this discarded
+ *                │                 │ every legitimate in-community/mobile-container startURL and
+ *                │                 │ silently substituted a static label instead. That mismatch
+ *                │                 │ broke the Mobile Publisher session handshake (repeated
+ *                │                 │ credential prompts, failed biometric re-auth on relaunch).
+ *                │                 │ Now only a blank value or a bare '/' triggers the fallback.
  * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
  */
 
@@ -154,6 +162,23 @@ public without sharing class Ham_SecurePasswordlessLoginController {
         }
     }
 
+    /**
+     * @description Verifies the OTP and completes the passwordless login handshake.
+     * IMPORTANT: `startUrl` must be passed through as-is whenever it represents a real
+     * in-community or mobile-container destination. Do NOT filter out URLs that contain
+     * the site's own base path (e.g. 'ESWMilton...') — that path segment is present in
+     * EVERY legitimate community URL, including the startURL supplied by Mobile Publisher's
+     * remote access handshake. Rejecting it forces a fallback to a static label URL, which
+     * breaks the mobile container's ability to bind the resulting session to the URL it
+     * originally requested — causing repeated login prompts and failed biometric re-auth.
+     * Only a truly empty value or a bare '/' (which carries no useful destination) should
+     * trigger the fallback.
+     * @param userId Resolved User Id from initiateLogin.
+     * @param token Platform-issued passwordless login token.
+     * @param otpCode OTP entered by the user.
+     * @param startUrl Destination URL supplied by the calling context (browser or mobile container).
+     * @return Map<String, String> Result flags, including the final redirect URL on success.
+     */
     @AuraEnabled
     public static Map<String, String> verifyPasswordlessLogin(String userId, String token, String otpCode, String startUrl) {
         Map<String, String> verifyResult = new Map<String, String>();
@@ -169,7 +194,12 @@ public without sharing class Ham_SecurePasswordlessLoginController {
                 return verifyResult;
             }
 
-            String destinationPath = String.isNotBlank(startUrl) && !startUrl.equals('/') && !startUrl.contains('ESWMilton') ? startUrl : System.Label.ham_LoginLink;
+            // FIX: only fall back when startUrl is genuinely absent or a bare '/'.
+            // Previously also excluded any URL containing 'ESWMilton' (the site's own
+            // base path), which discarded every legitimate mobile/container startURL.
+            String destinationPath = String.isNotBlank(startUrl) && !startUrl.equals('/')
+                ? startUrl
+                : System.Label.ham_LoginLink;
             
             Boolean isSuccess = false;
             String redirectUrl = '';

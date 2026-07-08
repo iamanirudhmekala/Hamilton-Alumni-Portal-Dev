@@ -9985,6 +9985,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>HAM_Group_Member__c.Notify_on_Amplified__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>HAM_Group_Member__c.Notify_on_Comments__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -9996,6 +10001,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>HAM_Group_Member__c.Notify_on_Pinned__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_Group_Member__c.Notify_on_Tagged__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10021,6 +10031,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>HAM_Group_Notification__e.Post_Id__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_Group_Post__c.Amplified_On__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
