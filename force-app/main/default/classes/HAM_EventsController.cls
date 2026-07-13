@@ -627,7 +627,9 @@ public without sharing class HAM_EventsController {
                 if (item.isRegistered) {
                     item.redirectionURL = (String) CventAttendeeMap.get(event.Id).CventEvents__PersonalizedRegistrationLink__c;
                 } else {
-                    item.redirectionURL = (String) event.get(cventFieldLabelToApi.get('RegistrationLink'));
+                    //Check if ADVEssentialsURLforascend__c has value in it. If it has value, use it. Else fallback to CventEvents__pkg_RegistrationLink__c
+                    String advEssentialsURL = (String) event.get(cventFieldLabelToApi.get('RegistrationLink1'));
+                    item.redirectionURL = String.isNotBlank(advEssentialsURL) ? advEssentialsURL : (String) event.get(cventFieldLabelToApi.get('RegistrationLink'));
                 }
 
                 Date eventDate = (Date) event.get(cventFieldLabelToApi.get('StartDate'));

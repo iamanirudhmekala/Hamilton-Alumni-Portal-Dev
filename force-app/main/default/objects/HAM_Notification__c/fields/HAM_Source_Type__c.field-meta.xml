@@ -29,6 +29,11 @@
                 <default>false</default>
                 <label>Campaign</label>
             </value>
+            <value>
+                <fullName>Groups</fullName>
+                <default>false</default>
+                <label>Groups</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

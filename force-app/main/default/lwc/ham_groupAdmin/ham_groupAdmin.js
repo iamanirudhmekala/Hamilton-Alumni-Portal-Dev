@@ -53,8 +53,19 @@ export default class Ham_groupAdmin extends LightningElement {
         this._isOverride = (value === true || value === 'true');
     }
 
+    // Dedicated full-page view (its own dashboard subview) showing only the
+    // membership requests queue, full-width — no Reports column alongside it.
+    _requestsOnly = false;
+    @api
+    get requestsOnly() {
+        return this._requestsOnly;
+    }
+    set requestsOnly(value) {
+        this._requestsOnly = (value === true || value === 'true');
+    }
+
     get rootClass() {
-        return `admin-root ${this.isOverride ? 'kirkland-override' : ''}`;
+        return `admin-root ${this.isOverride ? 'kirkland-override' : ''} ${this.isPreview ? 'preview-mode' : ''}`;
     }
 
     @track reportsDashboard = {
@@ -69,6 +80,12 @@ export default class Ham_groupAdmin extends LightningElement {
     @track activeMobileTab = 'reports'; // 'reports' | 'requests'
     @track isMobileView = false;
     @track activeReportsView = 'pending'; // 'pending' | 'resolved'
+
+    // The Reports/Requests segmented control only makes sense when both columns
+    // can appear — hidden on the dedicated requests-only page.
+    get showMobileSegmentedControl() {
+        return !this.isPreview && !this.requestsOnly && this.isMobileView;
+    }
 
     // Take Action modal (2-step: choose action → review/edit message)
     @track showTakeActionModal = false;
@@ -121,11 +138,10 @@ export default class Ham_groupAdmin extends LightningElement {
     }
 
     mapReport(rep) {
-        const isComment = !!rep.commentId;
         return {
             ...rep,
-            reportTypeLabel: 'Message Report',
-            reportTypeClass: isComment ? 'badge-report-type badge-comment' : 'badge-report-type badge-post',
+            reportTypeLabel: rep.isUserReport ? 'User Report' : 'Message Report',
+            reportTypeClass: rep.isUserReport ? 'badge-report-type badge-user-report' : 'badge-report-type badge-message-report',
             timeAgo: this.formatTimeAgo(rep.createdDate)
         };
     }
@@ -201,6 +217,23 @@ export default class Ham_groupAdmin extends LightningElement {
 
     get isResolvedReportsView() {
         return this.activeReportsView === 'resolved';
+    }
+
+    get visiblePendingReports() {
+        return this.isPreview
+            ? this.reportsDashboard.pendingReports.slice(0, 2)
+            : this.reportsDashboard.pendingReports;
+    }
+
+    // Two-cards-per-row only applies to the full moderation page — the
+    // dashboard's Content Moderation preview widget stays single-column.
+    get reportsListClass() {
+        return this.isPreview ? 'reports-list' : 'reports-list reports-list-grid';
+    }
+
+    handleSeeMore(event) {
+        event.stopPropagation();
+        this.dispatchEvent(new CustomEvent('seemore'));
     }
 
     get pendingViewTabClass() {
@@ -362,10 +395,16 @@ export default class Ham_groupAdmin extends LightningElement {
 
     // Getters for display states
     get isReportsTab() {
+        if (this.requestsOnly) {
+            return false;
+        }
         return !this.isMobileView || this.activeMobileTab === 'reports';
     }
 
     get isRequestsTab() {
+        if (this.requestsOnly) {
+            return true;
+        }
         if (this.isPreview) {
             return false;
         }
@@ -373,9 +412,34 @@ export default class Ham_groupAdmin extends LightningElement {
     }
 
     get reportsColumnClass() {
-        return this.isPreview 
+        return this.isPreview
             ? 'slds-col slds-size_1-of-1 admin-col'
             : 'slds-col slds-size_1-of-1 slds-medium-size_7-of-12 admin-col';
+    }
+
+    get requestsColumnClass() {
+        return this.requestsOnly
+            ? 'slds-col slds-size_1-of-1 admin-col'
+            : 'slds-col slds-size_1-of-1 slds-medium-size_5-of-12 admin-col';
+    }
+
+    // Requests column is capped on the combined Admin page (matches the Reports
+    // preview pattern) — the dedicated requests-only page shows the full list.
+    get visiblePendingMembers() {
+        return this.requestsOnly
+            ? this.pendingMembers
+            : this.pendingMembers.slice(0, 4);
+    }
+
+    // Always shown on the combined Admin page (not just when there's overflow past
+    // 4 rows) — mirrors the Reports preview's unconditional "See more" affordance.
+    get showRequestsSeeMore() {
+        return !this.requestsOnly;
+    }
+
+    handleGoToRequestsPage(event) {
+        if (event) event.stopPropagation();
+        this.dispatchEvent(new CustomEvent('seerequests'));
     }
 
     get mobileReportsClass() {

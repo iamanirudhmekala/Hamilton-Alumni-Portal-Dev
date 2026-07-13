@@ -1,27 +1,48 @@
 // ============================================================
-// Create 20 Contacts + Portal Users: Cube84 Test 1 – 20
-// Contact fields populated to match QA dataset
+// Create 8 Internal Users: Cube84 Dev Team
+// Profile: System Administrator (Salesforce license, implicit)
+// Permission Set: HAM_Admin
+// Run in Dev Console (Anonymous Apex) — QA and UAT
+// ------------------------------------------------------------
+// No Contacts: these are INTERNAL admin/dev users. User.ContactId
+//   is only valid for community/portal users, so there is nothing
+//   to link. (Single transaction — no mixed-DML concern.)
+//
+// IMPORTANT: Salesforce Usernames are globally unique across ALL orgs.
+//   Set envSuffix ('.fullqa' / '.uat' / ...) before running so the same
+//   file works in every sandbox. Email stays the real address.
 // ============================================================
 
-Id      accountId      = '001U100000e7VuxIAE';
-Id      prmUserId      = '005VG00000cV1htYAC';
-String  profileName    = 'Partner Community Login User';
-String  contactEmail   = 'deepika.j@cube84.com';
-String  usernameBase   = 'deepika';
-String  usernameSuffix = '.j@cube84.com';
-String  nicknameSuffix = '.m';
-String  timezone       = 'America/New_York';
-String  locale         = 'en_US';
-String  language       = 'en_US';
-String  encoding       = 'UTF-8';
+// ---------- Config ----------
+String envSuffix   = '.fullqa';                // <-- CHANGE per environment ('.uat', etc.)
+String profileName = 'System Administrator';
+String timezone    = 'America/New_York';
+String locale      = 'en_US';
+String language    = 'en_US';
+String encoding    = 'UTF-8';
+List<String> permSetNames = new List<String>{ 'HAM_Admin' };
 
-String linkedInUrl = 'https://www.linkedin.com/in/cube84inc/';
+// ---------- People (base username = real email) ----------
+// FirstName = everything before the last space; LastName = last word
+List<String> firstNames = new List<String>{
+    'Nilesh', 'Sachin Kumar', 'Immanuel', 'Arthiraja',
+    'Feroz', 'Bhavani', 'Prathyusha', 'Deepika'
+};
+List<String> lastNames = new List<String>{
+    'Mohokar', 'Sharma', 'Sirigiri', 'Govindan',
+    'Basha', 'Sure', 'Mallemuru', 'Jogan'
+};
+List<String> usernameBases = new List<String>{
+    'nilesh.m@cube84.com', 'sachin.s@cube84.com', 'immanuel.s@cube84.com', 'arthiraja.g@cube84.com',
+    'feroz@cube84.com', 'bhavani.s@cube84.com', 'prathyusha.m@cube84.com', 'deepika.j@cube84.com'
+};
+Integer total = usernameBases.size();
 
 // Step 1 — Resolve profile
-Profile portalProfile;
+Profile adminProfile;
 try {
-    portalProfile = [SELECT Id FROM Profile WHERE Name = :profileName LIMIT 1];
-    System.debug('Profile resolved: ' + portalProfile.Id);
+    adminProfile = [SELECT Id FROM Profile WHERE Name = :profileName LIMIT 1];
+    System.debug('Profile resolved: ' + profileName + ' → ' + adminProfile.Id);
 } catch (Exception e) {
     System.debug('ERROR: Profile not found → ' + profileName);
     return;
@@ -29,87 +50,32 @@ try {
 
 // Step 2 — Resolve permission sets
 Map<String, Id> psMap = new Map<String, Id>();
-for (PermissionSet ps : [
-    SELECT Id, Name FROM PermissionSet
-    WHERE Name IN ('HAM_Partner_Community_Permission', 'HAM_Portal_Access_Internal')
-]) {
+for (PermissionSet ps : [SELECT Id, Name FROM PermissionSet WHERE Name IN :permSetNames]) {
     psMap.put(ps.Name, ps.Id);
 }
 System.debug('Permission sets found: ' + psMap.keySet());
-if (psMap.size() < 2) {
-    System.debug('WARNING: One or both permission sets not found. Check API names.');
+for (String psName : permSetNames) {
+    if (!psMap.containsKey(psName)) {
+        System.debug('WARNING: Permission set not found → ' + psName);
+    }
 }
 
-// Step 3 — Create 20 Contacts with full field population
-// Tweaked per user: Phone (last 4 digits), HAM_Reunion_Year__c (increments 1996→2015)
-// All other fields held constant to match the QA dataset
-List<Contact> contacts = new List<Contact>();
-for (Integer i = 1; i <= 20; i++) {
-    contacts.add(new Contact(
-        // Core identity
-        FirstName                                   = 'Cube84',
-        LastName                                    = 'Test ' + i,
-        Email                                       = contactEmail,
-        Phone                                       = '(995) 995-' + String.valueOf(9900 + i),
-        AccountId                                   = accountId,
-        ucinn_ascendv2__PRM__c                      = prmUserId,
-
-        // Boolean fields
-        HAM_1812__c                                 = false,
-        HAM_Chapel_Bell__c                          = false,
-        HAM_Couper_Guild__c                         = false,
-        HAM_Founders_Circle__c                      = true,
-        HAM_Is_Active__c                            = true,
-        HAM_JBA__c                                  = false,
-        HAM_Show_PRM_Details__c                     = true,
-        HAM_Ten_to_Fifth__c                         = false,
-        Is_Volunteer__c                             = true,
-
-        // Currency / Number fields
-        HAM_Because_Hamilton__c                     = 6614198.8,
-        HAM_Consecutive_Years_of_Giving__c          = 0,
-        HAM_Current_Year_Hamilton_Fund_Collected__c = 40,
-        HAM_Current_Yr_Hamilton_Fund_Fundraising__c = 20,
-        HAM_FY00_Collect_Amt_Restricted__c          = 0,
-        HAM_FY00_Committed_Ex_BQI_Amt_Restricted__c = 0,
-        HAM_Lifetime_Committed__c                   = 10,
-        HAM_Total_Years_of_Giving__c                = 3,
-
-        // Year — increments per user: Test 1 → 1996, Test 2 → 1997 … Test 20 → 2015
-        HAM_Reunion_Year__c                         = String.valueOf(1995 + i),
-
-        // Text / Picklist fields
-        HAM_Current_Chapters__c                     = 'Alabama, Alaska, Arizona, Connecticut (Hartford), Unassigned Chapter',
-        HAM_Current_Regions__c                      = 'Anytown',
-        HAM_Industry__c                             = 'Cube84',
-        HAM_LiveAlumni_Employer__c                  = 'Test',
-        HAM_LiveAlumni_Job_Title__c                 = 'Associate Director',
-        Job_Title__c                                = 'Assoc Director',
-        HAM_LiveAlumni_LinkedIn_URL__c              = linkedInUrl
-    ));
-}
-
-try {
-    insert contacts;
-    System.debug('SUCCESS: Created ' + contacts.size() + ' contacts.');
-} catch (DmlException e) {
-    System.debug('ERROR creating contacts: ' + e.getMessage());
-    return;
-}
-
-// Step 4 — Create Portal Users
+// Step 3 — Create 8 internal Users (System Admin profile; NO ContactId on internal users)
 List<User> usersToCreate = new List<User>();
-for (Integer i = 0; i < contacts.size(); i++) {
-    Integer num = i + 1;
+Long nickSeed = Datetime.now().getTime();          // helps keep CommunityNickname unique per run
+for (Integer i = 0; i < total; i++) {
+    String firstNoSpace = firstNames[i].replaceAll('[^a-zA-Z0-9]', '');
+    String alias    = (firstNames[i].left(1) + lastNames[i]).replaceAll('[^a-zA-Z0-9]', '').toLowerCase().left(8);
+    String nickname = (firstNoSpace + lastNames[i]).toLowerCase() + String.valueOf(nickSeed + i);
+
     usersToCreate.add(new User(
-        FirstName         = 'Cube84',
-        LastName          = 'Test ' + num,
-        Email             = contactEmail,
-        Username          = usernameBase + num + usernameSuffix,
-        CommunityNickname = usernameBase + num + nicknameSuffix,
-        Alias             = ('d' + num).left(8),
-        ContactId         = contacts[i].Id,
-        ProfileId         = portalProfile.Id,
+        FirstName         = firstNames[i],
+        LastName          = lastNames[i],
+        Email             = usernameBases[i],            // real email
+        Username          = usernameBases[i] + envSuffix,// globally-unique login
+        CommunityNickname = nickname,
+        Alias             = alias,
+        ProfileId         = adminProfile.Id,
         TimeZoneSidKey    = timezone,
         LocaleSidKey      = locale,
         LanguageLocaleKey = language,
@@ -117,21 +83,18 @@ for (Integer i = 0; i < contacts.size(); i++) {
         IsActive          = true
     ));
 }
-
 try {
     insert usersToCreate;
-    System.debug('SUCCESS: Created ' + usersToCreate.size() + ' portal users.');
+    System.debug('SUCCESS: Created ' + usersToCreate.size() + ' internal users.');
 } catch (DmlException e) {
     System.debug('ERROR creating users: ' + e.getMessage());
     return;
 }
 
-// Step 5 — Assign permission sets (2 per user = 40 total)
+// Step 4 — Assign permission sets (HAM_Admin). Same transaction as User is OK (both setup objects).
 List<PermissionSetAssignment> psas = new List<PermissionSetAssignment>();
 for (User u : usersToCreate) {
-    for (String psName : new List<String>{
-            'HAM_Partner_Community_Permission',
-            'HAM_Portal_Access_Internal'}) {
+    for (String psName : permSetNames) {
         if (psMap.containsKey(psName)) {
             psas.add(new PermissionSetAssignment(
                 AssigneeId      = u.Id,
@@ -140,24 +103,26 @@ for (User u : usersToCreate) {
         }
     }
 }
-
 try {
-    insert psas;
-    System.debug('SUCCESS: Assigned ' + psas.size() + ' permission set assignments.');
+    if (!psas.isEmpty()) {
+        insert psas;
+        System.debug('SUCCESS: Assigned ' + psas.size() + ' permission set assignments.');
+    } else {
+        System.debug('WARNING: No permission set assignments created (none resolved).');
+    }
 } catch (DmlException e) {
     System.debug('ERROR assigning permission sets: ' + e.getMessage());
 }
 
-// Step 6 — Summary
-System.debug('\n========== CREATION SUMMARY ==========');
+// Step 5 — Summary
+System.debug('\n========== USER CREATION SUMMARY (env: ' + envSuffix + ') ==========');
 for (Integer i = 0; i < usersToCreate.size(); i++) {
     System.debug(
-        'Cube84 Test ' + (i+1) +
-        ' | ReunionYear: ' + (1995 + (i+1)) +
-        ' | Phone: (995) 995-' + String.valueOf(9900 + (i+1)) +
-        ' | ContactId: ' + contacts[i].Id +
+        firstNames[i] + ' ' + lastNames[i] +
         ' | Username: ' + usersToCreate[i].Username +
+        ' | Email: ' + usersToCreate[i].Email +
         ' | UserId: ' + usersToCreate[i].Id
     );
 }
-System.debug('======================================');
+System.debug('PermSets assigned per user: ' + permSetNames);
+System.debug('=====================================================');

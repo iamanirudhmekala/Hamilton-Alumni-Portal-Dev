@@ -1,9 +1,9 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
-import { updateRecord } from 'lightning/uiRecordApi';
 import getGroupDetail from '@salesforce/apex/Ham_GroupsController.getGroupDetail';
 import joinGroup      from '@salesforce/apex/Ham_GroupsController.joinGroup';
 import leaveGroup     from '@salesforce/apex/Ham_GroupsController.leaveGroup';
+import updateNotificationPreferences from '@salesforce/apex/Ham_GroupsController.updateNotificationPreferences';
 
 export default class Ham_groupDashboard extends LightningElement {
     @api groupId;
@@ -25,6 +25,12 @@ export default class Ham_groupDashboard extends LightningElement {
     @track hasError                 = false;
     @track isMembershipLoading      = false;
     @track isNotificationDropdownOpen = false;
+
+    // Notification toggles are staged locally until "Save" is clicked, rather
+    // than writing to the server on every tap — lets the user review/undo before
+    // committing, and batches multiple changes into a single Apex call.
+    @track pendingNotificationChanges = {};
+    @track isSavingNotifications = false;
 
     // Leave-group exit survey state
     @track showLeaveModal = false;
@@ -74,6 +80,7 @@ export default class Ham_groupDashboard extends LightningElement {
     get isMembersTab()     { return this.activeTab === 'members'; }
     get isResourcesTab()   { return this.activeTab === 'resources'; }
     get isAdminTab()       { return this.activeTab === 'admin'; }
+    get isMembershipRequestsTab() { return this.activeTab === 'requests'; }
     get isAdmin()          { return this.group && this.group.userRole === 'Admin'; }
     get isMember()         { return this.group && this.group.userMembershipStatus === 'Active'; }
     get isBlockedFromGroup() { return this.group && this.group.userMembershipStatus === 'Blocked'; }
@@ -85,6 +92,8 @@ export default class Ham_groupDashboard extends LightningElement {
     }
 
     // ── Notification Preferences Getters ──────────────────────────────────────
+    // "effective" = last-saved value, unless the user has tapped it since opening
+    // the dropdown, in which case the staged (unsaved) value wins.
 
     get receiveNotifications() {
         return this.group ? !!this.group.receiveNotifications : false;
@@ -98,8 +107,50 @@ export default class Ham_groupDashboard extends LightningElement {
         return this.group ? !!this.group.notifyOnAmplified : false;
     }
 
+    get effectiveReceiveNotifications() {
+        return 'Receive_Notifications__c' in this.pendingNotificationChanges
+            ? this.pendingNotificationChanges.Receive_Notifications__c
+            : this.receiveNotifications;
+    }
+
+    get effectiveNotifyOnTagged() {
+        return 'Notify_on_Tagged__c' in this.pendingNotificationChanges
+            ? this.pendingNotificationChanges.Notify_on_Tagged__c
+            : this.notifyOnTagged;
+    }
+
+    get effectiveNotifyOnAmplified() {
+        return 'Notify_on_Amplified__c' in this.pendingNotificationChanges
+            ? this.pendingNotificationChanges.Notify_on_Amplified__c
+            : this.notifyOnAmplified;
+    }
+
     get isReceiveNotificationsDisabled() {
-        return !this.receiveNotifications;
+        return !this.effectiveReceiveNotifications;
+    }
+
+    get receiveNotificationsTrackClass() {
+        return this.effectiveReceiveNotifications ? 'custom-toggle-track checked' : 'custom-toggle-track';
+    }
+
+    get notifyOnTaggedTrackClass() {
+        return this.effectiveNotifyOnTagged ? 'custom-toggle-track checked' : 'custom-toggle-track';
+    }
+
+    get notifyOnAmplifiedTrackClass() {
+        return this.effectiveNotifyOnAmplified ? 'custom-toggle-track checked' : 'custom-toggle-track';
+    }
+
+    get subToggleWrapperClass() {
+        return this.isReceiveNotificationsDisabled ? 'custom-toggle-wrapper disabled' : 'custom-toggle-wrapper';
+    }
+
+    get hasPendingNotificationChanges() {
+        return Object.keys(this.pendingNotificationChanges).length > 0;
+    }
+
+    get saveNotificationsLabel() {
+        return this.isSavingNotifications ? 'Saving...' : 'Save';
     }
 
     // ── Membership Button Getters ─────────────────────────────────────────────
@@ -130,42 +181,81 @@ export default class Ham_groupDashboard extends LightningElement {
 
     toggleNotificationDropdown(event) {
         event.stopPropagation();
-        this.isNotificationDropdownOpen = !this.isNotificationDropdownOpen;
+        const opening = !this.isNotificationDropdownOpen;
+        this.isNotificationDropdownOpen = opening;
+        // Closing without an explicit Save discards any staged taps
+        if (!opening) {
+            this.pendingNotificationChanges = {};
+        }
     }
 
     handleNotificationToggle(event) {
+        event.stopPropagation();
         const fieldApiName = event.currentTarget.dataset.field;
-        const checkedValue = event.target.checked;
 
         if (!this.group || !this.group.userMembershipId) return;
+        if (fieldApiName !== 'Receive_Notifications__c' && this.isReceiveNotificationsDisabled) return;
 
-        // Optimistically update local track state
-        const updatedGroup = { ...this.group };
+        let currentValue;
+        let savedValue;
         if (fieldApiName === 'Receive_Notifications__c') {
-            updatedGroup.receiveNotifications = checkedValue;
+            currentValue = this.effectiveReceiveNotifications;
+            savedValue = this.receiveNotifications;
         } else if (fieldApiName === 'Notify_on_Tagged__c') {
-            updatedGroup.notifyOnTagged = checkedValue;
+            currentValue = this.effectiveNotifyOnTagged;
+            savedValue = this.notifyOnTagged;
         } else if (fieldApiName === 'Notify_on_Amplified__c') {
-            updatedGroup.notifyOnAmplified = checkedValue;
+            currentValue = this.effectiveNotifyOnAmplified;
+            savedValue = this.notifyOnAmplified;
         }
-        this.group = updatedGroup;
 
-        // Perform standard LDS update
-        const fields = {};
-        fields['Id'] = this.group.userMembershipId;
-        fields[fieldApiName] = checkedValue;
+        const newValue = !currentValue;
+        const updated = { ...this.pendingNotificationChanges };
+        if (newValue === savedValue) {
+            // Back to the last-saved value — nothing left to save for this field
+            delete updated[fieldApiName];
+        } else {
+            updated[fieldApiName] = newValue;
+        }
+        this.pendingNotificationChanges = updated;
+    }
 
-        const recordInput = { fields };
+    handleCancelNotifications(event) {
+        event.stopPropagation();
+        this.pendingNotificationChanges = {};
+    }
 
-        updateRecord(recordInput)
+    // Click-outside-to-close: mirrors toggleNotificationDropdown's close path —
+    // shut the dropdown and discard any staged (unsaved) toggle changes.
+    closeNotificationDropdown() {
+        this.isNotificationDropdownOpen = false;
+        this.pendingNotificationChanges = {};
+    }
+
+    handleSaveNotifications(event) {
+        event.stopPropagation();
+        if (!this.hasPendingNotificationChanges || !this.group || !this.group.userMembershipId) return;
+
+        this.isSavingNotifications = true;
+        // Routed through Apex (without sharing) rather than lightning/uiRecordApi's
+        // updateRecord — HAM_Group_Member__c's sharing model doesn't grant portal
+        // users standard edit access to their own row, so a direct LDS write
+        // silently fails here the same way it would for any other write in this
+        // module if it didn't go through the custom without-sharing controller.
+        updateNotificationPreferences({
+            membershipId: this.group.userMembershipId,
+            currentContactId: this.userContactId,
+            changes: this.pendingNotificationChanges
+        })
             .then(() => {
-                // Success - refresh in background to align details
-                refreshApex(this._wiredGroupDetail);
+                this.pendingNotificationChanges = {};
+                return refreshApex(this._wiredGroupDetail);
             })
             .catch(error => {
-                console.error('Error updating notification preference', error);
-                // Rollback optimistic state
-                refreshApex(this._wiredGroupDetail);
+                console.error('Error saving notification preferences', error);
+            })
+            .finally(() => {
+                this.isSavingNotifications = false;
             });
     }
 
@@ -194,13 +284,21 @@ export default class Ham_groupDashboard extends LightningElement {
 
     handleGoToAdmin() {
         this.activeTab = 'admin';
-        this.dispatchEvent(new CustomEvent('navigategroup', { 
-            detail: { groupId: this.groupId, subview: 'admin' } 
+        this.dispatchEvent(new CustomEvent('navigategroup', {
+            detail: { groupId: this.groupId, subview: 'admin' }
+        }));
+    }
+
+    handleGoToRequests() {
+        this.activeTab = 'requests';
+        this.dispatchEvent(new CustomEvent('navigategroup', {
+            detail: { groupId: this.groupId, subview: 'requests' }
         }));
     }
 
     handleBackAction() {
         this.isNotificationDropdownOpen = false;
+        this.pendingNotificationChanges = {};
         if (this.activeTab !== 'dashboard') {
             this.activeTab = 'dashboard';
             this.dispatchEvent(new CustomEvent('navigategroup', { 

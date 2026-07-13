@@ -9,6 +9,7 @@ import togglePinPost from '@salesforce/apex/Ham_GroupsController.togglePinPost';
 import amplifyPost from '@salesforce/apex/Ham_GroupsController.amplifyPost';
 import deletePost from '@salesforce/apex/Ham_GroupsController.deletePost';
 import reportContent from '@salesforce/apex/Ham_GroupsController.reportContent';
+import reportUser from '@salesforce/apex/Ham_GroupsController.reportUser';
 import bookmarkPost from '@salesforce/apex/Ham_GroupsController.bookmarkPost';
 import unbookmarkPost from '@salesforce/apex/Ham_GroupsController.unbookmarkPost';
 import getBookmarkedPostIds from '@salesforce/apex/Ham_GroupsController.getBookmarkedPostIds';
@@ -26,6 +27,18 @@ export default class Ham_groupFeed extends LightningElement {
     @api userContactId;
     @api showFilter;
     @api isdiscussiontab;
+    @api limitCount;
+
+    // Compact preview mode (embedded on the group dashboard landing page): caps the
+    // visible posts to limitCount, scrolls internally instead of paginating, and
+    // swaps the "Show More Activity" pager for a static "See more" nav button.
+    get isCompactView() {
+        return !!this.limitCount;
+    }
+
+    get postsListClass() {
+        return `feed-posts-list ${this.isCompactView ? 'feed-posts-list-compact' : ''}`;
+    }
 
     _isAdmin = false;
     @api
@@ -59,6 +72,12 @@ export default class Ham_groupFeed extends LightningElement {
     reportingPostId = null;
     reportingCommentId = null;
     @track reportReason = 'Inappropriate Message';
+
+    // Report User modal state
+    @track showReportUserModal = false;
+    reportUserPostId = null;
+    reportUserCommentId = null;
+    @track reportUserReason = 'Inappropriate Message';
 
     // Edit Post/Reply modal state
     @track showEditModal = false;
@@ -157,6 +176,17 @@ export default class Ham_groupFeed extends LightningElement {
         ];
     }
 
+    get reportUserReasons() {
+        return [
+            { label: 'Inappropriate Message', value: 'Inappropriate Message' },
+            { label: 'Harassment', value: 'Harassment' },
+            { label: 'Bullying', value: 'Bullying' },
+            { label: 'Aggressive Tone', value: 'Aggressive Tone' },
+            { label: 'Spam', value: 'Spam' },
+            { label: 'Other', value: 'Other' }
+        ];
+    }
+
     connectedCallback() {
         this.parseUrlParameters();
         this.fetchBookmarks();
@@ -232,12 +262,18 @@ export default class Ham_groupFeed extends LightningElement {
             bookmarkedOnly: this.filterBookmarkedOnly
         })
         .then(data => {
-            const parsedPosts = (data || []).map(p => this.formatPost(p));
-            
+            let parsedPosts = (data || []).map(p => this.formatPost(p));
+
+            // Compact preview mode isn't paginated — trim to the requested count and
+            // let the "See more" link hand off to the full discussion tab instead.
+            if (this.isCompactView && isInitial) {
+                parsedPosts = parsedPosts.slice(0, parseInt(this.limitCount, 10));
+            }
+
             if (isInitial) {
                 this.posts = parsedPosts;
                 this.clientLastSyncTime = Date.now();
-                
+
                 // If there's a deep-linked post, handle auto-scroll and drawer expansion
                 if (this.targetPostId) {
                     // eslint-disable-next-line @lwc/lwc/no-async-operation
@@ -249,7 +285,7 @@ export default class Ham_groupFeed extends LightningElement {
                 this.posts = [...this.posts, ...parsedPosts];
             }
 
-            this.hasMore = parsedPosts.length > 0;
+            this.hasMore = this.isCompactView ? false : parsedPosts.length > 0;
             this.updatePostBookmarkStates();
         })
         .catch(err => {
@@ -263,6 +299,12 @@ export default class Ham_groupFeed extends LightningElement {
 
     handleLoadMore() {
         this.loadFeed(false);
+    }
+
+    // Compact preview's footer link — hands off to the parent (e.g. the group
+    // dashboard) to route into the full, searchable discussion tab.
+    handleSeeMore() {
+        this.dispatchEvent(new CustomEvent('seemore'));
     }
 
     formatPost(p) {
@@ -559,13 +601,16 @@ export default class Ham_groupFeed extends LightningElement {
         this._commentMentionDebounceTimer = setTimeout(() => {
             searchGroupMembersForMention({ groupId: this.groupId, searchTerm: term })
                 .then(res => {
-                    if (queryToken !== this._commentMentionQueryToken) return; // stale response
+                    if (queryToken !== this._commentMentionQueryToken) {
+                        return; // stale response
+                    }
                     const post = this.posts.find(p => p.id === postId);
                     const already = new Set((post?.pendingMentions || []).map(m => m.contactId));
                     const suggestions = (res || []).filter(s => !already.has(s.contactId));
                     this.setCommentMentionState(postId, { showMentionPopover: true, mentionSuggestions: suggestions });
                 })
-                .catch(() => {
+                .catch(error => {
+                    console.error('Error searching group members for mention:', error);
                     this.setCommentMentionState(postId, { showMentionPopover: true, mentionSuggestions: [] });
                 });
         }, MENTION_DEBOUNCE_MS);
@@ -622,35 +667,49 @@ export default class Ham_groupFeed extends LightningElement {
                 return;
             }
 
-            const body = event.target.value.trim();
-            if (!body) return;
-
-            const textarea = event.target;
-            textarea.disabled = true;
-
-            const mentionedContactIds = (post?.pendingMentions || []).map(m => m.contactId).join(',');
-
-            createComment({ postId, body, currentContactId: this.userContactId, mentionedContactIds })
-                .then(() => {
-                    textarea.value = '';
-                    this.loadComments(postId);
-                    this.posts = this.posts.map(p => {
-                        if (p.id === postId) {
-                            const commentCount = p.commentCount + 1;
-                            return { ...p, commentCount, replyLabel: this.formatReplyLabel(commentCount), pendingMentions: [] };
-                        }
-                        return p;
-                    });
-                })
-                .catch(err => {
-                    console.error('Error adding comment:', err);
-                    this.showToast('Error', 'Could not post comment.', 'error');
-                })
-                .finally(() => {
-                    textarea.disabled = false;
-                    textarea.focus();
-                });
+            this.submitComment(postId);
         }
+    }
+
+    // Send-button click: same submit path as pressing Enter in the reply box.
+    handleSendComment(event) {
+        const postId = event.currentTarget.dataset.postId;
+        this.submitComment(postId);
+    }
+
+    // Shared reply submit used by both the Enter key and the send button.
+    submitComment(postId) {
+        const post = this.posts.find(p => p.id === postId);
+        const textarea = this.template.querySelector(`textarea[data-post-id="${postId}"]`);
+        if (!textarea) return;
+
+        const body = textarea.value.trim();
+        if (!body) return;
+
+        textarea.disabled = true;
+
+        const mentionedContactIds = (post?.pendingMentions || []).map(m => m.contactId).join(',');
+
+        createComment({ postId, body, currentContactId: this.userContactId, mentionedContactIds })
+            .then(() => {
+                textarea.value = '';
+                this.loadComments(postId);
+                this.posts = this.posts.map(p => {
+                    if (p.id === postId) {
+                        const commentCount = p.commentCount + 1;
+                        return { ...p, commentCount, replyLabel: this.formatReplyLabel(commentCount), pendingMentions: [] };
+                    }
+                    return p;
+                });
+            })
+            .catch(err => {
+                console.error('Error adding comment:', err);
+                this.showToast('Error', 'Could not post comment.', 'error');
+            })
+            .finally(() => {
+                textarea.disabled = false;
+                textarea.focus();
+            });
     }
 
     // ─── Bookmarking / Saving Posts ──────────────────────────────────────────
@@ -804,12 +863,6 @@ export default class Ham_groupFeed extends LightningElement {
         );
     }
 
-    handleComingSoon(event, actionLabel) {
-        event.stopPropagation();
-        this.closeAllActionMenus();
-        this.showToast('Coming Soon', `${actionLabel} is not available yet.`, 'info');
-    }
-
     // ─── Edit Post / Edit Reply ───────────────────────────────────────────────
 
     handleEditPost(event) {
@@ -907,10 +960,6 @@ export default class Ham_groupFeed extends LightningElement {
         }
     }
 
-    handleReportUser(event) {
-        this.handleComingSoon(event, 'Reporting a user');
-    }
-
     handlePinPost(event) {
         event.stopPropagation();
         const postId = event.currentTarget.dataset.postId;
@@ -1004,8 +1053,9 @@ export default class Ham_groupFeed extends LightningElement {
         this.reportingCommentId = null;
     }
 
-    handleReasonChange(event) {
-        this.reportReason = event.target.value;
+    handleSelectReportReason(event) {
+        this.reportReason = event.currentTarget.dataset.reason;
+        this.submitReport();
     }
 
     submitReport() {
@@ -1021,6 +1071,52 @@ export default class Ham_groupFeed extends LightningElement {
         })
         .catch(err => {
             console.error('Error reporting content:', err);
+            this.showToast('Error', 'Could not submit report.', 'error');
+        });
+    }
+
+    // ─── Report User ──────────────────────────────────────────────────────────
+
+    openReportUserModal(event) {
+        event.stopPropagation();
+        this.reportUserPostId = event.currentTarget.dataset.postId;
+        this.reportUserCommentId = null;
+        this.reportUserReason = 'Inappropriate Message';
+        this.showReportUserModal = true;
+        this.closeAllActionMenus();
+    }
+
+    openReportUserModalForComment(event) {
+        this.reportUserPostId = null;
+        this.reportUserCommentId = event.currentTarget.dataset.commentId;
+        this.reportUserReason = 'Inappropriate Message';
+        this.showReportUserModal = true;
+    }
+
+    closeReportUserModal() {
+        this.showReportUserModal = false;
+        this.reportUserPostId = null;
+        this.reportUserCommentId = null;
+    }
+
+    handleSelectUserReportReason(event) {
+        this.reportUserReason = event.currentTarget.dataset.reason;
+        this.submitUserReport();
+    }
+
+    submitUserReport() {
+        reportUser({
+            postId: this.reportUserPostId,
+            commentId: this.reportUserCommentId,
+            reason: this.reportUserReason,
+            currentContactId: this.userContactId
+        })
+        .then(() => {
+            this.showToast('Reported', 'User has been reported to administrators.', 'success');
+            this.closeReportUserModal();
+        })
+        .catch(err => {
+            console.error('Error reporting user:', err);
             this.showToast('Error', 'Could not submit report.', 'error');
         });
     }

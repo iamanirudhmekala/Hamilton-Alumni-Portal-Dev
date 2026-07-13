@@ -1,6 +1,5 @@
 import { LightningElement, api, track } from 'lwc';
 import getGroupResourceCards from '@salesforce/apex/Ham_GroupsController.getGroupResourceCards';
-import addResource from '@salesforce/apex/Ham_GroupsController.addResource';
 import bookmarkResource from '@salesforce/apex/Ham_GroupsController.bookmarkResource';
 import unbookmarkResource from '@salesforce/apex/Ham_GroupsController.unbookmarkResource';
 import amplifyResource from '@salesforce/apex/Ham_GroupsController.amplifyResource';
@@ -37,14 +36,6 @@ export default class Ham_groupResources extends LightningElement {
     @track searchTerm = '';
     @track categoryFilter = ALL_CATEGORIES;
     @track bookmarkedOnly = false;
-
-    // Add-resource modal (admins)
-    @track showAddModal = false;
-    @track resourceTitle = '';
-    @track resourceUrl = '';
-    @track resourceDescription = '';
-    @track resourceCategory = 'General';
-    @track resourceImageUrl = '';
 
     // Amplify confirmation (admins)
     @track amplifyTarget = null;
@@ -203,82 +194,6 @@ export default class Ham_groupResources extends LightningElement {
             .finally(() => {
                 this.isAmplifying = false;
             });
-    }
-
-    // ── Add Resource Modal ────────────────────────────────────────────────────
-
-    openAddModal() {
-        this.resourceTitle = '';
-        this.resourceUrl = '';
-        this.resourceDescription = '';
-        this.resourceCategory = 'General';
-        this.resourceImageUrl = '';
-        this.showAddModal = true;
-    }
-
-    closeAddModal() {
-        this.showAddModal = false;
-    }
-
-    handleTitleChange(event) {
-        this.resourceTitle = event.target.value;
-    }
-
-    handleUrlChange(event) {
-        this.resourceUrl = event.target.value;
-    }
-
-    handleDescriptionChange(event) {
-        this.resourceDescription = event.target.value;
-    }
-
-    handleCategoryInputChange(event) {
-        this.resourceCategory = event.target.value;
-    }
-
-    handleImageUrlChange(event) {
-        this.resourceImageUrl = event.target.value;
-    }
-
-    get resourceCategoryChoices() {
-        return ['General', 'Academic', 'Career', 'Events'].map(cat => ({
-            value: cat,
-            label: cat,
-            selected: cat === this.resourceCategory
-        }));
-    }
-
-    submitResource() {
-        const title = this.resourceTitle.trim();
-        const url = this.resourceUrl.trim();
-
-        if (!title || !url) {
-            this.showToast('Validation Error', 'Title and URL are required fields.', 'error');
-            return;
-        }
-
-        this.isLoading = true;
-        addResource({
-            groupId: this.groupId,
-            title: title,
-            url: url,
-            contactId: this.contactId,
-            description: this.resourceDescription.trim(),
-            category: this.resourceCategory,
-            imageUrl: this.resourceImageUrl.trim()
-        })
-        .then(() => {
-            this.showToast('Success', 'Resource has been added successfully.', 'success');
-            this.closeAddModal();
-            this.loadResources();
-        })
-        .catch(err => {
-            console.error('Error adding resource:', err);
-            this.showToast('Error', err.body?.message || 'Could not add resource.', 'error');
-        })
-        .finally(() => {
-            this.isLoading = false;
-        });
     }
 
     showToast(title, message, variant) {

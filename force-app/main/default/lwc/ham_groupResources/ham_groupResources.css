@@ -5,37 +5,6 @@
     border-radius: 0 0 8px 8px;
 }
 
-.title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #0a2463;
-    margin: 0;
-}
-
-/* Add Resource button */
-.btn-add-resource {
-    background: #0a2463;
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: background-color 0.2s;
-}
-
-.btn-add-resource:hover {
-    background-color: #001a5e;
-}
-
-.btn-icon {
-    --sds-c-icon-color-foreground-default: #ffffff;
-}
-
 /* ── Search & Filter toolbar ─────────────────────────────────────── */
 .filters-row {
     display: flex;
@@ -78,11 +47,6 @@
     color: #333333;
     cursor: pointer;
     max-width: 190px;
-}
-
-.category-select-full {
-    max-width: none;
-    width: 100%;
 }
 
 .btn-bookmark-filter {
@@ -440,26 +404,6 @@
     cursor: not-allowed;
 }
 
-/* Modal styling */
-.resource-modal {
-    --sds-c-modal-color-background: #ffffff;
-}
-
-.resource-modal-content {
-    background: #ffffff;
-}
-
-.btn-submit-resource {
-    background: #0a2463 !important;
-    border-color: #0a2463 !important;
-    color: #ffffff !important;
-}
-
-.btn-submit-resource:hover {
-    background: #001a5e !important;
-    border-color: #001a5e !important;
-}
-
 /* Responsive Grid adjustment */
 @media (max-width: 768px) {
     .resources-root {
@@ -477,23 +421,6 @@
 }
 
 /* Kirkland Theme override support */
-.resources-root.kirkland-override .title {
-    color: #166837;
-}
-.resources-root.kirkland-override .btn-add-resource {
-    background: #166837;
-}
-.resources-root.kirkland-override .btn-add-resource:hover {
-    background-color: #0d4b26;
-}
-.resources-root.kirkland-override .btn-submit-resource {
-    background: #166837 !important;
-    border-color: #166837 !important;
-}
-.resources-root.kirkland-override .btn-submit-resource:hover {
-    background: #0d4b26 !important;
-    border-color: #0d4b26 !important;
-}
 .resources-root.kirkland-override .resource-title {
     color: #166837;
 }

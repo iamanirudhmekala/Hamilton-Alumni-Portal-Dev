@@ -162,7 +162,8 @@ export default class Ham_groupPostComposer extends LightningElement {
         const before = this.body.substring(0, this._mentionTriggerStart);
         const after = this.body.substring(this._mentionTriggerEnd);
         const insertion = `@${name} `;
-        this.body = `${before}${insertion}${after}`;
+        const newBody = `${before}${insertion}${after}`;
+        this.body = newBody;
         this.mentionSuggestions = [];
         if (!this.pendingMentions.some((m) => m.contactId === contactId)) {
             this.pendingMentions = [...this.pendingMentions, { contactId, name }];
@@ -173,6 +174,10 @@ export default class Ham_groupPostComposer extends LightningElement {
         setTimeout(() => {
             const textarea = this.template.querySelector('.composer__textarea');
             if (textarea) {
+                // The value={body} binding doesn't repaint a native textarea once the
+                // user has typed in it (same reason resetForm clears it imperatively),
+                // so write the DOM value directly before restoring the cursor.
+                textarea.value = newBody;
                 textarea.focus();
                 textarea.setSelectionRange(newCursorPos, newCursorPos);
             }

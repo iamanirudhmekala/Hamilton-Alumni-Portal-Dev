@@ -248,7 +248,10 @@
         <div class="mobile-card-list">
             <template if:true={groups}>
                 <template for:each={groups} for:item="group">
-                    <div class="mobile-card" key={group.groupId} onclick={handleViewGroup}>
+                    <!-- data-id is required: handleViewGroup reads event.currentTarget.dataset.id,
+                         and without it the bubbled card click dispatched viewgroup with an
+                         undefined groupId, cancelling the View Group button's navigation -->
+                    <div class="mobile-card" key={group.groupId} data-id={group.groupId} onclick={handleViewGroup}>
                         <div class="mobile-card-banner">
                             <template lwc:if={group.bannerUrl}>
                                 <img src={group.bannerUrl} class="mobile-event-image" />

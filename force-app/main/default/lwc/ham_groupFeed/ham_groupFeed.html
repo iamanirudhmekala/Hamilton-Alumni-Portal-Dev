@@ -1,73 +1,73 @@
 <template>
     <div class={feedRootClass}>
         <template lwc:if={showFilter}>
-        <!-- Search & Filter Bar -->
-        <div class="feed-filter-bar">
-            <div class="search-wrapper">
-                <input type="text" class="search-input" placeholder="Search posts..."
+            <!-- Search & Filter Bar -->
+            <div class="feed-filter-bar">
+                <div class="search-wrapper">
+                    <input type="text" class="search-input" placeholder="Search posts..."
                        value={searchTerm} oninput={handleSearchInput} onkeydown={handleSearchKeydown} />
-                <button type="button" class="search-btn" onclick={handleSearchClick} title="Search">
+                    <button type="button" class="search-btn" onclick={handleSearchClick} title="Search">
                     <lightning-icon icon-name="utility:search" size="x-small" class="search-icon"></lightning-icon>
                 </button>
-            </div>
+                </div>
 
-            <div class="filter-controls">
-                <!-- Date Range Filter -->
-                <div class="filter-popover-wrapper">
-                    <button type="button" class={dateFilterButtonClass} onclick={toggleDatePopover}>
+                <div class="filter-controls">
+                    <!-- Date Range Filter -->
+                    <div class="filter-popover-wrapper">
+                        <button type="button" class={dateFilterButtonClass} onclick={toggleDatePopover}>
                         <lightning-icon icon-name="utility:date_input" size="x-small" class="filter-btn-icon"></lightning-icon>
                         <span>{dateRangeLabel}</span>
                     </button>
-                    <template lwc:if={isDatePopoverOpen}>
-                        <div class="filter-popover date-popover" onclick={handlePopoverClick}>
-                            <div class="popover-field">
-                                <label>From</label>
-                                <input type="date" value={draftStartDate} onchange={handleDraftStartDateChange} />
+                        <template lwc:if={isDatePopoverOpen}>
+                            <div class="filter-popover date-popover" onclick={handlePopoverClick}>
+                                <div class="popover-field">
+                                    <label>From</label>
+                                    <input type="date" value={draftStartDate} onchange={handleDraftStartDateChange} />
+                                </div>
+                                <div class="popover-field">
+                                    <label>To</label>
+                                    <input type="date" value={draftEndDate} onchange={handleDraftEndDateChange} />
+                                </div>
+                                <div class="popover-actions">
+                                    <button type="button" class="popover-btn-secondary" onclick={clearDateFilter}>Clear</button>
+                                    <button type="button" class="popover-btn-primary" onclick={applyDateFilter}>Apply</button>
+                                </div>
                             </div>
-                            <div class="popover-field">
-                                <label>To</label>
-                                <input type="date" value={draftEndDate} onchange={handleDraftEndDateChange} />
-                            </div>
-                            <div class="popover-actions">
-                                <button type="button" class="popover-btn-secondary" onclick={clearDateFilter}>Clear</button>
-                                <button type="button" class="popover-btn-primary" onclick={applyDateFilter}>Apply</button>
-                            </div>
-                        </div>
-                    </template>
-                </div>
+                        </template>
+                    </div>
 
-                <!-- People (Author) Filter -->
-                <div class="filter-popover-wrapper">
-                    <button type="button" class={peopleFilterButtonClass} onclick={togglePeoplePopover}>
+                    <!-- People (Author) Filter -->
+                    <div class="filter-popover-wrapper">
+                        <button type="button" class={peopleFilterButtonClass} onclick={togglePeoplePopover}>
                         <lightning-icon icon-name="utility:people" size="x-small" class="filter-btn-icon"></lightning-icon>
                         <span>{peopleLabel}</span>
                     </button>
-                    <template lwc:if={isPeoplePopoverOpen}>
-                        <div class="filter-popover people-popover" onclick={handlePopoverClick}>
-                            <button type="button" class="people-option" data-id="" data-name="" onclick={handleSelectAuthor}>
+                        <template lwc:if={isPeoplePopoverOpen}>
+                            <div class="filter-popover people-popover" onclick={handlePopoverClick}>
+                                <button type="button" class="people-option" data-id="" data-name="" onclick={handleSelectAuthor}>
                                 All Members
                             </button>
-                            <template lwc:if={hasPostAuthors}>
-                                <template for:each={postAuthors} for:item="author">
-                                    <button key={author.contactId} type="button" class="people-option"
+                                <template lwc:if={hasPostAuthors}>
+                                    <template for:each={postAuthors} for:item="author">
+                                        <button key={author.contactId} type="button" class="people-option"
                                             data-id={author.contactId} data-name={author.name} onclick={handleSelectAuthor}>
                                         {author.name}
                                     </button>
+                                    </template>
                                 </template>
-                            </template>
-                            <template lwc:else>
-                                <p class="people-empty">No one has posted yet.</p>
-                            </template>
-                        </div>
-                    </template>
-                </div>
+                                <template lwc:else>
+                                    <p class="people-empty">No one has posted yet.</p>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
 
-                <!-- Bookmarked Filter -->
-                <button type="button" class={bookmarkFilterButtonClass} onclick={toggleBookmarkFilter} title="Show bookmarked posts only">
+                    <!-- Bookmarked Filter -->
+                    <button type="button" class={bookmarkFilterButtonClass} onclick={toggleBookmarkFilter} title="Show bookmarked posts only">
                     <lightning-icon icon-name="utility:bookmark" size="x-small" class="filter-btn-icon"></lightning-icon>
                 </button>
+                </div>
             </div>
-        </div>
         </template>
 
         <template lwc:if={hasActiveFilters}>
@@ -82,9 +82,10 @@
         </template>
 
         <!-- Feed Post List -->
+        <div class={postsListClass}>
         <template for:each={posts} for:item="post">
             <article key={post.id} data-id={post.id} class={post.cssClass}>
-                
+
                 <!-- Flagged banner overlay for moderator deep links -->
                 <template lwc:if={isModeratorMode}>
                     <template lwc:if={post.isTargeted}>
@@ -92,6 +93,22 @@
                             <span class="flag-icon">⚠️</span> Flagged Content Under Review
                         </div>
                     </template>
+                </template>
+
+                <!-- Pinned Post Banner -->
+                <template lwc:if={post.isPinned}>
+                    <div class="post-top-banner">
+                        <span class="post-top-banner-icon">📌</span>
+                        <span class="post-top-banner-label">Pinned by admin</span>
+                    </div>
+                </template>
+
+                <!-- Amplified Post Banner -->
+                <template lwc:if={post.isAmplified}>
+                    <div class="post-top-banner">
+                        <span class="post-top-banner-icon">🚀</span>
+                        <span class="post-top-banner-label">Amplified Post</span>
+                    </div>
                 </template>
 
                 <!-- Post Header -->
@@ -111,20 +128,6 @@
                         </div>
                     </div>
                     <div class="actions slds-grid slds-grid_vertical-align-center">
-                        <!-- Pinned Indicator -->
-                        <template lwc:if={post.isPinned}>
-                            <span class="badge badge-pinned slds-m-right_small">
-                                <lightning-icon icon-name="utility:pin" size="x-small" class="badge-icon"></lightning-icon>
-                                Pinned
-                            </span>
-                        </template>
-                        <!-- Amplified Indicator -->
-                        <template lwc:if={post.isAmplified}>
-                            <span class="badge badge-amplified slds-m-right_small">
-                                <lightning-icon icon-name="utility:announcement" size="x-small" class="badge-icon"></lightning-icon>
-                                Featured
-                            </span>
-                        </template>
                         <!-- Three-dot / Post Actions Menu -->
                         <div class="kebab-wrapper">
                             <button type="button" class="action-btn report-btn" data-post-id={post.id} onclick={toggleActionMenu} title="More Actions">
@@ -142,7 +145,7 @@
                                         <lightning-icon icon-name="utility:warning" size="x-small" class="menu-icon"></lightning-icon>
                                         Report Message
                                     </button>
-                                    <button type="button" class="action-menu-item" data-post-id={post.id} onclick={handleReportUser}>
+                                    <button type="button" class="action-menu-item" data-post-id={post.id} onclick={openReportUserModal}>
                                         <lightning-icon icon-name="utility:warning" size="x-small" class="menu-icon"></lightning-icon>
                                         Report User
                                     </button>
@@ -187,12 +190,9 @@
                         </template>
                         <template lwc:if={segment.isVideo}>
                             <div key={segment.embedUrl} class="video-wrapper slds-m-vertical_small">
-                                <iframe
-                                    src={segment.embedUrl}
-                                    frameborder="0"
+                                <iframe src={segment.embedUrl} frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen
-                                    class="video-iframe">
+                                    allowfullscreen class="video-iframe">
                                 </iframe>
                             </div>
                         </template>
@@ -235,7 +235,8 @@
                                                 </template>
                                                 <template lwc:else>
                                                     <div class="comment-avatar comment-avatar-fallback">
-                                                        <lightning-icon icon-name="standard:person_account" size="xx-small"></lightning-icon>
+                                                        <lightning-icon icon-name="standard:person_account"
+                                                            size="xx-small"></lightning-icon>
                                                     </div>
                                                 </template>
                                                 <span class="comment-author-name slds-m-left_x-small">{cmt.authorName}</span>
@@ -260,6 +261,10 @@
                                                 <button type="button" class="action-btn-small" data-comment-id={cmt.commentId} onclick={openReportCommentModal} title="Report Comment">
                                                     <lightning-icon icon-name="utility:flag" size="xx-small"></lightning-icon>
                                                 </button>
+                                                <!-- Report User Button -->
+                                                <button type="button" class="action-btn-small" data-comment-id={cmt.commentId} onclick={openReportUserModalForComment} title="Report User">
+                                                    <lightning-icon icon-name="utility:warning" size="xx-small"></lightning-icon>
+                                                </button>
                                             </div>
                                         </div>
                                         <div class="comment-body slds-m-top_xx-small">
@@ -268,7 +273,7 @@
                                     </div>
                                 </template>
                             </div>
-                            
+
                             <!-- Comment Input Form -->
                             <div class="comment-composer slds-m-top_small slds-grid slds-grid_vertical-align-center">
                                 <textarea
@@ -279,21 +284,24 @@
                                     oninput={handleCommentInput}
                                     rows="1">
                                 </textarea>
+                                <!-- Send: same action as pressing Enter in the reply box -->
+                                <button type="button" class="comment-send-btn" data-post-id={post.id}
+                                    onclick={handleSendComment} title="Send reply" aria-label="Send reply">
+                                    <lightning-icon icon-name="utility:send" size="x-small" class="comment-send-icon"></lightning-icon>
+                                </button>
                                 <!-- @Mention suggestions while typing "@Name" in the reply box -->
                                 <template lwc:if={post.showMentionPopover}>
-                                    <ul class="mentionbox__list" role="listbox">
-                                        <template for:each={post.mentionSuggestions} for:item="sug">
-                                            <li key={sug.contactId}
-                                                class="mentionbox__option"
-                                                role="option"
-                                                data-post-id={post.id}
-                                                data-contact-id={sug.contactId}
-                                                data-name={sug.name}
-                                                onclick={handleSelectCommentMentionSuggestion}>
-                                                <span class="mentionbox__at">@</span>{sug.name}
-                                            </li>
-                                        </template>
-                                    </ul>
+                                    <div class="mentionbox">
+                                        <ul class="mentionbox__list" role="listbox">
+                                            <template for:each={post.mentionSuggestions} for:item="sug">
+                                                <li key={sug.contactId} class="mentionbox__option" role="option"
+                                                    data-post-id={post.id} data-contact-id={sug.contactId}
+                                                    data-name={sug.name} onclick={handleSelectCommentMentionSuggestion}>
+                                                    <span class="mentionbox__at">@</span>{sug.name}
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
                                 </template>
                             </div>
                         </template>
@@ -301,6 +309,7 @@
                 </template>
             </article>
         </template>
+        </div>
 
         <!-- Keyset Pagination Load More -->
         <template if:true={hasMore}>
@@ -311,33 +320,60 @@
                 </button>
             </div>
         </template>
+
+        <!-- Compact Preview Footer: hand off to the full discussion tab -->
+        <template lwc:if={isCompactView}>
+            <div class="see-more-container">
+                <button type="button" class="btn-see-more" onclick={handleSeeMore}>See more</button>
+            </div>
+        </template>
     </div>
 
     <!-- Flag Content Moderation Report Modal -->
     <template if:true={showReportModal}>
-        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open report-modal">
-            <div class="slds-modal__container">
-                <header class="slds-modal__header">
-                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeReportModal}>
-                        <lightning-icon icon-name="utility:close" size="small" variant="inverse"></lightning-icon>
-                        <span class="slds-assistive-text">Close</span>
-                    </button>
-                    <h2 class="slds-modal__title slds-hyphenate">Report Inappropriate Content</h2>
-                </header>
-                <div class="slds-modal__content slds-p-around_medium report-modal-content">
-                    <p class="slds-m-bottom_medium modal-instructions">Please select the category that best describes why this content violates the community guidelines.</p>
-                    <lightning-combobox 
-                        name="reason" 
-                        label="Reason for reporting" 
-                        value={reportReason} 
-                        options={reportReasons} 
-                        onchange={handleReasonChange}>
-                    </lightning-combobox>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open report-user-modal">
+            <div class="slds-modal__container report-user-modal-container">
+                <button type="button" class="report-user-modal-close" title="Close" onclick={closeReportModal}>
+                    <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                </button>
+                <h2 class="report-user-modal-title">Report Message</h2>
+                <p class="report-user-modal-subtitle">Please select the category that best describes why this
+                    content violates the community guidelines.</p>
+                <div class="report-user-reason-list">
+                    <div class="report-user-reason-hint">Select a reason...</div>
+                    <div class="report-user-reason-items">
+                        <template for:each={reportReasons} for:item="reason">
+                            <button key={reason.value} type="button" class="report-user-reason-item" data-reason={reason.value} onclick={handleSelectReportReason}>
+                                {reason.label}
+                            </button>
+                        </template>
+                    </div>
                 </div>
-                <footer class="slds-modal__footer">
-                    <button class="slds-button slds-button_neutral" onclick={closeReportModal}>Cancel</button>
-                    <button class="slds-button slds-button_brand btn-submit-report" onclick={submitReport}>Submit Report</button>
-                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Report User Modal -->
+    <template if:true={showReportUserModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open report-user-modal">
+            <div class="slds-modal__container report-user-modal-container">
+                <button type="button" class="report-user-modal-close" title="Close" onclick={closeReportUserModal}>
+                    <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                </button>
+                <h2 class="report-user-modal-title">Report User</h2>
+                <p class="report-user-modal-subtitle">Your report will be reviewed by group administrators. All reports
+                    are confidential.</p>
+                <div class="report-user-reason-list">
+                    <div class="report-user-reason-hint">Select a reason...</div>
+                    <div class="report-user-reason-items">
+                        <template for:each={reportUserReasons} for:item="reason">
+                            <button key={reason.value} type="button" class="report-user-reason-item" data-reason={reason.value} onclick={handleSelectUserReportReason}>
+                                {reason.label}
+                            </button>
+                        </template>
+                    </div>
+                </div>
             </div>
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
@@ -379,7 +415,8 @@
                     <h2 class="delete-confirm-title">Delete Post?</h2>
                 </header>
                 <div class="delete-confirm-body">
-                    <p class="delete-confirm-text">Are you sure you want to delete this post? This action cannot be undone and the author will be notified.</p>
+                    <p class="delete-confirm-text">Are you sure you want to delete this post? This action cannot be
+                        undone and the author will be notified.</p>
                 </div>
                 <footer class="delete-confirm-footer">
                     <button type="button" class="edit-btn-cancel" onclick={closeDeleteConfirm}>Cancel</button>

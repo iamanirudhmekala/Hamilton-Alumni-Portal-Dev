@@ -207,15 +207,13 @@
                     </button>
                 </div>
 
-                <div class="actions">
-                    <label class="anon">
-                        <input type="checkbox" checked={isAnonymous} onchange={handleAnonChange} />
-                        <span>Post anonymously</span>
-                    </label>
-                    <button type="button" class="post-btn" onclick={handlePost} disabled={isPosting}>
-                        {postLabel}
-                    </button>
-                </div>
+                <label class="anon">
+                    <input type="checkbox" checked={isAnonymous} onchange={handleAnonChange} />
+                    <span>Post anonymously</span>
+                </label>
+                <button type="button" class="post-btn" onclick={handlePost} disabled={isPosting}>
+                    {postLabel}
+                </button>
             </footer>
 
         </section>

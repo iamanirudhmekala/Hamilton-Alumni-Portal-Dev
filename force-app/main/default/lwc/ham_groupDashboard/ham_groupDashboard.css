@@ -327,6 +327,20 @@
     text-align: left;
 }
 
+/* Invisible full-viewport backdrop that captures an outside click to close the
+   dropdown. Sits just under the dropdown (desktop z-index 100 → backdrop 99;
+   the mobile override below lifts it under the mobile dropdown's 9999). */
+.notif-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99;
+    background: transparent;
+    cursor: default;
+}
+
 .notif-dropdown-title {
     font-size: 14px;
     font-weight: 700;
@@ -360,6 +374,66 @@
     font-size: 11px;
     color: #7a7a7a;
     margin-top: 2px;
+}
+
+/* Custom toggle switch (matches ham_editProfileCmp's privacy toggles) */
+.custom-toggle-wrapper { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+.custom-toggle-wrapper.disabled { opacity: 0.5; cursor: not-allowed; }
+.custom-toggle-track { width: 48px; height: 28px; background-color: #dddbda; border-radius: 14px; position: relative; transition: background-color 0.2s ease; flex-shrink: 0; }
+.custom-toggle-track::after { content: ''; position: absolute; width: 20px; height: 20px; background: #fff; border-radius: 50%; top: 4px; left: 4px; transition: left 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+.custom-toggle-track.checked { background-color: #002F86; }
+.custom-toggle-track.checked::after { left: 24px; }
+.custom-toggle-label-active { display: none; font-size: 0.8125rem; color: #3e3e3c; }
+.custom-toggle-label-inactive { display: inline; font-size: 0.8125rem; color: #3e3e3c; }
+.custom-toggle-track.checked ~ .custom-toggle-label-active { display: inline; }
+.custom-toggle-track.checked ~ .custom-toggle-label-inactive { display: none; }
+
+/* Save/Cancel row — shown only while a toggle has an unsaved change */
+.notif-save-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 10px;
+    margin-top: 6px;
+    border-top: 1px solid #f0f0f0;
+}
+.notif-btn-cancel {
+    background: #ffffff;
+    border: 1px solid #dcdcdc;
+    color: #3e3e3c;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.notif-btn-cancel:hover {
+    background: #f4f6f8;
+}
+.notif-btn-save {
+    background: #002F86;
+    border: 1px solid #002F86;
+    color: #ffffff;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.notif-btn-save:hover {
+    background: #001f5c;
+}
+.notif-btn-save:disabled,
+.notif-btn-cancel:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.kirkland-override .notif-btn-save {
+    background: #166837;
+    border-color: #166837;
+}
+.kirkland-override .notif-btn-save:hover {
+    background: #12592c;
 }
 
 /* See More buttons */
@@ -469,6 +543,9 @@
 .kirkland-override .bell-icon {
     --sds-c-icon-color-foreground-default: #166837;
 }
+.kirkland-override .custom-toggle-track.checked {
+    background-color: #166837;
+}
 .kirkland-override .caret {
     color: #166837;
 }
@@ -538,6 +615,16 @@
         position: static;
     }
 
+    /* Discussion/Resources preview cards get a roomier, more rounded look on
+       phone widths, matching the Figma mobile mock. */
+    .info-card {
+        border-radius: 14px;
+        padding: 16px;
+    }
+    .section-header-row {
+        margin-bottom: 10px;
+    }
+
     /* dropdown must not run off-screen: anchor left and cap its width */
    .notification-dropdown {
         position: fixed;
@@ -554,8 +641,14 @@
         box-sizing: border-box;
 
         /* Creates the full screen background overlay safely without altering HTML */
-        box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.6), 
+        box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.6),
                     0 12px 36px rgba(0, 0, 0, 0.16);
+    }
+
+    /* Lift the click-catcher just under the mobile dropdown (z-index 9999) so an
+       outside tap still closes it. */
+    .notif-backdrop {
+        z-index: 9998;
     }
 }
 /* ── Leave Group confirmation dialog ─────────────────────────────── */

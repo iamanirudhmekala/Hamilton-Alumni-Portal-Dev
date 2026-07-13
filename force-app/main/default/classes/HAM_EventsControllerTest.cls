@@ -94,7 +94,36 @@ private class HAM_EventsControllerTest {
             CventEvents__pkg_Category__c    = 'TEST',
             ADVPublicPrivate__c             = 'Public'
         );
-        insert new List<CventEvents__Event__c>{ cventInPerson, cventPast };
+        // cventEssentialsUrl : ADVEssentialsURLforascend__c populated → must win over pkg_RegistrationLink__c
+        // cventFallbackUrl   : ADVEssentialsURLforascend__c blank → must fall back to pkg_RegistrationLink__c
+        CventEvents__Event__c cventEssentialsUrl = new CventEvents__Event__c(
+            CventEvents__pkg_Title__c            = 'T4 Essentials URL Cvent',
+            CventEvents__pkg_StartDate__c        = Date.today().addDays(5),
+            ADVEventFormat__c                    = 'In-Person',
+            CventEvents__pkg_Status__c           = 'Active',
+            CventEvents__pkg_EventStub__c        = 'T4C3',
+            CventEvents__pkg_EventStatus__c      = 'Upcoming',
+            CventEvents__pkg_Code__c             = 'T4C3',
+            ADVPublicPrivate__c                  = 'Public',
+            CventEvents__pkg_Category__c    = 'TEST',
+            CventEvents__pkg_RegistrationLink__c = 'https://example.com/register-fallback',
+            ADVEssentialsURLforascend__c         = 'https://example.com/essentials'
+        );
+        CventEvents__Event__c cventFallbackUrl = new CventEvents__Event__c(
+            CventEvents__pkg_Title__c            = 'T4 Fallback URL Cvent',
+            CventEvents__pkg_StartDate__c        = Date.today().addDays(5),
+            ADVEventFormat__c                    = 'In-Person',
+            CventEvents__pkg_Status__c           = 'Active',
+            CventEvents__pkg_EventStub__c        = 'T4C4',
+            CventEvents__pkg_EventStatus__c      = 'Upcoming',
+            CventEvents__pkg_Code__c             = 'T4C4',
+            ADVPublicPrivate__c                  = 'Public',
+            CventEvents__pkg_Category__c    = 'TEST',
+            CventEvents__pkg_RegistrationLink__c = 'https://example.com/register-fallback'
+            // ADVEssentialsURLforascend__c intentionally blank
+        );
+
+        insert new List<CventEvents__Event__c>{ cventInPerson, cventPast, cventEssentialsUrl, cventFallbackUrl };
 
         // ── Blackthorn event ──────────────────────────────────────────────────
         conference360__Event__c btPast = new conference360__Event__c(
@@ -476,6 +505,64 @@ private class HAM_EventsControllerTest {
                     'Non-registered upcoming event must not allow modify');
             }
         }
+    }
+
+    // =========================================================================
+    // 10b. getEventDetails — Cvent non-registered, ADVEssentialsURLforascend__c
+    //      populated → redirectionURL must use it instead of pkg_RegistrationLink__c
+    // =========================================================================
+    @isTest
+    static void testGetEventDetails_Cvent_NonRegistered_EssentialsUrlPopulated_UsesEssentialsUrl() {
+        Contact portalUser = getContact('User4');
+
+        Test.startTest();
+        HAM_EventsController.EventWrapper result = HAM_EventsController.getEventDetails(
+            portalUser.Id,
+            System.label.ham_EventsMainTab1,
+            System.label.ham_EventsMainTab1SubTab2,
+            'T4 Essentials URL Cvent', 6, 0, null
+        );
+        Test.stopTest();
+
+        Boolean found = false;
+        for (HAM_EventsController.EventItem evt : result.events) {
+            if (evt.eventObjectAPI == HAM_ConstantsUtil.CVENT_OBJECT_API) {
+                found = true;
+                System.assertEquals(false, evt.isRegistered);
+                System.assertEquals('https://example.com/essentials', evt.redirectionURL,
+                    'ADVEssentialsURLforascend__c must be preferred when populated');
+            }
+        }
+        System.assert(found, 'T4 Essentials URL Cvent should be returned by the search');
+    }
+
+    // =========================================================================
+    // 10c. getEventDetails — Cvent non-registered, ADVEssentialsURLforascend__c
+    //      blank → redirectionURL must fall back to pkg_RegistrationLink__c
+    // =========================================================================
+    @isTest
+    static void testGetEventDetails_Cvent_NonRegistered_EssentialsUrlBlank_FallsBackToRegistrationLink() {
+        Contact portalUser = getContact('User4');
+
+        Test.startTest();
+        HAM_EventsController.EventWrapper result = HAM_EventsController.getEventDetails(
+            portalUser.Id,
+            System.label.ham_EventsMainTab1,
+            System.label.ham_EventsMainTab1SubTab2,
+            'T4 Fallback URL Cvent', 6, 0, null
+        );
+        Test.stopTest();
+
+        Boolean found = false;
+        for (HAM_EventsController.EventItem evt : result.events) {
+            if (evt.eventObjectAPI == HAM_ConstantsUtil.CVENT_OBJECT_API) {
+                found = true;
+                System.assertEquals(false, evt.isRegistered);
+                System.assertEquals('https://example.com/register-fallback', evt.redirectionURL,
+                    'Blank ADVEssentialsURLforascend__c must fall back to CventEvents__pkg_RegistrationLink__c');
+            }
+        }
+        System.assert(found, 'T4 Fallback URL Cvent should be returned by the search');
     }
 
     // =========================================================================

@@ -2586,12 +2586,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>HAM_Group_Comment__c.Mentioned_Contact_Ids__c</field>
+        <field>HAM_Group_Comment__c.HAM_Group_Member__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>HAM_Group_Comment__c.HAM_Group_Member__c</field>
+        <field>HAM_Group_Comment__c.Mentioned_Contact_Ids__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2615,7 +2615,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>HAM_Group_Member__c.Notify_on_Amplified__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2635,7 +2635,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>HAM_Group_Member__c.Notify_on_Tagged__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2691,12 +2691,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>HAM_Group_Post__c.Tags__c</field>
+        <field>HAM_Group_Post__c.Mentioned_Contact_Ids__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>HAM_Group_Post__c.Mentioned_Contact_Ids__c</field>
+        <field>HAM_Group_Post__c.Tags__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2892,6 +2892,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>HAM_Portal_User_Preference__c.Portal_Contact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>HAM_Reported_Content__c.Is_User_Report__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

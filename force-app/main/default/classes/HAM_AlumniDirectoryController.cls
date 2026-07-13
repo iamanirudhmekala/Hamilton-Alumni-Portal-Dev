@@ -135,13 +135,18 @@ public without sharing class HAM_AlumniDirectoryController {
      * @return Integer - Number of records found in database.
      */
     @AuraEnabled(cacheable=true)
-    public static Integer getDirectoryDataCount(String tab, String searchKey, List<Map<String, Object>> selectedFilters, Id portalConstituentId, String invitationSubTab, String bookmarkConnectionsFilter, String favoriteConnectionsFilter) {
+    public static Integer getDirectoryDataCount(String tab, String searchKey, List<Map<String, Object>> selectedFilters, Id portalConstituentId, String invitationSubTab, String bookmarkConnectionsFilter, String favoriteConnectionsFilter, List<Id> scopeContactIds) {
         //CPD-OFF
         Boolean hasTab = !String.isBlank(tab); //hasTab == tab exists, !hasTab == tab does not exists
         Boolean hasSearch = !String.isBlank(searchKey);
         Boolean hasFilters = selectedFilters != null && !selectedFilters.isEmpty();
         Boolean isBuildTab = tab == HAM_ConstantsUtil.BUILD_TAB;
         Boolean isBlockedTab = tab == HAM_ConstantsUtil.BLOCKED_TAB;
+        //[Group Members] Optional contact-Id scope (passed by Ham_GroupsController). When supplied, the
+        //constituent count is restricted to these Ids so this engine can serve group-scoped member pages.
+        //All existing callers pass null and are unaffected.
+        Boolean hasScope = scopeContactIds != null;
+        Set<Id> scopeIdSet = hasScope ? new Set<Id>(scopeContactIds) : new Set<Id>();
         Id ServiceIndicatorRecordTypeId = Schema.SObjectType.ucinn_ascendv2__Service_Indicator__c.getRecordTypeInfosByName().get(HAM_ConstantsUtil.CONTACT_SERVICE_INDICATOR_RECORD_TYPE).getRecordTypeId();
 
         // WHERE clauses
@@ -294,7 +299,9 @@ public without sharing class HAM_AlumniDirectoryController {
             }
         }
 
-        if ((!hasTab || isBuildTab) && (String.isNotBlank(searchKey) || !selectedFilters.isEmpty())) {
+        //[Group Members] hasScope added so a scoped call also counts the default (no search/filter) member view.
+        //hasSearch/hasFilters replace the inline expressions (same semantics, null-safe on selectedFilters).
+        if ((!hasTab || isBuildTab) && (hasSearch || hasFilters || hasScope)) {
 
             //Constituents
             String constituentQuery =
@@ -302,6 +309,11 @@ public without sharing class HAM_AlumniDirectoryController {
             ' ID NOT IN :blockedProfileIds'+
             ' AND ID NOT IN :IdsMatchingFiltersAndIndicators'+
             ' AND Id NOT IN :AlumniPrivacyIds AND '+constituentWhere;
+
+            //[Group Members] Restrict the count to the supplied contact scope
+            if(hasScope){
+                constituentQuery += ' AND ID IN :scopeIdSet';
+            }
 
             //NO STUDENT CLAUSE. ONLY FOR 'SEARCH DIRECTORY TAB'
             if(isBuildTab){
@@ -454,8 +466,8 @@ public without sharing class HAM_AlumniDirectoryController {
     @AuraEnabled(cacheable=true)
     public static DirectoryResponse getDirectoryData(String tab,Integer pageSize,Integer recordsToSkip,String searchKey,
                                                     List<Map<String, Object>> selectedFilters,Id portalConstituentId, String invitationSubTab,
-                                                    String bookmarkConnectionsFilter, String favoriteConnectionsFilter) {
-                                                        
+                                                    String bookmarkConnectionsFilter, String favoriteConnectionsFilter, List<Id> scopeContactIds) {
+
         portalUserId = portalConstituentId;
                                                                                               
         DirectoryResponse response = new DirectoryResponse();
@@ -470,8 +482,11 @@ public without sharing class HAM_AlumniDirectoryController {
         Boolean hasFilters = selectedFilters != null && !selectedFilters.isEmpty();
         Boolean isBuildTab = tab == HAM_ConstantsUtil.BUILD_TAB;
         Boolean isBlockedTab = tab == HAM_ConstantsUtil.BLOCKED_TAB;
+        //[Group Members] Optional contact-Id scope (see getDirectoryDataCount). Null for all existing callers.
+        Boolean hasScope = scopeContactIds != null;
+        Set<Id> scopeIdSet = hasScope ? new Set<Id>(scopeContactIds) : new Set<Id>();
         Id ServiceIndicatorRecordTypeId = Schema.SObjectType.ucinn_ascendv2__Service_Indicator__c.getRecordTypeInfosByName().get(HAM_ConstantsUtil.CONTACT_SERVICE_INDICATOR_RECORD_TYPE).getRecordTypeId();
-    
+
         // WHERE clauses
         String baseConstituentWhere = System.Label.ham_AlumniDefaultFilter;
         String basePortalWhere = System.Label.ham_AlumniDefaultFilterPortal;
@@ -693,15 +708,21 @@ public without sharing class HAM_AlumniDirectoryController {
         List<Contact> Constituents = new List<Contact>();
         Set<Id> constituentIds = new Set<Id>();
     
-        if ((!hasTab || isBuildTab) && (String.isNotBlank(searchKey) || (selectedFilters != null && !selectedFilters.isEmpty()))) {
-    
+        //[Group Members] hasScope added so a scoped call also returns the default (no search/filter) member view
+        if ((!hasTab || isBuildTab) && (String.isNotBlank(searchKey) || (selectedFilters != null && !selectedFilters.isEmpty()) || hasScope)) {
+
             String constituentQuery =
                 'SELECT ' + String.join(selectedFieldsForConstituents, ', ') +
                 ' FROM Contact WHERE '+constituentWhere+
                 ' AND ID NOT IN :blockedProfileIds' +
                 ' AND ID NOT IN :IdsMatchingFiltersAndIndicators' +
                 ' AND ID NOT IN :AlumniPrivacyIds';
-            
+
+            //[Group Members] Restrict the page to the supplied contact scope
+            if(hasScope){
+                constituentQuery += ' AND ID IN :scopeIdSet';
+            }
+
             //NO STUDENT CLAUSE. ONLY FOR 'SEARCH DIRECTORY' TAB
             if(isBuildTab){
                 constituentQuery += ' AND '+noStudentClause;
@@ -722,6 +743,11 @@ public without sharing class HAM_AlumniDirectoryController {
                 ' AND ID != :portalConstituentId' +
                 ' AND ID NOT IN :blockedProfileIds' +
                 ' AND ID NOT IN :AlumniPrivacyIds';
+
+                //[Group Members] Keyset skip query must apply the same contact scope as the page query
+                if(hasScope){
+                    consQuery += ' AND ID IN :scopeIdSet';
+                }
 
                 //NO STUDENT CLAUSE. ONLY FOR 'SEARCH DIRECTORY' TAB
                 if(isBuildTab){
@@ -1118,11 +1144,14 @@ public without sharing class HAM_AlumniDirectoryController {
             }
         
             Datetime lastPrimaryCreatedDate;
-        
-            if (recordsToSkip != null && recordsToSkip == 0) {
-        
+
+            //[Group Members] For scoped calls these connection rows only decorate the current page's
+            //constituents (already restricted via IN :constituentIds on the Search Directory tab), so the
+            //CreatedDate keyset skip must not apply — it would drop decoration flags on pages beyond the first.
+            if (recordsToSkip != null && (recordsToSkip == 0 || hasScope)) {
+
                 primaryConnectionsQuery += ' ORDER BY CreatedDate DESC LIMIT :pageSize';
-        
+
             } else if (recordsToSkip != null && recordsToSkip > 0) {
         
                 // Skip query: get the last record's CreatedDate

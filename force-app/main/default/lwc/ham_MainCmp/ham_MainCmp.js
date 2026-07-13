@@ -396,6 +396,13 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
             url.searchParams.delete('tab');
         }
 
+        // Notification deep-link params are one-shot (consumed by ham_groupFeed on the
+        // initial load) — clear them on every subsequent navigation so they don't
+        // re-trigger scroll-to-post when a feed re-mounts later.
+        url.searchParams.delete('postId');
+        url.searchParams.delete('commentId');
+        url.searchParams.delete('mode');
+
         if (viewName === 'profileoverview') {
             const idToSet = cardId || this.selectedCardId;
             if (idToSet) url.searchParams.set('cardId', idToSet);
@@ -533,7 +540,14 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
                 this.activeTab = this.label.volunteerOpportunity;
                 break;
             case 'groups':
-                this.activeTab = this.label.groups;
+                // Group notification deep links (?view=groups&groupId=...): the
+                // standalone student-only Groups tab is currently disabled, so
+                // route into the Community tab's Groups subtab, which threads
+                // groupId/subview down to the Groups orchestrator.
+                this.activeTab = this.label.community;
+                this.communitySubTab = 'Groups';
+                this.selectedGroupId = urlParams.get('groupId');
+                this.groupSubview = urlParams.get('subview');
                 break;
             case 'home':
             default:
@@ -769,6 +783,10 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
             url.searchParams.delete('groupId');
             url.searchParams.delete('subview');
             url.searchParams.delete('cardId');
+            // One-shot notification deep-link params — clear on navigation
+            url.searchParams.delete('postId');
+            url.searchParams.delete('commentId');
+            url.searchParams.delete('mode');
             window.history.pushState({}, '', url.toString());
 
             publish(this.messageContext, NAVIGATION_CHANNEL, { selectedItem: this.label.community });
@@ -1125,6 +1143,10 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
         // Silently update URL to show the subtab
         const url = new URL(window.location.href);
         url.searchParams.set('tab', this.communitySubTab);
+        // One-shot notification deep-link params — clear on navigation
+        url.searchParams.delete('postId');
+        url.searchParams.delete('commentId');
+        url.searchParams.delete('mode');
         window.history.replaceState({}, '', url.toString());
     }
 
@@ -1135,6 +1157,13 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
 
         // Update URL params for Groups deep links
         const url = new URL(window.location.href);
+        // Drop one-shot notification deep-link params on any user navigation: they are
+        // only meant for the initial page load (ham_groupFeed reads them once to
+        // scroll/highlight). Leaving them in the URL re-triggered the auto-scroll
+        // every time a group feed re-mounted.
+        url.searchParams.delete('postId');
+        url.searchParams.delete('commentId');
+        url.searchParams.delete('mode');
         if (this.selectedGroupId) {
             url.searchParams.set('groupId', this.selectedGroupId);
             url.searchParams.set('subview', this.groupSubview);
@@ -1491,7 +1520,11 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
         const url = new URL(window.location.href);
         url.searchParams.set('view', 'community');
         url.searchParams.set('tab', 'Groups');
-        
+        // One-shot notification deep-link params — clear on navigation
+        url.searchParams.delete('postId');
+        url.searchParams.delete('commentId');
+        url.searchParams.delete('mode');
+
         if (this.selectedGroupId) {
             url.searchParams.set('groupId', this.selectedGroupId);
             url.searchParams.set('subview', this.groupSubview);

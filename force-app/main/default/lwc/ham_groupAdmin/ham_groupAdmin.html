@@ -7,18 +7,16 @@
             </div>
         </template>
 
-        <!-- Segmented Control for Mobile Viewport (hidden in preview mode) -->
-        <template if:false={isPreview}>
-            <template if:true={isMobileView}>
-                <div class="segmented-control slds-m-bottom_medium">
-                    <button type="button" class={mobileReportsClass} data-tab="reports" onclick={handleMobileTabChange}>
-                        Reports Queue ({reportsDashboard.pendingCount})
-                    </button>
-                    <button type="button" class={mobileRequestsClass} data-tab="requests" onclick={handleMobileTabChange}>
-                        Join Requests ({pendingMembers.length})
-                    </button>
-                </div>
-            </template>
+        <!-- Segmented Control for Mobile Viewport (hidden in preview / requests-only modes) -->
+        <template if:true={showMobileSegmentedControl}>
+            <div class="segmented-control slds-m-bottom_medium">
+                <button type="button" class={mobileReportsClass} data-tab="reports" onclick={handleMobileTabChange}>
+                    Reports Queue ({reportsDashboard.pendingCount})
+                </button>
+                <button type="button" class={mobileRequestsClass} data-tab="requests" onclick={handleMobileTabChange}>
+                    Join Requests ({pendingMembers.length})
+                </button>
+            </div>
         </template>
 
         <!-- Layout Wrapper -->
@@ -58,22 +56,24 @@
                             </div>
                         </div>
 
-                        <!-- Pending / Resolved Toggle -->
-                        <div class="report-view-toggle slds-m-bottom_medium">
-                            <button type="button" class={pendingViewTabClass} data-view="pending" onclick={handleReportsViewChange}>
-                                Pending ({reportsDashboard.pendingCount})
-                            </button>
-                            <button type="button" class={resolvedViewTabClass} data-view="resolved" onclick={handleReportsViewChange}>
-                                Resolved ({reportsDashboard.resolvedCount})
-                            </button>
-                        </div>
+                        <!-- Pending / Resolved Toggle (full page only) -->
+                        <template if:false={isPreview}>
+                            <div class="report-view-toggle slds-m-bottom_medium">
+                                <button type="button" class={pendingViewTabClass} data-view="pending" onclick={handleReportsViewChange}>
+                                    Pending ({reportsDashboard.pendingCount})
+                                </button>
+                                <button type="button" class={resolvedViewTabClass} data-view="resolved" onclick={handleReportsViewChange}>
+                                    Resolved ({reportsDashboard.resolvedCount})
+                                </button>
+                            </div>
+                        </template>
 
                         <!-- Pending Reports List -->
                         <template if:true={isPendingReportsView}>
-                            <template lwc:if={reportsDashboard.pendingReports.length}>
-                                <div class="reports-list">
-                                    <template for:each={reportsDashboard.pendingReports} for:item="rep">
-                                        <div key={rep.reportId} class="report-card slds-p-around_medium slds-m-bottom_medium">
+                            <template lwc:if={visiblePendingReports.length}>
+                                <div class={reportsListClass}>
+                                    <template for:each={visiblePendingReports} for:item="rep">
+                                        <div key={rep.reportId} class="report-card slds-p-around_medium">
                                             <!-- Header row of the card -->
                                             <div class="report-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
                                                 <span class={rep.reportTypeClass}>{rep.reportTypeLabel}</span>
@@ -129,12 +129,19 @@
                             </template>
                         </template>
 
+                        <!-- See More (preview only) -->
+                        <template if:true={isPreview}>
+                            <div class="see-more-row slds-text-align_center">
+                                <button type="button" class="btn-see-more" onclick={handleSeeMore}>See more</button>
+                            </div>
+                        </template>
+
                         <!-- Resolved Reports List -->
                         <template if:true={isResolvedReportsView}>
                             <template lwc:if={reportsDashboard.resolvedReports.length}>
-                                <div class="reports-list">
+                                <div class={reportsListClass}>
                                     <template for:each={reportsDashboard.resolvedReports} for:item="rep">
-                                        <div key={rep.reportId} class="report-card slds-p-around_medium slds-m-bottom_medium">
+                                        <div key={rep.reportId} class="report-card slds-p-around_medium">
                                             <!-- Header row of the card -->
                                             <div class="report-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
                                                 <span class={rep.reportTypeClass}>{rep.reportTypeLabel}</span>
@@ -186,18 +193,29 @@
 
             <!-- ── Column 2: Membership Join Requests ───────────────────── -->
             <template if:true={isRequestsTab}>
-                <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 admin-col">
+                <div class={requestsColumnClass}>
                     <div class="card-section slds-p-around_medium">
-                        
-                        <div class="section-header slds-m-bottom_medium">
-                            <h3 class="section-title">Pending Access Requests</h3>
-                            <p class="section-desc">Approve or ignore requests to join this private group.</p>
+
+                        <div class="section-header-row slds-grid slds-grid_align-spread slds-m-bottom_small">
+                            <div class="section-header">
+                                <h3 class="section-title">Pending Access Requests</h3>
+                                <p class="section-desc">Approve or ignore requests to join this private group.</p>
+                            </div>
+                            <template if:false={requestsOnly}>
+                                <button class="icon-link-btn" onclick={handleGoToRequestsPage} title="View All Requests">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
+                                        <path d="M15 3h6v6"></path>
+                                        <path d="M10 14L21 3"></path>
+                                        <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+                                    </svg>
+                                </button>
+                            </template>
                         </div>
 
                         <!-- Requests List -->
                         <template lwc:if={pendingMembers.length}>
                             <div class="requests-list">
-                                <template for:each={pendingMembers} for:item="member">
+                                <template for:each={visiblePendingMembers} for:item="member">
                                     <div key={member.memberRecordId} class="request-card slds-p-around_medium slds-m-bottom_small slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
                                         <div class="member-detail slds-grid slds-grid_vertical-align-center">
                                             <template if:true={member.photoUrl}>
@@ -231,6 +249,11 @@
                                     </div>
                                 </template>
                             </div>
+                            <template if:true={showRequestsSeeMore}>
+                                <div class="see-more-row-box">
+                                    <button type="button" class="btn-see-more-box" onclick={handleGoToRequestsPage}>See more</button>
+                                </div>
+                            </template>
                         </template>
                         <template lwc:else>
                             <div class="empty-admin-state slds-p-around_large slds-text-align_center">

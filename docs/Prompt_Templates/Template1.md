@@ -4,7 +4,7 @@ You are a Salesforce Reverse-Engineering Agent. Your goal is to map an undocumen
 ### THE UI LAYER INPUTS (What I know)
 - **Component UI Labels/Text:** ""
 - **Observed Component Behavior:** " "
-- **Target File Path for Doc:** `docs/features/[Groups].md`
+- **Target File Path for Doc:** `docs/features/[Alumni Directory].md`
 
 ### STEP 1: VERIFY & SYNC EXISTING DOCUMENTATION
 1. Check if the file `docs/features/[feature-name].md` already exists in this workspace.

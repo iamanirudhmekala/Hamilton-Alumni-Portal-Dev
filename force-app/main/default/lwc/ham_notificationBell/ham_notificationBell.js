@@ -118,7 +118,9 @@ export default class Ham_notificationBell extends LightningElement {
                     senderName: sender ? sender.Name : this.labels.sender_name,
                     senderPhoto: sender && sender.HAM_Profile_Picture_URL__c ? sender.HAM_Profile_Picture_URL__c : null,
                     isConnectionRequest: (notif.HAM_Source_Type__c === this.labels.connection && notif.HAM_Status__c !== this.labels.actioned && notif.HAM_Title__c === this.labels.title),
-                    iconName: notif.HAM_Source_Type__c === this.labels.connection ? 'standard:user' : 'standard:announcement'
+                    iconName: notif.HAM_Source_Type__c === this.labels.connection ? 'standard:user' : 'standard:announcement',
+                    // Rows with a stored action URL navigate on click; others render as before
+                    rowClass: notif.HAM_Action_URL__c ? 'notification-item clickable' : 'notification-item'
                 };
             });
         }
@@ -206,12 +208,23 @@ export default class Ham_notificationBell extends LightningElement {
             });
     }
 
+    // Navigates via the stored action URL (relative '?view=...' form). A full
+    // page load re-enters the SPA through ham_MainCmp's deep-link parser — the
+    // same path a push-notification tap takes, on desktop and mobile alike.
+    handleNotificationClick(event) {
+        const actionUrl = event.currentTarget.dataset.url;
+        if (!actionUrl) return;
+        window.location.href = actionUrl;
+    }
+
     handleApprove(event) {
+        event.stopPropagation(); // Keep the row's navigation click from firing
         const connectionId = event.target.dataset.id;
         this.processAction(connectionId, this.labels.connected);
     }
 
     handleReject(event) {
+        event.stopPropagation(); // Keep the row's navigation click from firing
         const connectionId = event.target.dataset.id;
         this.processAction(connectionId, this.labels.rejected);
     }

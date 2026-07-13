@@ -124,6 +124,16 @@
     background-color: #f9f9f9;
 }
 
+/* Rows with a stored action URL navigate on click */
+.notification-item.clickable {
+    cursor: pointer;
+}
+
+/* Keep the connection Accept/Ignore buttons visibly tappable inside a clickable row */
+.notification-item.clickable .btn {
+    cursor: pointer;
+}
+
 .notif-icon {
     background-color: white;
     /* border: none; */

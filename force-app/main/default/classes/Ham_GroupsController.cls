@@ -69,6 +69,18 @@ public without sharing class Ham_GroupsController {
         @AuraEnabled public Boolean hasMore;
     }
 
+    // Directory-parity Members page: one page of group members served by the Alumni Directory
+    // engine (same fuzzy search, filters, card metadata, and privacy rules as the directory).
+    // constituentsData is ordered connections-first; primary/secondary connections are the
+    // decoration rows the directory LWCs use to derive isConnected/isBookmarked/isRequestSent.
+    public class MemberDirectoryPageWrapper {
+        @AuraEnabled public List<HAM_AlumniDirectoryController.ConstituentWrapper> constituentsData;
+        @AuraEnabled public List<HAM_AlumniDirectoryController.ConnectionWrapper> primaryConnections;
+        @AuraEnabled public List<HAM_AlumniDirectoryController.ConnectionWrapper> secondaryConnections;
+        @AuraEnabled public Integer totalCount;
+        @AuraEnabled public Boolean protalLogedUserPrivacy; // spelling matches the directory response field consumed by the LWCs
+    }
+
     // ─── Platform Cache & Settings Methods ──────────────────────────────
 
     @AuraEnabled(cacheable=true)
@@ -368,6 +380,126 @@ public without sharing class Ham_GroupsController {
         return result;
     }
 
+    /**
+     * @description Directory-parity replacement for getGroupMembers (which is retained for backward
+     * compatibility but no longer used by ham_groupMembers). Serves one page of the group's Active
+     * members through the Alumni Directory engine so search (multi-word + nickname fuzzy match),
+     * all directory filters, card fields (HAM_Meta_Data__mdt), and privacy rules behave exactly as
+     * on the Search Directory tab. Results are ordered connections-first (each bucket A→Z by name),
+     * paginating seamlessly across the bucket boundary.
+     * @param groupId Group whose members are listed.
+     * @param contactId Logged-in portal user's Contact Id (must be an Active member of the group).
+     * @param pageSize Records per page (directory default 9).
+     * @param recordsToSkip Zero-based offset of the first record on the requested page.
+     * @param searchKey Search bar input (same semantics as the directory search bar).
+     * @param selectedFilters Directory filter payload: list of {placeholder, values} maps.
+     * @return MemberDirectoryPageWrapper with the page's constituents, decoration connections and total count.
+     */
+    @AuraEnabled(cacheable=true)
+    public static MemberDirectoryPageWrapper getGroupMembersDirectory(String groupId, String contactId,
+                                                                      Integer pageSize, Integer recordsToSkip,
+                                                                      String searchKey,
+                                                                      List<Map<String, Object>> selectedFilters) {
+        if (pageSize == null || pageSize <= 0) pageSize = 9;
+        if (recordsToSkip == null || recordsToSkip < 0) recordsToSkip = 0;
+
+        MemberDirectoryPageWrapper page = new MemberDirectoryPageWrapper();
+        page.constituentsData     = new List<HAM_AlumniDirectoryController.ConstituentWrapper>();
+        page.primaryConnections   = new List<HAM_AlumniDirectoryController.ConnectionWrapper>();
+        page.secondaryConnections = new List<HAM_AlumniDirectoryController.ConnectionWrapper>();
+        page.totalCount           = 0;
+        page.protalLogedUserPrivacy = false;
+
+        if (String.isBlank(groupId) || String.isBlank(contactId)) return page;
+        Id callerContactId = Id.valueOf(contactId);
+
+        // Access enforcement via inner-join pattern (same as getGroupMembers): the caller must
+        // themselves be an Active member; the visible population is the other Active members.
+        Boolean callerIsActiveMember = false;
+        Set<Id> memberContactIds = new Set<Id>();
+        for (HAM_Group_Member__c m : [
+            SELECT Contact__c FROM HAM_Group_Member__c
+            WHERE Group__c = :groupId AND Status__c = 'Active'
+        ]) {
+            if (m.Contact__c == callerContactId) {
+                callerIsActiveMember = true;
+            } else if (m.Contact__c != null) {
+                memberContactIds.add(m.Contact__c);
+            }
+        }
+        if (!callerIsActiveMember || memberContactIds.isEmpty()) return page;
+
+        // Split members into the caller's connections vs the rest. Accepting a connection sets
+        // HAM_Is_Connected__c on both orientation rows (HAM_AlumniConnectionService.handleAccept),
+        // so the portal-user orientation alone is authoritative and matches the flag decoration
+        // the directory display components read.
+        Set<Id> connectedIds = new Set<Id>();
+        for (HAM_Connection__c conn : [
+            SELECT HAM_Linked_Constituent__c FROM HAM_Connection__c
+            WHERE HAM_Portal_User__c = :callerContactId
+              AND HAM_Is_Connected__c = true AND HAM_Is_Blocked__c = false
+              AND HAM_Linked_Constituent__c IN :memberContactIds
+        ]) {
+            connectedIds.add(conn.HAM_Linked_Constituent__c);
+        }
+        List<Id> connectedList = new List<Id>(connectedIds);
+        List<Id> otherList = new List<Id>();
+        for (Id memberId : memberContactIds) {
+            if (!connectedIds.contains(memberId)) otherList.add(memberId);
+        }
+
+        // BUILD_TAB ('Search Directory') gives the directory's constituent-card semantics and keeps
+        // the decoration queries bounded to the page's constituents.
+        String directoryTab = HAM_ConstantsUtil.BUILD_TAB;
+        List<Map<String, Object>> filters = selectedFilters == null
+            ? new List<Map<String, Object>>() : selectedFilters;
+
+        Integer connectedCount = connectedList.isEmpty() ? 0
+            : HAM_AlumniDirectoryController.getDirectoryDataCount(
+                directoryTab, searchKey, filters, callerContactId, null, null, null, connectedList);
+        Integer othersCount = otherList.isEmpty() ? 0
+            : HAM_AlumniDirectoryController.getDirectoryDataCount(
+                directoryTab, searchKey, filters, callerContactId, null, null, null, otherList);
+        page.totalCount = connectedCount + othersCount;
+
+        // Fill the requested window [recordsToSkip, recordsToSkip + pageSize) from the connected
+        // bucket first, then top up from the non-connected bucket.
+        Integer takenFromConnected = 0;
+        if (recordsToSkip < connectedCount) {
+            takenFromConnected = Math.min(pageSize, connectedCount - recordsToSkip);
+            appendDirectoryPage(page, HAM_AlumniDirectoryController.getDirectoryData(
+                directoryTab, takenFromConnected, recordsToSkip, searchKey, filters,
+                callerContactId, null, null, null, connectedList));
+        }
+        Integer remaining = pageSize - takenFromConnected;
+        if (remaining > 0 && othersCount > 0) {
+            Integer othersSkip = Math.max(0, recordsToSkip - connectedCount);
+            if (othersSkip < othersCount) {
+                appendDirectoryPage(page, HAM_AlumniDirectoryController.getDirectoryData(
+                    directoryTab, remaining, othersSkip, searchKey, filters,
+                    callerContactId, null, null, null, otherList));
+            }
+        }
+        return page;
+    }
+
+    private static void appendDirectoryPage(MemberDirectoryPageWrapper page,
+                                            HAM_AlumniDirectoryController.DirectoryResponse resp) {
+        if (resp == null) return;
+        if (resp.constituentsData != null) {
+            page.constituentsData.addAll(resp.constituentsData);
+        }
+        if (resp.connectionsData != null && resp.connectionsData.primaryConnections != null) {
+            page.primaryConnections.addAll(resp.connectionsData.primaryConnections);
+        }
+        if (resp.connectionsData != null && resp.connectionsData.secondaryConnections != null) {
+            page.secondaryConnections.addAll(resp.connectionsData.secondaryConnections);
+        }
+        if (resp.protalLogedUserPrivacy != null) {
+            page.protalLogedUserPrivacy = resp.protalLogedUserPrivacy;
+        }
+    }
+
     // ─── Membership Actions ──────────────────────────────────────────────────────
 
     @AuraEnabled
@@ -382,7 +514,10 @@ public without sharing class Ham_GroupsController {
                 WHERE Group__c = :groupId AND Contact__c = :contactId LIMIT 1
             ];
 
-            String status = groups[0].Visibility__c == 'Public' ? 'Active' : 'Pending';
+            // Every join request — Public or Private group — goes to Pending so it
+            // surfaces in the admin moderation tab for accept/reject; membership only
+            // becomes Active once an admin approves it (see approveMember).
+            String status = 'Pending';
 
             if (!existing.isEmpty()) {
                 if (existing[0].Status__c == 'Blocked') return 'Blocked';
@@ -449,6 +584,51 @@ public without sharing class Ham_GroupsController {
         } catch (Exception e) {
             return e.getMessage();
         }
+    }
+
+    // Only these fields may be flipped via updateNotificationPreferences — guards
+    // against a caller passing an arbitrary field name into the dynamic put().
+    private static final Set<String> NOTIFICATION_PREFERENCE_FIELDS = new Set<String>{
+        'Receive_Notifications__c', 'Notify_on_Tagged__c', 'Notify_on_Amplified__c'
+    };
+
+    /**
+     * @description Flips one or more notification-preference checkboxes on the
+     *              caller's own membership row in a single DML. Routed through this
+     *              without-sharing method (rather than the LWC calling
+     *              lightning/uiRecordApi's updateRecord directly) because
+     *              HAM_Group_Member__c's sharing model doesn't grant portal users
+     *              edit access to their own row under standard sharing — the same
+     *              reason every other write in this controller goes through Apex
+     *              instead of Lightning Data Service.
+     * @param changes Map of field API name -> new boolean value (e.g. from a
+     *                "Save" button batching several toggles at once).
+     */
+    @AuraEnabled
+    public static void updateNotificationPreferences(Id membershipId, Id currentContactId, Map<String, Boolean> changes) {
+        if (changes == null || changes.isEmpty()) {
+            return;
+        }
+        for (String fieldApiName : changes.keySet()) {
+            if (!NOTIFICATION_PREFERENCE_FIELDS.contains(fieldApiName)) {
+                throw new AuraHandledException('Invalid notification preference field: ' + fieldApiName);
+            }
+        }
+
+        List<HAM_Group_Member__c> members = [
+            SELECT Id, Contact__c FROM HAM_Group_Member__c WHERE Id = :membershipId LIMIT 1
+        ];
+        if (members.isEmpty() || members[0].Contact__c != currentContactId) {
+            throw new AuraHandledException('Unauthorized access to membership record.');
+        }
+
+        HAM_Group_Member__c member = new HAM_Group_Member__c(Id = membershipId);
+        for (String fieldApiName : changes.keySet()) {
+            member.put(fieldApiName, changes.get(fieldApiName));
+        }
+
+        SObjectAccessDecision decision = Security.stripInaccessible(AccessType.UPDATABLE, new List<HAM_Group_Member__c>{member});
+        update decision.getRecords();
     }
 
     // ─── Private Helpers ─────────────────────────────────────────────────────────
@@ -554,6 +734,7 @@ public without sharing class Ham_GroupsController {
         @AuraEnabled public String reportedUserName;
         @AuraEnabled public String contentBody;
         @AuraEnabled public Datetime createdDate;
+        @AuraEnabled public Boolean isUserReport;
     }
 
     public class PendingMemberWrapper {
@@ -614,7 +795,11 @@ public without sharing class Ham_GroupsController {
             likeTerm = '%' + String.escapeSingleQuotes(searchTerm.trim()) + '%';
         }
 
-        String baseFields = 'Id, Body__c, Tags__c, Author__c, Author__r.Name, Author__r.HAM_Profile_Picture_URL__c, Is_Anonymous__c, Is_Pinned__c, Is_Amplified__c, CreatedDate';
+        String baseFields = 'Id, Body__c, Tags__c, Author__c, Author__r.Name, Author__r.HAM_Profile_Picture_URL__c, Is_Anonymous__c, Is_Pinned__c, Is_Amplified__c, Amplified_On__c, CreatedDate';
+
+        // Amplified posts are promoted (and badged) for 7 days from Amplified_On__c,
+        // then fall back into their normal chronological position automatically.
+        Datetime amplifyCutoff = System.now().addDays(-7);
 
         // Is_Draft__c = false excludes in-progress posts that are still collecting file uploads
         String sharedFilter = ' WHERE Group__c = :groupId AND Is_Draft__c = false ';
@@ -626,16 +811,29 @@ public without sharing class Ham_GroupsController {
 
         List<HAM_Group_Post__c> dbPosts = new List<HAM_Group_Post__c>();
 
-        // Pinned posts always surface at the top of the feed. Only fetched on the
-        // initial page load (lastPostId == null) so "load more" doesn't re-show
-        // or duplicate them — the paginated query below excludes pinned posts.
+        // Top of the feed on the initial page load (lastPostId == null) only, so
+        // "load more" doesn't re-show or duplicate them — the paginated query below
+        // excludes both blocks. Order: actively amplified first, then pinned.
         if (lastPostId == null) {
+            // Actively amplified posts (last 7 days) lead the feed, newest
+            // amplification first — they sort ABOVE pinned posts.
+            String amplifiedQuery = 'SELECT ' + baseFields + ' FROM HAM_Group_Post__c' + sharedFilter
+                                + 'AND Is_Pinned__c = false AND Is_Amplified__c = true AND Amplified_On__c >= :amplifyCutoff '
+                                + 'ORDER BY Amplified_On__c DESC LIMIT 50';
+            dbPosts.addAll((List<HAM_Group_Post__c>) Database.query(amplifiedQuery));
+
+            // Pinned posts follow the amplified block. A post that is both pinned
+            // and amplified stays in this pinned bucket (the amplified query above
+            // excludes pinned).
             String pinnedQuery = 'SELECT ' + baseFields + ' FROM HAM_Group_Post__c' + sharedFilter
                                 + 'AND Is_Pinned__c = true ORDER BY CreatedDate DESC LIMIT 50';
             dbPosts.addAll((List<HAM_Group_Post__c>) Database.query(pinnedQuery));
         }
 
         String query = 'SELECT ' + baseFields + ' FROM HAM_Group_Post__c' + sharedFilter + 'AND Is_Pinned__c = false ';
+        // Exclude actively amplified posts — they already appear in the initial-load
+        // block above. Keyset pagination (Id < :lastPostId) stays untouched.
+        query += 'AND (Is_Amplified__c = false OR Amplified_On__c = null OR Amplified_On__c < :amplifyCutoff) ';
         if (lastPostId != null) query += 'AND Id < :lastPostId ';
         query += 'ORDER BY Id DESC LIMIT :limitSize';
         dbPosts.addAll((List<HAM_Group_Post__c>) Database.query(query));
@@ -661,7 +859,9 @@ public without sharing class Ham_GroupsController {
             w.tags          = p.Tags__c;
             w.isAnonymous   = p.Is_Anonymous__c;
             w.isPinned      = p.Is_Pinned__c;
-            w.isAmplified   = p.Is_Amplified__c;
+            // "Amplified" (badge + highlight) only while inside the 7-day window,
+            // so expired amplifications render as normal posts without a batch job.
+            w.isAmplified   = p.Is_Amplified__c == true && p.Amplified_On__c != null && p.Amplified_On__c >= amplifyCutoff;
             w.createdDate   = p.CreatedDate;
             w.commentCount  = commentCountsByPost.containsKey(p.Id) ? commentCountsByPost.get(p.Id) : 0;
             w.isOwnPost     = (p.Author__c != null && p.Author__c == currentContactId);
@@ -1420,6 +1620,18 @@ public without sharing class Ham_GroupsController {
 
     @AuraEnabled
     public static String reportContent(Id postId, Id commentId, String reason, Id currentContactId) {
+        return submitContentReport(postId, commentId, reason, currentContactId, false);
+    }
+
+    // "Report User" shares the same report queue/record as "Report Message" — the only
+    // difference is Is_User_Report__c, which drives the Message Report / User Report
+    // tag on the admin moderation dashboard.
+    @AuraEnabled
+    public static String reportUser(Id postId, Id commentId, String reason, Id currentContactId) {
+        return submitContentReport(postId, commentId, reason, currentContactId, true);
+    }
+
+    private static String submitContentReport(Id postId, Id commentId, String reason, Id currentContactId, Boolean isUserReport) {
         if (postId == null && commentId == null) {
             throw new AuraHandledException('Either post ID or comment ID is required.');
         }
@@ -1432,9 +1644,9 @@ public without sharing class Ham_GroupsController {
             }
         } else {
             List<HAM_Group_Comment__c> comments = [
-                SELECT HAM_Group_Member__r.Contact__c 
-                FROM HAM_Group_Comment__c 
-                WHERE Id = :commentId 
+                SELECT HAM_Group_Member__r.Contact__c
+                FROM HAM_Group_Comment__c
+                WHERE Id = :commentId
                 LIMIT 1
             ];
             if (!comments.isEmpty()) {
@@ -1449,22 +1661,23 @@ public without sharing class Ham_GroupsController {
         report.Reported_By__c = currentContactId;
         report.Reported_User__c = reportedUserId;
         report.Status__c = 'Pending';
+        report.Is_User_Report__c = isUserReport;
 
         SObjectAccessDecision decision = Security.stripInaccessible(AccessType.CREATABLE, new List<HAM_Reported_Content__c>{report});
         insert decision.getRecords();
         return 'Success';
     }
 
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static ModerationDashboardWrapper getReportedContent(Id groupId, Id currentContactId) {
         checkModerationAccess(groupId, currentContactId);
 
         List<HAM_Reported_Content__c> dbReports = [
-            SELECT Id, Reported_Post__c, Reported_Post__r.Body__c, 
-                   Reported_Post__r.Author__r.Name, Reported_Comment__c, 
-                   Reported_Comment__r.Body__c, 
-                   Reported_Comment__r.HAM_Group_Member__r.Contact__r.Name, 
-                   Reason__c, Status__c, Reported_By__r.Name, CreatedDate
+            SELECT Id, Reported_Post__c, Reported_Post__r.Body__c,
+                   Reported_Post__r.Author__r.Name, Reported_Comment__c,
+                   Reported_Comment__r.Body__c,
+                   Reported_Comment__r.HAM_Group_Member__r.Contact__r.Name,
+                   Reason__c, Status__c, Reported_By__r.Name, CreatedDate, Is_User_Report__c
             FROM HAM_Reported_Content__c
             WHERE (Reported_Post__r.Group__c = :groupId)
                OR (Reported_Comment__r.Post__r.Group__c = :groupId)
@@ -1483,6 +1696,7 @@ public without sharing class Ham_GroupsController {
             rw.status = r.Status__c;
             rw.reportedByName = r.Reported_By__r.Name;
             rw.createdDate = r.CreatedDate;
+            rw.isUserReport = r.Is_User_Report__c;
 
             if (r.Reported_Post__c != null) {
                 rw.reportedUserName = r.Reported_Post__r.Author__r.Name;
@@ -1597,16 +1811,20 @@ public without sharing class Ham_GroupsController {
         }
 
         if (actionType == 'Delete' || actionType == 'Block') {
-            if (r.Reported_Comment__c != null) {
-                List<HAM_Group_Comment__c> comments = [SELECT Id FROM HAM_Group_Comment__c WHERE Id = :r.Reported_Comment__c];
-                if (!comments.isEmpty()) {
-                    delete comments;
+            try {
+                if (r.Reported_Comment__c != null) {
+                    List<HAM_Group_Comment__c> comments = [SELECT Id FROM HAM_Group_Comment__c WHERE Id = :r.Reported_Comment__c];
+                    if (!comments.isEmpty()) {
+                        delete comments;
+                    }
+                } else if (r.Reported_Post__c != null) {
+                    List<HAM_Group_Post__c> posts = [SELECT Id FROM HAM_Group_Post__c WHERE Id = :r.Reported_Post__c];
+                    if (!posts.isEmpty()) {
+                        delete posts;
+                    }
                 }
-            } else if (r.Reported_Post__c != null) {
-                List<HAM_Group_Post__c> posts = [SELECT Id FROM HAM_Group_Post__c WHERE Id = :r.Reported_Post__c];
-                if (!posts.isEmpty()) {
-                    delete posts;
-                }
+            } catch (Exception e) {
+                throw new AuraHandledException('Could not delete the reported content: ' + e.getMessage());
             }
         }
 
@@ -1634,6 +1852,9 @@ public without sharing class Ham_GroupsController {
     }
 
     private static void sendModerationEmail(String toAddress, String body) {
+        system.debug('toAddress -'+toAddress );
+        system.debug('body -'+body );
+        
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
 
         if (USE_MODERATION_OWA) {

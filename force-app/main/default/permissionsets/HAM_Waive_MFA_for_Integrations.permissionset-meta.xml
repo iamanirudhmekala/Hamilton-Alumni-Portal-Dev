@@ -193,8 +193,4 @@
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>HAM Waive MFA for Integrations</label>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>BypassMFAForUiLogins</name>
-    </userPermissions>
 </PermissionSet>

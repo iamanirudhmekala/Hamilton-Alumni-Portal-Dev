@@ -28,7 +28,7 @@
                 <div class="list-container scroller">
                     <template lwc:if={hasNotifications}>                      
                             <template for:each={notifications} for:item="notif">
-                                <div key={notif.Id} class="notification-item">
+                                <div key={notif.Id} class={notif.rowClass} data-url={notif.HAM_Action_URL__c} onclick={handleNotificationClick}>
                                     <lightning-avatar
                                         variant="circle"
                                         src={notif.senderPhoto}

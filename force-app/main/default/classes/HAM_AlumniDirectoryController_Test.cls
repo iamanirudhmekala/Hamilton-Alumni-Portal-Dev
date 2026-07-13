@@ -223,12 +223,12 @@ public with sharing class HAM_AlumniDirectoryController_Test {
             };
 
             Test.startTest();
-            Integer buildCount = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.BUILD_TAB, 'Alumni', filters, portalId, null, null, null);
-            Integer connCount = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.CONNECTION_TAB, '', null, portalId, null, null, null);
-            Integer bookmarkCount = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.BOOKMARK_TAB, '', null, portalId, null, null, null);
-            Integer inviteCountSent = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.INVITATION_TAB, '', null, portalId, 'Sent', null, null);
-            Integer inviteCountRecv = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.INVITATION_TAB, '', null, portalId, 'Received', null, null);
-            Integer blockedCount = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.BLOCKED_TAB, '', null, portalId, null, null, null);
+            Integer buildCount = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.BUILD_TAB, 'Alumni', filters, portalId, null, null, null, null);
+            Integer connCount = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.CONNECTION_TAB, '', null, portalId, null, null, null, null);
+            Integer bookmarkCount = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.BOOKMARK_TAB, '', null, portalId, null, null, null, null);
+            Integer inviteCountSent = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.INVITATION_TAB, '', null, portalId, 'Sent', null, null, null);
+            Integer inviteCountRecv = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.INVITATION_TAB, '', null, portalId, 'Received', null, null, null);
+            Integer blockedCount = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.BLOCKED_TAB, '', null, portalId, null, null, null, null);
             Test.stopTest();
             
             Assert.isTrue(buildCount >= 0);
@@ -246,12 +246,12 @@ public with sharing class HAM_AlumniDirectoryController_Test {
 
             Test.startTest();
             // 1. Cover the Favorite Filter branch on the Connection Tab
-            HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.CONNECTION_TAB, '', null, portalId, null, 'false', 'true');
-            HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.CONNECTION_TAB, 10, 0, '', null, portalId, null, 'false', 'true');
+            HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.CONNECTION_TAB, '', null, portalId, null, 'false', 'true', null);
+            HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.CONNECTION_TAB, 10, 0, '', null, portalId, null, 'false', 'true', null);
 
             // 2. Cover the Bookmark Filter branch on the Bookmark Tab
-            HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.BOOKMARK_TAB, '', null, portalId, null, 'true', 'false');
-            HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.BOOKMARK_TAB, 10, 0, '', null, portalId, null, 'true', 'false');
+            HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.BOOKMARK_TAB, '', null, portalId, null, 'true', 'false', null);
+            HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.BOOKMARK_TAB, 10, 0, '', null, portalId, null, 'true', 'false', null);
             Test.stopTest();
             
             Assert.isTrue(true, 'Executed filter branches successfully.');
@@ -276,11 +276,11 @@ public with sharing class HAM_AlumniDirectoryController_Test {
             Test.startTest();
             // Page 1 (recordsToSkip = 0)
             HAM_AlumniDirectoryController.DirectoryResponse p1 = 
-                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.BUILD_TAB, 5, 0, 'Test', filters, portalId, null, null, null);
+                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.BUILD_TAB, 5, 0, 'Test', filters, portalId, null, null, null, null);
             
             // Page 2 (recordsToSkip = 5) - Hits the Offset SOQL Branches
             HAM_AlumniDirectoryController.DirectoryResponse p2 = 
-                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.BUILD_TAB, 5, 5, 'Test', filters, portalId, null, null, null);
+                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.BUILD_TAB, 5, 5, 'Test', filters, portalId, null, null, null, null);
             Test.stopTest();
             
             Assert.isNotNull(p1);
@@ -296,10 +296,10 @@ public with sharing class HAM_AlumniDirectoryController_Test {
             Test.startTest();
             // Primary Connections Pagination Check
             HAM_AlumniDirectoryController.DirectoryResponse p1 = 
-                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.CONNECTION_TAB, 2, 0, '', null, portalId, null, null, null);
+                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.CONNECTION_TAB, 2, 0, '', null, portalId, null, null, null, null);
                 
             HAM_AlumniDirectoryController.DirectoryResponse p2 = 
-                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.CONNECTION_TAB, 2, 2, '', null, portalId, null, null, null);
+                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.CONNECTION_TAB, 2, 2, '', null, portalId, null, null, null, null);
             Test.stopTest();
             
             Assert.isNotNull(p1);
@@ -315,17 +315,17 @@ public with sharing class HAM_AlumniDirectoryController_Test {
             Test.startTest();
             // Secondary Connections (Invitations Received) Pagination Check
             HAM_AlumniDirectoryController.DirectoryResponse p1Recv = 
-                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.INVITATION_TAB, 2, 0, '', null, portalId, null, null, null);
+                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.INVITATION_TAB, 2, 0, '', null, portalId, null, null, null, null);
                 
             HAM_AlumniDirectoryController.DirectoryResponse p2Recv = 
-                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.INVITATION_TAB, 2, 2, '', null, portalId, null, null, null);
+                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.INVITATION_TAB, 2, 2, '', null, portalId, null, null, null, null);
 
             // Primary Connections (Invitations Sent) Pagination Check
             HAM_AlumniDirectoryController.DirectoryResponse p1Sent = 
-                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.INVITATION_TAB, 2, 0, '', null, portalId, 'Sent', null, null);
+                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.INVITATION_TAB, 2, 0, '', null, portalId, 'Sent', null, null, null);
                 
             HAM_AlumniDirectoryController.DirectoryResponse p2Sent = 
-                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.INVITATION_TAB, 2, 2, '', null, portalId, 'Sent', null, null);
+                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.INVITATION_TAB, 2, 2, '', null, portalId, 'Sent', null, null, null);
             Test.stopTest();
             
             Assert.isNotNull(p1Recv);
@@ -342,7 +342,7 @@ public with sharing class HAM_AlumniDirectoryController_Test {
 
             Test.startTest();
             HAM_AlumniDirectoryController.DirectoryResponse response = 
-                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.BLOCKED_TAB, 10, 0, '', null, portalId, null, null, null);
+                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.BLOCKED_TAB, 10, 0, '', null, portalId, null, null, null, null);
             Test.stopTest();
             
             Assert.isNotNull(response);
@@ -362,13 +362,46 @@ public with sharing class HAM_AlumniDirectoryController_Test {
 
             Test.startTest();
             HAM_AlumniDirectoryController.DirectoryResponse response = 
-                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.BUILD_TAB, 10, 0, multiWordSearchTerm, null, portalId, null, null, null);
+                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.BUILD_TAB, 10, 0, multiWordSearchTerm, null, portalId, null, null, null, null);
                 
-            Integer count = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.BUILD_TAB, multiWordSearchTerm, null, portalId, null, null, null);
+            Integer count = HAM_AlumniDirectoryController.getDirectoryDataCount(HAM_ConstantsUtil.BUILD_TAB, multiWordSearchTerm, null, portalId, null, null, null, null);
             Test.stopTest();
             
             Assert.isNotNull(response, 'Response should not be null');
             Assert.isTrue(count >= 0, 'Multi-word search count should resolve safely');
+        }
+    }
+
+    @IsTest
+    static void testGetDirectoryDataWithContactScope() {
+        // [Group Members] The optional scopeContactIds parameter restricts constituents to the
+        // supplied Ids and enables the default (no search/filter) view for scoped callers.
+        System.runAs(getTestUser()) {
+            Id portalId = getPortalUser().Id;
+            List<Contact> scopeContacts = [
+                SELECT Id, Name FROM Contact
+                WHERE LastName IN ('Alumni 5', 'Alumni 6') ORDER BY Name
+            ];
+            List<Id> scopeIds = new List<Id>();
+            for (Contact c : scopeContacts) scopeIds.add(c.Id);
+
+            Test.startTest();
+            Integer scopedCount = HAM_AlumniDirectoryController.getDirectoryDataCount(
+                HAM_ConstantsUtil.BUILD_TAB, '', new List<Map<String, Object>>(), portalId, null, null, null, scopeIds);
+            HAM_AlumniDirectoryController.DirectoryResponse scopedData =
+                HAM_AlumniDirectoryController.getDirectoryData(
+                    HAM_ConstantsUtil.BUILD_TAB, 9, 0, '', new List<Map<String, Object>>(), portalId, null, null, null, scopeIds);
+            // Regression: a null scope with no search/filters must keep returning zero constituents
+            Integer unscopedCount = HAM_AlumniDirectoryController.getDirectoryDataCount(
+                HAM_ConstantsUtil.BUILD_TAB, '', new List<Map<String, Object>>(), portalId, null, null, null, null);
+            Test.stopTest();
+
+            Assert.areEqual(scopeIds.size(), scopedCount, 'Scoped count must match the eligible scoped contacts.');
+            Assert.areEqual(scopeIds.size(), scopedData.constituentsData.size(), 'Scoped data must return only the scoped contacts.');
+            for (HAM_AlumniDirectoryController.ConstituentWrapper cw : scopedData.constituentsData) {
+                Assert.isTrue(new Set<Id>(scopeIds).contains(cw.id), 'Every returned constituent must be inside the scope.');
+            }
+            Assert.areEqual(0, unscopedCount, 'Null scope with no search/filters must keep legacy behaviour (no constituents).');
         }
     }
 
@@ -492,7 +525,7 @@ public with sharing class HAM_AlumniDirectoryController_Test {
 
             Test.startTest();
             HAM_AlumniDirectoryController.DirectoryResponse response = 
-                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.BUILD_TAB, 10, 0, '', edgeCaseFilters, portalId, null, null, null);
+                HAM_AlumniDirectoryController.getDirectoryData(HAM_ConstantsUtil.BUILD_TAB, 10, 0, '', edgeCaseFilters, portalId, null, null, null, null);
             Test.stopTest();
 
             Assert.isNotNull(response, 'Response should handle invalid filters gracefully without failing');

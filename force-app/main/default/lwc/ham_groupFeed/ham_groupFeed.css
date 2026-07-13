@@ -202,6 +202,46 @@
     padding: 40px 0;
 }
 
+/* Feed Post List */
+.feed-posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Compact preview (e.g. group dashboard landing page): show ~3 cards and let
+   the rest scroll internally rather than paginating. */
+.feed-posts-list-compact {
+    max-height: 720px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+/* "See more" Preview Footer */
+.see-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.btn-see-more {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333333;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-see-more:hover {
+    background-color: #f2f4f7;
+    border-color: #d1d5dc;
+}
+
 /* Kirkland Theme overrides for the search/filter bar */
 .feed-root.kirkland-override .search-btn { background: #166837; }
 .feed-root.kirkland-override .filter-btn-active {
@@ -233,15 +273,26 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Pinned Post Highlight */
-.post-card--pinned {
-    border-left: 4px solid #f2a900; /* Amber/gold */
+/* Pinned / Amplified Post Top Banner */
+.post-top-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a518b;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #e9e9e9;
 }
 
-/* Amplified Post Highlight */
-.post-card--amplified {
-    background: #f9fbfd;
-    border-left: 4px solid #1a518b;
+.post-top-banner-icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.feed-root.kirkland-override .post-top-banner {
+    color: #166837;
 }
 
 /* Moderator Flagged Highlight Outline */
@@ -311,31 +362,6 @@
     color: #7a7a7a;
     display: block;
     margin-top: 1px;
-}
-
-/* Badge Styling */
-.badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 8px;
-    border-radius: 4px;
-}
-
-.badge-pinned {
-    background: #fff8e1;
-    color: #b78103;
-}
-
-.badge-amplified {
-    background: #e1f5fe;
-    color: #0288d1;
-}
-
-.badge-icon {
-    --sds-c-icon-color-foreground-default: currentColor;
 }
 
 /* Header Action Buttons */
@@ -607,10 +633,17 @@
     border-top: 1px solid #eef2f6;
     padding-top: 8px;
 }
+/* Static (not relative): this wrapper is an empty flex item with zero width, so the
+   absolutely-positioned list must anchor to .comment-composer (position: relative)
+   to span the full row — anchoring to the wrapper made the list 0px wide/invisible. */
+.mentionbox {
+    position: static;
+}
 
 /* @Mention suggestion popover (comment box) */
 .mentionbox__list {
     position: absolute;
+    top: 100%; /* drop the popover just below the reply input row */
     left: 0;
     right: 0;
     z-index: 5;
@@ -642,7 +675,8 @@
 }
 
 .comment-input {
-    width: 100%;
+    flex: 1 1 auto;
+    min-width: 0; /* allow the textarea to shrink so the send button always fits */
     border: 1px solid #dcdcdc;
     border-radius: 6px;
     padding: 8px 12px;
@@ -651,6 +685,38 @@
     resize: none;
     font-family: inherit;
     transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Send reply button (mirrors the Enter-to-post action) */
+.comment-send-btn {
+    flex: 0 0 auto;
+    margin-left: 8px;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: #1a518b;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.comment-send-btn:hover {
+    background: #133e6b;
+}
+
+.comment-send-icon {
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.feed-root.kirkland-override .comment-send-btn {
+    background: #166837;
+}
+
+.feed-root.kirkland-override .comment-send-btn:hover {
+    background: #0d4b26;
 }
 
 .comment-input:focus {
@@ -682,30 +748,111 @@
     cursor: not-allowed;
 }
 
-/* Modal dialog custom overrides */
-.report-modal {
-    --sds-c-modal-color-background: #ffffff;
+/* Report Message / Report User Modal */
+.report-user-modal {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
 }
 
-.report-modal-content {
+.report-user-modal-container {
     background: #ffffff;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 420px;
+    height: auto;
+    min-height: 0;
+    max-height: min(420px, 90vh);
+    margin: 0 !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 28px 24px 24px 24px;
+    position: relative;
+    text-align: center;
 }
 
-.modal-instructions {
+.report-user-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --sds-c-icon-color-foreground-default: #9a9a9a;
+}
+
+.report-user-modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 8px 0;
+}
+
+.report-user-modal-subtitle {
     font-size: 13px;
-    color: #555555;
-    line-height: 1.4;
+    color: #6b7280;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
 }
 
-.btn-submit-report {
-    background: #c23934 !important;
-    border-color: #c23934 !important;
-    color: #ffffff !important;
+.report-user-reason-list {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
 }
 
-.btn-submit-report:hover {
-    background: #a62925 !important;
-    border-color: #a62925 !important;
+.report-user-reason-hint {
+    flex: 0 0 auto;
+    padding: 14px 16px;
+    font-size: 14px;
+    color: #9a9a9a;
+    border-bottom: 1px solid #eef0f3;
+}
+
+.report-user-reason-items {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.report-user-reason-item {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #eef0f3;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a518b;
+    text-align: left;
+    cursor: pointer;
+}
+
+.report-user-reason-item:last-child {
+    border-bottom: none;
+}
+
+.report-user-reason-item:hover {
+    background: #eef4fb;
+}
+
+.feed-root.kirkland-override .report-user-reason-item {
+    color: #166837;
+}
+
+.feed-root.kirkland-override .report-user-reason-item:hover {
+    background: #eaf6ec;
 }
 
 /* Edit Post / Edit Reply Modal */

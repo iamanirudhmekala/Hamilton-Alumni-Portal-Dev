@@ -155,7 +155,7 @@ public class Ham_GroupsControllerTest {
 
         Test.startTest();
         // Join Private group -> Status should be Pending
-        String joinRes = Ham_GroupsController.joinGroup(grp.Id, con2.Id);
+        String joinRes = Ham_GroupsController.joinGroup(grp.Id, con2.Id, null);
         System.assertEquals('Success', joinRes, 'Should successfully request to join private group.');
 
         // Verify Pending Member Approvals
@@ -184,7 +184,7 @@ public class Ham_GroupsControllerTest {
         System.assertEquals('Moved to a different chapter', leftMember.Leave_Reason_Other__c, 'Free-text reason should be stamped.');
 
         // Rejoining revives the same record and clears the old survey
-        String rejoinRes = Ham_GroupsController.joinGroup(grp.Id, con2.Id);
+        String rejoinRes = Ham_GroupsController.joinGroup(grp.Id, con2.Id, null);
         System.assertEquals('Success', rejoinRes, 'Should be able to rejoin after leaving.');
         HAM_Group_Member__c revived = [
             SELECT Status__c, Leave_Reason__c, Leave_Reason_Other__c
@@ -196,12 +196,55 @@ public class Ham_GroupsControllerTest {
     }
 
     @IsTest
+    static void testUpdateNotificationPreferences() {
+        HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
+        Contact con1 = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
+        Contact con2 = [SELECT Id FROM Contact WHERE LastName = 'Doe' LIMIT 1];
+        HAM_Group_Member__c mem = [
+            SELECT Id, Notify_on_Tagged__c, Notify_on_Amplified__c FROM HAM_Group_Member__c
+            WHERE Group__c = :grp.Id AND Contact__c = :con1.Id LIMIT 1
+        ];
+
+        Test.startTest();
+        // Batches two toggle changes into a single Save-button call
+        Ham_GroupsController.updateNotificationPreferences(mem.Id, con1.Id, new Map<String, Boolean>{
+            'Notify_on_Tagged__c' => false,
+            'Notify_on_Amplified__c' => false
+        });
+        Test.stopTest();
+
+        HAM_Group_Member__c updated = [
+            SELECT Notify_on_Tagged__c, Notify_on_Amplified__c FROM HAM_Group_Member__c WHERE Id = :mem.Id
+        ];
+        System.assertEquals(false, updated.Notify_on_Tagged__c, 'Tagged preference should be persisted.');
+        System.assertEquals(false, updated.Notify_on_Amplified__c, 'Amplified preference should be persisted.');
+
+        // Can't flip a field that isn't one of the allowed notification preferences
+        Boolean blockedInvalidField = false;
+        try {
+            Ham_GroupsController.updateNotificationPreferences(mem.Id, con1.Id, new Map<String, Boolean>{'Role__c' => true});
+        } catch (AuraHandledException e) {
+            blockedInvalidField = true;
+        }
+        System.assert(blockedInvalidField, 'Should reject any field outside the notification-preference allowlist.');
+
+        // Can't flip someone else's membership row
+        Boolean blockedWrongOwner = false;
+        try {
+            Ham_GroupsController.updateNotificationPreferences(mem.Id, con2.Id, new Map<String, Boolean>{'Notify_on_Tagged__c' => true});
+        } catch (AuraHandledException e) {
+            blockedWrongOwner = true;
+        }
+        System.assert(blockedWrongOwner, 'Should reject updates to a membership row the caller does not own.');
+    }
+
+    @IsTest
     static void testCancelPendingRequest() {
         HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Private Finance Group' LIMIT 1];
         Contact con2 = [SELECT Id FROM Contact WHERE LastName = 'Doe' LIMIT 1];
 
         Test.startTest();
-        Ham_GroupsController.joinGroup(grp.Id, con2.Id);
+        Ham_GroupsController.joinGroup(grp.Id, con2.Id, null);
 
         // Cancelling an un-approved request deletes the record outright
         String cancelRes = Ham_GroupsController.leaveGroup(grp.Id, con2.Id, new List<String>(), null);
@@ -221,7 +264,7 @@ public class Ham_GroupsControllerTest {
         Contact adminCon = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
 
         Test.startTest();
-        Ham_GroupsController.joinGroup(grp.Id, con2.Id);
+        Ham_GroupsController.joinGroup(grp.Id, con2.Id, null);
         List<Ham_GroupsController.PendingMemberWrapper> pending = Ham_GroupsController.getPendingMembers(grp.Id, adminCon.Id);
         
         String rejectRes = Ham_GroupsController.rejectMember(pending[0].memberRecordId, adminCon.Id);
@@ -495,6 +538,57 @@ public class Ham_GroupsControllerTest {
     }
 
     @IsTest
+    static void testAmplifiedFeedPromotionWindow() {
+        HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
+        Contact con1 = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
+
+        // One plain chronological post, one pinned post, and three amplified posts:
+        // two inside the 7-day promotion window (1 and 2 days ago) and one expired
+        // (10 days ago).
+        HAM_Group_Post__c chronoPost = new HAM_Group_Post__c(Group__c = grp.Id, Body__c = 'Plain post');
+        HAM_Group_Post__c pinnedPost = new HAM_Group_Post__c(Group__c = grp.Id, Body__c = 'Pinned post',
+            Is_Pinned__c = true);
+        HAM_Group_Post__c ampExpired = new HAM_Group_Post__c(Group__c = grp.Id, Body__c = 'Expired amplified post',
+            Is_Amplified__c = true, Amplified_On__c = System.now().addDays(-10));
+        HAM_Group_Post__c ampOlder = new HAM_Group_Post__c(Group__c = grp.Id, Body__c = 'Amplified two days ago',
+            Is_Amplified__c = true, Amplified_On__c = System.now().addDays(-2));
+        HAM_Group_Post__c ampNewest = new HAM_Group_Post__c(Group__c = grp.Id, Body__c = 'Amplified yesterday',
+            Is_Amplified__c = true, Amplified_On__c = System.now().addDays(-1));
+        insert new List<HAM_Group_Post__c>{ chronoPost, pinnedPost, ampExpired, ampOlder, ampNewest };
+
+        Test.startTest();
+        List<Ham_GroupsController.PostWrapper> feed = Ham_GroupsController.getGroupFeed(grp.Id, con1.Id, null);
+        Test.stopTest();
+
+        Assert.areEqual(5, feed.size(), 'Feed should contain all five posts exactly once (no duplicates).');
+
+        // Actively amplified posts lead the feed, latest amplification first, ABOVE pinned.
+        Assert.areEqual(ampNewest.Id, feed[0].id, 'Most recently amplified post should be first.');
+        Assert.areEqual(ampOlder.Id, feed[1].id, 'Older active amplified post should be second.');
+        Assert.isTrue(feed[0].isAmplified, 'Active amplified post should carry the amplified flag.');
+        Assert.isTrue(feed[1].isAmplified, 'Active amplified post should carry the amplified flag.');
+
+        // Pinned post follows the amplified block, ahead of the chronological posts.
+        Assert.areEqual(pinnedPost.Id, feed[2].id, 'Pinned post should sort below amplified but above chronological.');
+        Assert.isTrue(feed[2].isPinned, 'Pinned post should carry the pinned flag.');
+
+        // Expired (>7 days) amplification falls back to the chronological block and loses the flag.
+        Set<Id> trailingIds = new Set<Id>{ feed[3].id, feed[4].id };
+        Assert.isTrue(trailingIds.contains(ampExpired.Id), 'Expired amplified post should appear in the chronological block.');
+        Assert.isTrue(trailingIds.contains(chronoPost.Id), 'Plain post should appear in the chronological block.');
+        Assert.isFalse(feed[3].isAmplified, 'Posts outside the 7-day window must not be flagged amplified.');
+        Assert.isFalse(feed[4].isAmplified, 'Posts outside the 7-day window must not be flagged amplified.');
+
+        // A load-more page (keyset from the last chronological post) must not
+        // re-return the promoted amplified or pinned posts.
+        List<Ham_GroupsController.PostWrapper> nextPage = Ham_GroupsController.getGroupFeed(grp.Id, con1.Id, feed[4].id);
+        for (Ham_GroupsController.PostWrapper w : nextPage) {
+            Assert.isTrue(w.id != ampNewest.Id && w.id != ampOlder.Id && w.id != pinnedPost.Id,
+                'Promoted amplified/pinned posts must not repeat on later pages.');
+        }
+    }
+
+    @IsTest
     static void testSearchTags() {
         HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
         Contact con1 = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
@@ -646,5 +740,167 @@ public class Ham_GroupsControllerTest {
 
         // Queueable runs asynchronously; verify it compiles and runs without throwing errors
         System.assert(true, 'Queueable job ran successfully.');
+    }
+
+    // ─── getGroupMembersDirectory (directory-parity Members page) ───────────────
+
+    /**
+     * Builds an isolated group whose members are directory-eligible contacts
+     * (pass the ham_AlumniDefaultFilter base WHERE clause), with the caller
+     * connected to exactly one member. Alphabetical order of member last names
+     * is Adams < Baker < Zeta; the caller's single connection is Zeta so
+     * connections-first ordering is distinguishable from plain A→Z.
+     * @return the caller's Contact Id and the group Id, as [callerId, groupId]
+     */
+    private static List<Id> buildDirectoryMembersFixture() {
+        Account acc = new Account(Name = 'Members Directory Fixture Account');
+        insert acc;
+
+        Contact caller = new Contact(
+            FirstName = 'Casey', LastName = 'Caller', AccountId = acc.Id,
+            HAM_Is_Active__c = true, ucinn_ascendv2__Primary_Contact_Type__c = 'Alumni'
+        );
+        Contact memAdams = new Contact(
+            FirstName = 'Amy', LastName = 'Adams', AccountId = acc.Id,
+            HAM_Is_Active__c = true, ucinn_ascendv2__Primary_Contact_Type__c = 'Alumni',
+            HAM_Industry__c = 'Technology'
+        );
+        Contact memBaker = new Contact(
+            FirstName = 'Ben', LastName = 'Baker', AccountId = acc.Id,
+            HAM_Is_Active__c = true, ucinn_ascendv2__Primary_Contact_Type__c = 'Alumni',
+            HAM_Industry__c = 'Finance'
+        );
+        Contact memZeta = new Contact(
+            FirstName = 'Zoe', LastName = 'Zeta', AccountId = acc.Id,
+            HAM_Is_Active__c = true, ucinn_ascendv2__Primary_Contact_Type__c = 'Alumni',
+            HAM_Industry__c = 'Technology'
+        );
+        insert new List<Contact>{ caller, memAdams, memBaker, memZeta };
+
+        HAM_Group__c grp = new HAM_Group__c(
+            Name = 'Members Directory Fixture Group',
+            Visibility__c = 'Public', Category__c = 'Interest', is_Active__c = true
+        );
+        insert grp;
+
+        insert new List<HAM_Group_Member__c>{
+            new HAM_Group_Member__c(Group__c = grp.Id, Contact__c = caller.Id,   Role__c = 'Admin',  Status__c = 'Active'),
+            new HAM_Group_Member__c(Group__c = grp.Id, Contact__c = memAdams.Id, Role__c = 'Member', Status__c = 'Active'),
+            new HAM_Group_Member__c(Group__c = grp.Id, Contact__c = memBaker.Id, Role__c = 'Member', Status__c = 'Active'),
+            new HAM_Group_Member__c(Group__c = grp.Id, Contact__c = memZeta.Id,  Role__c = 'Member', Status__c = 'Active')
+        };
+
+        // Caller is connected to Zeta only — both orientation rows, as handleAccept writes them
+        insert new List<HAM_Connection__c>{
+            new HAM_Connection__c(
+                HAM_Portal_User__c = caller.Id, HAM_Linked_Constituent__c = memZeta.Id,
+                HAM_Connection_Status__c = 'Connected', HAM_Is_Connected__c = true, HAM_Is_Blocked__c = false
+            ),
+            new HAM_Connection__c(
+                HAM_Portal_User__c = memZeta.Id, HAM_Linked_Constituent__c = caller.Id,
+                HAM_Connection_Status__c = 'Connected', HAM_Is_Connected__c = true, HAM_Is_Blocked__c = false
+            )
+        };
+
+        return new List<Id>{ caller.Id, grp.Id };
+    }
+
+    @IsTest
+    static void testGetGroupMembersDirectoryConnectionsFirst() {
+        List<Id> fixture = buildDirectoryMembersFixture();
+        Id callerId = fixture[0];
+        Id groupId  = fixture[1];
+
+        Test.startTest();
+        Ham_GroupsController.MemberDirectoryPageWrapper page =
+            Ham_GroupsController.getGroupMembersDirectory(groupId, callerId, 9, 0, '', new List<Map<String, Object>>());
+        Test.stopTest();
+
+        Assert.areEqual(3, page.totalCount, 'All three other Active members should be counted (caller excluded).');
+        Assert.areEqual(3, page.constituentsData.size(), 'One page should hold all three members.');
+        // Connections first: Zeta (the only connection) leads despite sorting last alphabetically
+        Assert.areEqual('Zoe Zeta', (String) page.constituentsData[0].header.get('name'),
+            'The connected member must be listed before non-connections.');
+        Assert.areEqual('Amy Adams', (String) page.constituentsData[1].header.get('name'),
+            'Non-connections must follow in alphabetical order.');
+        Assert.areEqual('Ben Baker', (String) page.constituentsData[2].header.get('name'),
+            'Non-connections must follow in alphabetical order.');
+        // Decoration row present so the UI can flag Zeta as connected
+        Assert.areEqual(1, page.primaryConnections.size(), 'The connected member needs a decoration connection row.');
+    }
+
+    @IsTest
+    static void testGetGroupMembersDirectoryPaginationAcrossBuckets() {
+        List<Id> fixture = buildDirectoryMembersFixture();
+        Id callerId = fixture[0];
+        Id groupId  = fixture[1];
+
+        Test.startTest();
+        Ham_GroupsController.MemberDirectoryPageWrapper page1 =
+            Ham_GroupsController.getGroupMembersDirectory(groupId, callerId, 2, 0, '', new List<Map<String, Object>>());
+        Ham_GroupsController.MemberDirectoryPageWrapper page2 =
+            Ham_GroupsController.getGroupMembersDirectory(groupId, callerId, 2, 2, '', new List<Map<String, Object>>());
+        Test.stopTest();
+
+        Assert.areEqual(3, page1.totalCount, 'Total count is page-independent.');
+        Assert.areEqual(2, page1.constituentsData.size(), 'Page 1 spans the bucket boundary: 1 connection + 1 non-connection.');
+        Assert.areEqual('Zoe Zeta', (String) page1.constituentsData[0].header.get('name'),
+            'Page 1 starts with the connected bucket.');
+        Assert.areEqual('Amy Adams', (String) page1.constituentsData[1].header.get('name'),
+            'Page 1 tops up from the non-connected bucket.');
+        Assert.areEqual(1, page2.constituentsData.size(), 'Page 2 holds the remaining member.');
+        Assert.areEqual('Ben Baker', (String) page2.constituentsData[0].header.get('name'),
+            'Page 2 continues the non-connected bucket alphabetically.');
+    }
+
+    @IsTest
+    static void testGetGroupMembersDirectorySearchAndFilter() {
+        List<Id> fixture = buildDirectoryMembersFixture();
+        Id callerId = fixture[0];
+        Id groupId  = fixture[1];
+
+        Test.startTest();
+        // Directory search semantics (name term match on the expanded-name formula; multi-word
+        // and nickname fuzzy behaviour is covered by HAM_AlumniDirectoryController_Test since
+        // this method delegates to the same engine)
+        Ham_GroupsController.MemberDirectoryPageWrapper searched =
+            Ham_GroupsController.getGroupMembersDirectory(groupId, callerId, 9, 0, 'Adams', new List<Map<String, Object>>());
+        // Directory filter payload: Industry = Technology → Adams + Zeta only
+        List<Map<String, Object>> filters = new List<Map<String, Object>>{
+            new Map<String, Object>{ 'placeholder' => 'Industry', 'values' => new List<Object>{ 'Technology' } }
+        };
+        Ham_GroupsController.MemberDirectoryPageWrapper filtered =
+            Ham_GroupsController.getGroupMembersDirectory(groupId, callerId, 9, 0, '', filters);
+        Test.stopTest();
+
+        Assert.areEqual(1, searched.totalCount, 'Name search must match a single member.');
+        Assert.areEqual('Amy Adams', (String) searched.constituentsData[0].header.get('name'),
+            'Search must return the matching member.');
+
+        Assert.areEqual(2, filtered.totalCount, 'Industry filter must keep only Technology members.');
+        Assert.areEqual('Zoe Zeta', (String) filtered.constituentsData[0].header.get('name'),
+            'Filtered results keep connections-first ordering.');
+        Assert.areEqual('Amy Adams', (String) filtered.constituentsData[1].header.get('name'),
+            'Filtered non-connections follow alphabetically.');
+    }
+
+    @IsTest
+    static void testGetGroupMembersDirectoryRejectsNonMember() {
+        List<Id> fixture = buildDirectoryMembersFixture();
+        Id groupId = fixture[1];
+
+        Contact outsider = new Contact(
+            FirstName = 'Olly', LastName = 'Outsider',
+            HAM_Is_Active__c = true, ucinn_ascendv2__Primary_Contact_Type__c = 'Alumni'
+        );
+        insert outsider;
+
+        Test.startTest();
+        Ham_GroupsController.MemberDirectoryPageWrapper page =
+            Ham_GroupsController.getGroupMembersDirectory(groupId, outsider.Id, 9, 0, '', new List<Map<String, Object>>());
+        Test.stopTest();
+
+        Assert.areEqual(0, page.totalCount, 'A non-member must not see any group members.');
+        Assert.areEqual(0, page.constituentsData.size(), 'A non-member must receive an empty page.');
     }
 }

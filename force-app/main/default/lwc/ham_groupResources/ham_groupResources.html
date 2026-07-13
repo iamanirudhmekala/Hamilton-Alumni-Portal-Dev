@@ -1,16 +1,5 @@
 <template>
     <div class={rootClass}>
-        <!-- Header Actions -->
-        <div class="header-container slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_medium">
-            <h2 class="title">Curated Resources</h2>
-            <template if:true={isAdmin}>
-                <button class="btn-add-resource" onclick={openAddModal}>
-                    <lightning-icon icon-name="utility:add" size="x-small" class="btn-icon"></lightning-icon>
-                    Add Resource
-                </button>
-            </template>
-        </div>
-
         <!-- Search & Filter toolbar (full tab view only) -->
         <template if:false={isPreviewMode}>
             <div class="filters-row slds-m-bottom_medium">
@@ -160,70 +149,5 @@
             <div class="slds-backdrop slds-backdrop_open"></div>
         </template>
 
-        <!-- Admin Add Resource Modal -->
-        <template if:true={showAddModal}>
-            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open resource-modal">
-                <div class="slds-modal__container">
-                    <header class="slds-modal__header">
-                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeAddModal}>
-                            <lightning-icon icon-name="utility:close" size="small" variant="inverse"></lightning-icon>
-                            <span class="slds-assistive-text">Close</span>
-                        </button>
-                        <h2 class="slds-modal__title slds-hyphenate">Add Curated Resource</h2>
-                    </header>
-                    <div class="slds-modal__content slds-p-around_medium resource-modal-content">
-                        <div class="slds-form slds-form_stacked">
-                            <lightning-input
-                                type="text"
-                                label="Resource Title"
-                                value={resourceTitle}
-                                onchange={handleTitleChange}
-                                required
-                                class="slds-m-bottom_small">
-                            </lightning-input>
-                            <lightning-input
-                                type="url"
-                                label="External Link (URL)"
-                                value={resourceUrl}
-                                onchange={handleUrlChange}
-                                required
-                                placeholder="https://example.com"
-                                class="slds-m-bottom_small">
-                            </lightning-input>
-                            <lightning-textarea
-                                label="Description"
-                                value={resourceDescription}
-                                onchange={handleDescriptionChange}
-                                max-length="255"
-                                class="slds-m-bottom_small">
-                            </lightning-textarea>
-                            <div class="slds-form-element slds-m-bottom_small">
-                                <label class="slds-form-element__label" for="res-category">Category</label>
-                                <div class="slds-form-element__control">
-                                    <select id="res-category" class="category-select category-select-full" onchange={handleCategoryInputChange}>
-                                        <template for:each={resourceCategoryChoices} for:item="opt">
-                                            <option key={opt.value} value={opt.value} selected={opt.selected}>{opt.label}</option>
-                                        </template>
-                                    </select>
-                                </div>
-                            </div>
-                            <lightning-input
-                                type="url"
-                                label="Image URL (optional)"
-                                value={resourceImageUrl}
-                                onchange={handleImageUrlChange}
-                                placeholder="https://example.com/image.png"
-                                class="slds-m-bottom_small">
-                            </lightning-input>
-                        </div>
-                    </div>
-                    <footer class="slds-modal__footer">
-                        <button class="slds-button slds-button_neutral" onclick={closeAddModal}>Cancel</button>
-                        <button class="slds-button slds-button_brand btn-submit-resource" onclick={submitResource}>Add Resource</button>
-                    </footer>
-                </div>
-            </section>
-            <div class="slds-backdrop slds-backdrop_open"></div>
-        </template>
     </div>
 </template>

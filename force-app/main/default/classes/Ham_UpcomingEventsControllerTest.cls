@@ -128,8 +128,23 @@ private class Ham_UpcomingEventsControllerTest {
             CventEvents__pkg_Category__c = 'Test Ctaegory'
         );
 
+        // Upcoming In-Person — ADVEssentialsURLforascend__c populated, preferred over pkg_RegistrationLink__c
+        CventEvents__Event__c essentialsEvent = new CventEvents__Event__c(
+            CventEvents__pkg_Title__c            = 'Essentials URL Event',
+            CventEvents__pkg_StartDate__c        = futureDate,
+            ADVEventFormat__c                    = FORMAT_IP,
+            ADVPublicPrivate__c                  = 'Public',
+            CventEvents__pkg_Status__c           = STATUS_ACTIVE,
+            CventEvents__pkg_EventStatus__c      = 'Upcoming',
+            CventEvents__pkg_EventStub__c        = 'ESS1',
+            CventEvents__pkg_Code__c             = 'ESS1',
+            CventEvents__pkg_RegistrationLink__c = 'https://example.com/register-fallback',
+            ADVEssentialsURLforascend__c         = 'https://example.com/essentials',
+            CventEvents__pkg_Category__c = 'Test Ctaegory'
+        );
+
         insert new List<CventEvents__Event__c>{
-            ipEvent, virtEvent, pastEvent, cancelledEvent, pendingEvent
+            ipEvent, virtEvent, pastEvent, cancelledEvent, pendingEvent, essentialsEvent
         };
     }
 
@@ -297,13 +312,13 @@ private class Ham_UpcomingEventsControllerTest {
             }
         }
 
-        /*if (registeredItem != null) {
-            System.assertEquals(true, registeredItem.isRegistered,
+        if (registeredItem != null) {
+            /*System.assertEquals(true, registeredItem.isRegistered,
                 'Event should be flagged as registered');
             System.assertEquals('https://example.com/attendee/abc',
                 registeredItem.personalizedLink,
-                'Personalized link should match the attendee record');
-        }*/
+                'Personalized link should match the attendee record');*/
+        }
     }
 
     // ── 9. Registered user — null personalizedLink stored as '' ───────────────
@@ -328,8 +343,10 @@ private class Ham_UpcomingEventsControllerTest {
 
         for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
             if (item.id == String.valueOf(ev.Id)) {
-                //System.assertEquals(true, item.isRegistered,'Should still be marked registered even without personalizedLink');
-                //System.assertEquals('', item.personalizedLink,'Null personalizedLink should be stored as empty string');
+                /*System.assertEquals(true, item.isRegistered,
+                    'Should still be marked registered even without personalizedLink');
+                System.assertEquals('', item.personalizedLink,
+                    'Null personalizedLink should be stored as empty string');*/
                 break;
             }
         }
@@ -514,6 +531,52 @@ private class Ham_UpcomingEventsControllerTest {
             System.assertNotEquals('Ended Multi-Day Event', item.title,
                 'Event with EndDate in the past must be excluded regardless of StartDate');
         }
+    }
+
+    // ── 17b. Unregistered — ADVEssentialsURLforascend__c populated takes priority
+    // over CventEvents__pkg_RegistrationLink__c ────────────────────────────────
+    @isTest
+    static void testUnregisteredUser_EssentialsUrlPopulated_UsesEssentialsUrl() {
+        Contact c = getContact('NoRegion');
+
+        Test.startTest();
+        Ham_UpcomingEventsController.HomeEventsWrapper result =
+            Ham_UpcomingEventsController.getHomePageEvents(c.Id);
+        Test.stopTest();
+
+        Boolean found = false;
+        for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
+            if (item.title == 'Essentials URL Event') {
+                found = true;
+                System.assertEquals('https://example.com/essentials', item.registrationLink,
+                    'ADVEssentialsURLforascend__c must be preferred when populated');
+                break;
+            }
+        }
+        System.assert(found, 'Essentials URL Event should be present via gap fill');
+    }
+
+    // ── 17c. Unregistered — ADVEssentialsURLforascend__c blank falls back to
+    // CventEvents__pkg_RegistrationLink__c ──────────────────────────────────────
+    @isTest
+    static void testUnregisteredUser_EssentialsUrlBlank_FallsBackToPkgRegistrationLink() {
+        Contact c = getContact('NoRegion');
+
+        Test.startTest();
+        Ham_UpcomingEventsController.HomeEventsWrapper result =
+            Ham_UpcomingEventsController.getHomePageEvents(c.Id);
+        Test.stopTest();
+
+        Boolean found = false;
+        for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
+            if (item.title == 'Upcoming In-Person Event') {
+                found = true;
+                System.assertEquals('https://example.com/register', item.registrationLink,
+                    'Blank ADVEssentialsURLforascend__c must fall back to CventEvents__pkg_RegistrationLink__c');
+                break;
+            }
+        }
+        System.assert(found, 'Upcoming In-Person Event should be present via gap fill');
     }
 
     // ── 17. Wrapper inner classes instantiate with correct defaults ────────────

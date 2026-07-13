@@ -44,6 +44,8 @@
     color: var(--hp-text);
 }
 .composer__expand {
+    -webkit-appearance: none;
+    appearance: none;
     border: none;
     background: transparent;
     cursor: pointer;
@@ -67,9 +69,9 @@
 /* Inner composer field */
 .composer__card {
     border: 1px solid var(--hp-field-border);
-    border-radius: 10px;
+    border-radius: var(--hp-radius);
     background: #ffffff;
-    padding: 1rem 1.1rem 0.9rem;
+    padding: 1.1rem 1.2rem 1rem;
 }
 
 .composer__textarea {
@@ -192,6 +194,8 @@
     opacity: 0.7;
 }
 .chip__remove {
+    -webkit-appearance: none;
+    appearance: none;
     border: none;
     background: transparent;
     color: var(--hp-navy);
@@ -235,6 +239,8 @@
     white-space: nowrap;
 }
 .file-chip__remove {
+    -webkit-appearance: none;
+    appearance: none;
     border: none;
     background: transparent;
     color: var(--hp-muted);
@@ -262,6 +268,8 @@
     border-color: var(--hp-navy);
 }
 .linkbox__add {
+    -webkit-appearance: none;
+    appearance: none;
     border: 1px solid var(--hp-border);
     background: #fff;
     border-radius: 8px;
@@ -285,6 +293,8 @@
     flex: 1 1 auto;
 }
 .composer__status-close {
+    -webkit-appearance: none;
+    appearance: none;
     flex: 0 0 auto;
     border: none;
     background: transparent;
@@ -311,20 +321,22 @@
 .composer__footer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
+    justify-content: flex-start;
+    gap: 0.85rem;
     margin-top: 1.1rem;
 }
 
 .toolbar {
     display: inline-flex;
     align-items: center;
-    gap: 0.15rem;
+    gap: 0.25rem;
     background: var(--hp-soft-bg);
     border-radius: 10px;
-    padding: 0.2rem 0.3rem;
+    padding: 0.3rem 0.4rem;
 }
 .toolbar__btn {
+    -webkit-appearance: none;
+    appearance: none;
     border: none;
     background: transparent;
     cursor: pointer;
@@ -340,17 +352,12 @@
     width: 18px;
     height: 18px;
     fill: none;
-    stroke: #5a6470;
+    stroke: #475467;
     stroke-width: 1.7;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
-.actions {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-}
 .anon {
     display: inline-flex;
     align-items: center;
@@ -359,6 +366,11 @@
     color: #4a5260;
     cursor: pointer;
     user-select: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    /* Groups the checkbox together with the Post button on the right, leaving
+       the toolbar alone on the left, without needing a wrapper element. */
+    margin-left: auto;
 }
 .anon input {
     width: 16px;
@@ -368,11 +380,13 @@
 }
 
 .post-btn {
+    -webkit-appearance: none;
+    appearance: none;
     background: var(--hp-navy);
     color: #fff;
     border: none;
-    border-radius: 8px;
-    padding: 0.55rem 1.5rem;
+    border-radius: 10px;
+    padding: 0.6rem 1.6rem;
     font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
@@ -406,23 +420,28 @@
         border-radius: 12px;
     }
     .composer__card {
-        padding: 0.85rem 0.85rem 0.8rem;
+        border-radius: 16px;
+        padding: 1rem 1rem 0.95rem;
     }
     .composer__footer {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.85rem;
+        flex-wrap: wrap;
+        row-gap: 0.65rem;
     }
+    /* Row 1: toolbar on the left, Post button pinned to the right.
+       Row 2: the anonymous checkbox on its own, full-width line below. */
     .toolbar {
-        align-self: flex-start;
-    }
-    .actions {
-        width: 100%;
-        justify-content: space-between;
+        order: 1;
     }
     .post-btn {
+        order: 2;
+        margin-left: auto;
         flex: 0 0 auto;
-        padding: 0.6rem 1.6rem;
+        padding: 0.65rem 1.75rem;
+    }
+    .anon {
+        order: 3;
+        flex: 1 1 100%;
+        margin-left: 0;
     }
     .file-chip {
         max-width: 100%;
@@ -430,12 +449,15 @@
 }
 
 @media (max-width: 360px) {
-    .actions {
+    .composer__footer {
         flex-direction: column;
         align-items: stretch;
-        gap: 0.6rem;
+    }
+    .toolbar {
+        align-self: flex-start;
     }
     .post-btn {
+        margin-left: 0;
         width: 100%;
     }
 }

@@ -32,6 +32,53 @@
     margin: 0;
 }
 
+.section-header-row {
+    width: 100%;
+}
+
+.icon-link-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #1a518b;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: background 0.15s;
+    flex-shrink: 0;
+}
+
+.icon-link-btn:hover {
+    background: #f0f4ff;
+    color: #0a2463;
+}
+
+.expand-svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: #0a2463;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.15s;
+}
+
+.icon-link-btn:hover .expand-svg {
+    stroke: #001a5e;
+}
+
+.admin-root.kirkland-override .expand-svg {
+    stroke: #166837;
+}
+.admin-root.kirkland-override .icon-link-btn:hover .expand-svg {
+    stroke: #0d4b26;
+}
+.admin-root.kirkland-override .icon-link-btn:hover {
+    background: #eaf6ec;
+}
+
 /* Mobile Segmented Control */
 .segmented-control {
     display: flex;
@@ -98,6 +145,18 @@
 }
 
 /* Report Cards styling */
+.reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Two-cards-per-row: full moderation page only, not the dashboard preview widget */
+.reports-list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
 .report-card {
     background: #ffffff;
     border: 1px solid #e0e0e0;
@@ -275,6 +334,10 @@
         padding: 12px;
     }
 
+    .reports-list-grid {
+        grid-template-columns: 1fr;
+    }
+
     .report-card {
         padding: 12px;
     }
@@ -309,6 +372,35 @@
         width: 100%;
         text-align: center;
         padding: 10px 0;
+    }
+
+    /* Content Moderation preview widget on the Group Dashboard only
+       (is-preview="true", marked by .preview-mode on the root): Take Action
+       gets its own full-width row, View Content/Dismiss (and Reopen/View
+       Content on resolved reports) share the row below it — matches the
+       mobile Figma. The full Admin page above keeps the plain stacked
+       layout untouched. */
+    .admin-root.preview-mode .report-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .admin-root.preview-mode .report-actions .btn-admin-action,
+    .admin-root.preview-mode .report-actions .btn-admin-view,
+    .admin-root.preview-mode .report-actions .btn-admin-reopen {
+        margin-right: 0;
+    }
+
+    .admin-root.preview-mode .btn-admin-action {
+        flex: 1 1 100%;
+    }
+
+    .admin-root.preview-mode .btn-admin-view,
+    .admin-root.preview-mode .btn-admin-dismiss,
+    .admin-root.preview-mode .btn-admin-reopen {
+        flex: 1 1 calc(50% - 4px);
+        width: auto;
     }
 }
 
@@ -355,6 +447,56 @@
     font-weight: 500;
     color: #4b5563;
     margin-top: 4px;
+}
+
+/* See More (preview only) */
+.see-more-row {
+    margin-top: 8px;
+}
+
+.btn-see-more {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0a2463;
+    cursor: pointer;
+}
+
+.btn-see-more:hover {
+    text-decoration: underline;
+}
+
+/* Boxed "See more" (Pending Access Requests card) — bordered button rather
+   than a plain text link, matching the Figma request-list footer. */
+.see-more-row-box {
+    margin-top: 12px;
+}
+
+.btn-see-more-box {
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333333;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-see-more-box:hover {
+    background-color: #f8fafc;
+    border-color: #c9ced6;
+}
+
+.admin-root.kirkland-override .btn-see-more-box:hover {
+    background-color: #eaf6ec;
+    border-color: #166837;
 }
 
 /* Pending / Resolved report view toggle */
@@ -409,13 +551,13 @@
     padding: 4px 10px;
     border-radius: 4px;
 }
-.badge-post {
+.badge-message-report {
     background: #eff6ff;
     color: #1e40af;
 }
-.badge-comment {
-    background: #ecfdf5;
-    color: #065f46;
+.badge-user-report {
+    background: #eef2ff;
+    color: #4338ca;
 }
 .badge-active-flag {
     background: #ffedd5;
@@ -427,6 +569,10 @@
 }
 .report-card-middle {
     align-items: flex-start;
+}
+.report-actions {
+    flex-wrap: wrap;
+    row-gap: 8px;
 }
 .meta-row {
     font-size: 13px;

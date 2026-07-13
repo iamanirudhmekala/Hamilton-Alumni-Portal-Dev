@@ -23,6 +23,10 @@
  *  Jul 1, 2026   │ Immanuel  │ Change: "Upcoming" is now determined by EndDate (when populated
  *                             and > today) instead of StartDate; StartDate >= today remains the
  *                             fallback when EndDate is blank. Time fields are no longer considered.
+ *  Jul 9, 2026   │ Immanuel  │ Change: NOT-registered button URL now prefers
+ *                             ADVEssentialsURLforascend__c (metadata label "RegistrationLink1")
+ *                             when populated, falling back to CventEvents__pkg_RegistrationLink__c.
+ *                             Registered-event URL logic (personalizedLink) is unchanged.
  * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
  */
 @SuppressWarnings('PMD.NoTrailingWhitespace, PMD.ExcessiveClassLength, PMD.ApexDoc, PMD.DebugsShouldUseLoggingLevel, PMD.ApexCRUDViolation, PMD.AvoidNonRestrictiveQueries, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.NcssCount, PMD.ApexSOQLInjection, PMD.AvoidDebugStatements')
@@ -56,7 +60,7 @@ public without sharing class Ham_UpcomingEventsController {
         @AuraEnabled public String  endDate;            // 'YYYY-MM-DD' — formatted in LWC
         @AuraEnabled public String  location;
         @AuraEnabled public String  description;
-        @AuraEnabled public String  registrationLink;   // CventEvents__pkg_RegistrationLink__c — used when NOT registered
+        @AuraEnabled public String  registrationLink;   // NOT registered: ADVEssentialsURLforascend__c if populated, else CventEvents__pkg_RegistrationLink__c
         @AuraEnabled public Boolean isRegistered;       // true when the logged-in user has an Attendee record for this event
         @AuraEnabled public String  personalizedLink;   // CventEvents__PersonalizedRegistrationLink__c — used when registered
     }
@@ -71,6 +75,7 @@ public without sharing class Ham_UpcomingEventsController {
     private static final String LABEL_PLACE            = 'Place';
     private static final String LABEL_DESCRIPTION      = 'Description';
     private static final String LABEL_REG_LINK         = 'RegistrationLink';
+    private static final String LABEL_ESSENTIALS_LINK  = 'RegistrationLink1';   // ADVEssentialsURLforascend__c — preferred over LABEL_REG_LINK when not registered
     private static final String LABEL_FORMAT           = 'Format';
     private static final String LABEL_CATEGORY         = 'Category';
     private static final String LABEL_REGION           = 'Region';
@@ -152,6 +157,7 @@ public without sharing class Ham_UpcomingEventsController {
         String locationApi     = fieldLabelToApi.get(LABEL_PLACE);
         String descriptionApi  = fieldLabelToApi.get(LABEL_DESCRIPTION);
         String regLinkApi      = fieldLabelToApi.get(LABEL_REG_LINK);
+        String essentialsLinkApi = fieldLabelToApi.get(LABEL_ESSENTIALS_LINK);
         String formatApi       = fieldLabelToApi.get(LABEL_FORMAT);
         String categoryApi     = fieldLabelToApi.get(LABEL_CATEGORY);
         String regionApi       = fieldLabelToApi.get(LABEL_REGION);
@@ -302,7 +308,7 @@ public without sharing class Ham_UpcomingEventsController {
 
         result.inPersonEvents = mapToEventItems(
             inPersonRecords, titleApi, imageApi, startDateApi,
-            endDateApi, locationApi, descriptionApi, regLinkApi
+            endDateApi, locationApi, descriptionApi, regLinkApi, essentialsLinkApi
         );
 
         // ── 6. Query Virtual events ──────────────────────────────────────────
@@ -315,7 +321,7 @@ public without sharing class Ham_UpcomingEventsController {
             List<CventEvents__Event__c> virtualRecords = Database.query(virtualQuery);
             result.virtualEvents = mapToEventItems(
                 virtualRecords, titleApi, imageApi, startDateApi,
-                endDateApi, locationApi, descriptionApi, regLinkApi
+                endDateApi, locationApi, descriptionApi, regLinkApi, essentialsLinkApi
             );
         } catch (Exception e) {
             System.debug('Ham_UpcomingEventsController — Virtual query error: ' + e.getMessage());
@@ -388,7 +394,8 @@ public without sharing class Ham_UpcomingEventsController {
         String endDateApi,
         String locationApi,
         String descriptionApi,
-        String regLinkApi
+        String regLinkApi,
+        String essentialsLinkApi
     ) {
         List<EventItem> items = new List<EventItem>();
 
@@ -401,13 +408,27 @@ public without sharing class Ham_UpcomingEventsController {
             item.endDate          = getDateField(rec, endDateApi);
             item.location         = getStringField(rec, locationApi);
             item.description      = getStringField(rec, descriptionApi);
-            item.registrationLink = getStringField(rec, regLinkApi);
-            item.isRegistered     = false; 
+            item.registrationLink = resolveRegistrationLink(rec, essentialsLinkApi, regLinkApi);
+            item.isRegistered     = false;
             item.personalizedLink = '';
             items.add(item);
         }
 
         return items;
+    }
+
+    /**
+     * Resolves the button URL for a NOT-registered event: prefers the
+     * ADVEssentialsURLforascend__c metadata field (LABEL_ESSENTIALS_LINK) when populated,
+     * otherwise falls back to CventEvents__pkg_RegistrationLink__c (LABEL_REG_LINK).
+     * Registered-event URL logic (personalizedLink from the Attendee record) is unaffected.
+     */
+    private static String resolveRegistrationLink(SObject rec, String essentialsLinkApi, String regLinkApi) {
+        String essentialsValue = getStringField(rec, essentialsLinkApi);
+        if (String.isNotBlank(essentialsValue) && essentialsValue != '-') {
+            return essentialsValue;
+        }
+        return getStringField(rec, regLinkApi);
     }
 
     /** Safely retrieves a String field value from an SObject. Returns '' on null/ '-' on missing. */

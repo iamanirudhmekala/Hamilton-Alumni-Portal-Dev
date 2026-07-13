@@ -56,6 +56,11 @@
                                 <lightning-icon icon-name="utility:notification" size="x-small" class="bell-icon"></lightning-icon>
                                 <span class="caret">&#9662;</span>
                             </button>
+                            <!-- Invisible click-outside-to-close backdrop; closing without Save
+                                 discards staged toggle changes (same as Cancel). -->
+                            <template if:true={isNotificationDropdownOpen}>
+                                <div class="notif-backdrop" onclick={closeNotificationDropdown}></div>
+                            </template>
                             <template if:true={isNotificationDropdownOpen}>
                                 <div class="notification-dropdown">
                                     <h4 class="notif-dropdown-title">Notification Settings</h4>
@@ -64,31 +69,64 @@
                                             <span class="notif-label">Send me Notifications</span>
                                             <span class="notif-desc">Receive notifications from this group</span>
                                         </div>
-                                        <lightning-input type="toggle" variant="label-hidden" 
-                                            checked={receiveNotifications} onchange={handleNotificationToggle}
-                                            data-field="Receive_Notifications__c">
-                                        </lightning-input>
+                                        <div class="custom-toggle-wrapper"
+                                            data-field="Receive_Notifications__c"
+                                            onclick={handleNotificationToggle}
+                                            role="switch"
+                                            aria-checked={effectiveReceiveNotifications}>
+                                            <span class={receiveNotificationsTrackClass}></span>
+                                            <span class="custom-toggle-label-active">Yes</span>
+                                            <span class="custom-toggle-label-inactive">No</span>
+                                        </div>
                                     </div>
                                     <div class="notif-option">
                                         <div class="notif-info">
                                             <span class="notif-label">Tagged Notifications</span>
                                             <span class="notif-desc">When you're tagged in a post or comment</span>
                                         </div>
-                                        <lightning-input type="toggle" variant="label-hidden"
-                                            checked={notifyOnTagged} onchange={handleNotificationToggle}
-                                            data-field="Notify_on_Tagged__c" disabled={isReceiveNotificationsDisabled}>
-                                        </lightning-input>
+                                        <div class={subToggleWrapperClass}
+                                            data-field="Notify_on_Tagged__c"
+                                            onclick={handleNotificationToggle}
+                                            role="switch"
+                                            aria-checked={effectiveNotifyOnTagged}>
+                                            <span class={notifyOnTaggedTrackClass}></span>
+                                            <span class="custom-toggle-label-active">Yes</span>
+                                            <span class="custom-toggle-label-inactive">No</span>
+                                        </div>
                                     </div>
                                     <div class="notif-option">
                                         <div class="notif-info">
                                             <span class="notif-label">Amplified post Notifications</span>
                                             <span class="notif-desc">When a post is amplified in this group</span>
                                         </div>
-                                        <lightning-input type="toggle" variant="label-hidden"
-                                            checked={notifyOnAmplified} onchange={handleNotificationToggle}
-                                            data-field="Notify_on_Amplified__c" disabled={isReceiveNotificationsDisabled}>
-                                        </lightning-input>
+                                        <div class={subToggleWrapperClass}
+                                            data-field="Notify_on_Amplified__c"
+                                            onclick={handleNotificationToggle}
+                                            role="switch"
+                                            aria-checked={effectiveNotifyOnAmplified}>
+                                            <span class={notifyOnAmplifiedTrackClass}></span>
+                                            <span class="custom-toggle-label-active">Yes</span>
+                                            <span class="custom-toggle-label-inactive">No</span>
+                                        </div>
                                     </div>
+                                    <template lwc:if={hasPendingNotificationChanges}>
+                                        <div class="notif-save-row">
+                                            <button
+                                                type="button"
+                                                class="notif-btn-cancel"
+                                                onclick={handleCancelNotifications}
+                                                disabled={isSavingNotifications}>
+                                                Cancel
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="notif-btn-save"
+                                                onclick={handleSaveNotifications}
+                                                disabled={isSavingNotifications}>
+                                                {saveNotificationsLabel}
+                                            </button>
+                                        </div>
+                                    </template>
                                 </div>
                             </template>
                         </div>
@@ -161,7 +199,8 @@
                                    user-contact-id={userContactId}
                                    is-admin={isAdmin}
                                    is-override={isOverride}
-                                   limit-count="5">
+                                   limit-count="5"
+                                   onseemore={handleGoToDiscussion}>
                                 </c-ham_group-feed>
                             </div>
 
@@ -241,7 +280,19 @@
                             <c-ham_group-admin
                                 group-id={groupId}
                                 contact-id={userContactId}
-                                is-override={isOverride}>
+                                is-override={isOverride}
+                                onseerequests={handleGoToRequests}>
+                            </c-ham_group-admin>
+                        </div>
+                    </template>
+
+                    <template if:true={isMembershipRequestsTab}>
+                        <div class="full-view-panel">
+                            <c-ham_group-admin
+                                group-id={groupId}
+                                contact-id={userContactId}
+                                is-override={isOverride}
+                                requests-only="true">
                             </c-ham_group-admin>
                         </div>
                     </template>
@@ -317,7 +368,8 @@
                                     group-id={groupId}
                                     contact-id={userContactId}
                                     is-preview="true"
-                                    is-override={isOverride}>
+                                    is-override={isOverride}
+                                    onseemore={handleGoToAdmin}>
                                 </c-ham_group-admin>
                             </div>
                         </template>
