@@ -98,7 +98,7 @@
                 <!-- Pinned Post Banner -->
                 <template lwc:if={post.isPinned}>
                     <div class="post-top-banner">
-                        <span class="post-top-banner-icon">📌</span>
+                        <img src={pinnedIconUrl} alt="" class="post-top-banner-icon" />
                         <span class="post-top-banner-label">Pinned by admin</span>
                     </div>
                 </template>
@@ -106,7 +106,7 @@
                 <!-- Amplified Post Banner -->
                 <template lwc:if={post.isAmplified}>
                     <div class="post-top-banner">
-                        <span class="post-top-banner-icon">🚀</span>
+                        <img src={amplifiedIconUrl} alt="" class="post-top-banner-icon" />
                         <span class="post-top-banner-label">Amplified Post</span>
                     </div>
                 </template>
@@ -202,15 +202,16 @@
                 <!-- Post Actions Bar -->
                 <div class="post-actions-bar slds-grid slds-p-top_small border-top">
                     <button type="button" class="interaction-btn" data-post-id={post.id} onclick={toggleComments}>
-                        <lightning-icon icon-name="utility:comments" size="x-small" class="btn-icon"></lightning-icon>
+                        <img src={commentsIconUrl} alt="" class="btn-icon-img" />
                         {post.replyLabel}
                     </button>
                     <button type="button" class="interaction-btn bookmark-btn" data-post-id={post.id} onclick={toggleBookmark} title="Save Post">
-                        <lightning-icon
+                        <img src={post.bookmarkIconUrl} alt={post.bookmarkAlt} class="btn-icon-img" />
+                        <!-- <lightning-icon
                             icon-name={post.bookmarkIcon}
                             size="x-small"
                             class={post.bookmarkClass}>
-                        </lightning-icon>
+                        </lightning-icon> -->
                         Bookmark
                     </button>
                 </div>
@@ -243,28 +244,38 @@
                                             </div>
                                             <div class="comment-meta slds-grid slds-grid_vertical-align-center">
                                                 <span class="comment-time slds-m-right_x-small">
-                                                    <lightning-formatted-date-time 
-                                                        value={cmt.createdDate} 
-                                                        month="short" 
-                                                        day="numeric" 
-                                                        hour="2-digit" 
+                                                    <lightning-formatted-date-time
+                                                        value={cmt.createdDate}
+                                                        month="short"
+                                                        day="numeric"
+                                                        hour="2-digit"
                                                         minute="2-digit">
                                                     </lightning-formatted-date-time>
                                                 </span>
-                                                <!-- Edit Reply Button (own replies only) -->
-                                                <template lwc:if={cmt.isOwnComment}>
-                                                    <button type="button" class="action-btn-small action-btn-small-edit" data-comment-id={cmt.commentId} data-post-id={post.id} onclick={handleEditComment} title="Edit Reply">
-                                                        <lightning-icon icon-name="utility:edit" size="xx-small"></lightning-icon>
+                                                <!-- Three-dot / Comment Actions Menu -->
+                                                <div class="kebab-wrapper comment-kebab-wrapper">
+                                                    <button type="button" class="action-btn-small" data-comment-id={cmt.commentId} data-post-id={post.id} onclick={toggleCommentActionMenu} title="More Actions">
+                                                        <lightning-icon icon-name="utility:threedots_vertical" size="xx-small"></lightning-icon>
                                                     </button>
-                                                </template>
-                                                <!-- Report Comment Button -->
-                                                <button type="button" class="action-btn-small" data-comment-id={cmt.commentId} onclick={openReportCommentModal} title="Report Comment">
-                                                    <lightning-icon icon-name="utility:flag" size="xx-small"></lightning-icon>
-                                                </button>
-                                                <!-- Report User Button -->
-                                                <button type="button" class="action-btn-small" data-comment-id={cmt.commentId} onclick={openReportUserModalForComment} title="Report User">
-                                                    <lightning-icon icon-name="utility:warning" size="xx-small"></lightning-icon>
-                                                </button>
+                                                    <template lwc:if={cmt.isMenuOpen}>
+                                                        <div class="action-menu comment-action-menu">
+                                                            <template lwc:if={cmt.isOwnComment}>
+                                                                <button type="button" class="action-menu-item" data-comment-id={cmt.commentId} data-post-id={post.id} onclick={handleEditComment}>
+                                                                    <lightning-icon icon-name="utility:edit" size="x-small" class="menu-icon"></lightning-icon>
+                                                                    Edit Reply
+                                                                </button>
+                                                            </template>
+                                                            <button type="button" class="action-menu-item" data-comment-id={cmt.commentId} onclick={openReportCommentModal}>
+                                                                <lightning-icon icon-name="utility:warning" size="x-small" class="menu-icon"></lightning-icon>
+                                                                Report Message
+                                                            </button>
+                                                            <button type="button" class="action-menu-item" data-comment-id={cmt.commentId} onclick={openReportUserModalForComment}>
+                                                                <lightning-icon icon-name="utility:warning" size="x-small" class="menu-icon"></lightning-icon>
+                                                                Report User
+                                                            </button>
+                                                        </div>
+                                                    </template>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="comment-body slds-m-top_xx-small">

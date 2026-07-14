@@ -286,9 +286,13 @@
     border-bottom: 1px solid #e9e9e9;
 }
 
+/* Was an emoji glyph sized by font-size; now a 16px PNG from HAM_Icons, with a
+   -green variant swapped in under the Kirkland theme to match the label colour. */
 .post-top-banner-icon {
-    font-size: 16px;
-    line-height: 1;
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .feed-root.kirkland-override .post-top-banner {
@@ -519,6 +523,17 @@
     --sds-c-icon-color-foreground-default: currentColor;
 }
 
+/* .btn-icon only tints an SLDS icon; a PNG needs a box of its own, sized to match
+   the x-small lightning-icons it sits beside in the actions bar. Unlike an SLDS
+   icon, a PNG can't follow the button's currentColor — so these icons keep their
+   baked-in colour on hover instead of tinting with the label. */
+.btn-icon-img {
+    width: 0.875rem;
+    height: 0.875rem;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
 /* Comments Drawer Styling */
 .comments-drawer {
     background: #f8fafc;
@@ -616,6 +631,15 @@
 
 .action-btn-small-edit:hover {
     --sds-c-icon-color-foreground-default: #1a518b;
+}
+
+/* Comment Actions Kebab Menu (mirrors the post-level kebab, sized down) */
+.comment-kebab-wrapper .action-btn-small:hover {
+    --sds-c-icon-color-foreground-default: #7a7a7a;
+}
+
+.comment-action-menu {
+    min-width: 160px;
 }
 
 .comment-text {

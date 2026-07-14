@@ -142,7 +142,11 @@ export default class Ham_groupAdmin extends LightningElement {
             ...rep,
             reportTypeLabel: rep.isUserReport ? 'User Report' : 'Message Report',
             reportTypeClass: rep.isUserReport ? 'badge-report-type badge-user-report' : 'badge-report-type badge-message-report',
-            timeAgo: this.formatTimeAgo(rep.createdDate)
+            timeAgo: this.formatTimeAgo(rep.createdDate),
+            // Comma-joined so the underlying report Ids can travel through a data-* attribute;
+            // Dismiss/Take Action/Reopen must resolve every duplicate report in the group, not
+            // just the representative reportId.
+            reportIdsCsv: (rep.reportIds || []).join(',')
         };
     }
 
@@ -171,11 +175,11 @@ export default class Ham_groupAdmin extends LightningElement {
     // ─── Moderation Action Handlers ──────────────────────────────────────────
 
     handleResolveReport(event) {
-        const reportId = event.currentTarget.dataset.reportId;
+        const reportIds = (event.currentTarget.dataset.reportIds || '').split(',').filter(Boolean);
         const actionType = event.currentTarget.dataset.action; // 'Dismiss'
 
         this.isLoading = true;
-        resolveReport({ reportId, actionType, currentContactId: this.contactId })
+        resolveReport({ reportIds, actionType, currentContactId: this.contactId })
             .then(() => {
                 this.showToast('Success', 'Report dismissed successfully.', 'success');
                 return this.loadReports();
@@ -190,10 +194,10 @@ export default class Ham_groupAdmin extends LightningElement {
     }
 
     handleReopenReport(event) {
-        const reportId = event.currentTarget.dataset.reportId;
+        const reportIds = (event.currentTarget.dataset.reportIds || '').split(',').filter(Boolean);
 
         this.isLoading = true;
-        resolveReport({ reportId, actionType: 'Reopen', currentContactId: this.contactId })
+        resolveReport({ reportIds, actionType: 'Reopen', currentContactId: this.contactId })
             .then(() => {
                 this.showToast('Success', 'Report reopened and moved back to Pending.', 'success');
                 return this.loadReports();
@@ -247,9 +251,9 @@ export default class Ham_groupAdmin extends LightningElement {
     // ─── Take Action Modal (Warn / Delete / Block) ───────────────────────────
 
     openTakeActionModal(event) {
-        const reportId = event.currentTarget.dataset.reportId;
+        const reportIds = (event.currentTarget.dataset.reportIds || '').split(',').filter(Boolean);
         const userName = event.currentTarget.dataset.user;
-        this.activeReport = { reportId, userName };
+        this.activeReport = { reportIds, userName };
         this.selectedActionCode = null;
         this.actionMessage = '';
         this.takeActionStep = 1;
@@ -284,7 +288,7 @@ export default class Ham_groupAdmin extends LightningElement {
         this.isSubmittingAction = true;
 
         takeReportAction({
-            reportId: this.activeReport.reportId,
+            reportIds: this.activeReport.reportIds,
             actionType: this.selectedActionCode,
             message: this.actionMessage,
             currentContactId: this.contactId

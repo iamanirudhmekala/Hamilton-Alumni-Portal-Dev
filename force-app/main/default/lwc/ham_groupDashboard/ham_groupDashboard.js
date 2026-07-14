@@ -9,6 +9,7 @@ export default class Ham_groupDashboard extends LightningElement {
     @api groupId;
     @api subview;
     @api userContactId;
+    @api images = {};
 
     _isOverride = false;
     @api
@@ -170,6 +171,10 @@ export default class Ham_groupDashboard extends LightningElement {
             : 'btn-membership btn-membership-join';
     }
 
+    get hasMemberPreviews() {
+        return !!(this.group && this.group.memberPreviews && this.group.memberPreviews.length);
+    }
+
     get adminJobTitle() {
         if (!this.group || !this.group.admin) return '';
         const { jobTitle, employer } = this.group.admin;
@@ -196,28 +201,44 @@ export default class Ham_groupDashboard extends LightningElement {
         if (!this.group || !this.group.userMembershipId) return;
         if (fieldApiName !== 'Receive_Notifications__c' && this.isReceiveNotificationsDisabled) return;
 
-        let currentValue;
-        let savedValue;
-        if (fieldApiName === 'Receive_Notifications__c') {
-            currentValue = this.effectiveReceiveNotifications;
-            savedValue = this.receiveNotifications;
-        } else if (fieldApiName === 'Notify_on_Tagged__c') {
-            currentValue = this.effectiveNotifyOnTagged;
-            savedValue = this.notifyOnTagged;
-        } else if (fieldApiName === 'Notify_on_Amplified__c') {
-            currentValue = this.effectiveNotifyOnAmplified;
-            savedValue = this.notifyOnAmplified;
+        const updated = { ...this.pendingNotificationChanges };
+        const newValue = !this.effectiveValueOf(fieldApiName);
+        this.stageChange(updated, fieldApiName, newValue);
+
+        // Switching the master off switches Tagged and Amplified off with it — they're
+        // saved as false, not just greyed out, so turning the master back on brings them
+        // back off. Apex re-applies the same cascade on save.
+        if (fieldApiName === 'Receive_Notifications__c' && newValue === false) {
+            ['Notify_on_Tagged__c', 'Notify_on_Amplified__c'].forEach(dependentField => {
+                this.stageChange(updated, dependentField, false);
+            });
         }
 
-        const newValue = !currentValue;
-        const updated = { ...this.pendingNotificationChanges };
-        if (newValue === savedValue) {
-            // Back to the last-saved value — nothing left to save for this field
-            delete updated[fieldApiName];
-        } else {
-            updated[fieldApiName] = newValue;
-        }
         this.pendingNotificationChanges = updated;
+    }
+
+    effectiveValueOf(fieldApiName) {
+        if (fieldApiName === 'Receive_Notifications__c') return this.effectiveReceiveNotifications;
+        if (fieldApiName === 'Notify_on_Tagged__c')      return this.effectiveNotifyOnTagged;
+        if (fieldApiName === 'Notify_on_Amplified__c')   return this.effectiveNotifyOnAmplified;
+        return false;
+    }
+
+    savedValueOf(fieldApiName) {
+        if (fieldApiName === 'Receive_Notifications__c') return this.receiveNotifications;
+        if (fieldApiName === 'Notify_on_Tagged__c')      return this.notifyOnTagged;
+        if (fieldApiName === 'Notify_on_Amplified__c')   return this.notifyOnAmplified;
+        return false;
+    }
+
+    // Stages a field onto the pending map, or drops it if the value is already what's
+    // saved — so a field the user toggled back and forth doesn't ride along in the Save.
+    stageChange(pending, fieldApiName, newValue) {
+        if (newValue === this.savedValueOf(fieldApiName)) {
+            delete pending[fieldApiName];
+        } else {
+            pending[fieldApiName] = newValue;
+        }
     }
 
     handleCancelNotifications(event) {

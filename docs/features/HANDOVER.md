@@ -1,5 +1,12 @@
 # HANDOVER — Group Notifications Enhancement
-*Last session: 2026-07-09 · Target org: `hamdevsabdbox` (hamiltoncollege--advdev.sandbox)*
+*Last session: 2026-07-13 · Target org: `hamdevsabdbox` (hamiltoncollege--advdev.sandbox)*
+
+> **2026-07-13 session:** shipped the client's two new asks — notification precedence rules
+> (master toggle cascades off to Tagged/Amplified; one alert per post, the "New post in
+> {Group}" message beating the mention message) and the Figma Members sidebar card. Details
+> in [Groups.md](Groups.md) §9. **Uncommitted and not deployed.** The bell-popup outside-click
+> bug in §4 below was fixed in an earlier pass (`notif-backdrop` + `closeNotificationDropdown`
+> are in `ham_groupDashboard`) — retest, then strike §4.
 
 > Companion doc: [Groups.md](Groups.md) has the full architecture map + implementation-status
 > tables. This session's findings are synced there as **Section 8** (root causes, navigation
@@ -93,6 +100,11 @@ Diagnosis so far (unconfirmed, next person verify):
 
 ## 5. Remaining next steps (in order)
 
+0. **Run `Ham_GroupsControllerTest`** — it could not be executed on 2026-07-13: the sandbox's
+   `Ham_GroupsController` is behind the local working tree (org's `resolveReport` has a
+   different signature), so the test class doesn't compile against the org. It needs a deploy
+   of the local Apex first — and that working tree also carries another developer's
+   in-progress `ham_groupAdmin` changes, so coordinate before deploying.
 1. **Fix repo/org drift** (critical): add `Groups` to `HAM_Source_Type__c.field-meta.xml`;
    verify permission-set XML edit-FLS matches what the user granted in the org.
 2. **Fix the bell-popup outside-click bug** (§4 above, backdrop pattern).
@@ -111,8 +123,11 @@ Diagnosis so far (unconfirmed, next person verify):
      `isStudent` resolves after URL parsing).
    - Master-toggle semantics: is "Send Me Notifications" a pure gate or the every-post
      subscription? (Recommended: add 4th field `Notify_on_New_Posts__c`, master = pure gate.)
-   - Mention dedupe: suppress generic "New post in X" for members who receive the mention
-     notification for the same post (skip only when their `Notify_on_Tagged__c` = true).
+   - ~~Mention dedupe~~ — **ANSWERED 2026-07-13 and shipped, but the client chose the
+     *opposite* precedence to what was recommended here:** the generic "New post in X"
+     message wins and the mention alert is dropped (not the other way round). Since the
+     master toggle is also the every-post subscription, that suppresses *all* post
+     @mentions; only comment @mentions fire. See Groups.md §9b before touching it.
    - Amplified vs pinned feed ordering (recommended: Pinned > Amplified > chronological, via a
      third initial-load block excluded from keyset pagination — do NOT sort the paginated query
      by Is_Amplified__c, it breaks `Id < :lastPostId`). Un-amplify / re-amplify semantics.

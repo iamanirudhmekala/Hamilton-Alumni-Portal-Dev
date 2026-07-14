@@ -47,8 +47,10 @@ public without sharing class Ham_GroupsController {
     }
 
     public class MemberPreviewWrapper {
+        @AuraEnabled public String contactId;
         @AuraEnabled public String name;
         @AuraEnabled public String photoUrl;
+        @AuraEnabled public String title;
     }
 
     public class MemberWrapper {
@@ -226,8 +228,8 @@ public without sharing class Ham_GroupsController {
         List<HAM_Group__c> groups = [
             SELECT Id, Name, About__c, What_We_Offer__c, Community_Guidelines__c,
                    Banner_Image_URL__c, Category__c, Active_Member_Count__c, Visibility__c,
-                   (SELECT Contact__r.Name, Contact__r.HAM_Profile_Picture_URL__c,
-                           Contact__r.Title, Contact__r.Constituent_Employer__c,
+                   (SELECT Contact__c, Contact__r.Name, Contact__r.HAM_Profile_Picture_URL__c,
+                           Contact__r.Title, Contact__r.Constituent_Employer__r.Name,
                            Role__c, Status__c
                     FROM HAM_Group_Members__r
                     WHERE Status__c = 'Active'
@@ -253,17 +255,25 @@ public without sharing class Ham_GroupsController {
 
         // First Admin record → admin card; all records → sidebar previews
         for (HAM_Group_Member__c m : g.HAM_Group_Members__r) {
+            // Constituent_Employer__c is a Lookup to Account — the field itself holds the
+            // Account Id, so the employer *name* only comes off the relationship.
+            String employerName = m.Contact__r.Constituent_Employer__r != null
+                ? m.Contact__r.Constituent_Employer__r.Name
+                : null;
+
             if (detail.admin == null && m.Role__c == 'Admin') {
                 AdminWrapper admin = new AdminWrapper();
                 admin.name     = m.Contact__r.Name;
                 admin.photoUrl = m.Contact__r.HAM_Profile_Picture_URL__c;
                 admin.jobTitle = m.Contact__r.Title;
-                admin.employer = m.Contact__r.Constituent_Employer__c;
+                admin.employer = employerName;
                 detail.admin   = admin;
             }
             MemberPreviewWrapper preview = new MemberPreviewWrapper();
-            preview.name     = m.Contact__r.Name;
-            preview.photoUrl = m.Contact__r.HAM_Profile_Picture_URL__c;
+            preview.contactId = m.Contact__c;
+            preview.name      = m.Contact__r.Name;
+            preview.photoUrl  = m.Contact__r.HAM_Profile_Picture_URL__c;
+            preview.title     = formatMemberTitle(m.Contact__r.Title, employerName);
             detail.memberPreviews.add(preview);
         }
 
@@ -285,6 +295,17 @@ public without sharing class Ham_GroupsController {
         }
 
         return detail;
+    }
+
+    // "{Title} at {Employer}" for the sidebar member rows, degrading to whichever
+    // half exists. Same shape as the admin card's subtitle.
+    private static String formatMemberTitle(String jobTitle, String employer) {
+        Boolean hasTitle    = String.isNotBlank(jobTitle);
+        Boolean hasEmployer = String.isNotBlank(employer);
+        if (hasTitle && hasEmployer) return jobTitle + ' at ' + employer;
+        if (hasTitle)                return jobTitle;
+        if (hasEmployer)             return employer;
+        return '';
     }
 
     // ─── Group Members ───────────────────────────────────────────────────────────
@@ -592,6 +613,12 @@ public without sharing class Ham_GroupsController {
         'Receive_Notifications__c', 'Notify_on_Tagged__c', 'Notify_on_Amplified__c'
     };
 
+    // Switching the master toggle off must also switch these off, rather than leaving
+    // them true-but-inert underneath it.
+    private static final Set<String> MASTER_DEPENDENT_FIELDS = new Set<String>{
+        'Notify_on_Tagged__c', 'Notify_on_Amplified__c'
+    };
+
     /**
      * @description Flips one or more notification-preference checkboxes on the
      *              caller's own membership row in a single DML. Routed through this
@@ -601,6 +628,11 @@ public without sharing class Ham_GroupsController {
      *              edit access to their own row under standard sharing — the same
      *              reason every other write in this controller goes through Apex
      *              instead of Lightning Data Service.
+     *              Turning the master toggle (Receive_Notifications__c) off also forces
+     *              Tagged and Amplified off, so the stored preferences can never say
+     *              "notify me when tagged" while the member receives nothing. The LWC
+     *              stages the same cascade, but it's re-applied here so the invariant
+     *              holds for any caller.
      * @param changes Map of field API name -> new boolean value (e.g. from a
      *                "Save" button batching several toggles at once).
      */
@@ -622,9 +654,16 @@ public without sharing class Ham_GroupsController {
             throw new AuraHandledException('Unauthorized access to membership record.');
         }
 
+        Map<String, Boolean> effectiveChanges = new Map<String, Boolean>(changes);
+        if (effectiveChanges.get('Receive_Notifications__c') == false) {
+            for (String dependentField : MASTER_DEPENDENT_FIELDS) {
+                effectiveChanges.put(dependentField, false);
+            }
+        }
+
         HAM_Group_Member__c member = new HAM_Group_Member__c(Id = membershipId);
-        for (String fieldApiName : changes.keySet()) {
-            member.put(fieldApiName, changes.get(fieldApiName));
+        for (String fieldApiName : effectiveChanges.keySet()) {
+            member.put(fieldApiName, effectiveChanges.get(fieldApiName));
         }
 
         SObjectAccessDecision decision = Security.stripInaccessible(AccessType.UPDATABLE, new List<HAM_Group_Member__c>{member});
@@ -726,11 +765,13 @@ public without sharing class Ham_GroupsController {
 
     public class ReportWrapper {
         @AuraEnabled public String reportId;
+        @AuraEnabled public List<String> reportIds;
         @AuraEnabled public String postId;
         @AuraEnabled public String commentId;
         @AuraEnabled public String reason;
         @AuraEnabled public String status;
-        @AuraEnabled public String reportedByName;
+        @AuraEnabled public String reportedByDisplay;
+        @AuraEnabled public Integer totalReportCount;
         @AuraEnabled public String reportedUserName;
         @AuraEnabled public String contentBody;
         @AuraEnabled public Datetime createdDate;
@@ -1684,87 +1725,154 @@ public without sharing class Ham_GroupsController {
             ORDER BY CreatedDate DESC
         ];
 
-        List<ReportWrapper> pending = new List<ReportWrapper>();
-        List<ReportWrapper> resolved = new List<ReportWrapper>();
-
+        List<HAM_Reported_Content__c> pendingRaw = new List<HAM_Reported_Content__c>();
+        List<HAM_Reported_Content__c> resolvedRaw = new List<HAM_Reported_Content__c>();
         for (HAM_Reported_Content__c r : dbReports) {
-            ReportWrapper rw = new ReportWrapper();
-            rw.reportId = r.Id;
-            rw.postId = r.Reported_Post__c;
-            rw.commentId = r.Reported_Comment__c;
-            rw.reason = r.Reason__c;
-            rw.status = r.Status__c;
-            rw.reportedByName = r.Reported_By__r.Name;
-            rw.createdDate = r.CreatedDate;
-            rw.isUserReport = r.Is_User_Report__c;
-
-            if (r.Reported_Post__c != null) {
-                rw.reportedUserName = r.Reported_Post__r.Author__r.Name;
-                rw.contentBody = r.Reported_Post__r.Body__c;
-            } else if (r.Reported_Comment__c != null) {
-                rw.reportedUserName = r.Reported_Comment__r.HAM_Group_Member__r.Contact__r.Name;
-                rw.contentBody = r.Reported_Comment__r.Body__c;
-            }
-
             if (r.Status__c == 'Pending') {
-                pending.add(rw);
+                pendingRaw.add(r);
             } else {
-                resolved.add(rw);
+                resolvedRaw.add(r);
             }
         }
 
         ModerationDashboardWrapper dash = new ModerationDashboardWrapper();
         dash.totalReports = dbReports.size();
-        dash.resolvedCount = resolved.size();
-        dash.pendingCount = pending.size();
-        dash.pendingReports = pending;
-        dash.resolvedReports = resolved;
+        dash.resolvedCount = resolvedRaw.size();
+        dash.pendingCount = pendingRaw.size();
+        dash.pendingReports = groupReportsByContentAndReason(pendingRaw);
+        dash.resolvedReports = groupReportsByContentAndReason(resolvedRaw);
         return dash;
     }
 
+    /**
+     * @description Collapses multiple HAM_Reported_Content__c rows filed against the same
+     *              post/comment for the same reason into a single card: one report card per
+     *              distinct piece of content + reason, carrying the full list of underlying
+     *              report Ids (so Dismiss/Take Action/Reopen resolve every duplicate report at
+     *              once) plus a "Reported by X and N other(s)" display built from the distinct,
+     *              alphabetically-sorted set of reporters.
+     */
+    private static List<ReportWrapper> groupReportsByContentAndReason(List<HAM_Reported_Content__c> records) {
+        Map<String, List<HAM_Reported_Content__c>> groupsByKey = new Map<String, List<HAM_Reported_Content__c>>();
+        List<String> orderedKeys = new List<String>();
+
+        for (HAM_Reported_Content__c r : records) {
+            String key = (r.Reported_Post__c != null ? ('P_' + r.Reported_Post__c) : ('C_' + r.Reported_Comment__c))
+                         + '|' + r.Reason__c;
+            if (!groupsByKey.containsKey(key)) {
+                groupsByKey.put(key, new List<HAM_Reported_Content__c>());
+                orderedKeys.add(key);
+            }
+            groupsByKey.get(key).add(r);
+        }
+
+        List<ReportWrapper> result = new List<ReportWrapper>();
+        for (String key : orderedKeys) {
+            List<HAM_Reported_Content__c> reportsInGroup = groupsByKey.get(key);
+            HAM_Reported_Content__c first = reportsInGroup[0];
+
+            Set<String> reporterNameSet = new Set<String>();
+            List<String> reportIds = new List<String>();
+            for (HAM_Reported_Content__c r : reportsInGroup) {
+                reportIds.add(r.Id);
+                if (r.Reported_By__r != null && String.isNotBlank(r.Reported_By__r.Name)) {
+                    reporterNameSet.add(r.Reported_By__r.Name);
+                }
+            }
+            List<String> reporterNames = new List<String>(reporterNameSet);
+            reporterNames.sort();
+
+            ReportWrapper rw = new ReportWrapper();
+            rw.reportId = first.Id;
+            rw.reportIds = reportIds;
+            rw.postId = first.Reported_Post__c;
+            rw.commentId = first.Reported_Comment__c;
+            rw.reason = first.Reason__c;
+            rw.status = first.Status__c;
+            rw.totalReportCount = reportsInGroup.size();
+            rw.reportedByDisplay = formatReportedByDisplay(reporterNames);
+            rw.createdDate = first.CreatedDate;
+            rw.isUserReport = first.Is_User_Report__c;
+
+            if (first.Reported_Post__c != null) {
+                rw.reportedUserName = first.Reported_Post__r.Author__r.Name;
+                rw.contentBody = first.Reported_Post__r.Body__c;
+            } else if (first.Reported_Comment__c != null) {
+                rw.reportedUserName = first.Reported_Comment__r.HAM_Group_Member__r.Contact__r.Name;
+                rw.contentBody = first.Reported_Comment__r.Body__c;
+            }
+
+            result.add(rw);
+        }
+        return result;
+    }
+
+    private static String formatReportedByDisplay(List<String> alphabeticalReporterNames) {
+        if (alphabeticalReporterNames.isEmpty()) return '';
+        if (alphabeticalReporterNames.size() == 1) return alphabeticalReporterNames[0];
+
+        Integer otherCount = alphabeticalReporterNames.size() - 1;
+        return alphabeticalReporterNames[0] + ' and ' + otherCount + (otherCount == 1 ? ' other' : ' others');
+    }
+
     @AuraEnabled
-    public static String resolveReport(Id reportId, String actionType, Id currentContactId) {
+    public static String resolveReport(List<Id> reportIds, String actionType, Id currentContactId) {
+        if (reportIds == null || reportIds.isEmpty()) {
+            throw new AuraHandledException('Report record not found.');
+        }
+
         List<HAM_Reported_Content__c> reports = [
-            SELECT Id, Reported_Post__c, Reported_Comment__c, Reported_Post__r.Group__c, 
+            SELECT Id, Reported_Post__c, Reported_Comment__c, Reported_Post__r.Group__c,
                    Reported_Comment__r.Post__r.Group__c
-            FROM HAM_Reported_Content__c 
-            WHERE Id = :reportId 
-            LIMIT 1
+            FROM HAM_Reported_Content__c
+            WHERE Id IN :reportIds
         ];
         if (reports.isEmpty()) {
             throw new AuraHandledException('Report record not found.');
         }
 
-        HAM_Reported_Content__c r = reports[0];
-        Id groupId = r.Reported_Post__c != null ? r.Reported_Post__r.Group__c : r.Reported_Comment__r.Post__r.Group__c;
+        // Every Id in the list belongs to the same grouped report card (same content +
+        // reason), so the first record's content/group references are representative
+        // of the whole group.
+        HAM_Reported_Content__c first = reports[0];
+        Id groupId = first.Reported_Post__c != null ? first.Reported_Post__r.Group__c : first.Reported_Comment__r.Post__r.Group__c;
         checkModerationAccess(groupId, currentContactId);
 
         if (actionType == 'Reopen') {
-            r.Status__c = 'Pending';
-            update r;
+            for (HAM_Reported_Content__c r : reports) {
+                r.Status__c = 'Pending';
+            }
+            update reports;
             return 'Success';
         }
 
+        // Resolve the report rows BEFORE deleting the reported post/comment. Reported_Post__c/
+        // Reported_Comment__c reference that content, so deleting it first can cascade-delete
+        // or otherwise invalidate these report rows, making the later `update reports` below
+        // throw on already-gone records.
+        for (HAM_Reported_Content__c r : reports) {
+            r.Status__c = 'Resolved';
+        }
+        update reports;
+
         if (actionType == 'TakeAction') {
-            if (r.Reported_Comment__c != null) {
-                List<HAM_Group_Comment__c> comments = [SELECT Id FROM HAM_Group_Comment__c WHERE Id = :r.Reported_Comment__c];
+            if (first.Reported_Comment__c != null) {
+                List<HAM_Group_Comment__c> comments = [SELECT Id FROM HAM_Group_Comment__c WHERE Id = :first.Reported_Comment__c];
                 if (!comments.isEmpty()) {
                     delete comments;
                 }
-            } else if (r.Reported_Post__c != null) {
-                List<HAM_Group_Post__c> posts = [SELECT Id FROM HAM_Group_Post__c WHERE Id = :r.Reported_Post__c];
+            } else if (first.Reported_Post__c != null) {
+                List<HAM_Group_Post__c> posts = [SELECT Id FROM HAM_Group_Post__c WHERE Id = :first.Reported_Post__c];
                 if (!posts.isEmpty()) {
                     delete posts;
                 }
             }
         }
 
-        r.Status__c = 'Resolved';
-        update r;
         return 'Success';
     }
 
-    private static final String MODERATION_EMAIL_SENDER = 'testemail.com';   // Need to update hamily@hamilton.edu after testing
+    private static final String MODERATION_EMAIL_SENDER = 'hamily@hamilton.edu';   // Need to update hamily@hamilton.edu after testing
     
     // Flip to true once MODERATION_EMAIL_SENDER is verified under
     // Setup > Organization-Wide Addresses. Until then, moderation emails send
@@ -1779,7 +1887,11 @@ public without sharing class Ham_GroupsController {
      *              LastModifiedBy/LastModifiedDate audit fields on the report record.
      */
     @AuraEnabled
-    public static String takeReportAction(Id reportId, String actionType, String message, Id currentContactId) {
+    public static String takeReportAction(List<Id> reportIds, String actionType, String message, Id currentContactId) {
+        if (reportIds == null || reportIds.isEmpty()) {
+            throw new AuraHandledException('Report record not found.');
+        }
+
         List<HAM_Reported_Content__c> reports = [
             SELECT Id, Reported_Post__c, Reported_Post__r.Group__c, Reported_Post__r.Author__c,
                    Reported_Post__r.Author__r.Email,
@@ -1787,38 +1899,50 @@ public without sharing class Ham_GroupsController {
                    Reported_Comment__r.HAM_Group_Member__r.Contact__c,
                    Reported_Comment__r.HAM_Group_Member__r.Contact__r.Email
             FROM HAM_Reported_Content__c
-            WHERE Id = :reportId
-            LIMIT 1
+            WHERE Id IN :reportIds
         ];
         if (reports.isEmpty()) {
             throw new AuraHandledException('Report record not found.');
         }
 
-        HAM_Reported_Content__c r = reports[0];
-        Id groupId = r.Reported_Post__c != null ? r.Reported_Post__r.Group__c : r.Reported_Comment__r.Post__r.Group__c;
+        // Every Id in the list belongs to the same grouped report card (same content +
+        // reason), so the first record's content/target references are representative
+        // of the whole group.
+        HAM_Reported_Content__c first = reports[0];
+        Id groupId = first.Reported_Post__c != null ? first.Reported_Post__r.Group__c : first.Reported_Comment__r.Post__r.Group__c;
         checkModerationAccess(groupId, currentContactId);
 
         Id targetContactId;
         String targetEmail;
-        if (r.Reported_Post__c != null) {
-            targetContactId = r.Reported_Post__r.Author__c;
-            targetEmail = r.Reported_Post__r.Author__r != null ? r.Reported_Post__r.Author__r.Email : null;
-        } else if (r.Reported_Comment__c != null) {
-            targetContactId = r.Reported_Comment__r.HAM_Group_Member__r.Contact__c;
-            targetEmail = r.Reported_Comment__r.HAM_Group_Member__r.Contact__r != null
-                ? r.Reported_Comment__r.HAM_Group_Member__r.Contact__r.Email
+        if (first.Reported_Post__c != null) {
+            targetContactId = first.Reported_Post__r.Author__c;
+            targetEmail = first.Reported_Post__r.Author__r != null ? first.Reported_Post__r.Author__r.Email : null;
+        } else if (first.Reported_Comment__c != null) {
+            targetContactId = first.Reported_Comment__r.HAM_Group_Member__r.Contact__c;
+            targetEmail = first.Reported_Comment__r.HAM_Group_Member__r.Contact__r != null
+                ? first.Reported_Comment__r.HAM_Group_Member__r.Contact__r.Email
                 : null;
         }
 
+        // Resolve the report rows BEFORE deleting the reported post/comment. Reported_Post__c/
+        // Reported_Comment__c reference that content, so deleting it first can cascade-delete
+        // or otherwise invalidate these report rows, making a later `update reports` throw on
+        // already-gone records (surfaces to the client as an unhandled 500, not the friendly
+        // AuraHandledException below).
+        for (HAM_Reported_Content__c r : reports) {
+            r.Status__c = 'Resolved';
+        }
+        update reports;
+
         if (actionType == 'Delete' || actionType == 'Block') {
             try {
-                if (r.Reported_Comment__c != null) {
-                    List<HAM_Group_Comment__c> comments = [SELECT Id FROM HAM_Group_Comment__c WHERE Id = :r.Reported_Comment__c];
+                if (first.Reported_Comment__c != null) {
+                    List<HAM_Group_Comment__c> comments = [SELECT Id FROM HAM_Group_Comment__c WHERE Id = :first.Reported_Comment__c];
                     if (!comments.isEmpty()) {
                         delete comments;
                     }
-                } else if (r.Reported_Post__c != null) {
-                    List<HAM_Group_Post__c> posts = [SELECT Id FROM HAM_Group_Post__c WHERE Id = :r.Reported_Post__c];
+                } else if (first.Reported_Post__c != null) {
+                    List<HAM_Group_Post__c> posts = [SELECT Id FROM HAM_Group_Post__c WHERE Id = :first.Reported_Post__c];
                     if (!posts.isEmpty()) {
                         delete posts;
                     }
@@ -1840,9 +1964,6 @@ public without sharing class Ham_GroupsController {
                 Cache.Session.remove('local.HamCommunityPartition.userGroups' + targetContactId);
             }
         }
-
-        r.Status__c = 'Resolved';
-        update r;
 
         if (String.isNotBlank(targetEmail)) {
             sendModerationEmail(targetEmail, message);

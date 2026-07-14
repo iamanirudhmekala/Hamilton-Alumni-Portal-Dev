@@ -620,11 +620,13 @@ public class Ham_GroupsControllerTest {
     }
 
     @IsTest
-    static void testCreatePostWithMentionSendsTaggedNotification() {
+    static void testCreatePostWithMentionSendsOnlyNewPostNotification() {
         HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
         Contact author = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
         Contact mentioned = [SELECT Id FROM Contact WHERE LastName = 'Doe' LIMIT 1];
 
+        // Mentioned member has the master toggle on (setUp) and Tagged on (field default),
+        // so they qualify for both the new-post fan-out and the mention fan-out.
         HAM_Group_Post__c post = new HAM_Group_Post__c(
             Group__c = grp.Id,
             Body__c = 'Hey @John Doe check this out',
@@ -638,15 +640,19 @@ public class Ham_GroupsControllerTest {
         System.assertEquals(mentioned.Id, inserted[0].Mentioned_Contact_Ids__c,
             'Mentioned contact Id should be persisted on the post.');
 
+        // A member is never alerted twice for the same post: the new-post message wins
+        // and the mention message is dropped.
         List<HAM_Notification__c> notifs = [
-            SELECT HAM_Constituent__c, HAM_Title__c, HAM_Body__c
+            SELECT HAM_Title__c, HAM_Body__c
             FROM HAM_Notification__c
             WHERE HAM_Constituent__c = :mentioned.Id AND HAM_Source_Type__c = 'Groups'
         ];
-        System.assertEquals(1, notifs.size(), 'Mentioned member should receive exactly one tagged notification.');
-        System.assertEquals('Public Tech Group', notifs[0].HAM_Title__c, 'Notification title should be the group name.');
-        System.assertEquals('Sachin Sharma mentioned you! in Public Tech Group', notifs[0].HAM_Body__c,
-            'Notification body should match the exact copy spec.');
+        System.assertEquals(1, notifs.size(),
+            'Mentioned member should receive exactly one notification for the post, not one per fan-out.');
+        System.assertEquals('New post in Public Tech Group', notifs[0].HAM_Title__c,
+            'The surviving notification should be the new-post alert, not the mention alert.');
+        System.assertEquals(false, notifs[0].HAM_Body__c.contains('mentioned you'),
+            'The mention copy should be suppressed when the new-post alert already covers the member.');
     }
 
     @IsTest
@@ -671,11 +677,14 @@ public class Ham_GroupsControllerTest {
             'Notification body should attribute the comment author, not the mentioned member.');
     }
 
+    // Exercised on a comment rather than a post: a post mention is always outranked by
+    // the new-post alert (see testCreatePostWithMentionSendsOnlyNewPostNotification), so
+    // the comment path is where the Tagged toggle and self-mention rules are observable.
     @IsTest
     static void testMentionRespectsTaggedToggleAndSelfMention() {
         HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
-        Contact author = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
-        Contact mentioned = [SELECT Id FROM Contact WHERE LastName = 'Doe' LIMIT 1];
+        Contact commenter = [SELECT Id FROM Contact WHERE LastName = 'Doe' LIMIT 1];
+        Contact mentioned = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
 
         // Mentioned member opts out of tagged notifications for this group
         HAM_Group_Member__c mem = [
@@ -685,21 +694,46 @@ public class Ham_GroupsControllerTest {
         mem.Notify_on_Tagged__c = false;
         update mem;
 
-        // Mention both the opted-out member and the author (self-mention) in one post
-        HAM_Group_Post__c post = new HAM_Group_Post__c(
-            Group__c = grp.Id,
-            Body__c = 'Tagging @John Doe and myself',
-            Mentioned_Contact_Ids__c = mentioned.Id + ',' + author.Id
-        );
+        HAM_Group_Post__c post = new HAM_Group_Post__c(Group__c = grp.Id, Body__c = 'Discuss here');
+        insert post;
 
         Test.startTest();
-        Ham_GroupsController.createPosts(new List<HAM_Group_Post__c>{post}, author.Id);
+        // Mention both the opted-out member and the commenter themselves (self-mention)
+        Ham_GroupsController.createComment(
+            post.Id, 'Tagging @Sachin Sharma and myself', commenter.Id, mentioned.Id + ',' + commenter.Id
+        );
         Test.stopTest();
 
         System.assertEquals(0, [
             SELECT COUNT() FROM HAM_Notification__c
-            WHERE HAM_Constituent__c IN (:mentioned.Id, :author.Id) AND HAM_Source_Type__c = 'Groups'
+            WHERE HAM_Constituent__c IN (:mentioned.Id, :commenter.Id) AND HAM_Source_Type__c = 'Groups'
         ], 'No tagged notification should be sent: the mentioned member opted out, and self-mentions are excluded.');
+    }
+
+    @IsTest
+    static void testTurningMasterToggleOffCascadesToSubToggles() {
+        HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
+        Contact con1 = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
+        HAM_Group_Member__c mem = [
+            SELECT Id FROM HAM_Group_Member__c
+            WHERE Group__c = :grp.Id AND Contact__c = :con1.Id LIMIT 1
+        ];
+
+        // Only the master is sent; Tagged/Amplified are on (field default) and must be
+        // forced off with it, so no preference is left true-but-inert.
+        Test.startTest();
+        Ham_GroupsController.updateNotificationPreferences(mem.Id, con1.Id, new Map<String, Boolean>{
+            'Receive_Notifications__c' => false
+        });
+        Test.stopTest();
+
+        HAM_Group_Member__c updated = [
+            SELECT Receive_Notifications__c, Notify_on_Tagged__c, Notify_on_Amplified__c
+            FROM HAM_Group_Member__c WHERE Id = :mem.Id
+        ];
+        System.assertEquals(false, updated.Receive_Notifications__c, 'Master toggle should be off.');
+        System.assertEquals(false, updated.Notify_on_Tagged__c, 'Tagged should be forced off with the master.');
+        System.assertEquals(false, updated.Notify_on_Amplified__c, 'Amplified should be forced off with the master.');
     }
 
     @IsTest

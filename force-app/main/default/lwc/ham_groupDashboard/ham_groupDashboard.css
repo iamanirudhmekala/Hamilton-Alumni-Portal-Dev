@@ -255,25 +255,70 @@
     margin: 0;
 }
 
-/* Member preview avatars */
-.member-preview-avatars {
+/* Member preview list */
+.member-preview-list {
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+    flex-direction: column;
+    gap: 8px;
+}
+.member-preview-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 28px;
+    background: #f4f5f7;
+    border-radius: 10px;
 }
 .preview-avatar {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #ffffff;
-    box-shadow: 0 0 0 1px #d0d5dd;
+    flex-shrink: 0;
 }
 .preview-avatar-fallback {
     background: #e6ecf2;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.member-preview-info {
+    min-width: 0;
+}
+.member-preview-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111111;
+    margin: 0 0 2px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.member-preview-title {
+    font-size: 12px;
+    color: #7a7a7a;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.member-see-more-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}
+.member-see-more-btn {
+    background: transparent;
+    border: none;
+    color: #1a518b;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+.member-see-more-btn:hover {
+    color: #0a2463;
+    text-decoration: underline;
 }
 
 /* Error */
@@ -588,14 +633,53 @@
     background: #eaf6ec;
     color: #0d4b26;
 }
+.kirkland-override .member-see-more-btn {
+    color: #166837;
+}
+.kirkland-override .member-see-more-btn:hover {
+    color: #0d4b26;
+}
 
 /* ── Mobile-first responsive (≤768px) ───────────────────────────────────────
-   The SLDS grid already stacks the main column above the sidebar on small
-   viewports; these rules tune the header, banner, and notification dropdown
-   so nothing overflows the screen edge on a phone. */
+   The SLDS grid stacks the main column above the sidebar on small viewports;
+   these rules tune the header, banner, and notification dropdown so nothing
+   overflows the screen edge on a phone, and re-sequence the dashboard cards
+   (see the ordering block below). */
 @media (max-width: 768px) {
     .banner-img,
     .banner-fallback { height: 140px; }
+
+    /* Card sequence on a phone. Stacking the two SLDS columns would put the whole
+       sidebar (Admin, Members, Moderation) after the whole main column, burying
+       Members below Resources. Collapsing the two column wrappers with
+       display:contents lifts every card into .group-body directly, so a single
+       `order` sequence can interleave them: Members now sits right under the
+       Discussion feed. The wrappers carry no styles of their own (they're pure
+       SLDS grid classes), so there's nothing to lose by collapsing them — but the
+       column padding goes with them, hence .group-body keeps the page gutter. */
+    .group-body {
+        display: flex;
+        flex-direction: column;
+        /* slds-gutters hangs the row on negative side margins that the columns'
+           own padding used to cancel out; with the columns collapsed, that padding
+           is gone and the cards would overhang the page gutter. */
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .group-main,
+    .dashboard-main-view,
+    .group-sidebar {
+        display: contents;
+    }
+    .about-block       { order: 1; }
+    .guidelines-row    { order: 2; }
+    .discussion-card   { order: 3; }
+    .members-card      { order: 4; }
+    .resources-card    { order: 5; }
+    .group-admin-card  { order: 6; }
+    .moderation-card   { order: 7; }
+    /* Full-page subviews (Discussion/Members/Resources/Admin tabs) render a single
+       .full-view-panel in place of the cards above — no ordering needed. */
 
     .group-name { font-size: 1.2rem; }
 

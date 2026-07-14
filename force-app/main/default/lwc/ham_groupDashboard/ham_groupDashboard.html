@@ -153,7 +153,7 @@
                             </template>
 
                             <!-- What We Offer & Guidelines -->
-                            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                            <div class="guidelines-row slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
                                 <template if:true={group.whatWeOffer}>
                                     <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-m-bottom_small guidelines-grid-col">
                                         <div class="info-card">
@@ -173,7 +173,7 @@
                             </div>
 
                             <!-- Discussion preview -->
-                            <div class="info-card slds-m-bottom_medium">
+                            <div class="discussion-card info-card slds-m-bottom_medium">
                                 <div class="section-header-row slds-grid slds-grid_align-spread slds-m-bottom_small">
                                     <h3 class="section-heading">Discussion</h3>
                                     <button class="icon-link-btn" onclick={handleGoToDiscussion} title="Full Feed">
@@ -205,7 +205,7 @@
                             </div>
 
                             <!-- Resources preview -->
-                            <div class="info-card slds-m-bottom_medium">
+                            <div class="resources-card info-card slds-m-bottom_medium">
                                 <div class="section-header-row slds-grid slds-grid_align-spread slds-m-bottom_small">
                                     <h3 class="section-heading">Resources</h3>
                                     <button class="icon-link-btn" onclick={handleGoToResources} title="All Resources">
@@ -248,7 +248,8 @@
                                show-filter="true"
                                isdiscussiontab="true"
                                is-admin={isAdmin}
-                               is-override={isOverride}>
+                               is-override={isOverride}
+                               images={images}>
                             </c-ham_group-feed>
                         </div>
                     </template>
@@ -304,7 +305,7 @@
                     <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 group-sidebar" style="box-sizing: border-box;">
 
                         <!-- Group Admin -->
-                        <div class="sidebar-card">
+                        <div class="group-admin-card sidebar-card">
                             <h3 class="sidebar-heading">Group Admin</h3>
                             <template if:true={group.admin}>
                                 <div class="admin-card">
@@ -325,7 +326,7 @@
                         </div>
 
                         <!-- Members Preview -->
-                        <div class="sidebar-card">
+                        <div class="members-card sidebar-card">
                             <div class="sidebar-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
                                 <h3 class="sidebar-heading">Members</h3>
                                 <button class="icon-link-btn" onclick={handleSeeMoreMembers} title="All Members">
@@ -336,24 +337,36 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div class="member-preview-avatars">
+                            <div class="member-preview-list">
                                 <template for:each={group.memberPreviews} for:item="preview">
-                                    <template if:true={preview.photoUrl}>
-                                        <img key={preview.name} src={preview.photoUrl}
-                                             alt={preview.name} class="preview-avatar" title={preview.name} />
-                                    </template>
-                                    <template if:false={preview.photoUrl}>
-                                        <div key={preview.name} class="preview-avatar preview-avatar-fallback" title={preview.name}>
-                                            <lightning-icon icon-name="standard:person_account" size="xx-small"></lightning-icon>
+                                    <div key={preview.contactId} class="member-preview-row">
+                                        <template if:true={preview.photoUrl}>
+                                            <img src={preview.photoUrl} alt={preview.name} class="preview-avatar" />
+                                        </template>
+                                        <template if:false={preview.photoUrl}>
+                                            <div class="preview-avatar preview-avatar-fallback">
+                                                <lightning-icon icon-name="standard:person_account" size="xx-small"></lightning-icon>
+                                            </div>
+                                        </template>
+                                        <div class="member-preview-info">
+                                            <p class="member-preview-name">{preview.name}</p>
+                                            <template if:true={preview.title}>
+                                                <p class="member-preview-title">{preview.title}</p>
+                                            </template>
                                         </div>
-                                    </template>
+                                    </div>
                                 </template>
                             </div>
+                            <template if:true={hasMemberPreviews}>
+                                <div class="member-see-more-row">
+                                    <button class="member-see-more-btn" onclick={handleSeeMoreMembers}>See more</button>
+                                </div>
+                            </template>
                         </div>
 
                         <!-- Content Moderation Preview (Admins only) -->
                         <template if:true={isAdmin}>
-                            <div class="sidebar-card">
+                            <div class="moderation-card sidebar-card">
                                 <div class="sidebar-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
                                     <h3 class="sidebar-heading">Content Moderation</h3>
                                     <button class="icon-link-btn" onclick={handleGoToAdmin} title="Full Moderation">

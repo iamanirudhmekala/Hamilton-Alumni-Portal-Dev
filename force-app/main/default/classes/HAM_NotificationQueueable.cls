@@ -382,13 +382,11 @@ public without sharing class HAM_NotificationQueueable implements Queueable {
             }
 
             List<HAM_Group_Member__c> members = [
-                SELECT Contact__c
+                SELECT Contact__c, Receive_Notifications__c, Notify_on_Tagged__c
                 FROM HAM_Group_Member__c
                 WHERE Group__c = :groupId
                   AND Contact__c IN :mentionedContactIds
                   AND Status__c = 'Active'
-                  AND Receive_Notifications__c = true
-                  AND Notify_on_Tagged__c = true
             ];
             if (members.isEmpty()) {
                 return;
@@ -396,9 +394,28 @@ public without sharing class HAM_NotificationQueueable implements Queueable {
 
             Set<Id> contactIds = new Set<Id>();
             for (HAM_Group_Member__c m : members) {
-                if (m.Contact__c != mentionAuthorContactId) {
-                    contactIds.add(m.Contact__c);
+                if (m.Contact__c == mentionAuthorContactId) {
+                    continue; // no self-mentions
                 }
+                if (!m.Receive_Notifications__c || !m.Notify_on_Tagged__c) {
+                    continue;
+                }
+                // Per the client's rule, a member never gets two alerts for the same post:
+                // when they're already in the "New post in {Group}" fan-out (execute()
+                // above — every active member with the master toggle on, except the
+                // author), that message wins and the mention alert is dropped. Comment
+                // mentions have no competing alert, so they always send.
+                //
+                // As the toggles stand today the master gate is *also* the new-post
+                // subscription, so this suppresses every post mention. Written as a real
+                // condition rather than by deleting the branch: if the master toggle ever
+                // becomes a pure gate (the proposed Notify_on_New_Posts__c field), post
+                // mentions start flowing again for members who aren't subscribed to every
+                // post, with no change here.
+                if (mentionType == 'Post' && receivesNewPostAlert(m)) {
+                    continue;
+                }
+                contactIds.add(m.Contact__c);
             }
             if (contactIds.isEmpty()) {
                 return;
@@ -462,6 +479,18 @@ public without sharing class HAM_NotificationQueueable implements Queueable {
         } catch (Exception e) {
             System.debug('Exception in HAM_NotificationQueueable (mentions): ' + e.getMessage() + ' at ' + e.getStackTraceString());
         }
+    }
+
+    /**
+     * @description Whether this member is already covered by the generic "New post in
+     *              {Group}" fan-out in execute() — i.e. the same recipient rule that
+     *              loop applies: an active member with the master toggle on, who isn't
+     *              the post's author. Kept in one place so the two stay in step.
+     * @param member Active member row of the group the post belongs to.
+     */
+    private Boolean receivesNewPostAlert(HAM_Group_Member__c member) {
+        return member.Receive_Notifications__c == true
+            && member.Contact__c != mentionAuthorContactId;
     }
 
     /**

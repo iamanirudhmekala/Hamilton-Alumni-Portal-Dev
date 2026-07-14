@@ -15,6 +15,10 @@ import unbookmarkPost from '@salesforce/apex/Ham_GroupsController.unbookmarkPost
 import getBookmarkedPostIds from '@salesforce/apex/Ham_GroupsController.getBookmarkedPostIds';
 import getGroupPostAuthors from '@salesforce/apex/Ham_GroupsController.getGroupPostAuthors';
 import searchGroupMembersForMention from '@salesforce/apex/Ham_GroupsController.searchGroupMembersForMention';
+import HAM_ICONS from '@salesforce/resourceUrl/HAM_Icons';
+// Group-specific icons live in their own resource: HAM_Icons is already over the 5MB
+// static-resource cap and can't take new files until its oversized assets are dealt with.
+import HAM_GROUP_ICONS from '@salesforce/resourceUrl/HAM_Group_Icons';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 const INITIAL_INTERVAL = 15000; // 15s
@@ -28,6 +32,7 @@ export default class Ham_groupFeed extends LightningElement {
     @api showFilter;
     @api isdiscussiontab;
     @api limitCount;
+    @api images = {};
 
     // Compact preview mode (embedded on the group dashboard landing page): caps the
     // visible posts to limitCount, scrolls internally instead of paginating, and
@@ -330,6 +335,8 @@ export default class Ham_groupFeed extends LightningElement {
             isBookmarked: this.bookmarkedIds.has(p.id),
             bookmarkIcon: this.bookmarkedIds.has(p.id) ? 'utility:bookmark' : 'utility:bookmark_alt',
             bookmarkClass: this.bookmarkedIds.has(p.id) ? 'bookmark-active' : '',
+            bookmarkIconUrl: this.resolveBookmarkIconUrl(this.bookmarkedIds.has(p.id)),
+            bookmarkAlt: this.bookmarkedIds.has(p.id) ? 'Bookmarked' : 'Bookmark',
             bodySegments: this.parseBody(p.body),
             cssClass: `post-card ${isTargeted ? 'post-card--highlighted' : ''} ${p.isPinned ? 'post-card--pinned' : ''} ${p.isAmplified ? 'post-card--amplified' : ''} ${isTargeted && this.isModeratorMode ? 'post-card--moderator-flagged' : ''}`,
             isCommentsOpen: false,
@@ -342,6 +349,31 @@ export default class Ham_groupFeed extends LightningElement {
             mentionSuggestions: [],
             pendingMentions: []
         };
+    }
+
+    // Bookmark icon is resolved off the HAM_Icons static resource rather than the
+    // parent-supplied `images` map, because the dashboard's preview feed isn't passed
+    // one. Four variants exist: fill/outline × default/Kirkland.
+    resolveBookmarkIconUrl(isBookmarked) {
+        const state = isBookmarked ? 'fill' : 'outline';
+        const theme = this.isOverride ? '-green' : '';
+        return `${HAM_ICONS}/bookmark-${state}${theme}.png`;
+    }
+
+    // Banner icons depend only on the theme, not on per-post state, so they're plain
+    // getters rather than fields stamped onto each post.
+    get pinnedIconUrl() {
+        return `${HAM_GROUP_ICONS}/groups-pinned${this.isOverride ? '-green' : ''}.png`;
+    }
+
+    get amplifiedIconUrl() {
+        return `${HAM_GROUP_ICONS}/groups-amplifier${this.isOverride ? '-green' : ''}.png`;
+    }
+
+    // No -green variant: the comments button stays grey in both themes (Kirkland only
+    // restyles its hover state).
+    get commentsIconUrl() {
+        return `${HAM_GROUP_ICONS}/groups-comments.png`;
     }
 
     formatReplyLabel(count) {
@@ -379,7 +411,9 @@ export default class Ham_groupFeed extends LightningElement {
                 ...post,
                 isBookmarked: this.bookmarkedIds.has(post.id),
                 bookmarkIcon: this.bookmarkedIds.has(post.id) ? 'utility:bookmark' : 'utility:bookmark_alt',
-                bookmarkClass: this.bookmarkedIds.has(post.id) ? 'bookmark-active' : ''
+                bookmarkClass: this.bookmarkedIds.has(post.id) ? 'bookmark-active' : '',
+                bookmarkIconUrl: this.resolveBookmarkIconUrl(this.bookmarkedIds.has(post.id)),
+                bookmarkAlt: this.bookmarkedIds.has(post.id) ? 'Bookmarked' : 'Bookmark'
             };
         });
     }
@@ -537,7 +571,8 @@ export default class Ham_groupFeed extends LightningElement {
                 const formattedComments = (data || []).map(c => ({
                     ...c,
                     isOwnComment: !!(c.contactId && this.userContactId && String(c.contactId) === String(this.userContactId)),
-                    cssClass: `comment-row ${this.targetCommentId && String(c.commentId) === String(this.targetCommentId) ? 'comment-row--highlighted' : ''} ${this.targetCommentId && String(c.commentId) === String(this.targetCommentId) && this.isModeratorMode ? 'comment-row--moderator-flagged' : ''}`
+                    cssClass: `comment-row ${this.targetCommentId && String(c.commentId) === String(this.targetCommentId) ? 'comment-row--highlighted' : ''} ${this.targetCommentId && String(c.commentId) === String(this.targetCommentId) && this.isModeratorMode ? 'comment-row--moderator-flagged' : ''}`,
+                    isMenuOpen: false
                 }));
 
                 this.posts = this.posts.map(post => {
@@ -853,14 +888,43 @@ export default class Ham_groupFeed extends LightningElement {
         const postId = event.currentTarget.dataset.postId;
         this.posts = this.posts.map(post => ({
             ...post,
-            isMenuOpen: post.id === postId ? !post.isMenuOpen : false
+            isMenuOpen: post.id === postId ? !post.isMenuOpen : false,
+            comments: (post.comments || []).map(c => ({ ...c, isMenuOpen: false }))
         }));
     }
 
     closeAllActionMenus() {
-        this.posts = this.posts.map(post =>
-            post.isMenuOpen ? { ...post, isMenuOpen: false } : post
-        );
+        this.posts = this.posts.map(post => {
+            const hasOpenComment = (post.comments || []).some(c => c.isMenuOpen);
+            if (!post.isMenuOpen && !hasOpenComment) return post;
+            return {
+                ...post,
+                isMenuOpen: false,
+                comments: hasOpenComment ? post.comments.map(c => ({ ...c, isMenuOpen: false })) : post.comments
+            };
+        });
+    }
+
+    // ─── Comment Actions Menu (three-dot kebab) ──────────────────────────────
+
+    toggleCommentActionMenu(event) {
+        event.stopPropagation();
+        const commentId = event.currentTarget.dataset.commentId;
+        const postId = event.currentTarget.dataset.postId;
+        this.posts = this.posts.map(post => {
+            if (post.id !== postId) {
+                const hasOpenComment = (post.comments || []).some(c => c.isMenuOpen);
+                return hasOpenComment ? { ...post, comments: post.comments.map(c => ({ ...c, isMenuOpen: false })) } : post;
+            }
+            return {
+                ...post,
+                isMenuOpen: false,
+                comments: post.comments.map(c => ({
+                    ...c,
+                    isMenuOpen: c.commentId === commentId ? !c.isMenuOpen : false
+                }))
+            };
+        });
     }
 
     // ─── Edit Post / Edit Reply ───────────────────────────────────────────────
@@ -894,6 +958,7 @@ export default class Ham_groupFeed extends LightningElement {
         this.editBody = comment.body || '';
         this.editTags = '';
         this.showEditModal = true;
+        this.closeAllActionMenus();
     }
 
     handleEditBodyChange(event) {
@@ -1041,10 +1106,12 @@ export default class Ham_groupFeed extends LightningElement {
     }
 
     openReportCommentModal(event) {
+        event.stopPropagation();
         this.reportingPostId = null;
         this.reportingCommentId = event.currentTarget.dataset.commentId;
         this.reportReason = 'Inappropriate Message';
         this.showReportModal = true;
+        this.closeAllActionMenus();
     }
 
     closeReportModal() {
@@ -1087,10 +1154,12 @@ export default class Ham_groupFeed extends LightningElement {
     }
 
     openReportUserModalForComment(event) {
+        event.stopPropagation();
         this.reportUserPostId = null;
         this.reportUserCommentId = event.currentTarget.dataset.commentId;
         this.reportUserReason = 'Inappropriate Message';
         this.showReportUserModal = true;
+        this.closeAllActionMenus();
     }
 
     closeReportUserModal() {

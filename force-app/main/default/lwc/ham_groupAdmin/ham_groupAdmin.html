@@ -77,7 +77,7 @@
                                             <!-- Header row of the card -->
                                             <div class="report-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
                                                 <span class={rep.reportTypeClass}>{rep.reportTypeLabel}</span>
-                                                <span class="badge-active-flag">Active Flag</span>
+                                                <span class="badge-active-flag">{rep.totalReportCount} reports total</span>
                                             </div>
 
                                             <!-- Meta and Timestamp Row -->
@@ -85,7 +85,7 @@
                                                 <div class="report-meta">
                                                     <p class="meta-row"><strong>Reported user:</strong> {rep.reportedUserName}</p>
                                                     <p class="meta-row"><strong>Reason:</strong> {rep.reason}</p>
-                                                    <p class="meta-row"><strong>Reported by:</strong> {rep.reportedByName}</p>
+                                                    <p class="meta-row"><strong>Reported by:</strong> {rep.reportedByDisplay}</p>
                                                 </div>
                                                 <span class="report-date">{rep.timeAgo}</span>
                                             </div>
@@ -95,7 +95,7 @@
                                                 <button
                                                     type="button"
                                                     class="btn-admin btn-admin-action slds-m-right_small"
-                                                    data-report-id={rep.reportId}
+                                                    data-report-ids={rep.reportIdsCsv}
                                                     data-user={rep.reportedUserName}
                                                     onclick={openTakeActionModal}>
                                                     Take Action
@@ -111,7 +111,7 @@
                                                 <button
                                                     type="button"
                                                     class="btn-admin btn-admin-dismiss"
-                                                    data-report-id={rep.reportId}
+                                                    data-report-ids={rep.reportIdsCsv}
                                                     data-action="Dismiss"
                                                     onclick={handleResolveReport}>
                                                     Dismiss
@@ -153,7 +153,7 @@
                                                 <div class="report-meta">
                                                     <p class="meta-row"><strong>Reported user:</strong> {rep.reportedUserName}</p>
                                                     <p class="meta-row"><strong>Reason:</strong> {rep.reason}</p>
-                                                    <p class="meta-row"><strong>Reported by:</strong> {rep.reportedByName}</p>
+                                                    <p class="meta-row"><strong>Reported by:</strong> {rep.reportedByDisplay}</p>
                                                 </div>
                                                 <span class="report-date">{rep.timeAgo}</span>
                                             </div>
@@ -163,7 +163,7 @@
                                                 <button
                                                     type="button"
                                                     class="btn-admin btn-admin-reopen slds-m-right_small"
-                                                    data-report-id={rep.reportId}
+                                                    data-report-ids={rep.reportIdsCsv}
                                                     onclick={handleReopenReport}>
                                                     Reopen
                                                 </button>
