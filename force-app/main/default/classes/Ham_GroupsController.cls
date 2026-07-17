@@ -844,7 +844,10 @@ public without sharing class Ham_GroupsController {
 
         // Is_Draft__c = false excludes in-progress posts that are still collecting file uploads
         String sharedFilter = ' WHERE Group__c = :groupId AND Is_Draft__c = false ';
-        if (likeTerm != null) sharedFilter += 'AND Body__c LIKE :likeTerm ';
+        // Anonymous posts are excluded from the name match — matching them would let a
+        // name search surface an anonymous post (still shown as "Anonymous" in the UI),
+        // leaking that the searched person authored it.
+        if (likeTerm != null) sharedFilter += 'AND Is_Anonymous__c = false AND Author__r.Name LIKE :likeTerm ';
         if (startDate != null) sharedFilter += 'AND CreatedDate >= :startDate ';
         if (endDate != null) sharedFilter += 'AND CreatedDate <= :endDate ';
         if (authorContactId != null) sharedFilter += 'AND Author__c = :authorContactId ';
@@ -1678,6 +1681,9 @@ public without sharing class Ham_GroupsController {
         }
 
         Id reportedUserId = null;
+        // Comment reports carry no postId from the client — derive the parent post here
+        // so Reported_Post__c is always populated, for both message and user reports.
+        Id parentPostId = postId;
         if (postId != null) {
             List<HAM_Group_Post__c> posts = [SELECT Author__c FROM HAM_Group_Post__c WHERE Id = :postId LIMIT 1];
             if (!posts.isEmpty()) {
@@ -1685,18 +1691,19 @@ public without sharing class Ham_GroupsController {
             }
         } else {
             List<HAM_Group_Comment__c> comments = [
-                SELECT HAM_Group_Member__r.Contact__c
+                SELECT Post__c, HAM_Group_Member__r.Contact__c
                 FROM HAM_Group_Comment__c
                 WHERE Id = :commentId
                 LIMIT 1
             ];
             if (!comments.isEmpty()) {
                 reportedUserId = comments[0].HAM_Group_Member__r.Contact__c;
+                parentPostId = comments[0].Post__c;
             }
         }
 
         HAM_Reported_Content__c report = new HAM_Reported_Content__c();
-        report.Reported_Post__c = postId;
+        report.Reported_Post__c = parentPostId;
         report.Reported_Comment__c = commentId;
         report.Reason__c = reason;
         report.Reported_By__c = currentContactId;
@@ -1757,7 +1764,10 @@ public without sharing class Ham_GroupsController {
         List<String> orderedKeys = new List<String>();
 
         for (HAM_Reported_Content__c r : records) {
-            String key = (r.Reported_Post__c != null ? ('P_' + r.Reported_Post__c) : ('C_' + r.Reported_Comment__c))
+            // Comment reports now also carry a Reported_Post__c, so branch on the more
+            // specific Reported_Comment__c first to keep grouping by the actual reported
+            // content (a comment), not its parent post.
+            String key = (r.Reported_Comment__c != null ? ('C_' + r.Reported_Comment__c) : ('P_' + r.Reported_Post__c))
                          + '|' + r.Reason__c;
             if (!groupsByKey.containsKey(key)) {
                 groupsByKey.put(key, new List<HAM_Reported_Content__c>());
@@ -1794,12 +1804,12 @@ public without sharing class Ham_GroupsController {
             rw.createdDate = first.CreatedDate;
             rw.isUserReport = first.Is_User_Report__c;
 
-            if (first.Reported_Post__c != null) {
-                rw.reportedUserName = first.Reported_Post__r.Author__r.Name;
-                rw.contentBody = first.Reported_Post__r.Body__c;
-            } else if (first.Reported_Comment__c != null) {
+            if (first.Reported_Comment__c != null) {
                 rw.reportedUserName = first.Reported_Comment__r.HAM_Group_Member__r.Contact__r.Name;
                 rw.contentBody = first.Reported_Comment__r.Body__c;
+            } else if (first.Reported_Post__c != null) {
+                rw.reportedUserName = first.Reported_Post__r.Author__r.Name;
+                rw.contentBody = first.Reported_Post__r.Body__c;
             }
 
             result.add(rw);
@@ -1835,7 +1845,7 @@ public without sharing class Ham_GroupsController {
         // reason), so the first record's content/group references are representative
         // of the whole group.
         HAM_Reported_Content__c first = reports[0];
-        Id groupId = first.Reported_Post__c != null ? first.Reported_Post__r.Group__c : first.Reported_Comment__r.Post__r.Group__c;
+        Id groupId = first.Reported_Comment__c != null ? first.Reported_Comment__r.Post__r.Group__c : first.Reported_Post__r.Group__c;
         checkModerationAccess(groupId, currentContactId);
 
         if (actionType == 'Reopen') {
@@ -1877,7 +1887,7 @@ public without sharing class Ham_GroupsController {
     // Flip to true once MODERATION_EMAIL_SENDER is verified under
     // Setup > Organization-Wide Addresses. Until then, moderation emails send
     // via the standard Salesforce default (the running user's address).
-    private static final Boolean USE_MODERATION_OWA = false;
+    private static final Boolean USE_MODERATION_OWA = true;
 
     /**
      * @description Handles the three "Take Action" outcomes for a flagged report:
@@ -1909,19 +1919,19 @@ public without sharing class Ham_GroupsController {
         // reason), so the first record's content/target references are representative
         // of the whole group.
         HAM_Reported_Content__c first = reports[0];
-        Id groupId = first.Reported_Post__c != null ? first.Reported_Post__r.Group__c : first.Reported_Comment__r.Post__r.Group__c;
+        Id groupId = first.Reported_Comment__c != null ? first.Reported_Comment__r.Post__r.Group__c : first.Reported_Post__r.Group__c;
         checkModerationAccess(groupId, currentContactId);
 
         Id targetContactId;
         String targetEmail;
-        if (first.Reported_Post__c != null) {
-            targetContactId = first.Reported_Post__r.Author__c;
-            targetEmail = first.Reported_Post__r.Author__r != null ? first.Reported_Post__r.Author__r.Email : null;
-        } else if (first.Reported_Comment__c != null) {
+        if (first.Reported_Comment__c != null) {
             targetContactId = first.Reported_Comment__r.HAM_Group_Member__r.Contact__c;
             targetEmail = first.Reported_Comment__r.HAM_Group_Member__r.Contact__r != null
                 ? first.Reported_Comment__r.HAM_Group_Member__r.Contact__r.Email
                 : null;
+        } else if (first.Reported_Post__c != null) {
+            targetContactId = first.Reported_Post__r.Author__c;
+            targetEmail = first.Reported_Post__r.Author__r != null ? first.Reported_Post__r.Author__r.Email : null;
         }
 
         // Resolve the report rows BEFORE deleting the reported post/comment. Reported_Post__c/

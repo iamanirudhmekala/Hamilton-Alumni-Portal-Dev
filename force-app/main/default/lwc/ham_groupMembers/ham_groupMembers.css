@@ -226,3 +226,13 @@
         padding: 16px;
     }
 }
+
+@media (max-width: 768px) {
+    .members-root .grid-container{
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    .members-root .alumni-parent-card{
+        margin: 5px 0px 0px 0px !important;
+    }
+}

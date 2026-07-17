@@ -15,7 +15,7 @@
                     <!-- Date Range Filter -->
                     <div class="filter-popover-wrapper">
                         <button type="button" class={dateFilterButtonClass} onclick={toggleDatePopover}>
-                        <lightning-icon icon-name="utility:date_input" size="x-small" class="filter-btn-icon"></lightning-icon>
+                        <img src={groupIcons.calendar} alt="" aria-hidden="true" class="filter-btn-img" />
                         <span>{dateRangeLabel}</span>
                     </button>
                         <template lwc:if={isDatePopoverOpen}>
@@ -39,7 +39,7 @@
                     <!-- People (Author) Filter -->
                     <div class="filter-popover-wrapper">
                         <button type="button" class={peopleFilterButtonClass} onclick={togglePeoplePopover}>
-                        <lightning-icon icon-name="utility:people" size="x-small" class="filter-btn-icon"></lightning-icon>
+                        <img src={groupIcons.people} alt="" aria-hidden="true" class="filter-btn-img" />
                         <span>{peopleLabel}</span>
                     </button>
                         <template lwc:if={isPeoplePopoverOpen}>

@@ -1,6 +1,7 @@
 /* Root */
 .dashboard-root {
     background: #f4f6f8;
+    /* background: transparent; */
     min-height: 100%;
     font-family: 'Mallory-main', sans-serif;
 }
@@ -16,7 +17,8 @@
 /* Banner */
 .banner-img {
     width: 100%;
-    height: 220px;
+    height: 280px;
+    border-radius: 16px;
     object-fit: cover;
     object-position: center;
     display: block;
@@ -38,7 +40,8 @@
 .group-name {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #0a2463;
+    /* color: #0a2463; */
+    color: #101828;
     margin: 0 0 8px 0;
 }
 .header-meta {
@@ -59,12 +62,12 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
-    color: #7a7a7a;
+    font-size: 14px;
+    color: #000;
 }
-.meta-icon {
+/* .meta-icon {
     --sds-c-icon-color-foreground-default: #7a7a7a;
-}
+} */
 .header-actions {
     display: flex;
     align-items: center;
@@ -89,9 +92,11 @@
 .btn-membership-join:hover { background: #001a5e; }
 .btn-membership-leave {
     background: #ffffff;
-    color: #0a2463;
+    /* color: #0a2463; */
+    border: 2px solid #C84242 !important;
+    color: #C84242;
 }
-.btn-membership-leave:hover { background: #f0f4ff; }
+/* .btn-membership-leave:hover { background: #f0f4ff; } */
 .btn-membership:disabled { opacity: 0.6; cursor: not-allowed; }
 
 /* Back button */
@@ -105,6 +110,10 @@
     padding: 8px 4px;
 }
 .btn-back:hover { text-decoration: underline; }
+
+.header-bottom-row{
+    margin-top: 20px;
+}
 
 /* Body layout */
 .group-body {
@@ -259,15 +268,15 @@
 .member-preview-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 .member-preview-row {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 8px 28px;
+    padding: 12px;
     background: #f4f5f7;
-    border-radius: 10px;
+    border-radius: 12px;
 }
 .preview-avatar {
     width: 40px;
@@ -354,7 +363,7 @@
 }
 .caret {
     color: #0a2463;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .notification-dropdown {
@@ -556,6 +565,11 @@
     flex-direction: column;
 }
 
+
+.rich-text-container{
+    /* border: 2px solid red; */
+}
+
 /* ── Kirkland Theme Override Styling Block ── */
 .kirkland-override .group-name {
     color: #166837;
@@ -572,13 +586,13 @@
     background: #0d4b26;
     border-color: #0d4b26;
 }
-.kirkland-override .btn-membership-leave {
+/* .kirkland-override .btn-membership-leave {
     color: #166837;
     border-color: #166837;
-}
-.kirkland-override .btn-membership-leave:hover {
+} */
+/* .kirkland-override .btn-membership-leave:hover {
     background: #eaf6ec;
-}
+} */
 .kirkland-override .btn-notification {
     border-color: #166837;
 }
@@ -639,6 +653,31 @@
 .kirkland-override .member-see-more-btn:hover {
     color: #0d4b26;
 }
+/* Join request + confirmation dialogs: swap the navy accents for Kirkland green. */
+.kirkland-override .join-modal-title,
+.kirkland-override .join-modal-subtitle,
+.kirkland-override .join-confirm-text {
+    color: #166837;
+}
+.kirkland-override .join-message-textarea:focus {
+    border-color: #166837;
+}
+.kirkland-override .btn-join-cancel {
+    border-color: #166837;
+    color: #166837;
+}
+.kirkland-override .btn-join-cancel:hover:not(:disabled) {
+    background: #eaf6ec;
+}
+.kirkland-override .btn-join-send,
+.kirkland-override .btn-join-confirm-ok {
+    background: #166837;
+    border-color: #166837;
+}
+.kirkland-override .btn-join-send:hover:not(:disabled),
+.kirkland-override .btn-join-confirm-ok:hover {
+    background: #0d4b26;
+}
 
 /* ── Mobile-first responsive (≤768px) ───────────────────────────────────────
    The SLDS grid stacks the main column above the sidebar on small viewports;
@@ -648,6 +687,25 @@
 @media (max-width: 768px) {
     .banner-img,
     .banner-fallback { height: 140px; }
+
+    .full-view-panel{
+        width: 100% !important;
+    }
+    .guidelines-row{
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+    .guidelines-grid-col{
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-bottom: 12px !important;
+    }
+
+    .sidebar-card {
+        margin-bottom: 12px !important;
+        width: 100% !important;
+    }
+
 
     /* Card sequence on a phone. Stacking the two SLDS columns would put the whole
        sidebar (Admin, Members, Moderation) after the whole main column, burying
@@ -668,15 +726,24 @@
     }
     .group-main,
     .dashboard-main-view,
-    .group-sidebar {
+    .group-sidebar,
+    .resources-card-parent-box {
         display: contents;
+    }
+    /* A flex item won't shrink below its content's min-content width, so a card
+       wrapping a busy child component (feed, resources) can bleed past the page
+       gutter while the text-only cards sit at the correct width — which reads as
+       the narrow cards having extra right padding. min-width:0 lets every card
+       shrink to the column, so they all share one right edge. */
+    .group-body > * {
+        min-width: 0;
     }
     .about-block       { order: 1; }
     .guidelines-row    { order: 2; }
     .discussion-card   { order: 3; }
     .members-card      { order: 4; }
-    .resources-card    { order: 5; }
-    .group-admin-card  { order: 6; }
+    .group-admin-card  { order: 5; }
+    .resources-card    { order: 6; }
     .moderation-card   { order: 7; }
     /* Full-page subviews (Discussion/Members/Resources/Admin tabs) render a single
        .full-view-panel in place of the cards above — no ordering needed. */
@@ -704,6 +771,7 @@
     .info-card {
         border-radius: 14px;
         padding: 16px;
+        margin-bottom: 12px !important;
     }
     .section-header-row {
         margin-bottom: 10px;

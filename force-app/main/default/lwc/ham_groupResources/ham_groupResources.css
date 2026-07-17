@@ -204,6 +204,9 @@
     padding: 12px 4px 0 4px;
 }
 
+.card-category-parent-box{
+    min-height: 50px;
+}
 .card-category {
     display: inline-block;
     background: #eef3f9;
@@ -406,8 +409,12 @@
 
 /* Responsive Grid adjustment */
 @media (max-width: 768px) {
+    .full-view-panel .resources-root{
+        padding: 12px !important;
+    }
     .resources-root {
-        padding: 12px;
+        /* padding: 12px; */
+        padding: 0px;
     }
 
     .filters-row {
@@ -417,6 +424,16 @@
     .category-select {
         max-width: none;
         flex: 1 1 auto;
+    }
+
+    .resources-grid{
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+
+    }
+    .my-resources-card-class{
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 }
 

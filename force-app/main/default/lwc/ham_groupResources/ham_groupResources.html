@@ -34,7 +34,7 @@
                 <template lwc:if={hasResults}>
                     <div class="resources-grid slds-grid slds-wrap slds-gutters">
                         <template for:each={displayResources} for:item="res">
-                            <div key={res.id} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3 slds-m-bottom_medium">
+                            <div key={res.id} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3 slds-m-bottom_medium my-resources-card-class">
                                 <div class={res.cardClass}>
 
                                     <!-- Amplified flag -->
@@ -60,9 +60,11 @@
                                     </a>
 
                                     <div class="card-body">
+                                            <div class="card-category-parent-box">
                                         <template if:true={res.category}>
                                             <span class="card-category">{res.category}</span>
                                         </template>
+                                            </div>
 
                                         <div class="card-title-row">
                                             <a href={res.url} target="_blank" rel="noopener noreferrer" class="resource-title-link">

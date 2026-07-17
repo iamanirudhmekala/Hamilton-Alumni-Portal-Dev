@@ -487,6 +487,15 @@
 }
 
 /* Responsive @media (max-width: 1024px) { .grid-container { grid-template-columns: repeat(2, 1fr); } } */
+@media (max-width: 768px) {
+    .from-members-root.grid-container{
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    .from-members-root .alumni-parent-card{
+        margin: 5px 0px 0px 0px !important;
+    }
+}
 @media (max-width: 1024px) {
 
     /* One card per row */

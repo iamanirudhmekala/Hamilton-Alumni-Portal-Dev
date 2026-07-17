@@ -29,6 +29,7 @@ export default class Ham_groupPostComposer extends LightningElement {
     @api recordId;
     @api placeholder = 'Share something with the group...';
     @api hideHeader = false;
+    @api groupIcons = {};
 
     _isOverride = false;
     @api

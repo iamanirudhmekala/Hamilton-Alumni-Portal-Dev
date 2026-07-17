@@ -33,6 +33,7 @@ export default class Ham_groupFeed extends LightningElement {
     @api isdiscussiontab;
     @api limitCount;
     @api images = {};
+    @api groupIcons = {};
 
     // Compact preview mode (embedded on the group dashboard landing page): caps the
     // visible posts to limitCount, scrolls internally instead of paginating, and

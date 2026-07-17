@@ -357,6 +357,11 @@
     stroke-linecap: round;
     stroke-linejoin: round;
 }
+.toolbar__btn img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
 
 .anon {
     display: inline-flex;
@@ -416,7 +421,8 @@
 /* ---------- Mobile ---------- */
 @media (max-width: 600px) {
     .composer {
-        padding: 0.9rem 0.9rem 1rem;
+        /* padding: 0.9rem 0.9rem 1rem; */
+        padding: 0 !important;
         border-radius: 12px;
     }
     .composer__card {

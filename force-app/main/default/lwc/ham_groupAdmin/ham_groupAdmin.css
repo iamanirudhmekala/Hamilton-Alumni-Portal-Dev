@@ -204,7 +204,7 @@
 .btn-admin {
     border: none;
     border-radius: 6px;
-    padding: 8px 14px;
+    padding: 6px 12px;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
@@ -323,7 +323,9 @@
 .people-icon {
     --sds-c-icon-color-foreground-default: #7a7a7a;
 }
-
+  .card-section, .admin-col {
+        padding: 0 !important;
+    }
 /* Viewports adjustment */
 @media (max-width: 768px) {
     .admin-root {
@@ -468,6 +470,9 @@
     text-decoration: underline;
 }
 
+
+.admin-root.kirkland-override .btn-see-more { color: #166837 !important; }
+
 /* Boxed "See more" (Pending Access Requests card) — bordered button rather
    than a plain text link, matching the Figma request-list footer. */
 .see-more-row-box {
@@ -605,7 +610,7 @@
 
 /* Admin Button styles */
 .btn-admin {
-    padding: 8px 18px;
+    /* padding: 8px 18px; */
     border-radius: 6px;
     font-size: 13px;
     font-weight: 600;

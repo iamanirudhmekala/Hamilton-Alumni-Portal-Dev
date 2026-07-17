@@ -23,7 +23,7 @@
             <!-- Group Header -->
             <div class="group-header slds-p-around_medium">
                 <!-- Back Button at the very top -->
-                <div class="header-top-row slds-m-bottom_small">
+                <div class="header-top-row">
                     <button class="btn-back" onclick={handleBackAction}>&#8592; Back</button>
                 </div>
 
@@ -37,7 +37,7 @@
                 </div>
 
                 <!-- Category badge below group name -->
-                <div class="header-category-row slds-m-vertical_small">
+                <div class="header-category-row">
                     <template if:true={group.category}>
                         <span class="badge-category">{group.category}</span>
                     </template>
@@ -158,7 +158,9 @@
                                     <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-m-bottom_small guidelines-grid-col">
                                         <div class="info-card">
                                             <h4 class="info-card-title">What We Offer:</h4>
+                                            <div class="rich-text-container">
                                             <lightning-formatted-rich-text class="info-card-body" value={group.whatWeOffer}></lightning-formatted-rich-text>
+                                            </div>
                                         </div>
                                     </div>
                                 </template>
@@ -166,7 +168,9 @@
                                     <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-m-bottom_small guidelines-grid-col">
                                         <div class="info-card">
                                             <h4 class="info-card-title">Community Guidelines:</h4>
+                                            <div class="rich-text-container">
                                             <lightning-formatted-rich-text class="info-card-body" value={group.communityGuidelines}></lightning-formatted-rich-text>
+                                            </div>
                                         </div>
                                     </div>
                                 </template>
@@ -190,6 +194,7 @@
                                        user-contact-id={userContactId}
                                        hide-header="true"
                                        is-override={isOverride}
+                                       group-icons={groupIcons}
                                        onpostcreated={handlePostCreated}>
                                     </c-ham_group-post-composer>
                                 </template>
@@ -200,12 +205,13 @@
                                    is-admin={isAdmin}
                                    is-override={isOverride}
                                    limit-count="5"
+                                   group-icons={groupIcons}
                                    onseemore={handleGoToDiscussion}>
                                 </c-ham_group-feed>
                             </div>
 
                             <!-- Resources preview -->
-                            <div class="resources-card info-card slds-m-bottom_medium">
+                            <!-- <div class="resources-card info-card slds-m-bottom_medium">
                                 <div class="section-header-row slds-grid slds-grid_align-spread slds-m-bottom_small">
                                     <h3 class="section-heading">Resources</h3>
                                     <button class="icon-link-btn" onclick={handleGoToResources} title="All Resources">
@@ -222,9 +228,10 @@
                                     is-admin={isAdmin}
                                     is-override={isOverride}
                                     member-count={group.memberCount}
-                                    limit-count="3">
+                                    limit-count="3"
+                                    group-icons={groupIcons}>
                                 </c-ham_group-resources>
-                            </div>
+                            </div> -->
 
                         </div>
                     </template>
@@ -238,6 +245,8 @@
                                    user-contact-id={userContactId}
                                    is-override={isOverride}
                                    isdiscussiontab ="true"
+                                   images={images}
+                                   group-icons={groupIcons}
                                    onpostcreated={handlePostCreated}>
                                 </c-ham_group-post-composer>
                             </template>
@@ -249,7 +258,8 @@
                                isdiscussiontab="true"
                                is-admin={isAdmin}
                                is-override={isOverride}
-                               images={images}>
+                               images={images}
+                               group-icons={groupIcons}>
                             </c-ham_group-feed>
                         </div>
                     </template>
@@ -259,7 +269,8 @@
                             <c-ham_group-members
                                 group-id={groupId}
                                 contact-id={userContactId}
-                                is-override={isOverride}>
+                                is-override={isOverride}
+                                group-icons={groupIcons}>
                             </c-ham_group-members>
                         </div>
                     </template>
@@ -271,7 +282,8 @@
                                 contact-id={userContactId}
                                 is-admin={isAdmin}
                                 is-override={isOverride}
-                                member-count={group.memberCount}>
+                                member-count={group.memberCount}
+                                group-icons={groupIcons}>
                             </c-ham_group-resources>
                         </div>
                     </template>
@@ -282,6 +294,7 @@
                                 group-id={groupId}
                                 contact-id={userContactId}
                                 is-override={isOverride}
+                                group-icons={groupIcons}
                                 onseerequests={handleGoToRequests}>
                             </c-ham_group-admin>
                         </div>
@@ -293,6 +306,7 @@
                                 group-id={groupId}
                                 contact-id={userContactId}
                                 is-override={isOverride}
+                                group-icons={groupIcons}
                                 requests-only="true">
                             </c-ham_group-admin>
                         </div>
@@ -382,6 +396,7 @@
                                     contact-id={userContactId}
                                     is-preview="true"
                                     is-override={isOverride}
+                                    group-icons={groupIcons}
                                     onseemore={handleGoToAdmin}>
                                 </c-ham_group-admin>
                             </div>
@@ -389,6 +404,34 @@
 
                     </div>
                 </template>
+
+
+                 <!-- Resources preview -->
+                 <template if:true={isDashboardTab}>
+                    <div class="slds-col resources-card-parent-box">
+                            <div class="resources-card info-card slds-m-bottom_medium">
+                                <div class="section-header-row slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                    <h3 class="section-heading">Resources</h3>
+                                    <button class="icon-link-btn" onclick={handleGoToResources} title="All Resources">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
+                                            <path d="M15 3h6v6"></path>
+                                            <path d="M10 14L21 3"></path>
+                                            <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <c-ham_group-resources
+                                    group-id={groupId}
+                                    contact-id={userContactId}
+                                    is-admin={isAdmin}
+                                    is-override={isOverride}
+                                    member-count={group.memberCount}
+                                    limit-count="3"
+                                    group-icons={groupIcons}>
+                                </c-ham_group-resources>
+                            </div>
+                    </div>
+                 </template>
 
             </div>
         </template>

@@ -80,6 +80,12 @@
 
 .filter-btn-icon { --sds-c-icon-color-foreground-default: #555555; }
 
+.filter-btn-img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
 .filter-btn-active {
     background: #eef4fb;
     border-color: #1a518b;
@@ -232,7 +238,7 @@
     padding: 12px;
     font-size: 14px;
     font-weight: 600;
-    color: #333333;
+    color: #0a2463;
     cursor: pointer;
     transition: background-color 0.2s, border-color 0.2s;
 }
@@ -243,6 +249,7 @@
 }
 
 /* Kirkland Theme overrides for the search/filter bar */
+.feed-root.kirkland-override .btn-see-more { color: #166837 !important; }
 .feed-root.kirkland-override .search-btn { background: #166837; }
 .feed-root.kirkland-override .filter-btn-active {
     background: #eaf6ec;
@@ -1068,7 +1075,8 @@
 /* Mobile-First Layout Media Queries */
 @media (max-width: 768px) {
     .feed-root {
-        padding: 8px;
+        padding: 0px;
+        margin-top: 12px;
     }
 
     .feed-filter-bar {

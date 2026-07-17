@@ -13,6 +13,7 @@ const PAGE_SIZE = 9; // directory parity (ham_alumniDisplayCmp.pageSizeForChild)
 export default class Ham_groupMembers extends LightningElement {
     @api groupId;
     @api contactId;
+    @api groupIcons = {};
 
     _isOverride = false;
     @api

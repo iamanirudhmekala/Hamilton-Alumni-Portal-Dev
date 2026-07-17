@@ -4,6 +4,8 @@ import getGroupDetail from '@salesforce/apex/Ham_GroupsController.getGroupDetail
 import joinGroup      from '@salesforce/apex/Ham_GroupsController.joinGroup';
 import leaveGroup     from '@salesforce/apex/Ham_GroupsController.leaveGroup';
 import updateNotificationPreferences from '@salesforce/apex/Ham_GroupsController.updateNotificationPreferences';
+import HAM_GROUP_ICONS from '@salesforce/resourceUrl/HAM_Group_Icons';
+
 
 export default class Ham_groupDashboard extends LightningElement {
     @api groupId;
@@ -19,6 +21,24 @@ export default class Ham_groupDashboard extends LightningElement {
     set isOverride(value) {
         this._isOverride = (value === true || value === 'true');
     }
+
+    mainResource = {
+        groupIcons: HAM_GROUP_ICONS
+    };
+
+    groupIcons = {
+        pinned: this.mainResource.groupIcons + '/groups-pinned.png',
+        pinnedGreen: this.mainResource.groupIcons + '/groups-pinned-green.png',
+        amplifier: this.mainResource.groupIcons + '/groups-amplifier.png',
+        amplifierGreen: this.mainResource.groupIcons + '/groups-amplifier-green.png',
+        comments: this.mainResource.groupIcons + '/groups-comments.png',
+        vector: this.mainResource.groupIcons + '/Vector.png',
+        attachment: this.mainResource.groupIcons + '/attachement.png',
+        calendar: this.mainResource.groupIcons + '/calender.png',
+        imageComp: this.mainResource.groupIcons + '/image%20comp.png',
+        links: this.mainResource.groupIcons + '/links.png',
+        people: this.mainResource.groupIcons + '/people.png'
+    };
 
     @track group                    = null;
     @track activeTab                = 'dashboard'; // Default landing view

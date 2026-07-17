@@ -6,6 +6,7 @@ import siteDefaultImageResourceKirkland from '@salesforce/resourceUrl/HAM_SiteFa
 
 // Importing static resources
 import HAM_ICONS from '@salesforce/resourceUrl/HAM_Icons';
+import HAM_GROUP_ICONS from '@salesforce/resourceUrl/HAM_Group_Icons';
 
 export default class Ham_groupsDiscovery extends LightningElement {
     @api userContactId;
@@ -104,6 +105,12 @@ export default class Ham_groupsDiscovery extends LightningElement {
      // Returns the Kirkland fallback image when in override mode, otherwise the standard one.
     get defaultImageUrl() {
         return this._isOverride ? this.DEFAULT_IMAGE_URL_Kirkland : this.defaultFallbackImage;
+    }
+
+    // Mobile "Request New Group" add icon — Kirkland green variant under override,
+    // mirroring the -green suffix idiom used for the other HAM_Group_Icons assets.
+    get addGroupIconUrl() {
+        return `${HAM_GROUP_ICONS}/mobile-groupsadd${this._isOverride ? '-green' : ''}.png`;
     }
 
     @wire(getPicklistValues, {

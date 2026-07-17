@@ -71,9 +71,12 @@
 }
 
 /* Member Count Section */
+.card-meta{
+    opacity: 50%;
+}
 .card-meta {
     font-size: 13px;
-    color: #7A7A7A; /* The grayish color from the design */
+    /* color: #7A7A7A;  */
     display: flex;
     align-items: center;
     gap: 8px; /* Space between icon and text */
@@ -282,8 +285,8 @@ myGrid.active{
     background: #0b3d91;
     color: #F4F4F4;
     border: none;
-    padding: 12px 20px;
-    border-radius: 10px;
+    padding: 8px 16px;
+    border-radius: 8px;
     font-weight: 500;
     cursor: pointer;
     font-family: 'Mallory-main', sans-serif;

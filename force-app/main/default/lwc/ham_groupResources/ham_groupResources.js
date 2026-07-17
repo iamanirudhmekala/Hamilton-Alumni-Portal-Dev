@@ -15,6 +15,7 @@ export default class Ham_groupResources extends LightningElement {
 
     // When set (dashboard preview card) we cap the grid and hide the toolbar
     @api limitCount;
+    @api groupIcons = {};
 
     _isOverride = false;
     @api

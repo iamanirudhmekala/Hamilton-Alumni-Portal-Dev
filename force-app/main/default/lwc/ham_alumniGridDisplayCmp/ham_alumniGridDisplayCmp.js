@@ -248,8 +248,22 @@ export default class Ham_alumniGridDisplayCmp extends LightningElement {
         return this._isOverride ? `${HAM_ICONS}/dots-green.png` : `${HAM_ICONS}/dots.png`;
     }
 
+    _isFromGroupMembers = false;
+
+    @api
+    get isFromGroupMembers() {
+        return this._isFromGroupMembers;
+    }
+    set isFromGroupMembers(value) {
+        // accept a bound boolean or a string literal ("true")
+        this._isFromGroupMembers = value === true || value === 'true';
+    }
+
     get containerClass() {
-        return this._isOverride ? 'grid-container kirkland-override' : 'grid-container';
+        let classes = 'grid-container';
+        if (this._isOverride) classes += ' kirkland-override';
+        if (this._isFromGroupMembers) classes += ' from-members-root';
+        return classes;
     }
 
     get modalClass() {

@@ -34,6 +34,7 @@ const REPORT_ACTIONS = [
 export default class Ham_groupAdmin extends LightningElement {
     @api groupId;
     @api contactId;
+    @api groupIcons = {};
 
     _isPreview = false;
     @api

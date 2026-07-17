@@ -182,28 +182,16 @@
             <footer class="composer__footer">
                 <div class="toolbar">
                     <button type="button" class="toolbar__btn" title="Attach file" aria-label="Attach file" onclick={handleAttachClick}>
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M21.44 11.05l-9.19 9.19a5 5 0 0 1-7.07-7.07l9.19-9.19a3 3 0 0 1 4.24 4.24l-9.2 9.19a1 1 0 0 1-1.41-1.41l8.49-8.49"></path>
-                        </svg>
+                        <img src={groupIcons.attachment} alt="" aria-hidden="true" />
                     </button>
                     <button type="button" class="toolbar__btn" title="Attach image" aria-label="Attach image" onclick={handleImageClick}>
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                            <path d="M21 15l-5-5L5 21"></path>
-                        </svg>
+                        <img src={groupIcons.imageComp} alt="" aria-hidden="true" />
                     </button>
                     <button type="button" class="toolbar__btn" title="Insert link" aria-label="Insert link" onclick={toggleLinkInput}>
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                        </svg>
+                        <img src={groupIcons.links} alt="" aria-hidden="true" />
                     </button>
                     <button type="button" class="toolbar__btn" title="Add tags" aria-label="Add tags" onclick={toggleTagInput}>
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                            <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                        </svg>
+                        <img src={groupIcons.vector} alt="" aria-hidden="true" />
                     </button>
                 </div>
 
