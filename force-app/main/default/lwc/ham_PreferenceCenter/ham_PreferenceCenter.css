@@ -222,10 +222,8 @@
 .custom-toggle-track::after { content: ''; position: absolute; width: 20px; height: 20px; background: #fff; border-radius: 50%; top: 4px; left: 4px; transition: left 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
 .custom-toggle-input:checked ~ .custom-toggle-track { background-color: #002F86; }
 .custom-toggle-input:checked ~ .custom-toggle-track::after { left: 24px; }
-.custom-toggle-label-active { display: none; font-size: 0.8125rem; color: #3e3e3c; }
+.custom-toggle-label-active { display: inline; font-size: 0.8125rem; color: #3e3e3c; }
 .custom-toggle-label-inactive { display: inline; font-size: 0.8125rem; color: #3e3e3c; }
-.custom-toggle-input:checked ~ .custom-toggle-label-active { display: inline; }
-.custom-toggle-input:checked ~ .custom-toggle-label-inactive { display: none; }
 .custom-toggle-input:disabled ~ .custom-toggle-track { opacity: 0.5; cursor: not-allowed; }
 
 /* ── Kirkland Override ───────────────────────────────────────── */

@@ -666,6 +666,7 @@ export default class Ham_alumniDisplayCmp extends LightningElement {
              // Capture logged-in user's connection-privacy flag from the Apex response
             this._protalLogedUserPrivacy = data.protalLogedUserPrivacy === true;
             //console.log('Directory Data: ',JSON.stringify(this.alumniData,null,2));
+
             this.applyTabFilter();
             this.isLoading = false;
         }

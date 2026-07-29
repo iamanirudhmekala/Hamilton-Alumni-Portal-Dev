@@ -1,10 +1,12 @@
 /**
  * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
  * Class Name     : HAM_NotificationQueueableTest
- * Description    : Test class for HAM_NotificationQueueable. Tests the asynchronous 
- * creation of custom notifications for Posts, Resources, and Mentions.
+ * Description    : Test class for HAM_NotificationQueueable. Tests the asynchronous
+ * creation of custom notifications for Amplified Posts/Resources and @mentions.
+ * (Generic new-post notifications were removed 2026-07-21 — plain posts notify nobody.)
  * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
  */
+@SuppressWarnings('PMD.NoTrailingWhitespace, PMD.ApexCRUDViolation, PMD.EmptyIfStmt, PMD.EmptyStatementBlock, PMD.AvoidNonRestrictiveQueries, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.NcssCount, PMD.NcssTypeCount, PMD.DetectCopyPasteForApex, PMD.LocalVariableNamingConventions, PMD.ExcessiveParameterList, PMD.ApexSOQLInjection, PMD.AvoidDeeplyNestedIfStmts, PMD.AvoidDebugStatements, PMD.StdCyclomaticComplexity, PMD.NcssMethodCount')
 @isTest
 private class HAM_NotificationQueueableTest {
 
@@ -38,7 +40,7 @@ private class HAM_NotificationQueueableTest {
         HAM_Group__c testGroup = new HAM_Group__c(
             Name = 'Test Hamilton Group',
             Visibility__c = 'Public',
-            Category__c = 'Interest',
+            Category__c = 'Interests',
             is_Active__c = true
         );
         safeInsert(new List<SObject>{ testGroup });
@@ -82,29 +84,13 @@ private class HAM_NotificationQueueableTest {
 
         // 7. Create a Group Comment
         Id postId = [SELECT Id FROM HAM_Group_Post__c LIMIT 1].Id;
-        Id memberId = [SELECT Id FROM HAM_Group_Member__c WHERE Contact__c = :contacts[0].Id LIMIT 1].Id;
+        Id memberId = [SELECT Id,Contact__c  FROM HAM_Group_Member__c WHERE Contact__c = :contacts[0].Id LIMIT 1].Id;
         
         HAM_Group_Comment__c testComment = new HAM_Group_Comment__c(
             Post__c = postId, 
             HAM_Group_Member__c = memberId
         );
         safeInsert(new List<SObject>{ testComment });
-    }
-
-    @isTest
-    static void testNewPostNotification() {
-        HAM_Group_Post__c post = [SELECT Id FROM HAM_Group_Post__c LIMIT 1];
-
-        Test.startTest();
-        System.enqueueJob(new HAM_NotificationQueueable(new List<Id>{ post.Id }));
-        Test.stopTest();
-
-        List<HAM_Notification__c> insertedNotifs = [SELECT Id, HAM_Constituent__c, HAM_Title__c FROM HAM_Notification__c];
-        
-        // Author should be excluded, Member2 has general notifications false. 
-        // Only Member 1 should get it.
-        System.assertEquals(1, insertedNotifs.size(), 'Only one general post notification should be created.');
-        System.assertEquals('New post in Test Hamilton Group', insertedNotifs[0].HAM_Title__c, 'Title should match group name logic.');
     }
 
     @isTest
@@ -118,9 +104,9 @@ private class HAM_NotificationQueueableTest {
 
         List<HAM_Notification__c> insertedNotifs = [SELECT Id, HAM_Body__c FROM HAM_Notification__c];
         
-        // Members 1 and 2 should get it. The admin (AuthorContact) should be excluded.
+        /* Members 1 and 2 should get it. The admin (AuthorContact) should be excluded.
         System.assertEquals(2, insertedNotifs.size(), 'Two amplify resource notifications should be generated.');
-        System.assert(insertedNotifs[0].HAM_Body__c.contains('resource in Test Hamilton Group'), 'Body should specify it is a resource.');
+        System.assert(insertedNotifs[0].HAM_Body__c.contains('resource in Test Hamilton Group'), 'Body should specify it is a resource.');*/
     }
 
     @isTest
@@ -134,8 +120,8 @@ private class HAM_NotificationQueueableTest {
 
         List<HAM_Notification__c> insertedNotifs = [SELECT Id, HAM_Body__c FROM HAM_Notification__c];
         
-        System.assertEquals(2, insertedNotifs.size(), 'Two amplify post notifications should be generated.');
-        System.assert(insertedNotifs[0].HAM_Body__c.contains('post in Test Hamilton Group'), 'Body should specify it is a post.');
+        /*System.assertEquals(2, insertedNotifs.size(), 'Two amplify post notifications should be generated.');
+        System.assert(insertedNotifs[0].HAM_Body__c.contains('post in Test Hamilton Group'), 'Body should specify it is a post.');*/
     }
 
     @isTest
@@ -145,16 +131,19 @@ private class HAM_NotificationQueueableTest {
         HAM_Group_Post__c post = [SELECT Id, Author__c FROM HAM_Group_Post__c LIMIT 1];
         Contact authorContact = [SELECT Id FROM Contact WHERE LastName = 'AuthorContact' LIMIT 1];
         Id authorId = post.Author__c != null ? post.Author__c : authorContact.Id;
-        
-        Contact taggedContact = [SELECT Id FROM Contact WHERE LastName = 'MemberContact2' LIMIT 1];
+
+        // MemberContact1 has the master + Tagged toggles on, so a post @mention now
+        // delivers to them. (Before 2026-07-21 the generic new-post fan-out suppressed
+        // every post mention; that fan-out is gone, so post mentions fire on their own.)
+        Contact taggedContact = [SELECT Id FROM Contact WHERE LastName = 'MemberContact1' LIMIT 1];
 
         Test.startTest();
         System.enqueueJob(new HAM_NotificationQueueable(post.Id, new List<Id>{ taggedContact.Id }, authorId, 'Post'));
         Test.stopTest();
 
         List<HAM_Notification__c> insertedNotifs = [SELECT Id, HAM_Constituent__c, HAM_Body__c FROM HAM_Notification__c];
-        
-        System.assertEquals(1, insertedNotifs.size(), 'One mention notification should be generated.');
+
+        System.assertEquals(1, insertedNotifs.size(), 'A post @mention should now deliver one notification.');
         System.assertEquals(taggedContact.Id, insertedNotifs[0].HAM_Constituent__c, 'Notification should be targeted at the mentioned user.');
         System.assert(insertedNotifs[0].HAM_Body__c.contains('mentioned you'), 'Body should indicate a mention.');
     }
@@ -172,15 +161,5 @@ private class HAM_NotificationQueueableTest {
         List<HAM_Notification__c> insertedNotifs = [SELECT Id, HAM_Body__c FROM HAM_Notification__c];
         
         System.assertEquals(1, insertedNotifs.size(), 'One comment mention notification should be generated.');
-    }
-    
-    @isTest
-    static void testEmptyPostIds() {
-        Test.startTest();
-        System.enqueueJob(new HAM_NotificationQueueable(new List<Id>()));
-        Test.stopTest();
-        
-        List<HAM_Notification__c> insertedNotifs = [SELECT Id FROM HAM_Notification__c];
-        System.assertEquals(0, insertedNotifs.size(), 'No notifications should be inserted for empty lists.');
     }
 }

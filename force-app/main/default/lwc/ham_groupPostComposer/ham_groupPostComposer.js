@@ -1,4 +1,4 @@
-﻿import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { deleteRecord } from 'lightning/uiRecordApi';
 import createPosts from '@salesforce/apex/Ham_GroupsController.createPosts';
@@ -7,6 +7,7 @@ import searchGroupMembersForMention from '@salesforce/apex/Ham_GroupsController.
 import createDraftPost from '@salesforce/apex/Ham_GroupsController.createDraftPost';
 import publishDraftPost from '@salesforce/apex/Ham_GroupsController.publishDraftPost';
 import discardDraftPost from '@salesforce/apex/Ham_GroupsController.discardDraftPost';
+import attachFilesToPost from '@salesforce/apex/Ham_GroupsController.attachFilesToPost';
 
 const DEBOUNCE_MS = 300;
 const MENTION_TRIGGER_REGEX = /@([\w' -]{0,40})$/;
@@ -18,6 +19,9 @@ const DOC_FORMATS = ['.pdf', '.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx', 
     '.txt', '.rtf', '.zip', '.jpg', '.jpeg', '.png', '.gif', '.webp', '.heic'];
 const IMAGE_FORMATS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.heic'];
 const IMAGE_EXT = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic'];
+// Attachments are sent to Apex as base64, which inflates ~33% and is bounded by the
+// Apex heap limit — cap each file so a large upload can't blow the transaction.
+const MAX_FILE_BYTES = 4 * 1024 * 1024; // 4 MB
  
 
 export default class Ham_groupPostComposer extends LightningElement {
@@ -59,8 +63,7 @@ export default class Ham_groupPostComposer extends LightningElement {
     // attaches a file, published (Is_Draft__c = false) when the post is submitted.
     draftPostId = null;
     isPreparingUpload = false;
-    showUploader = false;
-    uploaderAccept = DOC_FORMATS;
+    uploaderAccept = DOC_FORMATS.join(',');
 
     body = '';
     isAnonymous = false;
@@ -109,7 +112,12 @@ export default class Ham_groupPostComposer extends LightningElement {
         return !this.isPosting && (this.body.trim() !== '' || this.files.length > 0);
     }
     get postLabel() {
-        return this.isPosting ? 'Postingâ€¦' : 'Post';
+        return this.isPosting ? 'Posting...' : 'Post';
+    }
+    // The header pop-out only makes sense on the compact dashboard preview — hide it
+    // once the user is already on the full discussion page.
+    get showExpand() {
+        return !this.isdiscussiontab;
     }
     get statusClass() {
         return `composer__status composer__status--${this.statusVariant}`;
@@ -286,57 +294,98 @@ export default class Ham_groupPostComposer extends LightningElement {
         this.body = `${this.body}${prefix}${url}`;
         this.linkUrl = '';
         this.showLinkInput = false;
+
+        const textarea = this.template.querySelector('.composer__textarea');
+        if (textarea) {
+            textarea.value = this.body;
+            textarea.focus();
+        }
+        this.setStatus('Link added to post.', 'success');
     }
  
-    // ---- files (lightning-file-upload via lazy draft post) ----
+    // ---- files (base64 → Apex attachFilesToPost, via a lazy draft post) ----
     get acceptedFormats() {
         return this.uploaderAccept;
     }
 
     handleAttachClick() {
-        this.uploaderAccept = DOC_FORMATS;
-        this.revealUploader();
+        this.openFilePicker(DOC_FORMATS.join(','));
     }
 
     handleImageClick() {
-        this.uploaderAccept = IMAGE_FORMATS;
-        this.revealUploader();
+        this.openFilePicker(IMAGE_FORMATS.join(','));
     }
 
-    // A draft post must exist before lightning-file-upload can attach ContentVersions
-    // to it. Create it lazily on first attach so we don't leave orphan drafts for users
-    // who open the composer but never attach anything.
-    revealUploader() {
-        if (this.draftPostId) {
-            this.showUploader = true;
-            return;
-        }
-        if (this.isPreparingUpload) {
-            return;
-        }
-        this.isPreparingUpload = true;
-        createDraftPost({ groupId: this.effectiveGroupId, currentContactId: this.userContactId })
-            .then((draftId) => {
-                this.draftPostId = draftId;
-                this.showUploader = true;
-            })
-            .catch((error) => {
-                this.setStatus(this.reduceError(error), 'error');
-            })
-            .finally(() => {
-                this.isPreparingUpload = false;
-            });
+    // Opens the native file picker. accept is reactive, so set it and click on the next
+    // tick once the input has re-rendered with the right filter.
+    openFilePicker(acceptStr) {
+        this.uploaderAccept = acceptStr;
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        setTimeout(() => {
+            const input = this.template.querySelector('.composer__file-input');
+            if (input) {
+                input.value = null; // allow re-selecting the same file
+                input.click();
+            }
+        }, 0);
     }
- 
-    handleUploadFinished(event) {
-        const uploaded = event.detail.files || [];
-        const added = uploaded.map((f) => ({
-            name: f.name,
-            documentId: f.documentId,
-            isImage: IMAGE_EXT.includes((f.name.split('.').pop() || '').toLowerCase())
-        }));
-        this.files = [...this.files, ...added];
-        this.showUploader = false;
+
+    // Files are read as base64 and attached through Apex (attachFilesToPost) rather than
+    // lightning-file-upload: the draft post is a private record the portal member has no
+    // standard access to, so the native uploader fails with "Can't upload". The Apex path
+    // runs without sharing and creates the ContentVersion/ContentDocumentLink server-side.
+    async handleFilesSelected(event) {
+        const selected = Array.from(event.target.files || []);
+        if (selected.length === 0) return;
+
+        const tooBig = selected.find((f) => f.size > MAX_FILE_BYTES);
+        if (tooBig) {
+            this.setStatus(`"${tooBig.name}" is larger than 4 MB. Please attach a smaller file.`, 'error');
+            return;
+        }
+
+        this.isPreparingUpload = true;
+        try {
+            // A draft post must exist to attach ContentVersions to. Create it lazily on
+            // first attach so users who never attach anything don't leave orphan drafts.
+            if (!this.draftPostId) {
+                this.draftPostId = await createDraftPost({
+                    groupId: this.effectiveGroupId,
+                    currentContactId: this.userContactId
+                });
+            }
+
+            const payload = await Promise.all(selected.map((f) => this.readFileAsBase64(f)));
+            const documentIds = await attachFilesToPost({
+                postId: this.draftPostId,
+                filesJson: JSON.stringify(payload)
+            });
+
+            const added = selected.map((f, i) => ({
+                name: f.name,
+                documentId: documentIds[i],
+                isImage: IMAGE_EXT.includes((f.name.split('.').pop() || '').toLowerCase())
+            }));
+            this.files = [...this.files, ...added];
+        } catch (error) {
+            this.setStatus(this.reduceError(error), 'error');
+        } finally {
+            this.isPreparingUpload = false;
+        }
+    }
+
+    // Resolves to the { fileName, base64, contentType } shape attachFilesToPost expects.
+    readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const result = reader.result || '';
+                const base64 = result.includes(',') ? result.split(',')[1] : result;
+                resolve({ fileName: file.name, base64, contentType: file.type });
+            };
+            reader.onerror = () => reject(reader.error);
+            reader.readAsDataURL(file);
+        });
     }
 
     handleRemoveFile(event) {
@@ -432,7 +481,6 @@ export default class Ham_groupPostComposer extends LightningElement {
         this.tagSuggestions = [];
         this.showTagInput = false;
         this.showLinkInput = false;
-        this.showUploader = false;
         const textarea = this.template.querySelector('.composer__textarea');
         if (textarea) {
             textarea.value = '';

@@ -6,6 +6,10 @@
     font-family: 'Mallory-main', sans-serif;
 }
 
+textarea{
+    resize: none !important;
+}
+
 /* Spinner */
 .spinner-container {
     display: flex;
@@ -22,11 +26,6 @@
     object-fit: cover;
     object-position: center;
     display: block;
-}
-.banner-fallback {
-    width: 100%;
-    height: 220px;
-    background: linear-gradient(135deg, #0a2463 0%, #1a518b 100%);
 }
 
 /* Group Header */
@@ -64,6 +63,18 @@
     gap: 6px;
     font-size: 14px;
     color: #000;
+}
+
+/* Category tag on the left, member count pushed to the far right. margin-left:auto
+   (rather than space-between) keeps the count right-aligned even when the group has
+   no category tag to sit opposite it. */
+.header-category-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.header-category-row .member-count {
+    margin-left: auto;
 }
 /* .meta-icon {
     --sds-c-icon-color-foreground-default: #7a7a7a;
@@ -554,6 +565,23 @@
     stroke: var(--hp-active, #001a5e);
 }
 
+/* Guest join prompt */
+.guest-join-card {
+    background: #f8fafc;
+    border: 1px dashed #c8d5e3;
+    border-radius: 8px;
+    min-height: 160px;
+}
+.guest-join-icon {
+    --sds-c-icon-color-foreground-default: #1a518b;
+}
+.guest-join-message {
+    font-size: 13.5px;
+    color: #555555;
+    font-style: italic;
+    margin: 0;
+}
+
 /* Guidelines cards same height flex rules */
 .guidelines-grid-col {
     display: flex;
@@ -602,6 +630,9 @@
 .kirkland-override .bell-icon {
     --sds-c-icon-color-foreground-default: #166837;
 }
+.kirkland-override .notif-dropdown-title {
+    color: #166837;
+}
 .kirkland-override .custom-toggle-track.checked {
     background-color: #166837;
 }
@@ -631,6 +662,9 @@
 .kirkland-override .expand-svg {
     stroke: #166837;
 }
+.kirkland-override .guest-join-icon {
+    --sds-c-icon-color-foreground-default: #166837;
+}
 .kirkland-override .icon-link-btn:hover .expand-svg {
     stroke: #0d4b26;
 }
@@ -653,6 +687,28 @@
 .kirkland-override .member-see-more-btn:hover {
     color: #0d4b26;
 }
+/* Leave Group confirmation dialog: swap the navy accents for Kirkland green. */
+.kirkland-override .leave-modal-title,
+.kirkland-override .leave-modal-subtitle {
+    color: #166837;
+}
+.kirkland-override .leave-reason-option:hover {
+    border-color: #166837;
+}
+.kirkland-override .leave-reason-option input[type="checkbox"] {
+    accent-color: #166837;
+}
+.kirkland-override .leave-other-textarea:focus {
+    border-color: #166837;
+}
+.kirkland-override .btn-leave-cancel {
+    border-color: #166837;
+    color: #166837;
+}
+.kirkland-override .btn-leave-cancel:hover:not(:disabled) {
+    background: #eaf6ec;
+}
+
 /* Join request + confirmation dialogs: swap the navy accents for Kirkland green. */
 .kirkland-override .join-modal-title,
 .kirkland-override .join-modal-subtitle,
@@ -685,8 +741,7 @@
    overflows the screen edge on a phone, and re-sequence the dashboard cards
    (see the ordering block below). */
 @media (max-width: 768px) {
-    .banner-img,
-    .banner-fallback { height: 140px; }
+    .banner-img { height: 140px; }
 
     .full-view-panel{
         width: 100% !important;
@@ -706,6 +761,8 @@
         width: 100% !important;
     }
 
+    
+
 
     /* Card sequence on a phone. Stacking the two SLDS columns would put the whole
        sidebar (Admin, Members, Moderation) after the whole main column, burying
@@ -723,6 +780,7 @@
            is gone and the cards would overhang the page gutter. */
         margin-left: 0;
         margin-right: 0;
+        background-color: #fff;
     }
     .group-main,
     .dashboard-main-view,
@@ -741,10 +799,10 @@
     .about-block       { order: 1; }
     .guidelines-row    { order: 2; }
     .discussion-card   { order: 3; }
-    .members-card      { order: 4; }
-    .group-admin-card  { order: 5; }
-    .resources-card    { order: 6; }
-    .moderation-card   { order: 7; }
+    .members-card      { order: 5; }
+    .group-admin-card  { order: 4; }
+    .resources-card    { order: 7; }
+    .moderation-card   { order: 6; }
     /* Full-page subviews (Discussion/Members/Resources/Admin tabs) render a single
        .full-view-panel in place of the cards above — no ordering needed. */
 
@@ -755,6 +813,16 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 6px;
+    }
+
+    /* Stack the header meta on phones: category tag first, member count underneath. */
+    .header-category-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .header-category-row .member-count {
+        margin-left: 0;
     }
 
     /* membership button + bell take full width and wrap cleanly */
@@ -805,41 +873,47 @@
 }
 /* ── Leave Group confirmation dialog ─────────────────────────────── */
 .leave-modal-container {
-    max-width: 480px;
-    border-radius: 12px;
+   border-radius: 20px;
+    height: max-content;
     overflow: hidden;
+    margin: 8% auto;
+    padding: 0px !important;
 }
 
 .leave-modal-header {
-    background: #ffffff;
+    background: #F4F4F4;
     border-bottom: none;
     text-align: center;
     padding: 28px 28px 4px 28px;
 }
 
 .leave-modal-eyebrow {
-    font-size: 14px;
-    font-weight: 600;
-    color: #333333;
+    font-size: 16px;
+    font-weight: 400;
+    color: #344054;
     margin: 0 0 6px 0;
+    font-family: 'Mallory-main', sans-serif;
 }
 
 .leave-modal-title {
-    font-size: 1.3rem;
+    font-size: 20px;
     font-weight: 700;
-    color: #0a2463;
+    color: #344054;
     margin: 0 0 10px 0;
+    font-family: 'Mallory-main', sans-serif;
 }
 
 .leave-modal-subtitle {
-    font-size: 13.5px;
-    color: #1a518b;
+    font-size: 14px;
+    color: #002F86;
+    opacity: 50%;
     line-height: 1.45;
-    margin: 0;
+    margin: 0 0 10px 0;
+    font-family: 'Mallory-main', sans-serif;
 }
 
 .leave-modal-content {
-    background: #ffffff;
+    background: #F4F4F4;
 }
 
 .leave-reasons-label {
@@ -906,7 +980,7 @@
 }
 
 .leave-modal-footer {
-    background: #ffffff;
+    background: #F4F4F4;
     border-top: none;
     display: flex;
     justify-content: center;
@@ -916,14 +990,15 @@
 
 .btn-leave-cancel {
     background: #ffffff;
-    border: 2px solid #0a2463;
-    border-radius: 8px;
-    padding: 9px 24px;
-    font-size: 13.5px;
+    border: 2px solid #002F86;
+    border-radius: 10px;
+    padding: 9px 20px;
+    font-size: 14px;
     font-weight: 700;
-    color: #0a2463;
+    color: #002F86;
     cursor: pointer;
     transition: background-color 0.15s;
+    font-family: 'Mallory-main', sans-serif;
 }
 
 .btn-leave-cancel:hover:not(:disabled) {
@@ -936,63 +1011,69 @@
 }
 
 .btn-leave-confirm {
-    background: #c23934;
-    border: none;
-    border-radius: 8px;
-    padding: 9px 22px;
-    font-size: 13.5px;
+    background: #C84242;
+    border: 2px solid #C84242;
+    border-radius: 10px;
+    padding: 9px 20px;
+    font-size: 14px;
     font-weight: 700;
-    color: #ffffff;
+    color: #fff;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.15s;
+    font-family: 'Mallory-main', sans-serif;
 }
 
 .btn-leave-confirm:hover:not(:disabled) {
-    background: #a12b27;
+    background: #fbeaea;
 }
 
 .btn-leave-confirm:disabled {
-    background: #e5b3b1;
+    opacity: 0.6;
     cursor: not-allowed;
 }
 
 /* ── Join Group request dialog ───────────────────────────────────── */
 .join-modal-container {
-    max-width: 480px;
-    border-radius: 16px;
+    border-radius: 20px;
+    height: max-content;
+    /* width: 50%; */
     overflow: hidden;
+    /* border: 2px solid; */
+    margin: 10% auto;
+    padding: 0 !important;
 }
 
 .join-modal-header {
-    background: #ffffff;
+    background: #F4F4F4;
     border-bottom: none;
     text-align: center;
     padding: 28px 28px 4px 28px;
 }
 
 .join-modal-eyebrow {
-    font-size: 14px;
-    font-weight: 600;
-    color: #333333;
+       font-size: 16px;
+    font-weight: 400;
+    color: #344054;
     margin: 0 0 6px 0;
 }
 
 .join-modal-title {
-    font-size: 1.3rem;
+        font-size: 22px;
     font-weight: 700;
-    color: #0a2463;
+    color: #344054;
     margin: 0 0 10px 0;
 }
 
 .join-modal-subtitle {
-    font-size: 13.5px;
-    color: #1a518b;
+   font-size: 13.5px;
+    color: #002F86;
     line-height: 1.45;
     margin: 0;
+    opacity: 50%;
 }
 
 .join-modal-content {
-    background: #ffffff;
+    background: #F4F4F4;
     padding: 20px 28px 8px 28px !important;
 }
 
@@ -1000,9 +1081,9 @@
     width: 100%;
     min-height: 130px;
     padding: 14px 16px;
-    border: 1px solid #d8dee6;
-    border-radius: 10px;
-    font-size: 13.5px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
     font-family: inherit;
     color: #333333;
     resize: vertical;
@@ -1010,7 +1091,8 @@
 }
 
 .join-message-textarea::placeholder {
-    color: #a8adb5;
+    color: #002F86;
+    opacity: 20%;
 }
 
 .join-message-textarea:focus {
@@ -1019,7 +1101,7 @@
 }
 
 .join-modal-footer {
-    background: #ffffff;
+    background: #F4F4F4;
     border-top: none;
     display: flex;
     justify-content: flex-start;
@@ -1112,4 +1194,18 @@
 
 .btn-join-confirm-ok:hover {
     background: #001a5e;
+}
+
+
+
+@media (max-width: 768px) {
+    .leave-modal-container, .join-modal-container {
+            width: 90%;
+            margin: 50% auto !important;
+            max-height: 550px;
+    }
+
+    .btn-join-cancel, .btn-join-send{
+        width: 50% !important;
+    }
 }

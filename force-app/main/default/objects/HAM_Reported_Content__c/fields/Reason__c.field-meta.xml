@@ -38,8 +38,17 @@
             <value>
                 <fullName>Harassment</fullName>
                 <default>false</default>
-                <isActive>false</isActive>
                 <label>Harassment</label>
+            </value>
+            <value>
+                <fullName>Bullying</fullName>
+                <default>false</default>
+                <label>Bullying</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
             </value>
             <value>
                 <fullName>Inappropriate Tone</fullName>

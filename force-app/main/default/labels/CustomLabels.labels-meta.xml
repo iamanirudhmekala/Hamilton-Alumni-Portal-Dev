@@ -2529,4 +2529,32 @@ If you have any questions, please contact &lt;a href=&quot;mailto:giving@hamilto
         <shortDescription>Ham Alumni Directory Display Count</shortDescription>
         <value>4</value>
     </labels>
+    <labels>
+        <fullName>HAM_Group_Admin_Action_Block_Template</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Group_Admin_Action_Block_Template</shortDescription>
+        <value>This is to inform you that you have been removed from the group for violating our community guidelines regarding appropriate behavior.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Group_Admin_Action_Delete_Template</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Group_Admin_Action_Delete_Template</shortDescription>
+        <value>Your recent post was removed because it didn&apos;t align with our community guidelines. Please consider this a formal warning. Future violations may result in a permanent ban from the group.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Group_Admin_Action_Warn_Template</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Group_Admin_Action_Warn_Template</shortDescription>
+        <value>You have received a warning for inappropriate content. Please refrain from posting such content in the future to avoid further action.</value>
+    </labels>
+    <labels>
+        <fullName>HAM_Group_Members_No_Search_Results</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HAM_Group_Members_No_Search_Results</shortDescription>
+        <value>No profiles match your current search or filters. Try refining your search or removing search filters</value>
+    </labels>
 </CustomLabels>

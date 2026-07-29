@@ -6,7 +6,7 @@
 
        
         <div class="slds-grid slds-grid_align-spread slds-m-bottom_medium ">
-            <div class="slds-button-group" role="group">
+            <div class="subtabs" role="group">
                 <button class={myGroupsClass} onclick={handleTabChange} data-tab="MyGroups">My Groups</button>
                 <button class={allGroupsClass} onclick={handleTabChange} data-tab="AllGroups">All Groups</button>
             </div>
@@ -64,121 +64,138 @@
             </div>
         </div>
 
-        <div class="slds-grid slds-wrap slds-gutters">
-            <template if:true={groups}>
-                <template for:each={groups} for:item="group">
-                  <!-- Card Grid View  -->  
-                  <template lwc:if={isGridView}>
-                    <div class="slds-col slds-size_1-of-3 slds-m-bottom_medium" key={group.groupId}>
-                        <div class="card" data-id={group.groupId} onclick={handleViewGroup}>
-                            <div class="card-header">
-                                <template lwc:if={group.bannerUrl}>
-                                    <img src={group.bannerUrl} class="event-image" />
-                                </template>
-                                <template lwc:else>
-                                    <img src={defaultImageUrl} class="event-image" />
-                                </template>
-                            </div>
+       <div>
+    <!-- Grid View -->
+    <template lwc:if={isGridView}>
+        <div class="card-grid">
+            <template for:each={groups} for:item="group">
+                <div key={group.groupId} class="card-item">
+                    <div class="card-image" data-id={group.groupId} onclick={handleViewGroup}>
+                        <template lwc:if={group.bannerUrl}>
+                            <img src={group.bannerUrl} alt={group.name} class="my-default-icon" />
+                        </template>
+                        <template lwc:else>
+                            <img src={defaultImageUrl} alt={group.name} class="my-default-icon" />
+                        </template>
+                    </div>
 
-                            <div class="card-body">
-                                <div class="badges">
-                                    <template if:true={group.category}>
-                                        <span class="badge badge-blue">{group.category}</span>
-                                    </template>
-                                    
-                                    <template if:true={group.isAdmin}>
-                                        <span class="badge badge-orange">Admin</span>
-                                    </template>
-                                </div>
-                                
-                                <h3 class="card-title">{group.name}</h3>
-                                <p class={group.descClass}>{group.description}</p>
-                                
-                                <template lwc:if={group.isLongDescription}>
-                                    <button class="show-more-btn" onclick={handleToggleDescription} data-id={group.groupId}>
-                                        <template lwc:if={group.isExpanded}>Show Less</template>
-                                        <template lwc:else>Show More</template>
-                                    </button>
-                                </template>
-                                
-                                <div class="card-meta">
-                                   <img src={images.groupMembers} height="20px" width="20px"/>
-                                    <span>{group.memberCount} members</span>
-                                </div>
-                                
-                                <button class="btn-primary"   data-id={group.groupId} onclick={handleViewGroup} >View Group</button>
-                            </div>
+                    <div class="card-content">
+                        <div class="card-badges">
+                            <template if:true={group.category}>
+                                <span class="badge badge-blue">{group.category}</span>
+                            </template>
+
+                            <template if:true={group.isAdmin}>
+                                <span class="badge badge-orange">Admin</span>
+                            </template>
                         </div>
-                  
-                    </div> 
-                  </template>
-                   <!-- Card List View  -->  
-                  <template lwc:if={isListView}>
-                      <div class="slds-col slds-size_3-of-3 slds-m-bottom_medium" key={group.groupId}>
-                          
-                            <div class="network-card" data-id={group.groupId} onclick={handleViewGroup}>
-                                <div class="card-graphic">
-                                   <template lwc:if={group.bannerUrl}>
-                                        <img src={group.bannerUrl} class="event-image" />
-                                    </template>
-                                    <template lwc:else>
-                                        <img src={defaultImageUrl} class="event-image" />
-                                    </template>
-                                </div>
 
-                                <div class="card-body">
-                                    
-                                    <div class="card-badges">
-                                       <template if:true={group.category}>
-                                            <span class="badge badge-blue">{group.category}</span>
-                                        </template>
-                                        
-                                        <template if:true={group.isAdmin}>
-                                            <span class="badge badge-orange">Admin</span>
-                                        </template>
-                                    </div>
-                                    
-                                    <h2 class="card-title">{group.name}</h2>
-                                    
-                                    <p class={group.listDescClass}>
-                                        {group.description}
-                                    </p>
-                                    
-                                    <template lwc:if={group.isLongDescription}>
-                                        <button class="show-more-btn" onclick={handleToggleDescription} data-id={group.groupId}>
-                                            <template lwc:if={group.isExpanded}>Show Less</template>
-                                            <template lwc:else>Show More</template>
-                                        </button>
-                                    </template>
-                                    
-                                    <div class="card-meta">
-                                        <img src={images.groupMembers} height="20px" width="20px"/>
-                                        <span>{group.memberCount} members</span>
-                                    </div>
-                                    
-                                    <button class="btn-primary"   data-id={group.groupId} onclick={handleViewGroup} >View Group</button>
+                        <h3 class="card-title">{group.name}</h3>
 
-                                    
-                                </div>
+                        <p class={group.descClass}>
+                            {group.description}
+                        </p>
+
+                        <template lwc:if={group.isLongDescription}>
+                            <button
+                                class="show-more-btn"
+                                data-id={group.groupId}
+                                onclick={handleToggleDescription}>
+                                <template lwc:if={group.isExpanded}>Show Less</template>
+                                <template lwc:else>Show More</template>
+                            </button>
+                        </template>
+
+                        <div class={footerClass}>
+                            <div class="card-meta">
+                                <img src={images.groupMembers} width="20" height="20" />
+                                <span>{group.memberCount} members</span>
                             </div>
 
-
-                      </div>
-                            
-                  </template>
-                </template>
-                
-            </template>
-            <template if:true={showEmptyState}>
-                <div class="slds-align_absolute-center slds-m-top_large">
-                    <p>No groups found. Try adjusting your filters.</p>
+                            <button
+                                class="read-more-btn"
+                                data-id={group.groupId}
+                                onclick={handleViewGroup}>
+                                View Group
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </template>
         </div>
+    </template>
+
+    <!-- List View -->
+    <template lwc:if={isListView}>
+        <div class="card-list">
+            <template for:each={groups} for:item="group">
+                <div key={group.groupId} class="list-item">
+                    <div class="list-image" data-id={group.groupId} onclick={handleViewGroup}>
+                        <template lwc:if={group.bannerUrl}>
+                            <img src={group.bannerUrl} alt={group.name} />
+                        </template>
+                        <template lwc:else>
+                            <img src={defaultImageUrl} alt={group.name} />
+                        </template>
+                    </div>
+
+                    <div class="list-content">
+                        <div class="card-badges">
+                            <template if:true={group.category}>
+                                <span class="badge badge-blue">{group.category}</span>
+                            </template>
+
+                            <template if:true={group.isAdmin}>
+                                <span class="badge badge-orange">Admin</span>
+                            </template>
+                        </div>
+
+                        <h3 class="list-title">{group.name}</h3>
+
+                        <p class={group.listDescClass}>
+                            {group.description}
+                        </p>
+
+                        <template lwc:if={group.isLongDescription}>
+                            <button
+                                class="show-more-btn"
+                                data-id={group.groupId}
+                                onclick={handleToggleDescription}>
+                                <template lwc:if={group.isExpanded}>Show Less</template>
+                                <template lwc:else>Show More</template>
+                            </button>
+                        </template>
+
+                        <div class={footerClass}>
+                            <div class="card-meta">
+                                <img src={images.groupMembers} width="20" height="20" />
+                                <span>{group.memberCount} members</span>
+                            </div>
+
+                            <button
+                                class="read-more-btn"
+                                data-id={group.groupId}
+                                onclick={handleViewGroup}>
+                                View Group
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </template>
+
+    <template if:true={showEmptyState}>
+        <div class="slds-align_absolute-center slds-m-top_large">
+            <p>No groups found.</p>
+        </div>
+    </template>
+</div>
     </div>
 
     <!-- Request New Group Modal -->
     <template if:true={showModal}>
+        <div class={themeClass}>
         <section role="dialog" tabindex="-1" aria-modal="true" class="modal-backdrop">
             <div class="modal-card">
                 <h2 class="modal-title">Start a New Alumni Group</h2>
@@ -190,6 +207,7 @@
                 </div>
             </div>
         </section>
+        </div>
     </template>
 
 
@@ -211,7 +229,7 @@
     <div class={mobileContainerClass}>
         <!-- Header: tabs + add icon -->
         <div class="mobile-header-row">
-            <div class="slds-button-group" role="group">
+            <div class="subtabs" role="group">
                 <button class={myGroupsClass} onclick={handleTabChange} data-tab="MyGroups">My Groups</button>
                 <button class={allGroupsClass} onclick={handleTabChange} data-tab="AllGroups">All Groups</button>
             </div>
@@ -245,58 +263,94 @@
         </template>
 
         <!-- Stacked cards -->
-        <div class="mobile-card-list">
-            <template if:true={groups}>
-                <template for:each={groups} for:item="group">
-                    <!-- data-id is required: handleViewGroup reads event.currentTarget.dataset.id,
-                         and without it the bubbled card click dispatched viewgroup with an
-                         undefined groupId, cancelling the View Group button's navigation -->
-                    <div class="mobile-card" key={group.groupId} data-id={group.groupId} onclick={handleViewGroup}>
-                        <div class="mobile-card-banner">
-                            <template lwc:if={group.bannerUrl}>
-                                <img src={group.bannerUrl} class="mobile-event-image" />
+       <div class="mobile-card-list">
+    <template if:true={groups}>
+        <template for:each={groups} for:item="group">
+            <div key={group.groupId} class="card-item">
+
+                <div
+                    class="card-image"
+                    data-id={group.groupId}
+                    onclick={handleViewGroup}>
+                    <template lwc:if={group.bannerUrl}>
+                        <img src={group.bannerUrl} alt={group.name} />
+                    </template>
+                    <template lwc:else>
+                        <img src={defaultImageUrl} alt={group.name} />
+                    </template>
+                </div>
+
+                <div class="card-content">
+
+                    <div class="card-badges">
+                        <template if:true={group.category}>
+                            <span class="badge badge-blue">
+                                {group.category}
+                            </span>
+                        </template>
+
+                        <template if:true={group.isAdmin}>
+                            <span class="badge badge-orange">
+                                Admin
+                            </span>
+                        </template>
+                    </div>
+
+                    <h3 class="card-title">
+                        {group.name}
+                    </h3>
+
+                    <p class={group.descClass}>
+                        {group.description}
+                    </p>
+
+                    <template lwc:if={group.isLongDescription}>
+                        <button
+                            class="show-more-btn"
+                            data-id={group.groupId}
+                            onclick={handleToggleDescription}>
+                            <template lwc:if={group.isExpanded}>
+                                Show Less
                             </template>
                             <template lwc:else>
-                                <img src={defaultImageUrl} class="mobile-event-image" />
+                                Show More
                             </template>
+                        </button>
+                    </template>
+
+                    <div class="card-footer">
+                        <div class="card-meta">
+                            <img
+                                src={images.groupMembers}
+                                width="20"
+                                height="20" />
+                            <span>{group.memberCount} members</span>
                         </div>
-                        <div class="mobile-card-body">
-                            <div class="badges">
-                                <template if:true={group.category}>
-                                    <span class="badge badge-blue">{group.category}</span>
-                                </template>
-                                <template if:true={group.isAdmin}>
-                                    <span class="badge badge-orange">Admin</span>
-                                </template>
-                            </div>
-                            <h3 class="card-title">{group.name}</h3>
-                            <p class={group.descClass}>{group.description}</p>
-                            
-                            <template lwc:if={group.isLongDescription}>
-                                <button class="show-more-btn" onclick={handleToggleDescription} data-id={group.groupId}>
-                                    <template lwc:if={group.isExpanded}>Show Less</template>
-                                    <template lwc:else>Show More</template>
-                                </button>
-                            </template>
-                            <div class="card-meta">
-                                <img src={images.groupMembers} height="20px" width="20px"/>
-                                <span>{group.memberCount} members</span>
-                            </div>
-                            <button class="btn-primary" data-id={group.groupId} onclick={handleViewGroup}>View Group</button>
-                        </div>
+
+                        <button
+                            class="read-more-btn"
+                            data-id={group.groupId}
+                            onclick={handleViewGroup}>
+                            View Group
+                        </button>
                     </div>
-                </template>
-            </template>
-            <template if:true={showEmptyState}>
-                <div class="slds-align_absolute-center slds-m-top_large">
-                    <p>No groups found. Try adjusting your filters.</p>
+
                 </div>
-            </template>
+            </div>
+        </template>
+    </template>
+
+    <template if:true={showEmptyState}>
+        <div class="slds-align_absolute-center slds-m-top_large">
+            <p>No groups found.</p>
         </div>
+    </template>
+</div>
     </div>
 
     <!-- Request New Group Modal (shared)  -->
     <template if:true={showModalMob}>
+        <div class={themeClass}>
         <section role="dialog" tabindex="-1" aria-modal="true" class="mbl-modal-backdrop">
             <div class="mbl-modal-card">
                 <h2 class="mbl-modal-title">Start a New Alumni Group</h2>
@@ -308,6 +362,7 @@
                 </div>
             </div>
         </section>
+        </div>
     </template>
     
 

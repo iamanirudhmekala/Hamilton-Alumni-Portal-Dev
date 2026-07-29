@@ -1,4 +1,4 @@
-@SuppressWarnings('PMD.ApexCRUDViolation, PMD.AvoidNonRestrictiveQueries, PMD.ApexSOQLInjection, PMD.EmptyStatementBlock, PMD.ApexDoc')
+@SuppressWarnings('PMD.NoTrailingWhitespace, PMD.ExcessiveClassLength, PME.ExcessivePublicCount, PMD.ApexCRUDViolation, PMD.EmptyIfStmt, PMD.EmptyStatementBlock, PMD.AvoidNonRestrictiveQueries, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.NcssCount, PMD.NcssTypeCount, PMD.DetectCopyPasteForApex, PMD.LocalVariableNamingConventions, PMD.ExcessiveParameterList, PMD.ApexSOQLInjection, PMD.AvoidDeeplyNestedIfStmts, PMD.AvoidDebugStatements, PMD.StdCyclomaticComplexity, PMD.NcssMethodCount')
 public without sharing class Ham_GroupsController {
 
     // ─── Wrapper Classes ────────────────────────────────────────────────────────
@@ -233,7 +233,6 @@ public without sharing class Ham_GroupsController {
                            Role__c, Status__c
                     FROM HAM_Group_Members__r
                     WHERE Status__c = 'Active'
-                    ORDER BY Role__c ASC
                     LIMIT 10)
             FROM HAM_Group__c
             WHERE Id = :groupId
@@ -253,7 +252,6 @@ public without sharing class Ham_GroupsController {
         detail.visibility         = g.Visibility__c;
         detail.memberPreviews     = new List<MemberPreviewWrapper>();
 
-        // First Admin record → admin card; all records → sidebar previews
         for (HAM_Group_Member__c m : g.HAM_Group_Members__r) {
             // Constituent_Employer__c is a Lookup to Account — the field itself holds the
             // Account Id, so the employer *name* only comes off the relationship.
@@ -261,20 +259,37 @@ public without sharing class Ham_GroupsController {
                 ? m.Contact__r.Constituent_Employer__r.Name
                 : null;
 
-            if (detail.admin == null && m.Role__c == 'Admin') {
-                AdminWrapper admin = new AdminWrapper();
-                admin.name     = m.Contact__r.Name;
-                admin.photoUrl = m.Contact__r.HAM_Profile_Picture_URL__c;
-                admin.jobTitle = m.Contact__r.Title;
-                admin.employer = employerName;
-                detail.admin   = admin;
-            }
             MemberPreviewWrapper preview = new MemberPreviewWrapper();
             preview.contactId = m.Contact__c;
             preview.name      = m.Contact__r.Name;
             preview.photoUrl  = m.Contact__r.HAM_Profile_Picture_URL__c;
             preview.title     = formatMemberTitle(m.Contact__r.Title, employerName);
             detail.memberPreviews.add(preview);
+        }
+
+        // Queried separately from the LIMIT 10 preview list above: Role__c is a
+        // picklist whose Setup-defined value order is Member, then Admin, so
+        // "ORDER BY Role__c ASC" sorts Member rows first — once a group has 10+
+        // active members, that preview query can fill up on Members before ever
+        // reaching the Admin row. A dedicated query guarantees the admin card
+        // still populates regardless of group size.
+        List<HAM_Group_Member__c> adminRows = [
+            SELECT Contact__r.Name, Contact__r.HAM_Profile_Picture_URL__c,
+                   Contact__r.Title, Contact__r.Constituent_Employer__r.Name
+            FROM HAM_Group_Member__c
+            WHERE Group__c = :groupId AND Status__c = 'Active' AND Role__c = 'Admin'
+            LIMIT 1
+        ];
+        if (!adminRows.isEmpty()) {
+            HAM_Group_Member__c adminRow = adminRows[0];
+            AdminWrapper admin = new AdminWrapper();
+            admin.name     = adminRow.Contact__r.Name;
+            admin.photoUrl = adminRow.Contact__r.HAM_Profile_Picture_URL__c;
+            admin.jobTitle = adminRow.Contact__r.Title;
+            admin.employer = adminRow.Contact__r.Constituent_Employer__r != null
+                ? adminRow.Contact__r.Constituent_Employer__r.Name
+                : null;
+            detail.admin   = admin;
         }
 
         // Current user membership
@@ -435,18 +450,21 @@ public without sharing class Ham_GroupsController {
         Id callerContactId = Id.valueOf(contactId);
 
         // Access enforcement via inner-join pattern (same as getGroupMembers): the caller must
-        // themselves be an Active member; the visible population is the other Active members.
+        // themselves be an Active member. For directory parity the visible population includes the
+        // caller's own card — self flows through getDirectoryData exactly like the main directory,
+        // and the shared display components render it with the same self-card treatment
+        // (Send Request greyed, no bookmark/three-dot menu, View Profile visible).
         Boolean callerIsActiveMember = false;
         Set<Id> memberContactIds = new Set<Id>();
         for (HAM_Group_Member__c m : [
             SELECT Contact__c FROM HAM_Group_Member__c
             WHERE Group__c = :groupId AND Status__c = 'Active'
         ]) {
+            if (m.Contact__c == null) continue;
             if (m.Contact__c == callerContactId) {
                 callerIsActiveMember = true;
-            } else if (m.Contact__c != null) {
-                memberContactIds.add(m.Contact__c);
             }
+            memberContactIds.add(m.Contact__c);
         }
         if (!callerIsActiveMember || memberContactIds.isEmpty()) return page;
 
@@ -799,6 +817,69 @@ public without sharing class Ham_GroupsController {
         @AuraEnabled public Datetime createdDate;
         @AuraEnabled public Integer commentCount;
         @AuraEnabled public Boolean isOwnPost;
+        @AuraEnabled public Boolean hasMorePages;
+        @AuraEnabled public List<AttachmentWrapper> attachments = new List<AttachmentWrapper>();
+    }
+
+    public class AttachmentWrapper {
+        @AuraEnabled public Id contentDocumentId;
+        @AuraEnabled public Id contentVersionId;
+        @AuraEnabled public String title;       // full filename incl. extension
+        @AuraEnabled public String fileExtension;
+        @AuraEnabled public Boolean isImage;
+        @AuraEnabled public String downloadUrl; // Shepherd download link for the latest version
+    }
+
+    // Extensions rendered inline as <img> in the feed; everything else shows as a download chip.
+    private static final Set<String> IMAGE_EXTENSIONS = new Set<String>{
+        'jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'bmp', 'svg'
+    };
+
+    // Builds postId -> attachments from the ContentDocumentLinks on the given posts,
+    // resolving each document's latest ContentVersion for the title/type/download URL.
+    private static Map<Id, List<AttachmentWrapper>> getPostAttachments(Set<Id> postIds) {
+        Map<Id, List<AttachmentWrapper>> byPost = new Map<Id, List<AttachmentWrapper>>();
+        if (postIds == null || postIds.isEmpty()) return byPost;
+
+        // Link rows tie each ContentDocument to its post; keep them to fan back out per post.
+        List<ContentDocumentLink> links = [
+            SELECT ContentDocumentId, LinkedEntityId
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId IN :postIds
+        ];
+        if (links.isEmpty()) return byPost;
+
+        Set<Id> docIds = new Set<Id>();
+        for (ContentDocumentLink l : links) docIds.add(l.ContentDocumentId);
+
+        Map<Id, ContentVersion> latestByDoc = new Map<Id, ContentVersion>();
+        for (ContentVersion cv : [
+            SELECT Id, ContentDocumentId, Title, FileExtension
+            FROM ContentVersion
+            WHERE ContentDocumentId IN :docIds AND IsLatest = true
+        ]) {
+            latestByDoc.put(cv.ContentDocumentId, cv);
+        }
+
+        for (ContentDocumentLink l : links) {
+            ContentVersion cv = latestByDoc.get(l.ContentDocumentId);
+            if (cv == null) continue;
+
+            AttachmentWrapper a = new AttachmentWrapper();
+            a.contentDocumentId = l.ContentDocumentId;
+            a.contentVersionId  = cv.Id;
+            a.title             = cv.Title;
+            a.fileExtension     = cv.FileExtension;
+            a.isImage           = cv.FileExtension != null
+                && IMAGE_EXTENSIONS.contains(cv.FileExtension.toLowerCase());
+            a.downloadUrl       = '/sfc/servlet.shepherd/version/download/' + cv.Id;
+
+            if (!byPost.containsKey(l.LinkedEntityId)) {
+                byPost.put(l.LinkedEntityId, new List<AttachmentWrapper>());
+            }
+            byPost.get(l.LinkedEntityId).add(a);
+        }
+        return byPost;
     }
 
     public class PostAuthorWrapper {
@@ -811,13 +892,14 @@ public without sharing class Ham_GroupsController {
     // Not @AuraEnabled itself — overload resolution across two @AuraEnabled methods of the same
     // name is unreliable from LWC, so only the filtered version below is exposed to the client.
     public static List<PostWrapper> getGroupFeed(Id groupId, Id currentContactId, Id lastPostId) {
-        return getGroupFeed(groupId, currentContactId, lastPostId, null, null, null, null, false);
+        return getGroupFeed(groupId, currentContactId, lastPostId, null, null, null, null, false, null);
     }
 
     @AuraEnabled
     public static List<PostWrapper> getGroupFeed(Id groupId, Id currentContactId, Id lastPostId,
                                                   String searchTerm, Datetime startDate, Datetime endDate,
-                                                  Id authorContactId, Boolean bookmarkedOnly) {
+                                                  String authorContactId, Boolean bookmarkedOnly,
+                                                  Id targetPostId) {
         Set<Id> allowedGroups = new Set<Id>(getUserActiveGroupIds(currentContactId));
         if(!allowedGroups.contains(groupId)) throw new AuraHandledException('Unauthorized access.');
 
@@ -832,8 +914,12 @@ public without sharing class Ham_GroupsController {
         }
 
         String likeTerm = null;
+        String tagLikeTerm = null;
         if (String.isNotBlank(searchTerm)) {
-            likeTerm = '%' + String.escapeSingleQuotes(searchTerm.trim()) + '%';
+            String trimmed = searchTerm.trim();
+            likeTerm = '%' + String.escapeSingleQuotes(trimmed) + '%';
+            String tagOnly = trimmed.startsWith('#') ? trimmed.substring(1).trim() : trimmed;
+            tagLikeTerm = '%' + String.escapeSingleQuotes(tagOnly) + '%';
         }
 
         String baseFields = 'Id, Body__c, Tags__c, Author__c, Author__r.Name, Author__r.HAM_Profile_Picture_URL__c, Is_Anonymous__c, Is_Pinned__c, Is_Amplified__c, Amplified_On__c, CreatedDate';
@@ -842,15 +928,23 @@ public without sharing class Ham_GroupsController {
         // then fall back into their normal chronological position automatically.
         Datetime amplifyCutoff = System.now().addDays(-7);
 
-        // Is_Draft__c = false excludes in-progress posts that are still collecting file uploads
-        String sharedFilter = ' WHERE Group__c = :groupId AND Is_Draft__c = false ';
-        // Anonymous posts are excluded from the name match — matching them would let a
-        // name search surface an anonymous post (still shown as "Anonymous" in the UI),
-        // leaking that the searched person authored it.
-        if (likeTerm != null) sharedFilter += 'AND Is_Anonymous__c = false AND Author__r.Name LIKE :likeTerm ';
+        // Is_Draft__c = false excludes in-progress posts that are still collecting file uploads.
+        // A post the admin has taken action on beyond a warning (e.g. deleted/blocked) is hidden
+        // from the feed; null (no action) and 'Warn the user' both leave the post visible.
+        String sharedFilter = ' WHERE Group__c = :groupId AND Is_Draft__c = false '
+                             + 'AND (Ham_Admin_Action__c = null OR Ham_Admin_Action__c = \'Warn the user\') ';
+        if (likeTerm != null) {
+            sharedFilter += 'AND (Tags__c LIKE :tagLikeTerm OR (Is_Anonymous__c = false AND Author__r.Name LIKE :likeTerm)) ';
+        }
         if (startDate != null) sharedFilter += 'AND CreatedDate >= :startDate ';
         if (endDate != null) sharedFilter += 'AND CreatedDate <= :endDate ';
-        if (authorContactId != null) sharedFilter += 'AND Author__c = :authorContactId ';
+        if (String.isNotBlank(authorContactId)) {
+            if ('ANONYMOUS'.equalsIgnoreCase(authorContactId)) {
+                sharedFilter += 'AND Is_Anonymous__c = true ';
+            } else {
+                sharedFilter += 'AND Is_Anonymous__c = false AND Author__c = :authorContactId ';
+            }
+        }
         if (bookmarkedPostIds != null) sharedFilter += 'AND Id IN :bookmarkedPostIds ';
 
         List<HAM_Group_Post__c> dbPosts = new List<HAM_Group_Post__c>();
@@ -879,27 +973,91 @@ public without sharing class Ham_GroupsController {
         // block above. Keyset pagination (Id < :lastPostId) stays untouched.
         query += 'AND (Is_Amplified__c = false OR Amplified_On__c = null OR Amplified_On__c < :amplifyCutoff) ';
         if (lastPostId != null) query += 'AND Id < :lastPostId ';
-        query += 'ORDER BY Id DESC LIMIT :limitSize';
-        dbPosts.addAll((List<HAM_Group_Post__c>) Database.query(query));
+        // Fetch one row past the page size so we can tell whether another page exists
+        // without a separate COUNT query, then trim the extra row back off before returning.
+        Integer queryLimit = limitSize + 1;
+        query += 'ORDER BY Id DESC LIMIT :queryLimit';
+        List<HAM_Group_Post__c> paginatedPosts = (List<HAM_Group_Post__c>) Database.query(query);
+        Boolean hasMorePages = paginatedPosts.size() > limitSize;
+        if (hasMorePages) paginatedPosts.remove(paginatedPosts.size() - 1);
+        dbPosts.addAll(paginatedPosts);
+
+        if (String.isNotBlank(searchTerm)) {
+            String cleanSearchTerm = searchTerm.trim().toLowerCase();
+            String tagSearchTerm = cleanSearchTerm.startsWith('#') ? cleanSearchTerm.substring(1) : cleanSearchTerm;
+            List<HAM_Group_Post__c> filteredPosts = new List<HAM_Group_Post__c>();
+            for (HAM_Group_Post__c p : dbPosts) {
+                Boolean matchesBody = p.Body__c != null && p.Body__c.toLowerCase().contains(cleanSearchTerm);
+                Boolean matchesTags = p.Tags__c != null && (p.Tags__c.toLowerCase().contains(cleanSearchTerm) || p.Tags__c.toLowerCase().contains(tagSearchTerm));
+                Boolean matchesAuthor = p.Is_Anonymous__c == false && p.Author__r != null && p.Author__r.Name != null && p.Author__r.Name.toLowerCase().contains(cleanSearchTerm);
+                if (matchesBody || matchesTags || matchesAuthor) {
+                    filteredPosts.add(p);
+                }
+            }
+            dbPosts = filteredPosts;
+        }
+
+        // Deep-linked post (amplify notification, or moderation "View Content"): the feed
+        // is keyset-paginated, so a post older than the first page never reached the client
+        // and the scroll-to-post silently no-opped. Fetch it explicitly and put it at the
+        // HEAD of the list — appending would corrupt the client's keyset cursor, which is
+        // the Id of the last element. Visibility rules stay identical to the feed queries,
+        // so a soft-hidden or foreign-group post still resolves to nothing (the client then
+        // tells the user rather than failing silently).
+        if (lastPostId == null && targetPostId != null) {
+            Boolean alreadyLoaded = false;
+            for (HAM_Group_Post__c p : dbPosts) {
+                if (p.Id == targetPostId) {
+                    alreadyLoaded = true;
+                    break;
+                }
+            }
+            if (!alreadyLoaded) {
+                List<HAM_Group_Post__c> targetPosts = [
+                    SELECT Id, Body__c, Tags__c, Author__c, Author__r.Name,
+                           Author__r.HAM_Profile_Picture_URL__c, Is_Anonymous__c, Is_Pinned__c,
+                           Is_Amplified__c, Amplified_On__c, CreatedDate
+                    FROM HAM_Group_Post__c
+                    WHERE Id = :targetPostId
+                      AND Group__c = :groupId
+                      AND Is_Draft__c = false
+                      AND (Ham_Admin_Action__c = null OR Ham_Admin_Action__c = 'Warn the user')
+                ];
+                if (!targetPosts.isEmpty()) {
+                    List<HAM_Group_Post__c> merged = new List<HAM_Group_Post__c>(targetPosts);
+                    merged.addAll(dbPosts);
+                    dbPosts = merged;
+                }
+            }
+        }
 
         Set<Id> postIds = new Set<Id>();
         for (HAM_Group_Post__c p : dbPosts) postIds.add(p.Id);
 
+        // Matches the visibility filter in getPostComments — a soft-hidden comment
+        // (Ham_Admin_Action__c beyond a warning) must not inflate the reply count
+        // shown on the post.
         Map<Id, Integer> commentCountsByPost = new Map<Id, Integer>();
         for (AggregateResult ar : [
             SELECT Post__c postId, COUNT(Id) cnt
             FROM HAM_Group_Comment__c
             WHERE Post__c IN :postIds
+              AND (Ham_Admin_Action__c = null OR Ham_Admin_Action__c = 'Warn the user')
             GROUP BY Post__c
         ]) {
             commentCountsByPost.put((Id) ar.get('postId'), (Integer) ar.get('cnt'));
         }
+
+        // Attachments (images + files) linked to the posts on this page.
+        Map<Id, List<AttachmentWrapper>> attachmentsByPost = getPostAttachments(postIds);
 
         List<PostWrapper> wrappers = new List<PostWrapper>();
         for (HAM_Group_Post__c p : dbPosts) {
             PostWrapper w   = new PostWrapper();
             w.id            = p.Id;
             w.body          = p.Body__c;
+            w.attachments   = attachmentsByPost.containsKey(p.Id)
+                ? attachmentsByPost.get(p.Id) : new List<AttachmentWrapper>();
             w.tags          = p.Tags__c;
             w.isAnonymous   = p.Is_Anonymous__c;
             w.isPinned      = p.Is_Pinned__c;
@@ -909,6 +1067,7 @@ public without sharing class Ham_GroupsController {
             w.createdDate   = p.CreatedDate;
             w.commentCount  = commentCountsByPost.containsKey(p.Id) ? commentCountsByPost.get(p.Id) : 0;
             w.isOwnPost     = (p.Author__c != null && p.Author__c == currentContactId);
+            w.hasMorePages  = hasMorePages;
 
             // SERVER-SIDE anonymity masking: identity must never leave the server for
             // anonymous posts. DB retains Author__c for traceability/moderation.
@@ -1012,6 +1171,7 @@ public without sharing class Ham_GroupsController {
         // access to Author__c would silently insert posts with no author.
         for (HAM_Group_Post__c post : postsToInsert) {
             post.Author__c = currentContactId;
+            post.Ham_Admin_Action__c = null;
         }
 
         // Single DML
@@ -1033,11 +1193,9 @@ public without sharing class Ham_GroupsController {
 
         Long currentTime = System.now().getTime();
         Set<Id> updatedGroups = new Set<Id>();
-        List<Id> postIds = new List<Id>();
 
         for (HAM_Group_Post__c post : posts) {
             updatedGroups.add(post.Group__c);
-            postIds.add(post.Id);
         }
 
         // One cache update per unique group
@@ -1045,18 +1203,15 @@ public without sharing class Ham_GroupsController {
             Cache.Session.put('local.HamCommunityPartition.lastUpdate' + grpId, currentTime);
         }
 
-        // Member notifications are handled solely by the Queueable below: it excludes
-        // the author, writes the HAM_Notification__c bell rows, and links to the group
-        // discussion with the router's ?view=groups&subview= URL. We intentionally do
-        // NOT also publish HAM_Group_Notification__e — that path (HAMGroupNotificationTrigger
-        // -> HAM_GroupNotificationHandler) double-notified members, pinged the author about
-        // their own post, and pointed at a ?view=community URL that opened the wrong layout.
-        if (!postIds.isEmpty()) {
-            System.enqueueJob(new HAM_NotificationQueueable(postIds));
-        }
+        // Per the client's 2026-07-21 rule, a plain new post notifies NOBODY — even
+        // with the master toggle on. The only notification a post can generate is the
+        // "Tagged in a Post" fan-out below, to @mentioned members. The generic
+        // "New post in {Group}" fan-out (HAM_NotificationQueueable(postIds)) has been
+        // removed accordingly; the HAM_Group_Notification__e platform-event path was
+        // already disabled for the same double-notify reasons.
 
-        // "Tagged in a Post" fan-out: a distinct notification to just the @mentioned
-        // members, separate from the general new-post alert above.
+        // "Tagged in a Post" fan-out: a notification to just the @mentioned members —
+        // now the sole notification a post produces.
         for (HAM_Group_Post__c post : posts) {
             List<Id> mentionedIds = parseMentionedContactIds(post.Mentioned_Contact_Ids__c);
             if (!mentionedIds.isEmpty()) {
@@ -1086,7 +1241,8 @@ public without sharing class Ham_GroupsController {
         HAM_Group_Post__c draft = new HAM_Group_Post__c(
             Group__c    = groupId,
             Author__c   = currentContactId,
-            Is_Draft__c = true
+            Is_Draft__c = true,
+            Ham_Admin_Action__c = null
         );
         insert draft;
         return draft.Id;
@@ -1183,7 +1339,11 @@ public without sharing class Ham_GroupsController {
         w.isPinned     = post.Is_Pinned__c;
         w.isAmplified  = post.Is_Amplified__c;
         w.createdDate  = post.CreatedDate;
-        w.commentCount = [SELECT COUNT() FROM HAM_Group_Comment__c WHERE Post__c = :postId];
+        w.commentCount = [
+            SELECT COUNT() FROM HAM_Group_Comment__c
+            WHERE Post__c = :postId
+              AND (Ham_Admin_Action__c = null OR Ham_Admin_Action__c = 'Warn the user')
+        ];
         w.isOwnPost    = true;
 
         if (post.Is_Anonymous__c == true) {
@@ -1311,12 +1471,13 @@ public without sharing class Ham_GroupsController {
         List<CommentWrapper> results = new List<CommentWrapper>();
         
         List<HAM_Group_Comment__c> dbComments = [
-            SELECT Id, Post__c, Body__c, CreatedDate, 
+            SELECT Id, Post__c, Body__c, CreatedDate,
                    HAM_Group_Member__r.Contact__c,
                    HAM_Group_Member__r.Contact__r.Name,
                    HAM_Group_Member__r.Contact__r.HAM_Profile_Picture_URL__c
             FROM HAM_Group_Comment__c
             WHERE Post__c = :postId
+              AND (Ham_Admin_Action__c = null OR Ham_Admin_Action__c = 'Warn the user')
             ORDER BY CreatedDate DESC
         ];
         
@@ -1363,9 +1524,11 @@ public without sharing class Ham_GroupsController {
         newComment.Mentioned_Contact_Ids__c = mentionedContactIds;
 
         SObjectAccessDecision decision = Security.stripInaccessible(AccessType.CREATABLE, new List<HAM_Group_Comment__c>{newComment});
-        insert decision.getRecords();
+        List<HAM_Group_Comment__c> commentsToInsert = (List<HAM_Group_Comment__c>)decision.getRecords();
+        commentsToInsert[0].Ham_Admin_Action__c = null;
+        insert commentsToInsert;
 
-        HAM_Group_Comment__c inserted = (HAM_Group_Comment__c)decision.getRecords()[0];
+        HAM_Group_Comment__c inserted = commentsToInsert[0];
 
         // "Tagged in a Comment" fan-out: distinct notification to just the @mentioned members
         List<Id> mentionedIds = parseMentionedContactIds(mentionedContactIds);
@@ -1636,6 +1799,29 @@ public without sharing class Ham_GroupsController {
     }
 
     /**
+     * @description Admin-only "Remove Amplification" for a resource — the corrective
+     *              path for an accidental amplify, mirroring unamplifyPost. Clears
+     *              Is_Amplified__c (removes the badge/highlight), leaves Amplified_On__c
+     *              as an audit trail, and sends no notification.
+     */
+    @AuraEnabled
+    public static String unamplifyResource(Id groupId, Id resourceId, Id contactId) {
+        checkModerationAccess(groupId, contactId);
+
+        List<HAM_Group_Resource__c> resources = [
+            SELECT Id, Is_Amplified__c FROM HAM_Group_Resource__c
+            WHERE Id = :resourceId AND Group__c = :groupId LIMIT 1
+        ];
+        if (resources.isEmpty()) {
+            throw new AuraHandledException('Resource not found in this group.');
+        }
+
+        resources[0].Is_Amplified__c = false;
+        update resources;
+        return 'Success';
+    }
+
+    /**
      * @description Admin-only "Amplify": flags a post as highlighted and kicks
      *              off a background Queueable that alerts every active group member.
      */
@@ -1657,6 +1843,31 @@ public without sharing class Ham_GroupsController {
 
         // Notification fan-out runs async, same as resource amplify
         System.enqueueJob(new HAM_NotificationQueueable(postId, contactId, 'Post'));
+        return 'Success';
+    }
+
+    /**
+     * @description Admin-only "Remove Amplification": clears the highlight/promotion on
+     *              a post that was amplified — the corrective path for an accidental
+     *              amplify, so the admin doesn't have to wait out the 7-day window.
+     *              Only flips Is_Amplified__c off (which alone drops the post out of the
+     *              amplified feed block and hides the badge); Amplified_On__c is left as
+     *              an audit trail. Sends NO notification — nothing is dispatched here.
+     */
+    @AuraEnabled
+    public static String unamplifyPost(Id groupId, Id postId, Id contactId) {
+        checkModerationAccess(groupId, contactId);
+
+        List<HAM_Group_Post__c> posts = [
+            SELECT Id, Is_Amplified__c FROM HAM_Group_Post__c
+            WHERE Id = :postId AND Group__c = :groupId LIMIT 1
+        ];
+        if (posts.isEmpty()) {
+            throw new AuraHandledException('Post not found in this group.');
+        }
+
+        posts[0].Is_Amplified__c = false;
+        update posts;
         return 'Success';
     }
 
@@ -1891,9 +2102,10 @@ public without sharing class Ham_GroupsController {
 
     /**
      * @description Handles the three "Take Action" outcomes for a flagged report:
-     *              warn (email only), delete (remove the reported content + email),
-     *              or block (remove the reported content, block the member from the
-     *              group, and email). The acting admin is captured via the standard
+     *              warn (email only), delete (soft-hide the reported content via
+     *              Ham_Admin_Action__c + email), or block (soft-hide the reported
+     *              content, block the member from the group, and email). The acting
+     *              admin is captured via the standard
      *              LastModifiedBy/LastModifiedDate audit fields on the report record.
      */
     @AuraEnabled
@@ -1934,31 +2146,39 @@ public without sharing class Ham_GroupsController {
             targetEmail = first.Reported_Post__r.Author__r != null ? first.Reported_Post__r.Author__r.Email : null;
         }
 
-        // Resolve the report rows BEFORE deleting the reported post/comment. Reported_Post__c/
-        // Reported_Comment__c reference that content, so deleting it first can cascade-delete
-        // or otherwise invalidate these report rows, making a later `update reports` throw on
-        // already-gone records (surfaces to the client as an unhandled 500, not the friendly
-        // AuraHandledException below).
         for (HAM_Reported_Content__c r : reports) {
             r.Status__c = 'Resolved';
         }
         update reports;
 
-        if (actionType == 'Delete' || actionType == 'Block') {
+        // Content is never hard-deleted here — the admin's decision is recorded on
+        // Ham_Admin_Action__c instead. Only 'Warn the user' (or blank) stays visible
+        // in the discussion feed (see getGroupFeed/getPostComments); the other values
+        // soft-hide the post/comment while preserving it for audit purposes.
+        Map<String, String> actionTypeToAdminAction = new Map<String, String>{
+            'Warn'   => 'Warn the user',
+            'Delete' => 'Delete the content',
+            'Block'  => 'Remove content & Block user'
+        };
+        String adminActionValue = actionTypeToAdminAction.get(actionType);
+
+        if (adminActionValue != null) {
             try {
                 if (first.Reported_Comment__c != null) {
                     List<HAM_Group_Comment__c> comments = [SELECT Id FROM HAM_Group_Comment__c WHERE Id = :first.Reported_Comment__c];
                     if (!comments.isEmpty()) {
-                        delete comments;
+                        comments[0].Ham_Admin_Action__c = adminActionValue;
+                        update comments;
                     }
                 } else if (first.Reported_Post__c != null) {
                     List<HAM_Group_Post__c> posts = [SELECT Id FROM HAM_Group_Post__c WHERE Id = :first.Reported_Post__c];
                     if (!posts.isEmpty()) {
-                        delete posts;
+                        posts[0].Ham_Admin_Action__c = adminActionValue;
+                        update posts;
                     }
                 }
             } catch (Exception e) {
-                throw new AuraHandledException('Could not delete the reported content: ' + e.getMessage());
+                throw new AuraHandledException('Could not update the reported content: ' + e.getMessage());
             }
         }
 
@@ -2010,7 +2230,7 @@ public without sharing class Ham_GroupsController {
 
     // ─── Private Group Approvals Methods ─────────────────────────────────────────
 
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static List<PendingMemberWrapper> getPendingMembers(Id groupId, Id currentContactId) {
         checkModerationAccess(groupId, currentContactId);
 
@@ -2160,19 +2380,26 @@ public without sharing class Ham_GroupsController {
     }
 
     /**
-     * @description Attaches files uploaded as base64 to a specific group post.
+     * @description Attaches files uploaded as base64 to a specific group post, running
+     *              without sharing so it works even though the portal member has no
+     *              standard access to the (private) draft post record. This is why the
+     *              composer routes attachments here rather than through
+     *              lightning-file-upload, which enforces standard record access and so
+     *              fails with "Can't upload" when pointed at a HAM_Group_Post__c draft.
      * @param postId The ID of the post to link files to.
      * @param filesJson JSON string containing list of files with name and base64 data.
+     * @return The ContentDocumentIds of the attached files, in the same order as the
+     *         input, so the composer can display/remove them.
      */
     @AuraEnabled
-    public static void attachFilesToPost(Id postId, String filesJson) {
+    public static List<Id> attachFilesToPost(Id postId, String filesJson) {
         if (String.isBlank(filesJson) || postId == null) {
-            return;
+            return new List<Id>();
         }
-        
+
         List<FileAttachment> files = (List<FileAttachment>) JSON.deserialize(filesJson, List<FileAttachment>.class);
         List<ContentVersion> cvList = new List<ContentVersion>();
-        
+
         for (FileAttachment fa : files) {
             ContentVersion cv = new ContentVersion();
             cv.Title = fa.fileName;
@@ -2181,17 +2408,21 @@ public without sharing class Ham_GroupsController {
             cv.IsMajorVersion = true;
             cvList.add(cv);
         }
-        
+
         SObjectAccessDecision decisionCV = Security.stripInaccessible(AccessType.CREATABLE, cvList);
         insert decisionCV.getRecords();
-        
+
         List<Id> cvIds = new List<Id>();
         for (SObject cv : decisionCV.getRecords()) {
             cvIds.add(cv.Id);
         }
-        
+
+        // Preserve input order: map each ContentVersion to its ContentDocumentId, then
+        // emit the doc Ids in the same sequence the files were sent in.
+        Map<Id, Id> cvToDocId = new Map<Id, Id>();
         List<ContentDocumentLink> cdlList = new List<ContentDocumentLink>();
-        for (ContentVersion cv : [SELECT ContentDocumentId FROM ContentVersion WHERE Id IN :cvIds]) {
+        for (ContentVersion cv : [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id IN :cvIds]) {
+            cvToDocId.put(cv.Id, cv.ContentDocumentId);
             ContentDocumentLink cdl = new ContentDocumentLink();
             cdl.ContentDocumentId = cv.ContentDocumentId;
             cdl.LinkedEntityId = postId;
@@ -2199,9 +2430,15 @@ public without sharing class Ham_GroupsController {
             cdl.Visibility = 'AllUsers';
             cdlList.add(cdl);
         }
-        
+
         SObjectAccessDecision decisionCDL = Security.stripInaccessible(AccessType.CREATABLE, cdlList);
         insert decisionCDL.getRecords();
+
+        List<Id> orderedDocIds = new List<Id>();
+        for (Id cvId : cvIds) {
+            if (cvToDocId.containsKey(cvId)) orderedDocIds.add(cvToDocId.get(cvId));
+        }
+        return orderedDocIds;
     }
 
     private class FileAttachment {

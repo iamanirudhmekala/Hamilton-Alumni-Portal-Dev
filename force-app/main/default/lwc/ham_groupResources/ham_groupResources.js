@@ -3,6 +3,7 @@ import getGroupResourceCards from '@salesforce/apex/Ham_GroupsController.getGrou
 import bookmarkResource from '@salesforce/apex/Ham_GroupsController.bookmarkResource';
 import unbookmarkResource from '@salesforce/apex/Ham_GroupsController.unbookmarkResource';
 import amplifyResource from '@salesforce/apex/Ham_GroupsController.amplifyResource';
+import unamplifyResource from '@salesforce/apex/Ham_GroupsController.unamplifyResource';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 const ALL_CATEGORIES = 'All';
@@ -42,8 +43,37 @@ export default class Ham_groupResources extends LightningElement {
     @track amplifyTarget = null;
     @track isAmplifying = false;
 
+    // Deep link from an amplify notification (?...&subview=resources&resourceId=...)
+    targetResourceId = null;
+    _deepLinkHandled = false;
+
     connectedCallback() {
+        this.parseUrlParameters();
         this.loadResources();
+    }
+
+    // The dashboard preview caps the grid, so the deep-linked card may not be in it —
+    // let the full Resources tab own the scroll instead of fighting it from the preview.
+    parseUrlParameters() {
+        if (this.isPreviewMode) return;
+        try {
+            this.targetResourceId = new URLSearchParams(window.location.search).get('resourceId');
+        } catch (e) {
+            console.error('Error parsing URL parameters:', e);
+        }
+    }
+
+    // Scrolling is driven by render rather than a fixed timeout: the cards are painted
+    // after the Apex call resolves, and the images are lazy-loaded, so a timer either
+    // fires too early (nothing to find) or animates to an offset that later shifts.
+    renderedCallback() {
+        if (!this.targetResourceId || this._deepLinkHandled) return;
+
+        const card = this.template.querySelector(`[data-resource-id="${this.targetResourceId}"]`);
+        if (!card) return; // not rendered yet — retry on the next render
+
+        this._deepLinkHandled = true;
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     loadResources() {
@@ -52,6 +82,14 @@ export default class Ham_groupResources extends LightningElement {
             .then(data => {
                 // Server already orders bookmarked cards first
                 this.resources = (data || []).map(res => ({ ...res, id: res.resourceId }));
+
+                // Tell the user rather than silently doing nothing if the notification
+                // outlived the resource (deleted, or moved to another group).
+                if (this.targetResourceId
+                    && !this.resources.some(r => String(r.id) === String(this.targetResourceId))) {
+                    this.targetResourceId = null;
+                    this.showToast('Not available', 'That resource is no longer in this group.', 'warning');
+                }
             })
             .catch(err => {
                 console.error('Error fetching resources:', err);
@@ -87,9 +125,15 @@ export default class Ham_groupResources extends LightningElement {
 
         return list.map(r => ({
             ...r,
-            cardClass: r.isAmplified ? 'resource-card amplified' : 'resource-card',
+            cardClass: `resource-card${r.isAmplified ? ' amplified' : ''}`
+                + (this.targetResourceId && String(r.id) === String(this.targetResourceId)
+                    ? ' resource-card--highlighted' : ''),
             bookmarkBtnClass: r.isBookmarked ? 'card-action-btn bookmark-active' : 'card-action-btn',
-            bookmarkTitle: r.isBookmarked ? 'Remove bookmark' : 'Bookmark this resource'
+            bookmarkTitle: r.isBookmarked ? 'Remove bookmark' : 'Bookmark this resource',
+            // aria-pressed must serialise to the strings "true"/"false"
+            bookmarkPressed: r.isBookmarked ? 'true' : 'false',
+            amplifyBtnClass: r.isAmplified ? 'card-action-btn amplify-active' : 'card-action-btn',
+            amplifyTitle: r.isAmplified ? 'Remove amplification' : 'Amplify this resource'
         }));
     }
 
@@ -172,6 +216,24 @@ export default class Ham_groupResources extends LightningElement {
 
     closeAmplifyModal() {
         this.amplifyTarget = null;
+    }
+
+    // Un-amplify is the corrective action for an accidental amplify — direct (no modal,
+    // no notification), mirroring the post feed's Remove Amplification.
+    handleUnamplifyClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const resourceId = event.currentTarget.dataset.id;
+
+        unamplifyResource({ groupId: this.groupId, resourceId, contactId: this.contactId })
+            .then(() => {
+                this.showToast('Removed', 'Amplification removed from this resource.', 'success');
+                this.loadResources();
+            })
+            .catch(err => {
+                console.error('Un-amplify error:', err);
+                this.showToast('Error', err.body?.message || 'Could not remove amplification.', 'error');
+            });
     }
 
     confirmAmplify() {

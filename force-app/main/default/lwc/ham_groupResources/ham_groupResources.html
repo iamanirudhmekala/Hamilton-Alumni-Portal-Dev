@@ -35,7 +35,7 @@
                     <div class="resources-grid slds-grid slds-wrap slds-gutters">
                         <template for:each={displayResources} for:item="res">
                             <div key={res.id} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3 slds-m-bottom_medium my-resources-card-class">
-                                <div class={res.cardClass}>
+                                <div class={res.cardClass} data-resource-id={res.id}>
 
                                     <!-- Amplified flag -->
                                     <template if:true={res.isAmplified}>
@@ -74,16 +74,29 @@
                                             <!-- Bell / bookmark actions -->
                                             <div class="card-actions">
                                                 <template if:true={isAdmin}>
-                                                    <button class="card-action-btn"
-                                                            data-id={res.id}
-                                                            onclick={handleAmplifyClick}
-                                                            title="Amplify this resource">
-                                                        <lightning-icon icon-name="utility:notification" size="x-small"></lightning-icon>
-                                                    </button>
+                                                    <!-- Toggles like the post feed: Amplify (confirmation modal) vs. Remove Amplification (direct) -->
+                                                    <template if:true={res.isAmplified}>
+                                                        <button class={res.amplifyBtnClass}
+                                                                data-id={res.id}
+                                                                onclick={handleUnamplifyClick}
+                                                                title={res.amplifyTitle}>
+                                                            <lightning-icon icon-name="utility:notification" size="x-small"></lightning-icon>
+                                                        </button>
+                                                    </template>
+                                                    <template if:false={res.isAmplified}>
+                                                        <button class={res.amplifyBtnClass}
+                                                                data-id={res.id}
+                                                                onclick={handleAmplifyClick}
+                                                                title={res.amplifyTitle}>
+                                                            <lightning-icon icon-name="utility:notification" size="x-small"></lightning-icon>
+                                                        </button>
+                                                    </template>
                                                 </template>
                                                 <button class={res.bookmarkBtnClass}
                                                         data-id={res.id}
                                                         onclick={handleBookmarkClick}
+                                                        aria-label={res.bookmarkTitle}
+                                                        aria-pressed={res.bookmarkPressed}
                                                         title={res.bookmarkTitle}>
                                                     <lightning-icon icon-name="utility:bookmark" size="x-small"></lightning-icon>
                                                 </button>

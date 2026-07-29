@@ -3572,6 +3572,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>ucinn_ascendv2__Degree_Information__c.HAMRolledOver__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>ucinn_ascendv2__Degree_Information__c.HAM_Anticipated_Class_Year__c</field>
         <readable>true</readable>

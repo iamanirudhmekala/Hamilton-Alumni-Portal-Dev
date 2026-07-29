@@ -1,0 +1,32 @@
+<template>
+     <lightning-card title="Profile Picture" icon-name="doctype:image">
+        <div class="slds-p-around_small">
+            <template if:true={loadError}>
+                <div class="slds-text-color_error">{loadError}</div>
+            </template>
+ 
+            <template if:true={hasContext}>
+                <template if:true={hasSingleContact}>
+                    <p class="slds-m-bottom_small">
+                        Linked Contact: <strong>{fileContext.contactName}</strong>
+                    </p>
+                </template>
+ 
+                <template if:false={hasSingleContact}>
+                    <p class="slds-text-color_error slds-m-bottom_small">{noContactMessage}</p>
+                </template>
+ 
+                <template if:true={notImageMessage}>
+                    <p class="slds-text-color_weak slds-m-bottom_small">{notImageMessage}</p>
+                </template>
+ 
+                <lightning-button
+                    label={buttonLabel}
+                    onclick={handlePublish}
+                    disabled={publishDisabled}
+                    variant="brand">
+                </lightning-button>
+            </template>
+        </div>
+    </lightning-card>
+</template>

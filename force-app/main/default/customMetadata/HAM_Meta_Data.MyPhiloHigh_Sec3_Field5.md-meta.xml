@@ -32,7 +32,7 @@
     </values>
     <values>
         <field>HAM_Order__c</field>
-        <value xsi:type="xsd:double">5.0</value>
+        <value xsi:type="xsd:double">6.0</value>
     </values>
     <values>
         <field>HAM_Redirect_Link__c</field>

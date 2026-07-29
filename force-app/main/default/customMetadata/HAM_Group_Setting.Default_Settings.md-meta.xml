@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>Feed_Pagination_Size__c</field>
-        <value xsi:type="xsd:double">20.0</value>
+        <value xsi:type="xsd:double">10.0</value>
     </values>
     <values>
         <field>Polling_Jitter_Max_ms__c</field>

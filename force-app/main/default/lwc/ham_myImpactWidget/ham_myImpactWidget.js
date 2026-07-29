@@ -11,6 +11,7 @@ import ViewMyVolunteerRoles from '@salesforce/label/c.ham_viewMyVolunteerRoles';
 
 const SEC_CURRENT_FY = 'Current Fiscal Year Giving';
 const SEC_LIFETIME   = 'Lifetime Impact';
+const SEC_GIVING_FY   = 'Current FY Paid';
 
 export default class Ham_MyImpactWidget extends LightningElement {
     @api userContactId;
@@ -47,7 +48,10 @@ export default class Ham_MyImpactWidget extends LightningElement {
                 return;
             }
             try {
+                console.log('Data--->',data.otherInfo);
+                console.log('philanthropyField--->',data.philanthropyField)
                 this._buildSections(data.philanthropyField || []);
+                console.log('philanthropySections--->',this.philanthropySections);
                 this.otherInfo = data.otherInfo || {};
                 if (Array.isArray(data.hcBadges)) {
                     if(this.isOverride){
@@ -128,6 +132,8 @@ export default class Ham_MyImpactWidget extends LightningElement {
         return !!this._currentFY;
     }
 
+    
+
     get fundPaidValue() {
         const field = this._currentFY?.fields?.find(f => f.label === 'Hamilton Fund Paid');
         return field?.value || '';
@@ -165,6 +171,32 @@ export default class Ham_MyImpactWidget extends LightningElement {
         if (!committed) return null;
         return Math.round((paid / committed) * 100) + '% fulfilled';
     }
+
+    // ── Section 3: This Fiscal Year's Current Paid  ──────────────────────────────
+    get _currentPaidFY() {
+        console.log('CurrentPaidFY--->',this.philanthropySections.find(s => s.name === SEC_GIVING_FY));
+        return this.philanthropySections.find(s => s.name === SEC_GIVING_FY);
+    }
+
+    get hasCurrentPaidFY() {
+        return !!this._currentPaidFY;
+    }
+
+
+    get currentFiscalPaidValue() {
+        const field = this._currentPaidFY?.fields?.find(f => f.label === 'Current FY Paid');
+        console.log('field--->',field);
+        console.log('value--->',(field?.value || ''));
+        return field?.value || '';
+    }
+
+    get currentFiscalYearLabel() {
+        const now = new Date();
+        const startYear = now.getMonth() >= 6 ? now.getFullYear() : now.getFullYear() - 1; // FY starts July 1
+        const endYearShort = String((startYear + 1) % 100).padStart(2, '0');
+        return `FY ${startYear}–${endYearShort}`;
+    }
+
 
     nonVolunteerMsg = NonVolunteerMsg;
     volunteerLeadershipTitle = VolunteerLeadershipTitle;

@@ -302,8 +302,8 @@ public without sharing class HAM_HomePageController {
 		
 		
         // Main query to fetch constituent
-		String queryString = 'SELECT Id, HAM_Current_FY_Paid__c, HAM_Total_Years_of_Giving__c,'+ queryFields + ' FROM Contact WHERE Id = \'' + String.escapeSingleQuotes(currentUserContactId) + '\' LIMIT 1';
-        
+		String queryString = 'SELECT Id, HAM_Total_Years_of_Giving__c,'+ queryFields + ' FROM Contact WHERE Id = \'' + String.escapeSingleQuotes(currentUserContactId) + '\' LIMIT 1';
+        //system.debug('queryString---->'+ queryString);
 		Contact constituentSObject = null;
 		try {
             List<Contact> results = (List<Contact>)Database.query(queryString);
@@ -324,7 +324,7 @@ public without sharing class HAM_HomePageController {
                 response.contact.Id = constituentSObject.get('Id') != null ? (Id)constituentSObject.get('Id') : '';
                 
                 response.otherInfo = new HAM_MyImpactController.OtherInfo();
-                response.otherInfo.isGift = (constituentSObject.get('HAM_Current_FY_Paid__c') != null && (Decimal)constituentSObject.get('HAM_Current_FY_Paid__c') > 0) ? false : true;
+                //response.otherInfo.isGift = (constituentSObject.get('HAM_Current_FY_Paid__c') != null && (Decimal)constituentSObject.get('HAM_Current_FY_Paid__c') > 0) ? false : true;
                 response.otherInfo.totalYearsOfGiving = constituentSObject.get('HAM_Total_Years_of_Giving__c') != null ? (Decimal)constituentSObject.get('HAM_Total_Years_of_Giving__c') : null;
                 response.otherInfo.isVolunteer = constituentSObject.get('Is_Volunteer__c') != null ? (Boolean)constituentSObject.get('Is_Volunteer__c') : false;
                 for(HAM_MyImpactController.MyImpactMetadata field: myImpactMetadataFieldsToQuery){

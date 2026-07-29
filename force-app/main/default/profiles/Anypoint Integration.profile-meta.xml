@@ -197,6 +197,26 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>HAMCloneSchoolToAISDegreeBatch</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HAMCloneSchoolToAISDegreeBatch_Test</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HAMEducationSectionController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HAMFilePublisherController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HAMFilePublisherControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>HAMFixPrimaryDonorIssues</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -489,6 +509,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>HAM_ContentDocumentLinkHandler_Test</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>HAM_DiscountMigrationBatch</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -577,6 +601,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>HAM_GroupNotificationHandler_Test</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>HAM_HomePageController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -654,6 +682,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>HAM_NotificationQueueable</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HAM_NotificationQueueableTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -10002,6 +10034,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>HAM_Group_Comment__c.Ham_Admin_Action__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>HAM_Group_Comment__c.Mentioned_Contact_Ids__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -10088,6 +10125,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>HAM_Group_Post__c.Body__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_Group_Post__c.Ham_Admin_Action__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12058,6 +12100,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.HAM_Is_Donor_Control__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.HAM_Is_Recurring_Gift__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -16462,6 +16509,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ucinn_ascendv2__Degree_Information__c.HAMRolledOver__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>ucinn_ascendv2__Degree_Information__c.HAM_Anticipated_Class_Year__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17078,6 +17130,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>ucinn_ascendv2__Hard_and_Soft_Credit__c.HAM_Designation_Case_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ucinn_ascendv2__Hard_and_Soft_Credit__c.HAM_Designation_Migrated_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -18963,6 +19020,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>HAM_Pledge_Balance__c.Giving_By_Purpose</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>HAM_Pledge_Balance__c.HDAF</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

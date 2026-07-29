@@ -145,7 +145,7 @@ public without sharing class HAM_AlumniDirectoryController {
         //[Group Members] Optional contact-Id scope (passed by Ham_GroupsController). When supplied, the
         //constituent count is restricted to these Ids so this engine can serve group-scoped member pages.
         //All existing callers pass null and are unaffected.
-        Boolean hasScope = scopeContactIds != null;
+        Boolean hasScope = scopeContactIds != null && !scopeContactIds.isEmpty();
         Set<Id> scopeIdSet = hasScope ? new Set<Id>(scopeContactIds) : new Set<Id>();
         Id ServiceIndicatorRecordTypeId = Schema.SObjectType.ucinn_ascendv2__Service_Indicator__c.getRecordTypeInfosByName().get(HAM_ConstantsUtil.CONTACT_SERVICE_INDICATOR_RECORD_TYPE).getRecordTypeId();
 
@@ -483,7 +483,7 @@ public without sharing class HAM_AlumniDirectoryController {
         Boolean isBuildTab = tab == HAM_ConstantsUtil.BUILD_TAB;
         Boolean isBlockedTab = tab == HAM_ConstantsUtil.BLOCKED_TAB;
         //[Group Members] Optional contact-Id scope (see getDirectoryDataCount). Null for all existing callers.
-        Boolean hasScope = scopeContactIds != null;
+        Boolean hasScope = scopeContactIds != null && !scopeContactIds.isEmpty();
         Set<Id> scopeIdSet = hasScope ? new Set<Id>(scopeContactIds) : new Set<Id>();
         Id ServiceIndicatorRecordTypeId = Schema.SObjectType.ucinn_ascendv2__Service_Indicator__c.getRecordTypeInfosByName().get(HAM_ConstantsUtil.CONTACT_SERVICE_INDICATOR_RECORD_TYPE).getRecordTypeId();
 
@@ -740,7 +740,6 @@ public without sharing class HAM_AlumniDirectoryController {
                 String consQuery =
                 'SELECT ' + String.join(selectedFieldsForConstituents, ', ') +
                 ' FROM Contact WHERE ' + constituentWhere+
-                ' AND ID != :portalConstituentId' +
                 ' AND ID NOT IN :blockedProfileIds' +
                 ' AND ID NOT IN :AlumniPrivacyIds';
 
@@ -777,7 +776,7 @@ public without sharing class HAM_AlumniDirectoryController {
                 System.debug(LoggingLevel.error, 'Constituents Query Error: ' + ex.getMessage());
                 return new DirectoryResponse();
             }
-        
+
             if(!Constituents.isEmpty()){
                 if (!constituentIds.isEmpty()) {
                      for (ucinn_ascendv2__Degree_Information__c deg : [SELECT ucinn_ascendv2__Contact__c,ucinn_ascendv2__Major_Formula__c,ucinn_ascendv2__Second_Major_Formula__c,

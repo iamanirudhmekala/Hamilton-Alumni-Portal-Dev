@@ -5,6 +5,10 @@ import joinGroup      from '@salesforce/apex/Ham_GroupsController.joinGroup';
 import leaveGroup     from '@salesforce/apex/Ham_GroupsController.leaveGroup';
 import updateNotificationPreferences from '@salesforce/apex/Ham_GroupsController.updateNotificationPreferences';
 import HAM_GROUP_ICONS from '@salesforce/resourceUrl/HAM_Group_Icons';
+// Site fallback banner used when a group has no Banner_Image_URL__c — same static
+// resources ham_groupsDiscovery uses for its card fallback (Kirkland variant under override).
+import siteDefaultImageResource from '@salesforce/resourceUrl/HAM_SiteFallbackImage';
+import siteDefaultImageResourceKirkland from '@salesforce/resourceUrl/HAM_SiteFallbackImage_Kirkland';
 
 
 export default class Ham_groupDashboard extends LightningElement {
@@ -96,6 +100,12 @@ export default class Ham_groupDashboard extends LightningElement {
         return `dashboard-root ${this.isOverride ? 'kirkland-override' : ''}`;
     }
 
+    // Site fallback banner shown when the group has no banner image (Kirkland variant
+    // under override), replacing the old CSS gradient.
+    get defaultImageUrl() {
+        return this.isOverride ? siteDefaultImageResourceKirkland : siteDefaultImageResource;
+    }
+
     get isDashboardTab()  { return this.activeTab === 'dashboard'; }
     get isDiscussionTab()  { return this.activeTab === 'discussion'; }
     get isMembersTab()     { return this.activeTab === 'members'; }
@@ -105,6 +115,10 @@ export default class Ham_groupDashboard extends LightningElement {
     get isAdmin()          { return this.group && this.group.userRole === 'Admin'; }
     get isMember()         { return this.group && this.group.userMembershipStatus === 'Active'; }
     get isBlockedFromGroup() { return this.group && this.group.userMembershipStatus === 'Blocked'; }
+    // Anyone who isn't an active member (no request, pending request, or blocked) only
+    // gets the header/about/admin summary — discussion, members list and resources are
+    // gated behind a join prompt instead.
+    get isGuest()           { return !!this.group && !this.isMember; }
 
     get mainColumnClass() {
         return this.isDashboardTab
@@ -195,6 +209,14 @@ export default class Ham_groupDashboard extends LightningElement {
         return !!(this.group && this.group.memberPreviews && this.group.memberPreviews.length);
     }
 
+    get guestPromptMessage() {
+        if (!this.group) return '';
+        const status = this.group.userMembershipStatus;
+        if (status === 'Pending') return 'Your request to join this group is pending approval.';
+        if (status === 'Blocked') return 'You do not have access to this group.';
+        return 'Join this group to see discussions, members and resources.';
+    }
+
     get adminJobTitle() {
         if (!this.group || !this.group.admin) return '';
         const { jobTitle, employer } = this.group.admin;
@@ -225,12 +247,15 @@ export default class Ham_groupDashboard extends LightningElement {
         const newValue = !this.effectiveValueOf(fieldApiName);
         this.stageChange(updated, fieldApiName, newValue);
 
-        // Switching the master off switches Tagged and Amplified off with it — they're
-        // saved as false, not just greyed out, so turning the master back on brings them
-        // back off. Apex re-applies the same cascade on save.
-        if (fieldApiName === 'Receive_Notifications__c' && newValue === false) {
+        // Flipping the master carries Tagged and Amplified with it — turning it on
+        // switches them on, turning it off switches them off. The user can still turn
+        // an individual child off afterward (the master is on, so the sub-toggles
+        // aren't disabled). Apex re-applies only the off cascade on save; the on
+        // cascade stays LWC-only so a child unchecked in the same batch isn't forced
+        // back on server-side.
+        if (fieldApiName === 'Receive_Notifications__c') {
             ['Notify_on_Tagged__c', 'Notify_on_Amplified__c'].forEach(dependentField => {
-                this.stageChange(updated, dependentField, false);
+                this.stageChange(updated, dependentField, newValue);
             });
         }
 
@@ -360,6 +385,14 @@ export default class Ham_groupDashboard extends LightningElement {
         const feedFull = this.template.querySelector('[data-id="groupFeedFull"]');
         if (feed) feed.refresh();
         if (feedFull) feedFull.refresh();
+    }
+
+    // The dashboard tab renders the Content Moderation preview alongside the mini
+    // feed, so a report filed from that feed leaves the preview's pending count
+    // stale until this component is told to reload it.
+    handleReportSubmitted() {
+        const adminPreview = this.template.querySelector('[data-id="groupAdminPreview"]');
+        if (adminPreview) adminPreview.refresh();
     }
 
     async handleMembershipAction() {

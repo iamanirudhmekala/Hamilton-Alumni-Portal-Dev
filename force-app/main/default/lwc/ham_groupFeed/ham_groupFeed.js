@@ -7,6 +7,7 @@ import updatePost from '@salesforce/apex/Ham_GroupsController.updatePost';
 import updateComment from '@salesforce/apex/Ham_GroupsController.updateComment';
 import togglePinPost from '@salesforce/apex/Ham_GroupsController.togglePinPost';
 import amplifyPost from '@salesforce/apex/Ham_GroupsController.amplifyPost';
+import unamplifyPost from '@salesforce/apex/Ham_GroupsController.unamplifyPost';
 import deletePost from '@salesforce/apex/Ham_GroupsController.deletePost';
 import reportContent from '@salesforce/apex/Ham_GroupsController.reportContent';
 import reportUser from '@salesforce/apex/Ham_GroupsController.reportUser';
@@ -20,6 +21,10 @@ import HAM_ICONS from '@salesforce/resourceUrl/HAM_Icons';
 // static-resource cap and can't take new files until its oversized assets are dealt with.
 import HAM_GROUP_ICONS from '@salesforce/resourceUrl/HAM_Group_Icons';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+// The site's base path (e.g. "/ex" for this LWR community). Attachment download URLs
+// must be prefixed with it — a root-relative "/sfc/servlet.shepherd/..." resolves at the
+// domain root, outside the community, and errors out (errorduringprocessing.jsp).
+import basePath from '@salesforce/community/basePath';
 
 const INITIAL_INTERVAL = 15000; // 15s
 const MAX_INTERVAL = 300000;    // 5m
@@ -32,6 +37,7 @@ export default class Ham_groupFeed extends LightningElement {
     @api showFilter;
     @api isdiscussiontab;
     @api limitCount;
+    @api memberCount;   // active member count, shown in the Amplify confirmation banner
     @api images = {};
     @api groupIcons = {};
 
@@ -64,6 +70,12 @@ export default class Ham_groupFeed extends LightningElement {
         this._isOverride = (value === true || value === 'true');
     }
 
+    // Applied to the wrapper around the popups, which render outside .feed-root — so the
+    // Kirkland (green) theme overrides can still reach modal buttons/inputs.
+    get themeClass() {
+        return this.isOverride ? 'kirkland-override' : '';
+    }
+
     get feedRootClass() {
         return `feed-root ${this.isOverride ? 'kirkland-override' : ''}`;
     }
@@ -77,13 +89,17 @@ export default class Ham_groupFeed extends LightningElement {
     @track showReportModal = false;
     reportingPostId = null;
     reportingCommentId = null;
-    @track reportReason = 'Inappropriate Message';
+    @track reportReason = '';
+    @track isSubmittingReport = false;
+    @track reportSubmitted = false;
 
     // Report User modal state
     @track showReportUserModal = false;
     reportUserPostId = null;
     reportUserCommentId = null;
-    @track reportUserReason = 'Inappropriate Message';
+    @track reportUserReason = '';
+    @track isSubmittingUserReport = false;
+    @track reportUserSubmitted = false;
 
     // Edit Post/Reply modal state
     @track showEditModal = false;
@@ -106,6 +122,18 @@ export default class Ham_groupFeed extends LightningElement {
     @track showDeleteConfirm = false;
     deletingPostId = null;
 
+    // Image lightbox state — clicking an inline attachment image previews it enlarged
+    // rather than downloading it.
+    @track showImagePreview = false;
+    @track previewImageUrl = null;
+    @track previewImageAlt = '';
+
+    // Amplify Post confirmation modal state — amplifying notifies every member, so
+    // (unlike Pin) it goes through a confirmation step first. Un-amplify has no modal.
+    @track showAmplifyConfirm = false;
+    @track amplifyingPostId = null;
+    @track isAmplifying = false;
+
     get saveEditLabel() {
         return this.isSavingEdit ? 'Saving...' : 'Save Changes';
     }
@@ -125,10 +153,23 @@ export default class Ham_groupFeed extends LightningElement {
     @track draftEndDate = null;
 
     @track postAuthors = [];
+    @track peopleSearchTerm = '';
     authorsLoaded = false;
 
     get hasPostAuthors() {
         return this.postAuthors && this.postAuthors.length > 0;
+    }
+
+    get filteredPostAuthors() {
+        const term = this.peopleSearchTerm.trim().toLowerCase();
+        if (!term) {
+            return this.postAuthors;
+        }
+        return this.postAuthors.filter((author) => author.name.toLowerCase().includes(term));
+    }
+
+    get hasFilteredPostAuthors() {
+        return this.filteredPostAuthors.length > 0;
     }
 
     get dateFilterButtonClass() {
@@ -151,6 +192,9 @@ export default class Ham_groupFeed extends LightningElement {
     }
 
     get peopleLabel() {
+        if (this.filterAuthorId === 'ANONYMOUS') {
+            return 'Anonymous Posts';
+        }
         return this.filterAuthorName || 'People';
     }
 
@@ -163,6 +207,14 @@ export default class Ham_groupFeed extends LightningElement {
         return !this.isLoading && this.posts.length === 0;
     }
 
+    // "No posts yet" is only true for an untouched feed — with a filter applied the
+    // group may well have posts, just none matching, so say which case it is.
+    get emptyStateMessage() {
+        if (this.filterBookmarkedOnly) return 'No bookmarked posts yet.';
+        if (this.hasActiveFilters) return 'No posts match your filters.';
+        return 'No posts yet.';
+    }
+
     // Polling parameters
     clientLastSyncTime = null;
     currentInterval = INITIAL_INTERVAL;
@@ -172,13 +224,19 @@ export default class Ham_groupFeed extends LightningElement {
     // Deep link parameters from URL query string
     targetPostId = null;
     targetCommentId = null;
+    _deepLinkHandled = false;
+    _pendingCommentScroll = false;
     isModeratorMode = false;
 
     get reportReasons() {
         return [
             { label: 'Inappropriate Message', value: 'Inappropriate Message' },
+            { label: 'Harassment', value: 'Harassment' },
+            { label: 'Bullying', value: 'Bullying' },
             { label: 'Aggressive Tone', value: 'Aggressive Tone' },
-            { label: 'Spam', value: 'Spam' }
+            { label: 'Bad Behavior (In Group)', value: 'Bad Behavior (In Group)' },
+            { label: 'Bad Behavior (Outside Group)', value: 'Bad Behavior (Outside Group)' },
+            { label: 'Other', value: 'Other' }
         ];
     }
 
@@ -188,9 +246,51 @@ export default class Ham_groupFeed extends LightningElement {
             { label: 'Harassment', value: 'Harassment' },
             { label: 'Bullying', value: 'Bullying' },
             { label: 'Aggressive Tone', value: 'Aggressive Tone' },
-            { label: 'Spam', value: 'Spam' },
+            { label: 'Bad Behavior (In Group)', value: 'Bad Behavior (In Group)' },
+            { label: 'Bad Behavior (Outside Group)', value: 'Bad Behavior (Outside Group)' },
             { label: 'Other', value: 'Other' }
         ];
+    }
+
+    // Native <select> doesn't support binding `value` as a template attribute in LWC,
+    // so the selected option is driven by an explicit `selected` flag per option instead.
+    get reportReasonOptions() {
+        return [
+            { value: '', label: 'Select a reason...', isSelected: !this.reportReason },
+            ...this.reportReasons.map(r => ({ ...r, isSelected: r.value === this.reportReason }))
+        ];
+    }
+
+    // The placeholder option is greyed out like real placeholder text until a reason is chosen.
+    get reportSelectClass() {
+        return `report-select${this.reportReason ? '' : ' report-select--placeholder'}`;
+    }
+
+    get canSubmitReport() {
+        return !!this.reportReason;
+    }
+
+    get submitReportLabel() {
+        return this.isSubmittingReport ? 'Submitting...' : 'Report Message';
+    }
+
+    get reportUserReasonOptions() {
+        return [
+            { value: '', label: 'Select a reason...', isSelected: !this.reportUserReason },
+            ...this.reportUserReasons.map(r => ({ ...r, isSelected: r.value === this.reportUserReason }))
+        ];
+    }
+
+    get reportUserSelectClass() {
+        return `report-select${this.reportUserReason ? '' : ' report-select--placeholder'}`;
+    }
+
+    get canSubmitUserReport() {
+        return !!this.reportUserReason;
+    }
+
+    get submitUserReportLabel() {
+        return this.isSubmittingUserReport ? 'Submitting...' : 'Report User';
     }
 
     connectedCallback() {
@@ -201,6 +301,10 @@ export default class Ham_groupFeed extends LightningElement {
         this.setupVisibilityListener();
         this.handleWindowClick = this.handleWindowClick.bind(this);
         window.addEventListener('click', this.handleWindowClick);
+    }
+
+    renderedCallback() {
+        this.handleDeepLinkRouting();
     }
 
     disconnectedCallback() {
@@ -223,6 +327,10 @@ export default class Ham_groupFeed extends LightningElement {
     }
 
     parseUrlParameters() {
+        // The dashboard preview trims the feed to limitCount, so the deep-linked post
+        // may not survive into it — leave the scroll to the full Discussion tab rather
+        // than having two mounted feeds race to claim it.
+        if (this.isCompactView) return;
         try {
             const urlParams = new URLSearchParams(window.location.search);
             this.targetPostId = urlParams.get('postId');
@@ -265,10 +373,14 @@ export default class Ham_groupFeed extends LightningElement {
             startDate: startDate,
             endDate: endDate,
             authorContactId: this.filterAuthorId || null,
-            bookmarkedOnly: this.filterBookmarkedOnly
+            bookmarkedOnly: this.filterBookmarkedOnly,
+            // Only on the first page: the server unions this post in regardless of age,
+            // so a deep link to an old post isn't lost past the pagination boundary.
+            targetPostId: isInitial ? this.targetPostId : null
         })
         .then(data => {
-            let parsedPosts = (data || []).map(p => this.formatPost(p));
+            const rawPosts = data || [];
+            let parsedPosts = rawPosts.map(p => this.formatPost(p));
 
             // Compact preview mode isn't paginated — trim to the requested count and
             // let the "See more" link hand off to the full discussion tab instead.
@@ -280,18 +392,25 @@ export default class Ham_groupFeed extends LightningElement {
                 this.posts = parsedPosts;
                 this.clientLastSyncTime = Date.now();
 
-                // If there's a deep-linked post, handle auto-scroll and drawer expansion
-                if (this.targetPostId) {
-                    // eslint-disable-next-line @lwc/lwc/no-async-operation
-                    setTimeout(() => {
-                        this.handleDeepLinkRouting();
-                    }, 500);
+                // Auto-scroll and drawer expansion are driven by renderedCallback once the
+                // target actually exists in the DOM. If it isn't in the payload at all the
+                // post is gone (deleted, or moderated out) — say so instead of no-opping.
+                if (this.targetPostId
+                    && !this.posts.some(p => String(p.id) === String(this.targetPostId))) {
+                    this.targetPostId = null;
+                    this.targetCommentId = null;
+                    this.showToast('Not available', 'That post is no longer available in this group.', 'warning');
                 }
             } else {
                 this.posts = [...this.posts, ...parsedPosts];
             }
 
-            this.hasMore = this.isCompactView ? false : parsedPosts.length > 0;
+            // hasMorePages reflects whether the paginated query (excluding the amplified/pinned
+            // buckets, which are fetched in full up front) had another row past this page —
+            // a plain "did we get any posts back" check stays true forever once the feed is
+            // smaller than one page.
+            this.hasMore = this.isCompactView ? false
+                : (rawPosts.length > 0 && !!rawPosts[rawPosts.length - 1].hasMorePages);
             this.updatePostBookmarkStates();
         })
         .catch(err => {
@@ -319,10 +438,20 @@ export default class Ham_groupFeed extends LightningElement {
         const isTargeted = this.targetPostId && String(p.id) === String(this.targetPostId);
 
         const commentCount = p.commentCount || 0;
+        const decodedBody = this.decodeEntities(p.body);
+        const attachments = (p.attachments || []).map(a => ({
+            ...a,
+            key: a.contentDocumentId,
+            isFile: !a.isImage,
+            // Rebuild the Shepherd URL with the community base path so it resolves inside
+            // the site (the Apex value is root-relative and 404s/errors outside "/ex").
+            downloadUrl: `${basePath}/sfc/servlet.shepherd/version/download/${a.contentVersionId}`
+        }));
 
         return {
             id: p.id,
-            body: p.body,
+            body: decodedBody,
+            attachments,
             tags: p.tags ? p.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
             authorName: p.authorName,
             authorPhotoUrl: p.authorPhotoUrl,
@@ -331,6 +460,7 @@ export default class Ham_groupFeed extends LightningElement {
             isPinned: p.isPinned,
             pinLabel: p.isPinned ? 'Unpin Post' : 'Pin Post',
             isAmplified: p.isAmplified,
+            amplifyLabel: p.isAmplified ? 'De-amplify Post' : 'Amplify Post',
             isOwnPost: !!p.isOwnPost,
             canDelete: !!(p.isOwnPost || this.isAdmin),
             isBookmarked: this.bookmarkedIds.has(p.id),
@@ -338,7 +468,7 @@ export default class Ham_groupFeed extends LightningElement {
             bookmarkClass: this.bookmarkedIds.has(p.id) ? 'bookmark-active' : '',
             bookmarkIconUrl: this.resolveBookmarkIconUrl(this.bookmarkedIds.has(p.id)),
             bookmarkAlt: this.bookmarkedIds.has(p.id) ? 'Bookmarked' : 'Bookmark',
-            bodySegments: this.parseBody(p.body),
+            bodySegments: this.parseBody(decodedBody),
             cssClass: `post-card ${isTargeted ? 'post-card--highlighted' : ''} ${p.isPinned ? 'post-card--pinned' : ''} ${p.isAmplified ? 'post-card--amplified' : ''} ${isTargeted && this.isModeratorMode ? 'post-card--moderator-flagged' : ''}`,
             isCommentsOpen: false,
             isCommentsLoading: false,
@@ -382,7 +512,18 @@ export default class Ham_groupFeed extends LightningElement {
     }
 
     formatRelativeTime(dateValue) {
-        const then = new Date(dateValue).getTime();
+        const thenDate = new Date(dateValue);
+        const then = thenDate.getTime();
+        const now = new Date();
+
+        // Posts from today show the clock time ("Today at 3:45 PM") rather than a
+        // relative "x hours ago", per QA.
+        if (thenDate.getFullYear() === now.getFullYear()
+            && thenDate.getMonth() === now.getMonth()
+            && thenDate.getDate() === now.getDate()) {
+            return `Today at ${this.formatClockTime(thenDate)}`;
+        }
+
         const seconds = Math.max(0, Math.floor((Date.now() - then) / 1000));
 
         if (seconds < 60) return 'Just now';
@@ -406,6 +547,42 @@ export default class Ham_groupFeed extends LightningElement {
         return `${years} year${years === 1 ? '' : 's'} ago`;
     }
 
+    // "3:45 PM" — 12-hour clock with zero-padded minutes.
+    formatClockTime(date) {
+        let hours = date.getHours();
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const meridiem = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        if (hours === 0) hours = 12;
+        return `${hours}:${minutes} ${meridiem}`;
+    }
+
+    // Post/comment bodies live in Rich Text (Html) fields, so Salesforce stores emoji and
+    // other non-ASCII characters as numeric HTML entities (e.g. "&#128517;"). These are
+    // plain-text bodies (composer/comment box are plain textareas), so decode the entities
+    // back to characters for display — otherwise the raw "&#128517;" shows on screen.
+    decodeEntities(text) {
+        if (!text) return text;
+        return text
+            .replace(/&#x([0-9a-fA-F]+);/g, (m, hex) => this.fromCodePointSafe(parseInt(hex, 16)))
+            .replace(/&#(\d+);/g, (m, dec) => this.fromCodePointSafe(parseInt(dec, 10)))
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&apos;/g, "'")
+            .replace(/&nbsp;/g, ' ')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&amp;/g, '&');
+    }
+
+    fromCodePointSafe(code) {
+        try {
+            return String.fromCodePoint(code);
+        } catch (e) {
+            return '';
+        }
+    }
+
     updatePostBookmarkStates() {
         this.posts = this.posts.map(post => {
             return {
@@ -424,8 +601,11 @@ export default class Ham_groupFeed extends LightningElement {
     parseBody(body) {
         if (!body) return [];
         
-        const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/gi;
-        const vimeoRegex = /(?:https?:\/\/)?(?:www\.)?(?:vimeo\.c(?:om)?\/)(?:channels\/[a-zA-Z0-9]+\/)?(?:groups\/[a-zA-Z0-9]+\/videos\/)?([0-9]+)/gi;
+        // The trailing (?:[?&#][^\s]*)? swallows any share/query params that follow the
+        // video id (e.g. youtu.be/<id>?si=... , watch?v=<id>&t=30s) so they aren't left
+        // dangling as stray text under the embedded player.
+        const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})(?:[?&#][^\s]*)?/gi;
+        const vimeoRegex = /(?:https?:\/\/)?(?:www\.)?(?:vimeo\.c(?:om)?\/)(?:channels\/[a-zA-Z0-9]+\/)?(?:groups\/[a-zA-Z0-9]+\/videos\/)?([0-9]+)(?:[?&#][^\s]*)?/gi;
 
         let segments = [];
         let lastIndex = 0;
@@ -458,10 +638,8 @@ export default class Ham_groupFeed extends LightningElement {
         
         for (const m of allMatches) {
             if (m.index > lastIndex) {
-                segments.push({
-                    isText: true,
-                    content: body.substring(lastIndex, m.index)
-                });
+                const subText = body.substring(lastIndex, m.index);
+                segments.push(...this.parseTextLinks(subText));
             }
             segments.push({
                 isVideo: true,
@@ -473,13 +651,32 @@ export default class Ham_groupFeed extends LightningElement {
         }
         
         if (lastIndex < body.length) {
-            segments.push({
-                isText: true,
-                content: body.substring(lastIndex)
-            });
+            const subText = body.substring(lastIndex);
+            segments.push(...this.parseTextLinks(subText));
         }
         
-        return segments.length > 0 ? segments : [{ isText: true, content: body }];
+        return segments.length > 0 ? segments : this.parseTextLinks(body);
+    }
+
+    parseTextLinks(text) {
+        if (!text) return [];
+        const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/gi;
+        const result = [];
+        let lastIdx = 0;
+        let match;
+        while ((match = urlRegex.exec(text)) !== null) {
+            if (match.index > lastIdx) {
+                result.push({ isText: true, content: text.substring(lastIdx, match.index) });
+            }
+            const rawUrl = match[0];
+            const href = rawUrl.toLowerCase().startsWith('www.') ? `https://${rawUrl}` : rawUrl;
+            result.push({ isLink: true, url: href, text: rawUrl });
+            lastIdx = match.index + rawUrl.length;
+        }
+        if (lastIdx < text.length) {
+            result.push({ isText: true, content: text.substring(lastIdx) });
+        }
+        return result.length > 0 ? result : [{ isText: true, content: text }];
     }
 
     // ─── Decaying Polling Mechanism ──────────────────────────────────────────
@@ -571,6 +768,7 @@ export default class Ham_groupFeed extends LightningElement {
             .then(data => {
                 const formattedComments = (data || []).map(c => ({
                     ...c,
+                    body: this.decodeEntities(c.body),
                     isOwnComment: !!(c.contactId && this.userContactId && String(c.contactId) === String(this.userContactId)),
                     cssClass: `comment-row ${this.targetCommentId && String(c.commentId) === String(this.targetCommentId) ? 'comment-row--highlighted' : ''} ${this.targetCommentId && String(c.commentId) === String(this.targetCommentId) && this.isModeratorMode ? 'comment-row--moderator-flagged' : ''}`,
                     isMenuOpen: false
@@ -587,11 +785,23 @@ export default class Ham_groupFeed extends LightningElement {
                     return post;
                 });
                 
-                if (this.targetCommentId) {
-                    // eslint-disable-next-line @lwc/lwc/no-async-operation
-                    setTimeout(() => {
-                        this.scrollToComment(this.targetCommentId);
-                    }, 300);
+                // Hand off to renderedCallback, which scrolls once the comment row is
+                // actually in the DOM rather than guessing at how long that takes.
+                if (this.targetCommentId && String(postId) === String(this.targetPostId)) {
+                    const targetLoaded = formattedComments.some(
+                        c => String(c.commentId) === String(this.targetCommentId)
+                    );
+                    this._pendingCommentScroll = targetLoaded;
+                    if (!targetLoaded) {
+                        // Comment is gone (deleted or moderated out). The post scroll was
+                        // skipped in favour of this one, so land on the post rather than
+                        // leaving the user wherever the page happened to be.
+                        const container = this.template.querySelector(`article[data-id="${this.targetPostId}"]`);
+                        if (container) {
+                            container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                        this.showToast('Not available', 'That comment is no longer available.', 'warning');
+                    }
                 }
             })
             .catch(err => {
@@ -787,6 +997,10 @@ export default class Ham_groupFeed extends LightningElement {
 
     handleSearchInput(event) {
         this.searchTerm = event.target.value;
+        if (!this.searchTerm.trim() && this.appliedSearchTerm) {
+            this.appliedSearchTerm = '';
+            this.applyFilters();
+        }
     }
 
     handleSearchKeydown(event) {
@@ -799,6 +1013,16 @@ export default class Ham_groupFeed extends LightningElement {
     handleSearchClick() {
         this.appliedSearchTerm = this.searchTerm ? this.searchTerm.trim() : '';
         this.applyFilters();
+    }
+
+    handleTagClick(event) {
+        event.stopPropagation();
+        const tag = event.currentTarget.dataset.tag;
+        if (tag) {
+            this.searchTerm = `#${tag}`;
+            this.appliedSearchTerm = `#${tag}`;
+            this.applyFilters();
+        }
     }
 
     toggleDatePopover(event) {
@@ -839,9 +1063,14 @@ export default class Ham_groupFeed extends LightningElement {
         event.stopPropagation();
         this.isDatePopoverOpen = false;
         this.isPeoplePopoverOpen = !this.isPeoplePopoverOpen;
+        this.peopleSearchTerm = '';
         if (this.isPeoplePopoverOpen && !this.authorsLoaded) {
             this.loadPostAuthors();
         }
+    }
+
+    handlePeopleSearchInput(event) {
+        this.peopleSearchTerm = event.target.value;
     }
 
     loadPostAuthors() {
@@ -994,9 +1223,9 @@ export default class Ham_groupFeed extends LightningElement {
                     this.posts = this.posts.map(p => p.id === this.editingId
                         ? {
                             ...p,
-                            body: updated.body,
+                            body: this.decodeEntities(updated.body),
                             tags: updated.tags ? updated.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
-                            bodySegments: this.parseBody(updated.body)
+                            bodySegments: this.parseBody(this.decodeEntities(updated.body))
                         }
                         : p);
                     this.showToast('Saved', 'Post updated.', 'success');
@@ -1049,22 +1278,99 @@ export default class Ham_groupFeed extends LightningElement {
             });
     }
 
+    // Amplify notifies every member, so — unlike Pin — it opens a confirmation modal
+    // first. The actual amplify runs from confirmAmplifyPost().
     handleAmplifyPost(event) {
         event.stopPropagation();
-        const postId = event.currentTarget.dataset.postId;
+        this.amplifyingPostId = event.currentTarget.dataset.postId;
+        this.showAmplifyConfirm = true;
         this.closeAllActionMenus();
+    }
 
+    closeAmplifyConfirm() {
+        if (this.isAmplifying) return;
+        this.showAmplifyConfirm = false;
+        this.amplifyingPostId = null;
+    }
+
+    // The post whose body/preview the confirmation modal shows.
+    get amplifyingPost() {
+        return this.posts.find(p => p.id === this.amplifyingPostId) || null;
+    }
+
+    // "All N group members will be notified" banner copy.
+    get amplifyNotifyLabel() {
+        const count = this.memberCount != null ? this.memberCount : 0;
+        return `All ${count} group member${count === 1 ? '' : 's'} will be notified`;
+    }
+
+    get amplifyConfirmLabel() {
+        return this.isAmplifying ? 'Amplifying...' : 'Amplify & Notify';
+    }
+
+    confirmAmplifyPost() {
+        const postId = this.amplifyingPostId;
+        if (!postId || this.isAmplifying) return;
+
+        this.isAmplifying = true;
         amplifyPost({ groupId: this.groupId, postId, contactId: this.userContactId })
             .then(() => {
                 this.showToast('Amplified', 'Post amplified and group members notified.', 'success');
-                this.posts = this.posts.map(post =>
-                    post.id === postId ? { ...post, isAmplified: true } : post
-                );
+                this.showAmplifyConfirm = false;
+                this.amplifyingPostId = null;
+                // Amplified posts lead the feed, so re-fetch from scratch to reflect the
+                // new ordering + badge (same approach as pin/unpin).
+                this.posts = [];
+                this.loadFeed(true);
             })
             .catch(err => {
                 console.error('Error amplifying post:', err);
                 this.showToast('Error', 'Could not amplify this post.', 'error');
+            })
+            .finally(() => {
+                this.isAmplifying = false;
             });
+    }
+
+    // Un-amplify is the corrective action for an accidental amplify — direct (no modal,
+    // no notification), mirroring Unpin.
+    handleUnamplifyPost(event) {
+        event.stopPropagation();
+        const postId = event.currentTarget.dataset.postId;
+        this.closeAllActionMenus();
+
+        unamplifyPost({ groupId: this.groupId, postId, contactId: this.userContactId })
+            .then(() => {
+                this.showToast('Removed', 'Amplification removed from this post.', 'success');
+                // Post drops out of the amplified block, so re-fetch (same as unpin).
+                this.posts = [];
+                this.loadFeed(true);
+            })
+            .catch(err => {
+                console.error('Error removing amplification:', err);
+                this.showToast('Error', 'Could not remove amplification.', 'error');
+            });
+    }
+
+    // ─── Image Lightbox ──────────────────────────────────────────────────────
+
+    handleImagePreview(event) {
+        event.stopPropagation();
+        this.previewImageUrl = event.currentTarget.dataset.url;
+        this.previewImageAlt = event.currentTarget.dataset.alt || '';
+        this.showImagePreview = true;
+    }
+
+    closeImagePreview() {
+        this.showImagePreview = false;
+        this.previewImageUrl = null;
+        this.previewImageAlt = '';
+    }
+
+    // Clicks on the image/download link inside the overlay must not bubble to the
+    // backdrop's close handler.
+    stopPreviewPropagation(event) {
+        event.stopPropagation();
     }
 
     handleDeletePost(event) {
@@ -1101,7 +1407,8 @@ export default class Ham_groupFeed extends LightningElement {
         event.stopPropagation();
         this.reportingPostId = event.currentTarget.dataset.postId;
         this.reportingCommentId = null;
-        this.reportReason = 'Inappropriate Message';
+        this.reportReason = '';
+        this.reportSubmitted = false;
         this.showReportModal = true;
         this.closeAllActionMenus();
     }
@@ -1110,7 +1417,8 @@ export default class Ham_groupFeed extends LightningElement {
         event.stopPropagation();
         this.reportingPostId = null;
         this.reportingCommentId = event.currentTarget.dataset.commentId;
-        this.reportReason = 'Inappropriate Message';
+        this.reportReason = '';
+        this.reportSubmitted = false;
         this.showReportModal = true;
         this.closeAllActionMenus();
     }
@@ -1119,14 +1427,19 @@ export default class Ham_groupFeed extends LightningElement {
         this.showReportModal = false;
         this.reportingPostId = null;
         this.reportingCommentId = null;
+        this.reportReason = '';
+        this.reportSubmitted = false;
     }
 
-    handleSelectReportReason(event) {
-        this.reportReason = event.currentTarget.dataset.reason;
-        this.submitReport();
+    handleReportReasonChange(event) {
+        this.reportReason = event.target.value;
     }
 
-    submitReport() {
+    handleSubmitReport() {
+        if (!this.canSubmitReport || this.isSubmittingReport) return;
+
+        this.isSubmittingReport = true;
+
         reportContent({
             postId: this.reportingPostId,
             commentId: this.reportingCommentId,
@@ -1134,12 +1447,17 @@ export default class Ham_groupFeed extends LightningElement {
             currentContactId: this.userContactId
         })
         .then(() => {
-            this.showToast('Reported', 'Content has been flagged for administrator review.', 'success');
-            this.closeReportModal();
+            // Stay in the modal and show an acknowledgment instead of closing outright,
+            // so the reporter has confirmation the report actually went through.
+            this.reportSubmitted = true;
+            this.dispatchEvent(new CustomEvent('reportsubmitted'));
         })
         .catch(err => {
             console.error('Error reporting content:', err);
             this.showToast('Error', 'Could not submit report.', 'error');
+        })
+        .finally(() => {
+            this.isSubmittingReport = false;
         });
     }
 
@@ -1149,7 +1467,8 @@ export default class Ham_groupFeed extends LightningElement {
         event.stopPropagation();
         this.reportUserPostId = event.currentTarget.dataset.postId;
         this.reportUserCommentId = null;
-        this.reportUserReason = 'Inappropriate Message';
+        this.reportUserReason = '';
+        this.reportUserSubmitted = false;
         this.showReportUserModal = true;
         this.closeAllActionMenus();
     }
@@ -1158,7 +1477,8 @@ export default class Ham_groupFeed extends LightningElement {
         event.stopPropagation();
         this.reportUserPostId = null;
         this.reportUserCommentId = event.currentTarget.dataset.commentId;
-        this.reportUserReason = 'Inappropriate Message';
+        this.reportUserReason = '';
+        this.reportUserSubmitted = false;
         this.showReportUserModal = true;
         this.closeAllActionMenus();
     }
@@ -1167,14 +1487,19 @@ export default class Ham_groupFeed extends LightningElement {
         this.showReportUserModal = false;
         this.reportUserPostId = null;
         this.reportUserCommentId = null;
+        this.reportUserReason = '';
+        this.reportUserSubmitted = false;
     }
 
-    handleSelectUserReportReason(event) {
-        this.reportUserReason = event.currentTarget.dataset.reason;
-        this.submitUserReport();
+    handleUserReportReasonChange(event) {
+        this.reportUserReason = event.target.value;
     }
 
-    submitUserReport() {
+    handleSubmitUserReport() {
+        if (!this.canSubmitUserReport || this.isSubmittingUserReport) return;
+
+        this.isSubmittingUserReport = true;
+
         reportUser({
             postId: this.reportUserPostId,
             commentId: this.reportUserCommentId,
@@ -1182,37 +1507,51 @@ export default class Ham_groupFeed extends LightningElement {
             currentContactId: this.userContactId
         })
         .then(() => {
-            this.showToast('Reported', 'User has been reported to administrators.', 'success');
-            this.closeReportUserModal();
+            this.reportUserSubmitted = true;
+            this.dispatchEvent(new CustomEvent('reportsubmitted'));
         })
         .catch(err => {
             console.error('Error reporting user:', err);
             this.showToast('Error', 'Could not submit report.', 'error');
+        })
+        .finally(() => {
+            this.isSubmittingUserReport = false;
         });
     }
 
     // ─── Routing Deep Linking Helpers ────────────────────────────────────────
 
+    // Driven by render rather than a timer: the posts paint after Apex resolves and
+    // avatars/attachments load lazily, so a fixed delay either fires before the target
+    // exists or animates toward an offset that later content shifts out from under it.
     handleDeepLinkRouting() {
-        const container = this.template.querySelector(`[data-id="${this.targetPostId}"]`);
-        if (container) {
-            container.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
-            // Expand comments automatically if target post is loaded
+        if (this.targetPostId && !this._deepLinkHandled) {
+            // Scoped to article so the author-filter popover, which also uses data-id
+            // (with contact Ids) and precedes the feed in document order, can't win.
+            const container = this.template.querySelector(`article[data-id="${this.targetPostId}"]`);
+            if (!container) return; // not rendered yet — retry on the next render
+
+            this._deepLinkHandled = true;
+
+            // With a comment target, opening the drawer changes page height mid-animation,
+            // so the post scroll would settle on a stale offset. Let the comment scroll
+            // below be the only one; otherwise scroll to the post itself.
+            if (!this.targetCommentId) {
+                container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
             this.posts = this.posts.map(post => {
-                if (post.id === this.targetPostId) {
-                    return { ...post, isCommentsOpen: true };
-                }
-                return post;
+                return post.id === this.targetPostId ? { ...post, isCommentsOpen: true } : post;
             });
             this.loadComments(this.targetPostId);
         }
-    }
 
-    scrollToComment(commentId) {
-        const commentEl = this.template.querySelector(`[data-comment-id="${commentId}"]`);
-        if (commentEl) {
-            commentEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (this._pendingCommentScroll) {
+            const commentEl = this.template.querySelector(`[data-comment-id="${this.targetCommentId}"]`);
+            if (commentEl) {
+                this._pendingCommentScroll = false;
+                commentEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
     }
 

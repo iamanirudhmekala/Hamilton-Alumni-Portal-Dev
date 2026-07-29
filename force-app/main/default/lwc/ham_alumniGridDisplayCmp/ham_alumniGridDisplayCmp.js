@@ -28,6 +28,7 @@ import ManageInvitation from '@salesforce/label/c.HAM_Manage_Invitations';
 import NoInvitationPending from '@salesforce/label/c.HAM_Inn_Pending_ALDC';
 import NoSentRequests from '@salesforce/label/c.HAM_No_Sent_Requests';
 import NoSearchResults from '@salesforce/label/c.HAM_No_Search_Results';
+import NoGroupMemberResults from '@salesforce/label/c.HAM_Group_Members_No_Search_Results';
 import ViewProfile from '@salesforce/label/c.ham_viewProfile';
 import InvitationExist from '@salesforce/label/c.ham_InvitationExist';
 import BlockProfile from '@salesforce/label/c.ham_blockProfile';
@@ -137,6 +138,7 @@ export default class Ham_alumniGridDisplayCmp extends LightningElement {
         // [v1.4 - Anirudh] Empty-state label for the Sent sub-tab
         noSentRequests: NoSentRequests,
         noSearchResults: NoSearchResults,
+        noGroupMemberResults: NoGroupMemberResults,
         viewProfile: ViewProfile,
         invitationExist: InvitationExist,
         blockProfile: BlockProfile,
@@ -522,6 +524,9 @@ export default class Ham_alumniGridDisplayCmp extends LightningElement {
      * @returns {String}
      */
     get tabStateMessage() {
+        if (this.isFromGroupMembers) {
+            return this.label.noGroupMemberResults;
+        }
         // [v1.4 - Anirudh] Return sub-tab-specific empty-state message for Manage Invitations
         if (this.isSentSubTab) {
             return this.label.noSentRequests;

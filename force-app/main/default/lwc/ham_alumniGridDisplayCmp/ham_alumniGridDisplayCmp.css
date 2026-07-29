@@ -570,10 +570,15 @@
 
     .card-footer {
         display: flex;
-        flex-direction: row;
         margin-top: 8px;
         /* margin-left: 10px; */
         background-color: transparent;
+        flex-wrap: wrap;
+    }
+
+    .btn{
+        min-width: 45% !important;
+        width: max-content;
     }
 
     .card-actions {

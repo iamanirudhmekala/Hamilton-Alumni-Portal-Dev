@@ -214,6 +214,7 @@ public with sharing class HamCCVolunteerDashboardController {
                 SELECT Id,
                        ucinn_ascendv2__Contact__c,
                        ucinn_ascendv2__Contact__r.Name,
+                       ucinn_ascendv2__Contact__r.HAM_Name_w_Suffix__c,
                        ucinn_ascendv2__Contact__r.HAM_Reunion_Year__c,
                        ucinn_ascendv2__Status__c,
                        ucinn_ascendv2__Start_Date__c,
@@ -243,7 +244,7 @@ public with sharing class HamCCVolunteerDashboardController {
                 Boolean isCurrent = inv.ucinn_ascendv2__Status__c == 'Current';
                 if (isCurrent) res.currentCount++; else res.formerCount++;
                 cntMap.put(cId, (cntMap.containsKey(cId) ? cntMap.get(cId) : 0) + 1);
-                String nm = inv.ucinn_ascendv2__Contact__r.Name;
+                String nm = inv.ucinn_ascendv2__Contact__r.HAM_Name_w_Suffix__c;
                 if (String.isNotBlank(nm) && !nameMap.containsKey(cId)) nameMap.put(cId, nm);
                 if (isCurrent)                    statMap.put(cId, 'Current');
                 else if (!statMap.containsKey(cId)) statMap.put(cId, 'Former');

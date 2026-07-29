@@ -163,6 +163,29 @@
     min-width: 200px;
 }
 
+.people-search-input {
+    height: 32px;
+    border: 1px solid #d1d5dc;
+    border-radius: 6px;
+    padding: 0 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #333333;
+    margin-bottom: 6px;
+    flex-shrink: 0;
+}
+
+.people-search-input:focus {
+    border-color: #1a518b;
+    box-shadow: 0 0 0 3px rgba(26, 81, 139, 0.15);
+    outline: none;
+}
+
+.feed-root.kirkland-override .people-search-input:focus {
+    border-color: #166837;
+    box-shadow: 0 0 0 3px rgba(22, 104, 55, 0.15);
+}
+
 .people-option {
     background: transparent;
     border: none;
@@ -479,6 +502,108 @@
     border: 0;
 }
 
+/* Post Attachments */
+.post-attachments {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 12px 0;
+}
+
+.post-image-btn {
+    display: inline-block;
+    max-width: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: zoom-in;
+    line-height: 0;
+}
+
+/* Image preview lightbox */
+.image-preview-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.image-preview-img {
+    max-width: 92vw;
+    max-height: 82vh;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+    cursor: default;
+}
+
+.image-preview-close {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.image-preview-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.image-preview-download {
+    margin-top: 16px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.post-image {
+    max-width: 100%;
+    max-height: 420px;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e9e9e9;
+    object-fit: contain;
+    display: block;
+}
+
+.post-file-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #f8fafc;
+    text-decoration: none;
+    color: #1a518b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.post-file-chip:hover {
+    background: #f2f4f7;
+}
+
+.post-file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /* Tags Container */
 .tags-container {
     display: flex;
@@ -788,25 +913,26 @@
 
 .report-user-modal-container {
     background: #ffffff;
-    border-radius: 16px;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
     width: 90%;
-    max-width: 420px;
+    max-width: 460px;
     height: auto;
     min-height: 0;
-    max-height: min(420px, 90vh);
+    max-height: 90vh;
     margin: 0 !important;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    padding: 28px 24px 24px 24px;
+    overflow-y: auto;
+    padding: 40px 36px 32px 36px;
     position: relative;
     text-align: center;
 }
 
 .report-user-modal-close {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 18px;
+    right: 18px;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -817,99 +943,138 @@
 }
 
 .report-user-modal-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
-    color: #1a1a1a;
-    margin: 0 0 8px 0;
+    color: #16213e;
+    margin: 0 0 12px 0;
 }
 
 .report-user-modal-subtitle {
-    font-size: 13px;
-    color: #6b7280;
-    line-height: 1.5;
-    margin: 0 0 20px 0;
-}
-
-.report-user-reason-list {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow: hidden;
-}
-
-.report-user-reason-hint {
-    flex: 0 0 auto;
-    padding: 14px 16px;
     font-size: 14px;
-    color: #9a9a9a;
-    border-bottom: 1px solid #eef0f3;
+    color: #6b7ba0;
+    line-height: 1.6;
+    margin: 0 0 28px 0;
 }
 
-.report-user-reason-items {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto;
+.report-form-field {
+    text-align: left;
+    margin-bottom: 28px;
 }
 
-.report-user-reason-item {
-    display: block;
+.report-select-wrapper {
+    position: relative;
+}
+
+.report-select {
     width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid #eef0f3;
-    padding: 14px 16px;
-    font-size: 14px;
-    font-weight: 600;
+    appearance: none;
+    -webkit-appearance: none;
+    background: #ffffff url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b7280'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e") no-repeat right 16px center;
+    background-size: 20px;
+    border: 1px solid #e2e6ee;
+    border-radius: 12px;
+    padding: 15px 44px 15px 18px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1a1a1a;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.report-select--placeholder {
+    color: #94a3b8;
+}
+
+.report-select:focus {
+    outline: none;
+    border-color: #1a518b;
+}
+
+.kirkland-override .report-select:focus {
+    border-color: #166837;
+}
+
+.report-modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 4px;
+}
+
+.report-btn-cancel {
+    background: #ffffff;
+    border: 1.5px solid #1a518b;
     color: #1a518b;
-    text-align: left;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 12px 32px;
+    border-radius: 999px;
     cursor: pointer;
 }
 
-.report-user-reason-item:last-child {
-    border-bottom: none;
+.report-btn-submit {
+    background: #c0392b;
+    border: 1.5px solid #c0392b;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 12px 32px;
+    border-radius: 999px;
+    cursor: pointer;
 }
 
-.report-user-reason-item:hover {
-    background: #eef4fb;
+.report-btn-cancel:disabled,
+.report-btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
-.feed-root.kirkland-override .report-user-reason-item {
+.kirkland-override .report-btn-cancel {
+    border-color: #166837;
     color: #166837;
 }
 
-.feed-root.kirkland-override .report-user-reason-item:hover {
-    background: #eaf6ec;
+.feed-root.kirkland-override .report-btn-submit {
+    background: #166837;
+    border-color: #166837;
+}
+
+.report-confirm-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
 }
 
 /* Edit Post / Edit Reply Modal */
 .edit-modal-container {
-    background: #ffffff;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 480px;
-    height: auto;
-    min-height: 0;
-    max-height: 90vh;
+       border-radius: 20px;
+    height: max-content;
     overflow-y: auto;
+    margin: 8% auto;
+    padding: 0px !important;
+    max-height: 450px;
+    /* border: 2px solid; */
+    background: #fff;
 }
 
 .edit-modal-header {
-    display: flex;
+   display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 20px 0 20px;
+    background: #F4F4F4;
+    border-bottom: none;
+    text-align: center;
+    padding: 28px 28px 4px 28px;
 }
 
 .edit-modal-title {
     font-size: 20px;
     font-weight: 700;
-    color: #1a1a1a;
-    margin: 0;
+    color: #344054;
+    margin: 0 0 10px 0;
+    font-family: 'Mallory-main', sans-serif;
 }
 
 .edit-modal-close {
@@ -926,6 +1091,7 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
+    background: #F4F4F4;
 }
 
 .edit-field-label {
@@ -949,6 +1115,10 @@
     color: #333333;
     resize: vertical;
     box-sizing: border-box;
+    /* Cap how tall the drag handle can stretch the field: without this it can grow past
+       the modal and push the header out of reach (the flex-centred modal overflows the
+       viewport top with nothing to scroll back to). */
+    max-height: 50vh;
 }
 
 .edit-content-textarea:focus {
@@ -980,6 +1150,7 @@
     justify-content: flex-end;
     gap: 12px;
     padding: 0 20px 20px 20px;
+    background: #F4F4F4;
 }
 
 .edit-btn-cancel, .edit-btn-save {
@@ -1008,39 +1179,43 @@
     cursor: not-allowed;
 }
 
-.feed-root.kirkland-override .edit-btn-cancel { color: #166837; background: #eaf6ec; }
-.feed-root.kirkland-override .edit-btn-save { background: #166837; }
-.feed-root.kirkland-override .edit-content-textarea:focus,
-.feed-root.kirkland-override .edit-tags-input:focus {
+/* Modal-scoped (see the themed popup wrapper in the template): these target elements
+   that live outside .feed-root, so they're keyed on the bare .kirkland-override wrapper. */
+.kirkland-override .edit-btn-cancel { color: #166837; background: #eaf6ec; }
+.kirkland-override .edit-btn-save { background: #166837; }
+.kirkland-override .edit-content-textarea:focus,
+.kirkland-override .edit-tags-input:focus {
     border-color: #166837;
     box-shadow: 0 0 0 3px rgba(22, 104, 55, 0.15);
 }
 
 /* Delete Post Confirmation Modal */
 .delete-confirm-container {
-    background: #ffffff;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 420px;
-    height: auto;
-    min-height: 0;
-    max-height: 90vh;
-    overflow-y: auto;
+   background: #ffffff;
+    border-radius: 20px;
+    width: 100%;
+    height: max-content;
+    margin: 8% auto;
+    padding: 0% !important;
 }
+
 
 .delete-confirm-header {
     padding: 20px 20px 0 20px;
+    background: #F4F4F4;
 }
 
 .delete-confirm-title {
     font-size: 20px;
     font-weight: 700;
     color: #1a1a1a;
+    font-family: 'Mallory-main', sans-serif;
     margin: 0;
 }
 
 .delete-confirm-body {
     padding: 12px 20px 20px 20px;
+    background: #F4F4F4;
 }
 
 .delete-confirm-text {
@@ -1048,12 +1223,14 @@
     color: #6b7280;
     line-height: 1.5;
     margin: 0;
+    font-family: 'Mallory-main', sans-serif;
 }
 
 .delete-confirm-footer {
     display: flex;
     gap: 12px;
     padding: 0 20px 20px 20px;
+    background: #F4F4F4;
 }
 
 .delete-confirm-btn {
@@ -1072,28 +1249,186 @@
     background: #a62925;
 }
 
+/* Amplify Post Confirmation Modal */
+/* Center the card explicitly rather than relying on SLDS defaults: on mobile the feed
+   lives inside the dashboard's collapsed/reordered grid (§9d), where a transformed
+   ancestor can make position:fixed resolve against it instead of the viewport and throw
+   the modal off-centre. This flex-centres the container the way the join-group modal is. */
+.slds-modal.amplify-confirm-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.amplify-confirm-container {
+    background: #ffffff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 460px;
+    height: auto;
+    min-height: 0;
+    max-height: 90vh;
+    overflow-y: auto;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.amplify-confirm-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 22px 22px 6px 22px;
+}
+
+.amplify-confirm-icon {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fbf3e2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.amplify-confirm-icon img {
+    width: 22px;
+    height: 22px;
+}
+
+.amplify-confirm-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 4px 0;
+}
+
+.amplify-confirm-subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.amplify-confirm-body {
+    padding: 14px 22px 4px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.amplify-post-preview {
+    background: #f4f7fb;
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+
+.amplify-post-preview-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+}
+
+.amplify-post-preview-text {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin: 0;
+    /* Cap the preview to a few lines with an ellipsis (matches the design) */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.amplify-notify-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fffbeb;
+    border: 1px solid #f5e4b8;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #92700f;
+}
+
+.amplify-notify-icon {
+    --sds-c-icon-color-foreground-default: #C5922B;
+    flex: 0 0 auto;
+}
+
+.amplify-confirm-footer {
+    display: flex;
+    gap: 12px;
+    padding: 16px 22px 22px 22px;
+}
+
+.amplify-confirm-btn {
+    flex: 1;
+    height: 44px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    background: #C5922B;
+    border: none;
+    color: #ffffff;
+}
+
+.amplify-confirm-btn:hover {
+    background: #a97c1f;
+}
+
+.amplify-confirm-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 /* Mobile-First Layout Media Queries */
 @media (max-width: 768px) {
+    /* 16px stops iOS Safari auto-zooming (and never zooming back out) when a text field
+       is focused — it only zooms when the focused field's font-size is under 16px. */
+    .search-input,
+    .people-search-input,
+    .comment-input,
+    .edit-content-textarea {
+        font-size: 16px;
+    }
     .feed-root {
         padding: 0px;
         margin-top: 12px;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
     }
 
     .feed-filter-bar {
         flex-direction: column;
         align-items: stretch;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .search-wrapper {
         max-width: none;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .filter-controls {
         justify-content: flex-start;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .post-card {
         padding: 12px;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
     }
 
     .moderator-flag-banner {
@@ -1116,6 +1451,19 @@
     .comment-row {
         padding: 8px;
     }
+
+    .edit-modal-container {
+        width: 90%;
+        margin: 50% auto;
+        max-height: 550px;
+        overflow: hidden;
+}
+.delete-confirm-container{
+        width: 90%;
+        margin: 50% auto;
+        max-height: 550px;
+        overflow: hidden;
+}
 }
 
 /* Kirkland Theme overrides support */

@@ -44,7 +44,7 @@ public class Ham_GroupsControllerTest {
         HAM_Group__c publicGrp = new HAM_Group__c(
             Name = 'Public Tech Group',
             Visibility__c = 'Public',
-            Category__c = 'Interest',
+            Category__c = 'Interests',
             Banner_Image_URL__c = 'https://example.com/banner1.jpg',
             About__c = 'About Public Group',
             What_We_Offer__c = 'Seminars',
@@ -54,7 +54,7 @@ public class Ham_GroupsControllerTest {
         HAM_Group__c privateGrp = new HAM_Group__c(
             Name = 'Private Finance Group',
             Visibility__c = 'Private',
-            Category__c = 'Development',
+            Category__c = 'Career',
             Banner_Image_URL__c = 'https://example.com/banner2.jpg',
             About__c = 'About Private Group',
             What_We_Offer__c = 'Mentorship',
@@ -524,6 +524,35 @@ public class Ham_GroupsControllerTest {
     }
 
     @IsTest
+    static void testUnamplifyResource() {
+        HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
+        Contact adminCon = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
+        Contact memberCon = [SELECT Id FROM Contact WHERE LastName = 'Doe' LIMIT 1];
+        HAM_Group_Resource__c res = [SELECT Id FROM HAM_Group_Resource__c WHERE Title__c = 'Guide on Salesforce' LIMIT 1];
+        res.Is_Amplified__c = true;
+        res.Amplified_On__c = System.now();
+        update res;
+
+        // Regular members cannot un-amplify
+        Boolean blocked = false;
+        try {
+            Ham_GroupsController.unamplifyResource(grp.Id, res.Id, memberCon.Id);
+        } catch (AuraHandledException e) {
+            blocked = true;
+        }
+        System.assert(blocked, 'Non-admin members must not be able to remove amplification.');
+
+        Test.startTest();
+        String result = Ham_GroupsController.unamplifyResource(grp.Id, res.Id, adminCon.Id);
+        System.assertEquals('Success', result, 'Group admin should be able to remove amplification.');
+        Test.stopTest();
+
+        HAM_Group_Resource__c unamplified = [SELECT Is_Amplified__c, Amplified_On__c FROM HAM_Group_Resource__c WHERE Id = :res.Id];
+        System.assertEquals(false, unamplified.Is_Amplified__c, 'Resource should no longer be flagged as amplified.');
+        System.assertNotEquals(null, unamplified.Amplified_On__c, 'Amplified timestamp is retained as an audit trail.');
+    }
+
+    @IsTest
     static void testAmplifyPost() {
         HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
         Contact adminCon = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
@@ -551,6 +580,40 @@ public class Ham_GroupsControllerTest {
         HAM_Group_Post__c amplified = [SELECT Is_Amplified__c, Amplified_On__c FROM HAM_Group_Post__c WHERE Id = :post.Id];
         System.assertEquals(true, amplified.Is_Amplified__c, 'Post should be flagged as amplified.');
         System.assertNotEquals(null, amplified.Amplified_On__c, 'Amplified timestamp should be stamped.');
+    }
+
+    @IsTest
+    static void testUnamplifyPost() {
+        HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
+        Contact adminCon = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
+        Contact memberCon = [SELECT Id FROM Contact WHERE LastName = 'Doe' LIMIT 1];
+        HAM_Group_Post__c post = new HAM_Group_Post__c(
+            Group__c = grp.Id,
+            Body__c = 'Accidentally amplified post',
+            Is_Amplified__c = true,
+            Amplified_On__c = System.now()
+        );
+        insert post;
+
+        // Regular members cannot un-amplify
+        Boolean blocked = false;
+        try {
+            Ham_GroupsController.unamplifyPost(grp.Id, post.Id, memberCon.Id);
+        } catch (AuraHandledException e) {
+            blocked = true;
+        }
+        System.assert(blocked, 'Non-admin members must not be able to remove amplification.');
+
+        Test.startTest();
+        String res = Ham_GroupsController.unamplifyPost(grp.Id, post.Id, adminCon.Id);
+        System.assertEquals('Success', res, 'Group admin should be able to remove amplification.');
+        Test.stopTest();
+
+        // Is_Amplified__c is cleared (drops it from the amplified feed block); the
+        // Amplified_On__c timestamp is intentionally left as an audit trail.
+        HAM_Group_Post__c unamplified = [SELECT Is_Amplified__c, Amplified_On__c FROM HAM_Group_Post__c WHERE Id = :post.Id];
+        System.assertEquals(false, unamplified.Is_Amplified__c, 'Post should no longer be flagged as amplified.');
+        System.assertNotEquals(null, unamplified.Amplified_On__c, 'Amplified timestamp is retained as an audit trail.');
     }
 
     @IsTest
@@ -596,6 +659,50 @@ public class Ham_GroupsControllerTest {
     }
 
     @IsTest
+    static void testDeepLinkedPostBeyondFirstPage() {
+        HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
+        Contact con1 = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
+
+        // Feed_Pagination_Size__c is 10, so 15 posts push the earliest ones off page 1.
+        List<HAM_Group_Post__c> posts = new List<HAM_Group_Post__c>();
+        for (Integer i = 0; i < 15; i++) {
+            posts.add(new HAM_Group_Post__c(Group__c = grp.Id, Body__c = 'Feed post ' + i));
+        }
+        insert posts;
+
+        // The feed pages on ORDER BY Id DESC, so the lowest Id cannot reach the client
+        // on the first page — exactly the post a notification/moderation link targets.
+        Id oldestPostId = [
+            SELECT Id FROM HAM_Group_Post__c WHERE Group__c = :grp.Id ORDER BY Id ASC LIMIT 1
+        ].Id;
+
+        Test.startTest();
+        List<Ham_GroupsController.PostWrapper> withoutTarget =
+            Ham_GroupsController.getGroupFeed(grp.Id, con1.Id, null, null, null, null, null, false, null);
+        List<Ham_GroupsController.PostWrapper> withTarget =
+            Ham_GroupsController.getGroupFeed(grp.Id, con1.Id, null, null, null, null, null, false, oldestPostId);
+        Test.stopTest();
+
+        Set<Id> idsWithoutTarget = new Set<Id>();
+        for (Ham_GroupsController.PostWrapper w : withoutTarget) {
+            idsWithoutTarget.add(w.id);
+        }
+        Assert.isFalse(idsWithoutTarget.contains(oldestPostId),
+            'Precondition: the deep-link target must fall outside the first page.');
+
+        Assert.areEqual(oldestPostId, withTarget[0].id,
+            'Deep-linked post should be pulled in at the head of the feed.');
+        Assert.areEqual(withoutTarget.size() + 1, withTarget.size(),
+            'Deep-linked post should be added exactly once.');
+
+        // A target already on page 1 must not be duplicated.
+        List<Ham_GroupsController.PostWrapper> alreadyLoaded = Ham_GroupsController.getGroupFeed(
+            grp.Id, con1.Id, null, null, null, null, null, false, withoutTarget[0].id);
+        Assert.areEqual(withoutTarget.size(), alreadyLoaded.size(),
+            'A target already on the first page should not be added a second time.');
+    }
+
+    @IsTest
     static void testSearchTags() {
         HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
         Contact con1 = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
@@ -633,6 +740,15 @@ public class Ham_GroupsControllerTest {
         Contact author = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
         Contact mentioned = [SELECT Id FROM Contact WHERE LastName = 'Doe' LIMIT 1];
 
+        // Opt the mentioned member into tagged notifications so the @mention delivers.
+        HAM_Group_Member__c mem = [
+            SELECT Id FROM HAM_Group_Member__c
+            WHERE Group__c = :grp.Id AND Contact__c = :mentioned.Id LIMIT 1
+        ];
+        mem.Receive_Notifications__c = true;
+        mem.Notify_on_Tagged__c = true;
+        update mem;
+
         HAM_Group_Post__c post = new HAM_Group_Post__c(
             Group__c = grp.Id,
             Body__c = 'Hey @John Doe check this out',
@@ -640,8 +756,17 @@ public class Ham_GroupsControllerTest {
         );
 
         Test.startTest();
-        List<HAM_Group_Post__c> inserted = Ham_GroupsController.createPosts(new List<HAM_Group_Post__c>{post}, author.Id);
+        Ham_GroupsController.createPosts(new List<HAM_Group_Post__c>{post}, author.Id);
         Test.stopTest();
+
+        // Post @mentions now deliver on their own — the generic "New post in {Group}"
+        // fan-out that used to suppress every post mention was removed 2026-07-21.
+        List<HAM_Notification__c> notifs = [
+            SELECT HAM_Body__c FROM HAM_Notification__c
+            WHERE HAM_Constituent__c = :mentioned.Id AND HAM_Source_Type__c = 'Groups'
+        ];
+        System.assertEquals(1, notifs.size(), 'The @mentioned member should receive exactly one tagged notification.');
+        System.assert(notifs[0].HAM_Body__c.contains('mentioned you'), 'The notification should be the tagged/mention message.');
         }
     }
 
@@ -673,10 +798,11 @@ public class Ham_GroupsControllerTest {
         Contact mentioned = [SELECT Id FROM Contact WHERE LastName = 'Doe' LIMIT 1];
 
         HAM_Group_Member__c mem = [
-            SELECT Id, Notify_on_Tagged__c FROM HAM_Group_Member__c
+            SELECT Id, Notify_on_Tagged__c, Receive_Notifications__c FROM HAM_Group_Member__c
             WHERE Group__c = :grp.Id AND Contact__c = :mentioned.Id LIMIT 1
         ];
         mem.Notify_on_Tagged__c = false;
+        mem.Receive_Notifications__c = false;
         update mem;
 
         HAM_Group_Post__c post = new HAM_Group_Post__c(
@@ -715,23 +841,6 @@ public class Ham_GroupsControllerTest {
         Test.stopTest();
     }
 
-    @IsTest
-    static void testQueueableNotification() {
-        HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
-        HAM_Group_Post__c post = new HAM_Group_Post__c(
-            Group__c = grp.Id,
-            Body__c = 'Background notification alert post'
-        );
-        insert post;
-
-        Test.startTest();
-        HAM_NotificationQueueable queueable = new HAM_NotificationQueueable(new List<Id>{post.Id});
-        System.enqueueJob(queueable);
-        Test.stopTest();
-
-        System.assert(true, 'Queueable job ran successfully.');
-    }
-
     private static List<Id> buildDirectoryMembersFixture() {
         Account acc = new Account(Name = 'Members Directory Fixture Account');
         insert acc;
@@ -759,7 +868,7 @@ public class Ham_GroupsControllerTest {
 
         HAM_Group__c grp = new HAM_Group__c(
             Name = 'Members Directory Fixture Group',
-            Visibility__c = 'Public', Category__c = 'Interest', is_Active__c = true
+            Visibility__c = 'Public', Category__c = 'Interests', is_Active__c = true
         );
         insert grp;
 
@@ -990,6 +1099,51 @@ public class Ham_GroupsControllerTest {
             
             Integer postCount = [SELECT COUNT() FROM HAM_Group_Post__c WHERE Id = :post.Id];
             System.assertEquals(0, postCount, 'Post should be deleted by TakeAction.');
+        }
+    }
+
+    @IsTest
+    static void testFeedSearchAndAnonymousFilter() {
+        System.runAs(groupsAdminUser()) {
+            HAM_Group__c grp = [SELECT Id FROM HAM_Group__c WHERE Name = 'Public Tech Group' LIMIT 1];
+            Contact con1 = [SELECT Id FROM Contact WHERE LastName = 'Sharma' LIMIT 1];
+
+            HAM_Group_Post__c publicPost = new HAM_Group_Post__c(
+                Group__c = grp.Id,
+                Body__c = 'Welcome to Salesforce Apex development',
+                Tags__c = 'salesforce,apex',
+                Author__c = con1.Id,
+                Is_Anonymous__c = false
+            );
+            HAM_Group_Post__c anonPost = new HAM_Group_Post__c(
+                Group__c = grp.Id,
+                Body__c = 'Salesforce Lightning discussion',
+                Tags__c = 'salesforce,lwc',
+                Author__c = con1.Id,
+                Is_Anonymous__c = true
+            );
+            insert new List<HAM_Group_Post__c>{ publicPost, anonPost };
+
+            Test.startTest();
+            // Test 1: Search by term 'Salesforce' matches both public and anonymous posts
+            List<Ham_GroupsController.PostWrapper> searchResults = Ham_GroupsController.getGroupFeed(
+                grp.Id, con1.Id, null, 'Salesforce', null, null, null, false, null
+            );
+            Assert.areEqual(2, searchResults.size(), 'Search should return both matching posts.');
+
+            // Test 2: Filter by ANONYMOUS returns only anonymous posts
+            List<Ham_GroupsController.PostWrapper> anonResults = Ham_GroupsController.getGroupFeed(
+                grp.Id, con1.Id, null, null, null, null, 'ANONYMOUS', false, null
+            );
+            Assert.isTrue(anonResults.size() >= 1, 'Should return at least one anonymous post.');
+            Assert.areEqual('Anonymous', anonResults[0].authorName, 'Author name should be Anonymous.');
+
+            // Test 3: Tag search with # prefix
+            List<Ham_GroupsController.PostWrapper> tagResults = Ham_GroupsController.getGroupFeed(
+                grp.Id, con1.Id, null, '#apex', null, null, null, false, null
+            );
+            Assert.areEqual(1, tagResults.size(), 'Tag search with # should return 1 matching post.');
+            Test.stopTest();
         }
     }
 }

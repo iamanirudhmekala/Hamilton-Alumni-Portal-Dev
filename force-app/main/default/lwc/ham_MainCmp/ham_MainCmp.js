@@ -396,11 +396,12 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
             url.searchParams.delete('tab');
         }
 
-        // Notification deep-link params are one-shot (consumed by ham_groupFeed on the
-        // initial load) — clear them on every subsequent navigation so they don't
-        // re-trigger scroll-to-post when a feed re-mounts later.
+        // Notification deep-link params are one-shot (consumed by ham_groupFeed and
+        // ham_groupResources on the initial load) — clear them on every subsequent
+        // navigation so they don't re-trigger scroll-to-target on a later re-mount.
         url.searchParams.delete('postId');
         url.searchParams.delete('commentId');
+        url.searchParams.delete('resourceId');
         url.searchParams.delete('mode');
 
         if (viewName === 'profileoverview') {
@@ -450,6 +451,26 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
         } else if (viewToSet !== 'profileoverview' && url.searchParams.has('cardId')) {
             url.searchParams.delete('cardId');
             urlUpdated = true;
+        }
+
+        // Clean up group parameters when not in community view
+        if (viewToSet !== 'community') {
+            if (url.searchParams.has('groupId')) {
+                url.searchParams.delete('groupId');
+                urlUpdated = true;
+            }
+            if (url.searchParams.has('subview')) {
+                url.searchParams.delete('subview');
+                urlUpdated = true;
+            }
+        }
+        // Clean up stale community subtab parameter when switching to directory
+        if (viewToSet === 'directory') {
+            const currentTab = url.searchParams.get('tab');
+            if (currentTab && ['groups', 'news', 'resources'].includes(currentTab.toLowerCase())) {
+                url.searchParams.delete('tab');
+                urlUpdated = true;
+            }
         }
 
         if (urlUpdated) {
@@ -786,6 +807,7 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
             // One-shot notification deep-link params — clear on navigation
             url.searchParams.delete('postId');
             url.searchParams.delete('commentId');
+            url.searchParams.delete('resourceId');
             url.searchParams.delete('mode');
             window.history.pushState({}, '', url.toString());
 
@@ -1146,7 +1168,16 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
         // One-shot notification deep-link params — clear on navigation
         url.searchParams.delete('postId');
         url.searchParams.delete('commentId');
+        url.searchParams.delete('resourceId');
         url.searchParams.delete('mode');
+
+        // Navigating away from Groups (e.g. to Directory or Events) cleans up group URL params
+        if (this.communitySubTab !== 'groups') {
+            url.searchParams.delete('groupId');
+            url.searchParams.delete('subview');
+            this.selectedGroupId = null;
+        }
+
         window.history.replaceState({}, '', url.toString());
     }
 
@@ -1163,6 +1194,7 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
         // every time a group feed re-mounted.
         url.searchParams.delete('postId');
         url.searchParams.delete('commentId');
+        url.searchParams.delete('resourceId');
         url.searchParams.delete('mode');
         if (this.selectedGroupId) {
             url.searchParams.set('groupId', this.selectedGroupId);
@@ -1523,6 +1555,7 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
         // One-shot notification deep-link params — clear on navigation
         url.searchParams.delete('postId');
         url.searchParams.delete('commentId');
+        url.searchParams.delete('resourceId');
         url.searchParams.delete('mode');
 
         if (this.selectedGroupId) {

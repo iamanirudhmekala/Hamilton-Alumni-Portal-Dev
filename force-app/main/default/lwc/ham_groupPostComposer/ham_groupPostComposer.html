@@ -4,19 +4,21 @@
         <template lwc:if={showHeader}>
             <header class="composer__head">
                 <span class="composer__title">Discussion</span>
-                <button
-                    type="button"
-                    class="composer__expand"
-                    title="Open discussion"
-                    aria-label="Open discussion"
-                    onclick={handleExpand}
-                >
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M15 3h6v6"></path>
-                        <path d="M10 14L21 3"></path>
-                        <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
-                    </svg>
-                </button>
+                <template lwc:if={showExpand}>
+                    <button
+                        type="button"
+                        class="composer__expand"
+                        title="Open discussion"
+                        aria-label="Open discussion"
+                        onclick={handleExpand}
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M15 3h6v6"></path>
+                            <path d="M10 14L21 3"></path>
+                            <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+                        </svg>
+                    </button>
+                </template>
             </header>
         </template>
 
@@ -130,21 +132,20 @@
                 </div>
             </template>
 
-            <!-- File uploader (revealed by the attach/image toolbar buttons). Bound to a
-                 draft post so large files stream straight to ContentVersion. Videos are
-                 excluded from the accepted formats and blocked server-side. -->
-            <template lwc:if={showUploader}>
-                <div class="uploadbox">
-                    <lightning-file-upload
-                        label="Add attachments"
-                        name="postFiles"
-                        accept={acceptedFormats}
-                        record-id={draftPostId}
-                        multiple
-                        onuploadfinished={handleUploadFinished}>
-                    </lightning-file-upload>
-                    <p class="uploadbox__hint">Documents and images only — paste a YouTube/Vimeo link for video.</p>
-                </div>
+            <!-- Hidden native file input triggered by the attach/image toolbar buttons.
+                 Files are read as base64 and attached via Apex (attachFilesToPost) instead
+                 of lightning-file-upload, which can't attach to the private draft post the
+                 portal member has no standard access to. Videos are excluded from the
+                 accepted formats and blocked server-side. -->
+            <input
+                type="file"
+                class="composer__file-input"
+                accept={acceptedFormats}
+                multiple
+                onchange={handleFilesSelected}
+            />
+            <template lwc:if={isPreparingUpload}>
+                <p class="uploadbox__hint">Uploading attachment…</p>
             </template>
 
             <!-- Link insert (toggled by the link icon) -->

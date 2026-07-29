@@ -14,6 +14,19 @@
             </a>
         </div>
 
+        <!-- Section 3: This Fiscal Year's Paid -->
+        <template lwc:if={hasCurrentPaidFY}>
+            <div class="impact-section">
+                <p class="section-label">TOTAL GIVING THIS YEAR</p>
+                <div class="fund-amount-row">
+                    <span class="fund-amount">{currentFiscalPaidValue}</span>
+                    <span class="fund-year-badge">{currentFiscalYearLabel}</span>
+                </div>
+                <p class="fund-description">Reflects Hamilton’s fiscal year (July 1 – June 30), not the calendar year.</p>
+            </div>
+            <hr class="section-divider" />
+        </template>
+
         <!-- Section 1: This Year's Hamilton Fund -->
         <template lwc:if={hasCurrentFY}>
             <div class="impact-section">

@@ -293,6 +293,7 @@ export default class Ham_VolunteerOpportunities extends LightningElement {
                     order: fieldMDT.displayOrder,
                     purpose: fieldPurpose,
                     apiName: fieldApiName,
+                    titleValue: fieldValue,
                     value: this.formatFieldValue(fieldValue, fieldPurpose, fieldMDT.fieldType),
                     isImage: fieldPurpose === 'Image',
                     isTitle: fieldPurpose === 'Title',

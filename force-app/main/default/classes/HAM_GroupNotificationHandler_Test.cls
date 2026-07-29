@@ -23,36 +23,67 @@ private class HAM_GroupNotificationHandler_Test {
      */
     @testSetup
     static void setupData() {
-        Account acc = new Account(Name = 'Group Notification Test Account');
-        insert acc;
+        User runAsUser;
+        List<User> usersWithRole = [SELECT Id FROM User WHERE IsActive = true AND UserRole.Name != null AND Profile.Name = 'System Administrator' LIMIT 1];
+        if (usersWithRole.isEmpty()) {
+            usersWithRole = [SELECT Id FROM User WHERE IsActive = true AND UserRole.Name != null LIMIT 1];
+        }
+        
+        if (!usersWithRole.isEmpty()) {
+            runAsUser = usersWithRole[0];
+        } else {
+            UserRole r = new UserRole(DeveloperName = 'MyCustomRole', Name = 'My Custom Role');
+            insert r;
+            
+            Profile sysAdmin = [SELECT Id FROM Profile WHERE Name = 'System Administrator' LIMIT 1];
+            runAsUser = new User(
+                Alias = 'roleusr',
+                Email = 'roleusr@test.com',
+                EmailEncodingKey = 'UTF-8',
+                LastName = 'RoleUser',
+                LanguageLocaleKey = 'en_US',
+                LocaleSidKey = 'en_US',
+                ProfileId = sysAdmin.Id,
+                TimeZoneSidKey = 'America/Los_Angeles',
+                UserName = 'roleusr' + System.currentTimeMillis() + '@hamtest.com',
+                UserRoleId = r.Id,
+                IsActive = true
+            );
+            insert runAsUser;
+        }
 
-        Contact eligible = new Contact(LastName = ELIGIBLE_NAME, AccountId = acc.Id, Email = 'gn_eligible@test.com');
-        Contact optedOut = new Contact(LastName = OPTEDOUT_NAME, AccountId = acc.Id, Email = 'gn_optedout@test.com');
-        Contact inactive = new Contact(LastName = INACTIVE_NAME, AccountId = acc.Id, Email = 'gn_inactive@test.com');
-        insert new List<Contact>{ eligible, optedOut, inactive };
+        System.runAs(runAsUser) {
+            Account acc = new Account(Name = 'Group Notification Test Account');
+            insert acc;
 
-        HAM_Group__c grp = new HAM_Group__c(
-            Name = 'Test Notification Group',
-            is_Active__c = true,
-            Visibility__c = 'Public'
-        );
-        insert grp;
+            Contact eligible = new Contact(LastName = ELIGIBLE_NAME, AccountId = acc.Id, Email = 'gn_eligible@test.com');
+            Contact optedOut = new Contact(LastName = OPTEDOUT_NAME, AccountId = acc.Id, Email = 'gn_optedout@test.com');
+            Contact inactive = new Contact(LastName = INACTIVE_NAME, AccountId = acc.Id, Email = 'gn_inactive@test.com');
+            insert new List<Contact>{ eligible, optedOut, inactive };
 
-        List<HAM_Group_Member__c> members = new List<HAM_Group_Member__c>{
-            new HAM_Group_Member__c(
-                Group__c = grp.Id, Contact__c = eligible.Id,
-                Status__c = 'Active', Receive_Notifications__c = true
-            ),
-            new HAM_Group_Member__c(
-                Group__c = grp.Id, Contact__c = optedOut.Id,
-                Status__c = 'Active', Receive_Notifications__c = false
-            ),
-            new HAM_Group_Member__c(
-                Group__c = grp.Id, Contact__c = inactive.Id,
-                Status__c = 'Pending', Receive_Notifications__c = true
-            )
-        };
-        insert members;
+            HAM_Group__c grp = new HAM_Group__c(
+                Name = 'Test Notification Group',
+                is_Active__c = true,
+                Visibility__c = 'Public'
+            );
+            insert grp;
+
+            List<HAM_Group_Member__c> members = new List<HAM_Group_Member__c>{
+                new HAM_Group_Member__c(
+                    Group__c = grp.Id, Contact__c = eligible.Id,
+                    Status__c = 'Active', Receive_Notifications__c = true
+                ),
+                new HAM_Group_Member__c(
+                    Group__c = grp.Id, Contact__c = optedOut.Id,
+                    Status__c = 'Active', Receive_Notifications__c = false
+                ),
+                new HAM_Group_Member__c(
+                    Group__c = grp.Id, Contact__c = inactive.Id,
+                    Status__c = 'Pending', Receive_Notifications__c = true
+                )
+            };
+            insert members;
+        }
     }
 
     /**

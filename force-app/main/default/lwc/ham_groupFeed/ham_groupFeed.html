@@ -44,16 +44,26 @@
                     </button>
                         <template lwc:if={isPeoplePopoverOpen}>
                             <div class="filter-popover people-popover" onclick={handlePopoverClick}>
-                                <button type="button" class="people-option" data-id="" data-name="" onclick={handleSelectAuthor}>
-                                All Members
-                            </button>
                                 <template lwc:if={hasPostAuthors}>
-                                    <template for:each={postAuthors} for:item="author">
+                                    <input type="text" class="people-search-input" placeholder="Search by name..."
+                                        value={peopleSearchTerm} oninput={handlePeopleSearchInput} autocomplete="off" />
+                                </template>
+                                <button type="button" class="people-option" data-id="" data-name="" onclick={handleSelectAuthor}>
+                                    All Members
+                                </button>
+                                <button type="button" class="people-option" data-id="ANONYMOUS" data-name="Anonymous Posts" onclick={handleSelectAuthor}>
+                                    Anonymous Posts
+                                </button>
+                                <template lwc:if={hasFilteredPostAuthors}>
+                                    <template for:each={filteredPostAuthors} for:item="author">
                                         <button key={author.contactId} type="button" class="people-option"
                                             data-id={author.contactId} data-name={author.name} onclick={handleSelectAuthor}>
                                         {author.name}
                                     </button>
                                     </template>
+                                </template>
+                                <template lwc:elseif={hasPostAuthors}>
+                                    <p class="people-empty">No members match your search.</p>
                                 </template>
                                 <template lwc:else>
                                     <p class="people-empty">No one has posted yet.</p>
@@ -78,7 +88,7 @@
 
         <!-- Empty State -->
         <template lwc:if={showEmptyState}>
-            <div class="feed-empty-state">No posts match your search or filters.</div>
+            <div class="feed-empty-state">{emptyStateMessage}</div>
         </template>
 
         <!-- Feed Post List -->
@@ -156,10 +166,19 @@
                                         </button>
                                     </template>
                                     <template lwc:if={isAdmin}>
-                                        <button type="button" class="action-menu-item" data-post-id={post.id} onclick={handleAmplifyPost}>
-                                            <lightning-icon icon-name="utility:announcement" size="x-small" class="menu-icon"></lightning-icon>
-                                            Amplify Post
-                                        </button>
+                                        <!-- Toggles like Pin/Unpin: Amplify (confirmation modal) vs. Remove Amplification (direct) -->
+                                        <template lwc:if={post.isAmplified}>
+                                            <button type="button" class="action-menu-item" data-post-id={post.id} onclick={handleUnamplifyPost}>
+                                                <lightning-icon icon-name="utility:announcement" size="x-small" class="menu-icon"></lightning-icon>
+                                                {post.amplifyLabel}
+                                            </button>
+                                        </template>
+                                        <template lwc:else>
+                                            <button type="button" class="action-menu-item" data-post-id={post.id} onclick={handleAmplifyPost}>
+                                                <lightning-icon icon-name="utility:announcement" size="x-small" class="menu-icon"></lightning-icon>
+                                                {post.amplifyLabel}
+                                            </button>
+                                        </template>
                                     </template>
                                     <template lwc:if={post.canDelete}>
                                         <button type="button" class="action-menu-item" data-post-id={post.id} onclick={handleDeletePost}>
@@ -177,7 +196,7 @@
                 <template lwc:if={post.tags.length}>
                     <div class="tags-container slds-m-top_small">
                         <template for:each={post.tags} for:item="tag">
-                            <span key={tag} class="tag-badge">#{tag}</span>
+                            <button type="button" key={tag} class="tag-badge" data-tag={tag} onclick={handleTagClick} title="Filter by tag">#{tag}</button>
                         </template>
                     </div>
                 </template>
@@ -187,6 +206,9 @@
                     <template for:each={post.bodySegments} for:item="segment">
                         <template lwc:if={segment.isText}>
                             <p key={segment.content} class="body-text">{segment.content}</p>
+                        </template>
+                        <template lwc:if={segment.isLink}>
+                            <a key={segment.url} href={segment.url} target="_blank" rel="noopener noreferrer" class="body-link">{segment.text}</a>
                         </template>
                         <template lwc:if={segment.isVideo}>
                             <div key={segment.embedUrl} class="video-wrapper slds-m-vertical_small">
@@ -198,6 +220,27 @@
                         </template>
                     </template>
                 </div>
+
+                <!-- Attachments (images shown inline, other files as download chips) -->
+                <template lwc:if={post.attachments.length}>
+                    <div class="post-attachments">
+                        <template for:each={post.attachments} for:item="att">
+                            <div key={att.key} class="post-attachment">
+                                <template lwc:if={att.isImage}>
+                                    <button type="button" class="post-image-btn" data-url={att.downloadUrl} data-alt={att.title} onclick={handleImagePreview} title="Click to preview">
+                                        <img src={att.downloadUrl} alt={att.title} class="post-image" />
+                                    </button>
+                                </template>
+                                <template lwc:if={att.isFile}>
+                                    <a href={att.downloadUrl} target="_blank" rel="noopener noreferrer" class="post-file-chip">
+                                        <lightning-icon icon-name="doctype:attachment" size="x-small" class="post-file-icon"></lightning-icon>
+                                        <span class="post-file-name">{att.title}</span>
+                                    </a>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </template>
 
                 <!-- Post Actions Bar -->
                 <div class="post-actions-bar slds-grid slds-p-top_small border-top">
@@ -340,6 +383,9 @@
         </template>
     </div>
 
+    <!-- Popups render outside .feed-root, so wrap them in the theme class to let the
+         Kirkland (green) overrides reach modal buttons/inputs/selects. -->
+    <div class={themeClass}>
     <!-- Flag Content Moderation Report Modal -->
     <template if:true={showReportModal}>
         <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open report-user-modal">
@@ -347,19 +393,38 @@
                 <button type="button" class="report-user-modal-close" title="Close" onclick={closeReportModal}>
                     <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
                 </button>
-                <h2 class="report-user-modal-title">Report Message</h2>
-                <p class="report-user-modal-subtitle">Please select the category that best describes why this
-                    content violates the community guidelines.</p>
-                <div class="report-user-reason-list">
-                    <div class="report-user-reason-hint">Select a reason...</div>
-                    <div class="report-user-reason-items">
-                        <template for:each={reportReasons} for:item="reason">
-                            <button key={reason.value} type="button" class="report-user-reason-item" data-reason={reason.value} onclick={handleSelectReportReason}>
-                                {reason.label}
-                            </button>
-                        </template>
+
+                <template lwc:if={reportSubmitted}>
+                    <div class="report-confirm-icon">
+                        <lightning-icon icon-name="utility:success" size="medium" variant="success"></lightning-icon>
                     </div>
-                </div>
+                    <h2 class="report-user-modal-title">Report Submitted</h2>
+                    <p class="report-user-modal-subtitle">Thank you for helping keep our community safe. Your report
+                        will be reviewed by group administrators. All reports are confidential.</p>
+                    <div class="report-modal-actions">
+                        <button type="button" class="report-btn-submit" onclick={closeReportModal}>Done</button>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <h2 class="report-user-modal-title">Report Message</h2>
+                    <p class="report-user-modal-subtitle">Your report will be reviewed by group administrators. All
+                        reports are confidential.</p>
+
+                    <div class="report-form-field">
+                        <div class="report-select-wrapper">
+                            <select id="reportReasonSelect" class={reportSelectClass} onchange={handleReportReasonChange}>
+                                <template for:each={reportReasonOptions} for:item="opt">
+                                    <option key={opt.value} value={opt.value} selected={opt.isSelected}>{opt.label}</option>
+                                </template>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="report-modal-actions">
+                        <button type="button" class="report-btn-cancel" onclick={closeReportModal} disabled={isSubmittingReport}>Cancel</button>
+                        <button type="button" class="report-btn-submit" onclick={handleSubmitReport} disabled={isSubmittingReport}>{submitReportLabel}</button>
+                    </div>
+                </template>
             </div>
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
@@ -372,19 +437,38 @@
                 <button type="button" class="report-user-modal-close" title="Close" onclick={closeReportUserModal}>
                     <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
                 </button>
-                <h2 class="report-user-modal-title">Report User</h2>
-                <p class="report-user-modal-subtitle">Your report will be reviewed by group administrators. All reports
-                    are confidential.</p>
-                <div class="report-user-reason-list">
-                    <div class="report-user-reason-hint">Select a reason...</div>
-                    <div class="report-user-reason-items">
-                        <template for:each={reportUserReasons} for:item="reason">
-                            <button key={reason.value} type="button" class="report-user-reason-item" data-reason={reason.value} onclick={handleSelectUserReportReason}>
-                                {reason.label}
-                            </button>
-                        </template>
+
+                <template lwc:if={reportUserSubmitted}>
+                    <div class="report-confirm-icon">
+                        <lightning-icon icon-name="utility:success" size="medium" variant="success"></lightning-icon>
                     </div>
-                </div>
+                    <h2 class="report-user-modal-title">Report Submitted</h2>
+                    <p class="report-user-modal-subtitle">Thank you for helping keep our community safe. Your report
+                        will be reviewed by group administrators. All reports are confidential.</p>
+                    <div class="report-modal-actions">
+                        <button type="button" class="report-btn-submit" onclick={closeReportUserModal}>Done</button>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <h2 class="report-user-modal-title">Report User</h2>
+                    <p class="report-user-modal-subtitle">Your report will be reviewed by group administrators. All
+                        reports are confidential.</p>
+
+                    <div class="report-form-field">
+                        <div class="report-select-wrapper">
+                            <select id="reportUserReasonSelect" class={reportUserSelectClass} onchange={handleUserReportReasonChange}>
+                                <template for:each={reportUserReasonOptions} for:item="opt">
+                                    <option key={opt.value} value={opt.value} selected={opt.isSelected}>{opt.label}</option>
+                                </template>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="report-modal-actions">
+                        <button type="button" class="report-btn-cancel" onclick={closeReportUserModal} disabled={isSubmittingUserReport}>Cancel</button>
+                        <button type="button" class="report-btn-submit" onclick={handleSubmitUserReport} disabled={isSubmittingUserReport}>{submitUserReportLabel}</button>
+                    </div>
+                </template>
             </div>
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
@@ -437,4 +521,48 @@
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
+
+    <!-- Amplify Post confirmation modal -->
+    <template if:true={showAmplifyConfirm}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open amplify-confirm-modal">
+            <div class="slds-modal__container amplify-confirm-container">
+                <header class="amplify-confirm-header">
+                    <div class="amplify-confirm-icon">
+                        <img src={amplifiedIconUrl} alt="" />
+                    </div>
+                    <div class="amplify-confirm-heading">
+                        <h2 class="amplify-confirm-title">Amplify Post?</h2>
+                        <p class="amplify-confirm-subtitle">This post will be highlighted and all group members will receive a notification.</p>
+                    </div>
+                </header>
+                <div class="amplify-confirm-body">
+                    <template if:true={amplifyingPost}>
+                        <div class="amplify-post-preview">
+                            <span class="amplify-post-preview-label">Post Content:</span>
+                            <p class="amplify-post-preview-text">{amplifyingPost.body}</p>
+                        </div>
+                    </template>
+                    <div class="amplify-notify-banner">
+                        <lightning-icon icon-name="utility:warning" size="x-small" class="amplify-notify-icon"></lightning-icon>
+                        <span>{amplifyNotifyLabel}</span>
+                    </div>
+                </div>
+                <footer class="amplify-confirm-footer">
+                    <button type="button" class="edit-btn-cancel" onclick={closeAmplifyConfirm} disabled={isAmplifying}>Cancel</button>
+                    <button type="button" class="amplify-confirm-btn" onclick={confirmAmplifyPost} disabled={isAmplifying}>{amplifyConfirmLabel}</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Image preview lightbox -->
+    <template if:true={showImagePreview}>
+        <div class="image-preview-overlay" onclick={closeImagePreview}>
+            <button type="button" class="image-preview-close" onclick={closeImagePreview} aria-label="Close preview">&times;</button>
+            <img src={previewImageUrl} alt={previewImageAlt} class="image-preview-img" onclick={stopPreviewPropagation} />
+            <a href={previewImageUrl} target="_blank" rel="noopener noreferrer" class="image-preview-download" onclick={stopPreviewPropagation}>Open / Download</a>
+        </div>
+    </template>
+    </div>
 </template>

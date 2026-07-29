@@ -4,10 +4,9 @@
  * Author          : Anirudh
  * Created Date    : July 16, 2026
  * Description     : Test class for HAM_ContentDocumentLinkHandler and ContentDocumentLinkTrigger.
- *                   The handler's branching logic is asserted by invoking handleBeforeInsert
- *                   directly against in-memory ContentDocumentLink records, which is deterministic
- *                   and avoids the platform's visibility coercion on ContentDocumentLink commit.
- *                   A separate DML-insert test keeps the trigger itself covered.
+ *                   Verifies that files linked to HAM_Group_Post__c records are forced to
+ *                   'AllUsers' visibility, video files are blocked, and links to non-post
+ *                   entities are left untouched.
  * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
  */
 @isTest
@@ -56,8 +55,7 @@ private class HAM_ContentDocumentLinkHandler_Test {
     }
 
     /**
-     * @description A non-video file linked to a group post has its in-memory Visibility forced
-     *              to 'AllUsers' by the handler.
+     * @description A non-video file linked to a group post has its Visibility forced to 'AllUsers'.
      */
     @isTest
     static void testPostLinkForcesAllUsersVisibility() {
@@ -68,20 +66,22 @@ private class HAM_ContentDocumentLinkHandler_Test {
             ContentDocumentId = docId,
             LinkedEntityId = post.Id,
             ShareType = 'V',
-            Visibility = 'InternalUsers' // handler should overwrite this in memory
+            Visibility = 'InternalUsers' // handler should overwrite this
         );
 
         Test.startTest();
-        HAM_ContentDocumentLinkHandler.handleBeforeInsert(new List<ContentDocumentLink>{ link });
+        insert link;
         Test.stopTest();
 
-        System.assertEquals('AllUsers', link.Visibility,
-            'Files on group posts must be forced to AllUsers visibility');
-        System.assert(!link.hasErrors(), 'A PDF should not be rejected');
+        ContentDocumentLink saved = [
+            SELECT Visibility FROM ContentDocumentLink WHERE Id = :link.Id LIMIT 1
+        ];
+        System.assertEquals('AllUsers', saved.Visibility,
+            'Files on group posts must be visible to all portal users');
     }
 
     /**
-     * @description A video file linked to a group post is rejected via addError.
+     * @description A video file linked to a group post is blocked with a DmlException via addError.
      */
     @isTest
     static void testVideoUploadIsBlocked() {
@@ -95,19 +95,23 @@ private class HAM_ContentDocumentLinkHandler_Test {
             Visibility = 'AllUsers'
         );
 
+        Boolean blocked = false;
         Test.startTest();
-        HAM_ContentDocumentLinkHandler.handleBeforeInsert(new List<ContentDocumentLink>{ link });
+        try {
+            insert link;
+        } catch (DmlException e) {
+            blocked = true;
+            System.assert(e.getMessage().contains('Video files cannot be attached'),
+                'Error should explain why the video was rejected: ' + e.getMessage());
+        }
         Test.stopTest();
 
-        System.assert(link.hasErrors(), 'A video file on a group post should be rejected');
-        System.assert(link.getErrors()[0].getMessage().contains('Video files cannot be attached'),
-            'Error should explain why the video was rejected: ' + link.getErrors()[0].getMessage());
+        System.assert(blocked, 'Inserting a video file on a group post should be blocked');
     }
 
     /**
      * @description A file linked to a non-post entity (a Contact) is ignored: no error, and its
-     *              visibility is left as-is. Covers the isPostLink false branch and the early return
-     *              when no post-linked documents are present.
+     *              visibility is not forced to 'AllUsers'.
      */
     @isTest
     static void testNonPostLinkIgnored() {
@@ -118,46 +122,18 @@ private class HAM_ContentDocumentLinkHandler_Test {
             ContentDocumentId = docId,
             LinkedEntityId = author.Id,
             ShareType = 'V',
-            Visibility = 'InternalUsers'
-        );
-
-        Test.startTest();
-        HAM_ContentDocumentLinkHandler.handleBeforeInsert(new List<ContentDocumentLink>{ link });
-        Test.stopTest();
-
-        System.assert(!link.hasErrors(), 'A file on a non-post entity should not be rejected');
-        System.assertEquals('InternalUsers', link.Visibility,
-            'Visibility of a non-post link should be left untouched');
-    }
-
-    /**
-     * @description Smoke test: inserts a real ContentDocumentLink on a post so that, where the
-     *              platform fires before-insert on ContentDocumentLink, the trigger
-     *              (ContentDocumentLinkTrigger -> handleBeforeInsert) is covered. We assert only
-     *              that the insert succeeds; the handler's field/error behavior is asserted
-     *              deterministically in the direct-call tests above.
-     */
-    @isTest
-    static void testTriggerFiresOnInsert() {
-        HAM_Group_Post__c post = [SELECT Id FROM HAM_Group_Post__c LIMIT 1];
-        Id docId = createDocument('agenda.pdf');
-
-        ContentDocumentLink link = new ContentDocumentLink(
-            ContentDocumentId = docId,
-            LinkedEntityId = post.Id,
-            ShareType = 'V',
             Visibility = 'AllUsers'
         );
 
         Test.startTest();
-        insert link;
+        insert link; // should not throw
         Test.stopTest();
 
-        System.assertNotEquals(null, link.Id, 'Link to a post should insert and fire the trigger');
+        System.assertNotEquals(null, link.Id, 'Link to a non-post entity should insert normally');
     }
 
     /**
-     * @description Directly exercises the empty-list and null guard clauses.
+     * @description Directly exercises the empty-list guard clause.
      */
     @isTest
     static void testEmptyListGuard() {

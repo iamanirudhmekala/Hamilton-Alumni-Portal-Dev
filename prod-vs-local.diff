@@ -1,0 +1,472 @@
+# Production vs Local diff  (a/ = PRODUCTION [HAMProdEnv],  b/ = LOCAL dev)
+# Generated: Tue Jul 21 18:47:08 IST 2026
+# Org: sfdcc84@cube84.com.ham.prod
+#
+
+################################################################
+## ham_directoryWidget : DIFFERS
+################################################################
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_directoryWidget/ham_directoryWidget.css b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_directoryWidget/ham_directoryWidget.css
+index 27203ab..c097add 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_directoryWidget/ham_directoryWidget.css
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_directoryWidget/ham_directoryWidget.css
+@@ -374,13 +374,13 @@
+ 
+ .card-photo {
+     width: 100%;
+-    height: 100%;
++    /* height: 100%; */
+     object-fit: cover;
+     object-position: top center;
+     /* padding: 20px; */
+     gap: 24px;
+     aspect-ratio: 1;
+-    
++    height: 280px;
+ }
+ 
+ .card-photo-placeholder {
+@@ -522,6 +522,11 @@
+     background-color: #166837;
+ }
+ 
++@media (min-width: 1800px) {
++    .card-photo {
++    object-position: center;
++}
++}
+ @media (max-width: 1100px) and (min-width: 1025px) {
+     .btn-primary, .btn-secondary {
+         padding: 8px 20px;
+@@ -531,6 +536,10 @@
+       /* .alumni-container{
+         justify-content: space-between;
+     } */
++     .card-photo {
++    object-position: center;
++    height: 250px;
++}
+ }
+ /* @media (max-width: 768px) { */
+ @media (max-width: 1024px) {
+@@ -772,7 +781,7 @@
+ }
+ 
+ .desk-messagecls{
+-    min-height: 400px;
++    min-height: 300px;
+     margin-top: 40px;
+ }
+ 
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_directoryWidget/ham_directoryWidget.js b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_directoryWidget/ham_directoryWidget.js
+index 9b24c7d..2d54c46 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_directoryWidget/ham_directoryWidget.js
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_directoryWidget/ham_directoryWidget.js
+@@ -35,9 +35,9 @@ export default class Ham_DirectoryWidget extends LightningElement {
+     alumniList = [];
+ 
+     hamIcons = HAM_ICONS;
+-    labels = {
+-        directiryMsg : DirectoryMsg
+-    }
++     labels = {
++         directiryMsg : DirectoryMsg
++     }
+ 
+     imageToUse = {
+         avatar:       this.hamIcons + '/profile_big.png',
+
+################################################################
+## ham_upcomingEvents : DIFFERS
+################################################################
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_upcomingEvents/ham_upcomingEvents.html b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_upcomingEvents/ham_upcomingEvents.html
+index 5425cb8..7528b68 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_upcomingEvents/ham_upcomingEvents.html
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_upcomingEvents/ham_upcomingEvents.html
+@@ -123,7 +123,7 @@
+                                 title="Information">
+                                 <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
+                             </span>
+-                            <h2>More Events coming soon.</h2>
++                            <h2>No Events are available.</h2>
+                         </div>
+                     </template>
+                 </template>
+
+################################################################
+## ham_dynamicFeed : IDENTICAL (prod == local)
+################################################################
+
+################################################################
+## ham_hamiltonTrivia : DIFFERS
+################################################################
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_hamiltonTrivia/ham_hamiltonTrivia.css b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_hamiltonTrivia/ham_hamiltonTrivia.css
+index 639fcc5..5e1f118 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_hamiltonTrivia/ham_hamiltonTrivia.css
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_hamiltonTrivia/ham_hamiltonTrivia.css
+@@ -317,15 +317,23 @@
+ }
+ 
+ .kirkland-override .submit-btn {
+-    background-color: #D4EDDA !important;
++    /* background-color: #D4EDDA !important;
+     color: #166837 !important;
+-    border: 1px solid #D4EDDA !important;
++    border: 1px solid #D4EDDA !important; */
++
++       background-color: #166837 !important;
++    border-color: #166837 !important;
++    color: #ffffff !important;
+ }
+ 
+ .kirkland-override .submit-btn:hover {
+-    background-color: #166837 !important;
++    /* background-color: #166837 !important;
+     border-color: #166837 !important;
+-    color: #ffffff !important;
++    color: #ffffff !important; */
++
++     background-color: #fff !important;
++    border: 1px solid #166837 !important;
++    color: #166837 !important;
+ }
+ 
+ .kirkland-override .option-card.selected {
+
+################################################################
+## ham_volunteerOpportunities : DIFFERS
+################################################################
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_volunteerOpportunities/ham_volunteerOpportunities.html b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_volunteerOpportunities/ham_volunteerOpportunities.html
+index ef2ec01..c405446 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_volunteerOpportunities/ham_volunteerOpportunities.html
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_volunteerOpportunities/ham_volunteerOpportunities.html
+@@ -36,7 +36,7 @@
+ 
+                                 <!-- Description Component -->
+                                 <template lwc:if={item.isDescription}>
+-                                    <p key={item.key} class="opp-card-description" title={item.titleValue}>{item.value}</p>
++                                    <p key={item.key} class="opp-card-description">{item.value}</p>
+                                 </template>
+ 
+                                 <!-- Link/Button Component -->
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_volunteerOpportunities/ham_volunteerOpportunities.js b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_volunteerOpportunities/ham_volunteerOpportunities.js
+index 869e83a..e1d7d71 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_volunteerOpportunities/ham_volunteerOpportunities.js
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_volunteerOpportunities/ham_volunteerOpportunities.js
+@@ -293,7 +293,6 @@ export default class Ham_VolunteerOpportunities extends LightningElement {
+                     order: fieldMDT.displayOrder,
+                     purpose: fieldPurpose,
+                     apiName: fieldApiName,
+-                    titleValue: fieldValue,
+                     value: this.formatFieldValue(fieldValue, fieldPurpose, fieldMDT.fieldType),
+                     isImage: fieldPurpose === 'Image',
+                     isTitle: fieldPurpose === 'Title',
+
+################################################################
+## ham_MainCmp : DIFFERS
+################################################################
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_MainCmp/ham_MainCmp.html b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_MainCmp/ham_MainCmp.html
+index 4a9e045..8d22917 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_MainCmp/ham_MainCmp.html
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_MainCmp/ham_MainCmp.html
+@@ -151,9 +151,9 @@
+                                         images={images} label={label} main-resource={mainResource.hamIcons}
+                                         onprofileoverview={handleProfileOverview}></c-ham_directory-widget>
+                                 </div>
+-                                <!-- <div class="col">
++                                <div class="col">
+                                     <c-ham_groups-cmp user-contact-id={currentUserContactId} onviewgroup={handleWidgetViewGroup}></c-ham_groups-cmp>
+-                                </div> -->
++                                </div>
+                             </div>
+ 
+                             <!-- Row 2: Trending News (full-width) -->
+@@ -192,9 +192,9 @@
+                                             images={images} label={label} main-resource={mainResource.hamIcons}
+                                             onprofileoverview={handleProfileOverview}></c-ham_directory-widget>
+                                     </div>
+-                                    <!-- <div class="my-card">
++                                    <div class="my-card">
+                                         <c-ham_groups-cmp user-contact-id={currentUserContactId} onviewgroup={handleWidgetViewGroup}></c-ham_groups-cmp>
+-                                    </div> -->
++                                    </div>
+                                     <!-- News card -->
+                                     <div class="my-card" data-section-id="news">
+                                         <c-ham_trending-news onnavigateevent={navigateMyImpact} label={label}
+@@ -219,7 +219,7 @@
+ 
+             <!-- My Impact and Alumni directory embedded  -   -->
+             <template if:true={isGivingPageActive}>
+-                <!-- <c-ham-review-transaction-form></c-ham-review-transaction-form> -->
++                <c-ham-review-transaction-form></c-ham-review-transaction-form>
+                 <!-- <c-hamilton-giving-app></c-hamilton-giving-app> -->
+             </template>
+             <!-- My Impact and Alumni directory embedded     -->
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_MainCmp/ham_MainCmp.js b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_MainCmp/ham_MainCmp.js
+index 9bcd446..9c7e74e 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_MainCmp/ham_MainCmp.js
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_MainCmp/ham_MainCmp.js
+@@ -72,9 +72,9 @@ import editProfVisibiltyDesc from '@salesforce/label/c.ham_editprofile_visibilit
+ import editProfPrivacyBanner from '@salesforce/label/c.ham_editprofile_privacy_banner';
+ import editProfPrivacyDesc from '@salesforce/label/c.ham_editprofile_privacy_desc';
+ import profileoverEduhistory from '@salesforce/label/c.ham_educationhistory';
+-// import requestNewGroupBtn from '@salesforce/label/c.ham_requestNewGroupBtn';
+-// import groupsDiscModal from '@salesforce/label/c.ham_groupsDiscModal';
+-// import groupsDiscModalEmail from '@salesforce/label/c.ham_groupsDiscModalEmail';
++import requestNewGroupBtn from '@salesforce/label/c.ham_requestNewGroupBtn';
++import groupsDiscModal from '@salesforce/label/c.ham_groupsDiscModal';
++import groupsDiscModalEmail from '@salesforce/label/c.ham_groupsDiscModalEmail';
+ 
+ 
+ 
+@@ -216,9 +216,9 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
+         editProfPrivacyBanner: editProfPrivacyBanner,
+         editProfPrivacyDesc: editProfPrivacyDesc,
+         profileoverEduhistory: profileoverEduhistory,
+-        // requestNewGroupBtn: requestNewGroupBtn,
+-        // groupsDiscModal: groupsDiscModal,
+-        // groupsDiscModalEmail: groupsDiscModalEmail,
++        requestNewGroupBtn: requestNewGroupBtn,
++        groupsDiscModal: groupsDiscModal,
++        groupsDiscModalEmail: groupsDiscModalEmail,
+         community: 'Community'
+     };
+ 
+@@ -396,6 +396,13 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
+             url.searchParams.delete('tab');
+         }
+ 
++        // Notification deep-link params are one-shot (consumed by ham_groupFeed on the
++        // initial load) — clear them on every subsequent navigation so they don't
++        // re-trigger scroll-to-post when a feed re-mounts later.
++        url.searchParams.delete('postId');
++        url.searchParams.delete('commentId');
++        url.searchParams.delete('mode');
++
+         if (viewName === 'profileoverview') {
+             const idToSet = cardId || this.selectedCardId;
+             if (idToSet) url.searchParams.set('cardId', idToSet);
+@@ -533,7 +540,14 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
+                 this.activeTab = this.label.volunteerOpportunity;
+                 break;
+             case 'groups':
+-                this.activeTab = this.label.groups;
++                // Group notification deep links (?view=groups&groupId=...): the
++                // standalone student-only Groups tab is currently disabled, so
++                // route into the Community tab's Groups subtab, which threads
++                // groupId/subview down to the Groups orchestrator.
++                this.activeTab = this.label.community;
++                this.communitySubTab = 'Groups';
++                this.selectedGroupId = urlParams.get('groupId');
++                this.groupSubview = urlParams.get('subview');
+                 break;
+             case 'home':
+             default:
+@@ -769,6 +783,10 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
+             url.searchParams.delete('groupId');
+             url.searchParams.delete('subview');
+             url.searchParams.delete('cardId');
++            // One-shot notification deep-link params — clear on navigation
++            url.searchParams.delete('postId');
++            url.searchParams.delete('commentId');
++            url.searchParams.delete('mode');
+             window.history.pushState({}, '', url.toString());
+ 
+             publish(this.messageContext, NAVIGATION_CHANNEL, { selectedItem: this.label.community });
+@@ -1125,6 +1143,10 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
+         // Silently update URL to show the subtab
+         const url = new URL(window.location.href);
+         url.searchParams.set('tab', this.communitySubTab);
++        // One-shot notification deep-link params — clear on navigation
++        url.searchParams.delete('postId');
++        url.searchParams.delete('commentId');
++        url.searchParams.delete('mode');
+         window.history.replaceState({}, '', url.toString());
+     }
+ 
+@@ -1135,6 +1157,13 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
+ 
+         // Update URL params for Groups deep links
+         const url = new URL(window.location.href);
++        // Drop one-shot notification deep-link params on any user navigation: they are
++        // only meant for the initial page load (ham_groupFeed reads them once to
++        // scroll/highlight). Leaving them in the URL re-triggered the auto-scroll
++        // every time a group feed re-mounted.
++        url.searchParams.delete('postId');
++        url.searchParams.delete('commentId');
++        url.searchParams.delete('mode');
+         if (this.selectedGroupId) {
+             url.searchParams.set('groupId', this.selectedGroupId);
+             url.searchParams.set('subview', this.groupSubview);
+@@ -1491,7 +1520,11 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
+         const url = new URL(window.location.href);
+         url.searchParams.set('view', 'community');
+         url.searchParams.set('tab', 'Groups');
+-        
++        // One-shot notification deep-link params — clear on navigation
++        url.searchParams.delete('postId');
++        url.searchParams.delete('commentId');
++        url.searchParams.delete('mode');
++
+         if (this.selectedGroupId) {
+             url.searchParams.set('groupId', this.selectedGroupId);
+             url.searchParams.set('subview', this.groupSubview);
+
+################################################################
+## ham_contentCardRenderer : DIFFERS
+################################################################
+diff --git a/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_contentCardRenderer/__tests__/ham_contentCardRenderer.test.js b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_contentCardRenderer/__tests__/ham_contentCardRenderer.test.js
+new file mode 100644
+index 0000000..2ddb75a
+--- /dev/null
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_contentCardRenderer/__tests__/ham_contentCardRenderer.test.js
+@@ -0,0 +1,25 @@
++import { createElement } from '@lwc/engine-dom';
++import Ham_contentCardRenderer from 'c/ham_contentCardRenderer';
++
++describe('c-ham-content-card-renderer', () => {
++    afterEach(() => {
++        // The jsdom instance is shared across test cases in a single file so reset the DOM
++        while (document.body.firstChild) {
++            document.body.removeChild(document.body.firstChild);
++        }
++    });
++
++    it('TODO: test case generated by CLI command, please fill in test logic', () => {
++        // Arrange
++        const element = createElement('c-ham-content-card-renderer', {
++            is: Ham_contentCardRenderer
++        });
++
++        // Act
++        document.body.appendChild(element);
++
++        // Assert
++        // const div = element.shadowRoot.querySelector('div');
++        expect(1).toBe(1);
++    });
++});
+\ No newline at end of file
+
+################################################################
+## ham_editProfileCmp : DIFFERS
+################################################################
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_editProfileCmp/ham_editProfileCmp.css b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_editProfileCmp/ham_editProfileCmp.css
+index d0be454..67d6e11 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_editProfileCmp/ham_editProfileCmp.css
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_editProfileCmp/ham_editProfileCmp.css
+@@ -744,10 +744,8 @@ input.field-input:read-only {
+ .custom-toggle-track::after { content: ''; position: absolute; width: 20px; height: 20px; background: #fff; border-radius: 50%; top: 4px; left: 4px; transition: left 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+ .custom-toggle-track.checked { background-color: #002F86; }
+ .custom-toggle-track.checked::after { left: 24px; }
+-.custom-toggle-label-active { display: none; font-size: 0.8125rem; color: #3e3e3c; }
++.custom-toggle-label-active { display: inline; font-size: 0.8125rem; color: #3e3e3c; }
+ .custom-toggle-label-inactive { display: inline; font-size: 0.8125rem; color: #3e3e3c; }
+-.custom-toggle-track.checked ~ .custom-toggle-label-active { display: inline; }
+-.custom-toggle-track.checked ~ .custom-toggle-label-inactive { display: none; }
+ 
+ /* ── Kirkland Override ───────────────────────────────────────── */
+ .kirkland-override .slds-popover_tooltip { background: #166837 !important; }
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_editProfileCmp/ham_editProfileCmp.html b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_editProfileCmp/ham_editProfileCmp.html
+index 4f0df6b..e948087 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_editProfileCmp/ham_editProfileCmp.html
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_editProfileCmp/ham_editProfileCmp.html
+@@ -246,9 +246,9 @@
+                                                                 onclick={handleToggleChange}
+                                                                 role="switch"
+                                                                 aria-checked={toggle.checked}>
++                                                                <span class="custom-toggle-label-inactive">No</span>
+                                                                 <span class={toggle.trackClass}></span>
+                                                                 <span class="custom-toggle-label-active">Yes</span>
+-                                                                <span class="custom-toggle-label-inactive">No</span>
+                                                             </div>
+                                                         </div>
+                                                     </template>
+@@ -271,9 +271,9 @@
+                                              onclick={handleMasterToggle}
+                                              role="switch"
+                                              aria-checked={isMasterChecked}>
++                                            <span class="custom-toggle-label-inactive">No</span>
+                                             <span class={masterTrackClass}></span>
+                                             <span class="custom-toggle-label-active">Yes</span>
+-                                            <span class="custom-toggle-label-inactive">No</span>
+                                         </div>
+                                     </div>
+                                 </div>
+
+################################################################
+## ham_VolunteerOppCmp : IDENTICAL (prod == local)
+################################################################
+
+################################################################
+## ham_redirectionCards : DIFFERS
+################################################################
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_redirectionCards/ham_redirectionCards.js b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_redirectionCards/ham_redirectionCards.js
+index 7789a62..765b86c 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_redirectionCards/ham_redirectionCards.js
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_redirectionCards/ham_redirectionCards.js
+@@ -14,7 +14,7 @@ const CARDS = [
+     { id: 'impact',    title: 'My Impact',                colorClass: 'card-bg-2', imageFile: '/my-impact-bg.png' },
+     { id: 'news',      title: 'News',                     colorClass: 'card-bg-3', imageFile: '/news-bg.png' },
+     { id: 'events',    title: 'Events',                   colorClass: 'card-bg-4', imageFile: '/events-bg.png' },
+-    { id: 'gallery',   title: 'Gallery',                  colorClass: 'card-bg-5', imageFile: '/gallery-bg.png' },
++    { id: 'gallery',   title: 'Gallery',                  colorClass: 'card-bg-5', imageFile: '/gallery-bg.jpg' },
+     { id: 'trivia',    title: 'Trivia',                   colorClass: 'card-bg-6', imageFile: '/trivia-bg.png' },
+     { id: 'volunteer', title: 'Volunteer Opportunities',  colorClass: 'card-bg-7', imageFile: '/volunteer-bg.png' },
+ ];
+
+################################################################
+## ham_HeaderCmp : DIFFERS
+################################################################
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_HeaderCmp/ham_HeaderCmp.css b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_HeaderCmp/ham_HeaderCmp.css
+index 1c55d2f..2407bb7 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_HeaderCmp/ham_HeaderCmp.css
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_HeaderCmp/ham_HeaderCmp.css
+@@ -234,10 +234,19 @@
+ }
+ 
+ /* Mobile sizing */
++
+ @media (max-width: 420px) {
+     .hamilton-logo img {
+         width: 150px;
+-        height: 45px !important;
++        height: 37px !important;
++        /* height: 45px !important; */
++    }
++}
++
++@media (max-width: 370px) {
++     .hamilton-logo img {
++        max-width: 110% !important;
++        height: 35px !important;    
+     }
+ }
+ 
+diff --git a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_HeaderCmp/ham_HeaderCmp.js b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_HeaderCmp/ham_HeaderCmp.js
+index 5f61324..875b5cc 100644
+--- a/C:/Users/Anirudh/AppData/Local/Temp/claude/c--HAMProjectSandbox/61e8d3ba-b484-4371-b219-660496b595d3/scratchpad/prodcompare/force-app/main/default/lwc/ham_HeaderCmp/ham_HeaderCmp.js
++++ b/C:/HAMProjectSandbox/force-app/main/default/lwc/ham_HeaderCmp/ham_HeaderCmp.js
+@@ -26,8 +26,7 @@ export default class Ham_HeaderCmp extends LightningElement {
+     };
+ 
+     icons = {
+-        feedbackIcon: this.mainResource.hamIcons + '/list-view.png',
+-        hamquadlogo: this.mainResource.hamIcons + '/hamiltonquad-primary-dark-background.png'
++        feedbackIcon: this.mainResource.hamIcons + '/list-view.png'
+     }
+ 
+     connectedCallback() {
+@@ -46,7 +45,7 @@ export default class Ham_HeaderCmp extends LightningElement {
+         // ''    → overlay was active (Edit Profile / Preferences) → no tab highlighted
+         // value → restore that tab
+         this.activeTab = storedTab !== null ? storedTab : (this.label?.hometitle || 'Home');
+-        this.logo = this.icons?.hamquadlogo || '#';
++        this.logo = this.images?.logo || '#';
+         this.makeagift = this.label?.makeagiftlink || '#';
+         
+         this.subscribeToMessageChannel();
+
+################################################################
+## ham_philanthropyDetailCmp : IDENTICAL (prod == local)
+################################################################

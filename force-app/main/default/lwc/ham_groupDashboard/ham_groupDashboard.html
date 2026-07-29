@@ -16,7 +16,7 @@
                     <img src={group.bannerUrl} alt={group.name} class="banner-img" />
                 </template>
                 <template if:false={group.bannerUrl}>
-                    <div class="banner-fallback"></div>
+                    <img src={defaultImageUrl} alt={group.name} class="banner-img" />
                 </template>
             </div>
 
@@ -27,20 +27,21 @@
                     <button class="btn-back" onclick={handleBackAction}>&#8592; Back</button>
                 </div>
 
-                <!-- Group Name (left) and Member Count (far right) -->
+                <!-- Group Name -->
                 <div class="header-middle-row slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
                     <h1 class="group-name">{group.name}</h1>
-                    <span class="member-count">
-                        <lightning-icon icon-name="utility:groups" size="x-small" class="meta-icon"></lightning-icon>
-                        {group.memberCount} members
-                    </span>
                 </div>
 
-                <!-- Category badge below group name -->
+                <!-- Category tag (left) + member count (far right on desktop).
+                     On mobile these stack: tag first, member count underneath. -->
                 <div class="header-category-row">
                     <template if:true={group.category}>
                         <span class="badge-category">{group.category}</span>
                     </template>
+                    <span class="member-count">
+                        <lightning-icon icon-name="utility:groups" size="x-small" class="meta-icon"></lightning-icon>
+                        {group.memberCount} members
+                    </span>
                 </div>
 
                 <!-- Action buttons side-by-side below category badge -->
@@ -176,19 +177,29 @@
                                 </template>
                             </div>
 
-                            <!-- Discussion preview -->
-                            <div class="discussion-card info-card slds-m-bottom_medium">
-                                <div class="section-header-row slds-grid slds-grid_align-spread slds-m-bottom_small">
-                                    <h3 class="section-heading">Discussion</h3>
-                                    <button class="icon-link-btn" onclick={handleGoToDiscussion} title="Full Feed">
-                                        <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
-                                            <path d="M15 3h6v6"></path>
-                                            <path d="M10 14L21 3"></path>
-                                            <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
-                                        </svg>
-                                    </button>
+                            <!-- Guest join prompt: shown instead of Discussion/Members/Resources for non-members -->
+                            <template if:true={isGuest}>
+                                <div class="guest-join-card slds-p-around_large slds-grid slds-grid_align-center slds-grid_vertical-align-center slds-m-bottom_medium">
+                                    <div class="slds-text-align_center">
+                                        <lightning-icon icon-name="utility:info_alt" size="large" class="guest-join-icon"></lightning-icon>
+                                        <p class="guest-join-message slds-m-top_small">{guestPromptMessage}</p>
+                                    </div>
                                 </div>
-                                <template if:true={isMember}>
+                            </template>
+
+                            <!-- Discussion preview -->
+                            <template if:true={isMember}>
+                                <div class="discussion-card info-card slds-m-bottom_medium">
+                                    <div class="section-header-row slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                        <h3 class="section-heading">Discussion</h3>
+                                        <button class="icon-link-btn" onclick={handleGoToDiscussion} title="Full Feed">
+                                            <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
+                                                <path d="M15 3h6v6"></path>
+                                                <path d="M10 14L21 3"></path>
+                                                <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
                                     <c-ham_group-post-composer
                                        group-id={groupId}
                                        user-contact-id={userContactId}
@@ -197,18 +208,20 @@
                                        group-icons={groupIcons}
                                        onpostcreated={handlePostCreated}>
                                     </c-ham_group-post-composer>
-                                </template>
-                                <c-ham_group-feed
-                                   data-id="groupFeed"
-                                   group-id={groupId}
-                                   user-contact-id={userContactId}
-                                   is-admin={isAdmin}
-                                   is-override={isOverride}
-                                   limit-count="5"
-                                   group-icons={groupIcons}
-                                   onseemore={handleGoToDiscussion}>
-                                </c-ham_group-feed>
-                            </div>
+                                    <c-ham_group-feed
+                                       data-id="groupFeed"
+                                       group-id={groupId}
+                                       user-contact-id={userContactId}
+                                       is-admin={isAdmin}
+                                       is-override={isOverride}
+                                       limit-count="5"
+                                       member-count={group.memberCount}
+                                       group-icons={groupIcons}
+                                       onseemore={handleGoToDiscussion}
+                                       onreportsubmitted={handleReportSubmitted}>
+                                    </c-ham_group-feed>
+                                </div>
+                            </template>
 
                             <!-- Resources preview -->
                             <!-- <div class="resources-card info-card slds-m-bottom_medium">
@@ -258,8 +271,10 @@
                                isdiscussiontab="true"
                                is-admin={isAdmin}
                                is-override={isOverride}
+                               member-count={group.memberCount}
                                images={images}
-                               group-icons={groupIcons}>
+                               group-icons={groupIcons}
+                               onreportsubmitted={handleReportSubmitted}>
                             </c-ham_group-feed>
                         </div>
                     </template>
@@ -340,50 +355,11 @@
                         </div>
 
                         <!-- Members Preview -->
-                        <div class="members-card sidebar-card">
-                            <div class="sidebar-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
-                                <h3 class="sidebar-heading">Members</h3>
-                                <button class="icon-link-btn" onclick={handleSeeMoreMembers} title="All Members">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
-                                        <path d="M15 3h6v6"></path>
-                                        <path d="M10 14L21 3"></path>
-                                        <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="member-preview-list">
-                                <template for:each={group.memberPreviews} for:item="preview">
-                                    <div key={preview.contactId} class="member-preview-row">
-                                        <template if:true={preview.photoUrl}>
-                                            <img src={preview.photoUrl} alt={preview.name} class="preview-avatar" />
-                                        </template>
-                                        <template if:false={preview.photoUrl}>
-                                            <div class="preview-avatar preview-avatar-fallback">
-                                                <lightning-icon icon-name="standard:person_account" size="xx-small"></lightning-icon>
-                                            </div>
-                                        </template>
-                                        <div class="member-preview-info">
-                                            <p class="member-preview-name">{preview.name}</p>
-                                            <template if:true={preview.title}>
-                                                <p class="member-preview-title">{preview.title}</p>
-                                            </template>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                            <template if:true={hasMemberPreviews}>
-                                <div class="member-see-more-row">
-                                    <button class="member-see-more-btn" onclick={handleSeeMoreMembers}>See more</button>
-                                </div>
-                            </template>
-                        </div>
-
-                        <!-- Content Moderation Preview (Admins only) -->
-                        <template if:true={isAdmin}>
-                            <div class="moderation-card sidebar-card">
+                        <template if:true={isMember}>
+                            <div class="members-card sidebar-card">
                                 <div class="sidebar-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
-                                    <h3 class="sidebar-heading">Content Moderation</h3>
-                                    <button class="icon-link-btn" onclick={handleGoToAdmin} title="Full Moderation">
+                                    <h3 class="sidebar-heading">Members</h3>
+                                    <button class="icon-link-btn" onclick={handleSeeMoreMembers} title="All Members">
                                         <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
                                             <path d="M15 3h6v6"></path>
                                             <path d="M10 14L21 3"></path>
@@ -391,15 +367,59 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <c-ham_group-admin
-                                    group-id={groupId}
-                                    contact-id={userContactId}
-                                    is-preview="true"
-                                    is-override={isOverride}
-                                    group-icons={groupIcons}
-                                    onseemore={handleGoToAdmin}>
-                                </c-ham_group-admin>
+                                <div class="member-preview-list">
+                                    <template for:each={group.memberPreviews} for:item="preview">
+                                        <div key={preview.contactId} class="member-preview-row">
+                                            <template if:true={preview.photoUrl}>
+                                                <img src={preview.photoUrl} alt={preview.name} class="preview-avatar" />
+                                            </template>
+                                            <template if:false={preview.photoUrl}>
+                                                <div class="preview-avatar preview-avatar-fallback">
+                                                    <lightning-icon icon-name="standard:person_account" size="xx-small"></lightning-icon>
+                                                </div>
+                                            </template>
+                                            <div class="member-preview-info">
+                                                <p class="member-preview-name">{preview.name}</p>
+                                                <template if:true={preview.title}>
+                                                    <p class="member-preview-title">{preview.title}</p>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <template if:true={hasMemberPreviews}>
+                                    <div class="member-see-more-row">
+                                        <button class="member-see-more-btn" onclick={handleSeeMoreMembers}>See more</button>
+                                    </div>
+                                </template>
                             </div>
+                        </template>
+
+                        <!-- Content Moderation Preview (Admins only, and only while still an active member) -->
+                        <template if:true={isAdmin}>
+                            <template if:true={isMember}>
+                                <div class="moderation-card sidebar-card">
+                                    <div class="sidebar-card-header slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                        <h3 class="sidebar-heading">Content Moderation</h3>
+                                        <button class="icon-link-btn" onclick={handleGoToAdmin} title="Full Moderation">
+                                            <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
+                                                <path d="M15 3h6v6"></path>
+                                                <path d="M10 14L21 3"></path>
+                                                <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <c-ham_group-admin
+                                        data-id="groupAdminPreview"
+                                        group-id={groupId}
+                                        contact-id={userContactId}
+                                        is-preview="true"
+                                        is-override={isOverride}
+                                        group-icons={groupIcons}
+                                        onseemore={handleGoToAdmin}>
+                                    </c-ham_group-admin>
+                                </div>
+                            </template>
                         </template>
 
                     </div>
@@ -408,29 +428,31 @@
 
                  <!-- Resources preview -->
                  <template if:true={isDashboardTab}>
-                    <div class="slds-col resources-card-parent-box">
-                            <div class="resources-card info-card slds-m-bottom_medium">
-                                <div class="section-header-row slds-grid slds-grid_align-spread slds-m-bottom_small">
-                                    <h3 class="section-heading">Resources</h3>
-                                    <button class="icon-link-btn" onclick={handleGoToResources} title="All Resources">
-                                        <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
-                                            <path d="M15 3h6v6"></path>
-                                            <path d="M10 14L21 3"></path>
-                                            <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
-                                        </svg>
-                                    </button>
+                    <template if:true={isMember}>
+                        <div class="slds-col resources-card-parent-box">
+                                <div class="resources-card info-card slds-m-bottom_medium">
+                                    <div class="section-header-row slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                        <h3 class="section-heading">Resources</h3>
+                                        <button class="icon-link-btn" onclick={handleGoToResources} title="All Resources">
+                                            <svg viewBox="0 0 24 24" aria-hidden="true" class="expand-svg">
+                                                <path d="M15 3h6v6"></path>
+                                                <path d="M10 14L21 3"></path>
+                                                <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <c-ham_group-resources
+                                        group-id={groupId}
+                                        contact-id={userContactId}
+                                        is-admin={isAdmin}
+                                        is-override={isOverride}
+                                        member-count={group.memberCount}
+                                        limit-count="3"
+                                        group-icons={groupIcons}>
+                                    </c-ham_group-resources>
                                 </div>
-                                <c-ham_group-resources
-                                    group-id={groupId}
-                                    contact-id={userContactId}
-                                    is-admin={isAdmin}
-                                    is-override={isOverride}
-                                    member-count={group.memberCount}
-                                    limit-count="3"
-                                    group-icons={groupIcons}>
-                                </c-ham_group-resources>
-                            </div>
-                    </div>
+                        </div>
+                    </template>
                  </template>
 
             </div>

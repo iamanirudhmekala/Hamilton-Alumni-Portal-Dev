@@ -9,7 +9,6 @@
  */
 @SuppressWarnings('PMD.NoTrailingWhitespace, PMD.ExcessiveClassLength, PME.ExcessivePublicCount, PMD.ApexCRUDViolation, PMD.EmptyIfStmt, PMD.EmptyStatementBlock, PMD.AvoidNonRestrictiveQueries, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.NcssCount, PMD.NcssTypeCount, PMD.DetectCopyPasteForApex, PMD.LocalVariableNamingConventions, PMD.ExcessiveParameterList, PMD.ApexSOQLInjection, PMD.AvoidDeeplyNestedIfStmts, PMD.AvoidDebugStatements, PMD.StdCyclomaticComplexity, PMD.NcssMethodCount')
 public without sharing class HAM_NotificationQueueable implements Queueable {
-    private List<Id> postIds;
     private Id amplifiedResourceId;
     private Id amplifiedPostId;
     private Id amplifyingContactId;
@@ -17,14 +16,6 @@ public without sharing class HAM_NotificationQueueable implements Queueable {
     private List<Id> mentionedContactIds;
     private Id mentionAuthorContactId;
     private String mentionType;
-
-    /**
-     * @description Constructor accepting a list of post IDs to process notifications for.
-     * @param postIds List of HAM_Group_Post__c record IDs.
-     */
-    public HAM_NotificationQueueable(List<Id> postIds) {
-        this.postIds = postIds;
-    }
 
     /**
      * @description Constructor for the "Amplify" flow (post or resource). Alerts every
@@ -75,125 +66,10 @@ public without sharing class HAM_NotificationQueueable implements Queueable {
             processMentions();
             return;
         }
-        try {
-            if (postIds == null || postIds.isEmpty()) {
-                return;
-            }
-
-            // Query post details and parents
-            List<HAM_Group_Post__c> posts = [
-                SELECT Id, Body__c, Group__c, Group__r.Name, Author__c, Author__r.Name
-                FROM HAM_Group_Post__c
-                WHERE Id IN :postIds
-            ];
-            if (posts.isEmpty()) {
-                return;
-            }
-
-            Set<Id> groupIds = new Set<Id>();
-            for (HAM_Group_Post__c post : posts) {
-                groupIds.add(post.Group__c);
-            }
-
-            // Query active members with notifications enabled
-            List<HAM_Group_Member__c> members = [
-                SELECT Contact__c, Group__c, Group__r.Name
-                FROM HAM_Group_Member__c
-                WHERE Group__c IN :groupIds
-                  AND Status__c = 'Active'
-                  AND Receive_Notifications__c = true
-            ];
-            if (members.isEmpty()) {
-                return;
-            }
-
-            Set<Id> contactIds = new Set<Id>();
-            for (HAM_Group_Member__c m : members) {
-                contactIds.add(m.Contact__c);
-            }
-
-            // Map Contacts to Active portal Users
-            Map<Id, Id> contactToUserIdMap = new Map<Id, Id>();
-            for (User u : [
-                SELECT Id, ContactId 
-                FROM User 
-                WHERE ContactId IN :contactIds 
-                  AND IsActive = true
-            ]) {
-                contactToUserIdMap.put(u.ContactId, u.Id);
-            }
-
-            // Fetch custom notification type
-            Id typeId = resolveGroupAlertTypeId();
-
-            // Notification types aren't visible to test context; let tests fall through
-            if (typeId == null && !Test.isRunningTest()) {
-                System.debug('CustomNotificationType not found.');
-                return;
-            }
-
-            List<HAM_Notification__c> notifsToInsert = new List<HAM_Notification__c>();
-
-            for (HAM_Group_Post__c post : posts) {
-                for (HAM_Group_Member__c member : members) {
-                    if (member.Group__c != post.Group__c) {
-                        continue;
-                    }
-                    // Prevent author from receiving notification about their own post
-                    if (member.Contact__c == post.Author__c) {
-                        continue;
-                    }
-
-                    Id recipientUserId = contactToUserIdMap.get(member.Contact__c);
-                    // Test contacts have no portal Users; keep going so the branch is exercised
-                    if (recipientUserId == null && !Test.isRunningTest()) {
-                        continue;
-                    }
-
-                    String title = 'New post in ' + post.Group__r.Name;
-                    String plainBody = HAM_NotificationService.stripHtml(post.Body__c);
-                    if (plainBody.length() > 100) {
-                        plainBody = plainBody.substring(0, 97) + '...';
-                    }
-
-                    // Prepare DB record
-                    HAM_Notification__c n = new HAM_Notification__c();
-                    n.HAM_Constituent__c = member.Contact__c;
-                    n.HAM_Sender_Contact__c = post.Author__c;
-                    n.HAM_Title__c = title;
-                    n.HAM_Body__c = plainBody;
-                    n.HAM_Source_Object_ID__c = post.Group__c;
-                    n.HAM_Source_Type__c = 'Groups';
-                    n.HAM_Status__c = HAM_ConstantsUtil.UNREAD_S;
-                    n.HAM_Expiration_Date__c = System.today().addDays(30);
-                    n.HAM_Action_URL__c = '?view=groups&groupId=' + post.Group__c + '&subview=discussion&postId=' + post.Id;
-                    notifsToInsert.add(n);
-
-                    // Send push
-                    try {
-                        Messaging.CustomNotification currNotification = new Messaging.CustomNotification();
-                        currNotification.setTitle(title);
-                        currNotification.setBody(plainBody);
-                        currNotification.setNotificationTypeId(typeId);
-                        
-                        String actionUrl = '?view=groups&groupId=' + post.Group__c + '&subview=discussion&postId=' + post.Id;
-                        String pageRefJson = '{"type": "standard__webPage", "attributes": {"url": "/' + actionUrl + '"}}';
-                        currNotification.setTargetPageRef(pageRefJson);
-                        currNotification.send(new Set<String>{recipientUserId});
-                    } catch (Exception pushEx) {
-                        System.debug('Mobile Notification push failed: ' + pushEx.getMessage());
-                    }
-                }
-            }
-
-            if (!notifsToInsert.isEmpty()) {
-                SObjectAccessDecision decision = Security.stripInaccessible(AccessType.CREATABLE, notifsToInsert);
-                insert decision.getRecords();
-            }
-
-        } catch (Exception e) {
-            System.debug('Exception in HAM_NotificationQueueable: ' + e.getMessage() + ' at ' + e.getStackTraceString());
-        }
+        // No generic new-post fan-out any more (removed 2026-07-21): a plain post
+        // notifies nobody. The only post notification is the "Tagged" mention path,
+        // enqueued via the mention constructor and handled by processMentions() above.
+        // execute() therefore only routes the amplify and mention flows.
     }
 
     /**
@@ -213,7 +89,10 @@ public without sharing class HAM_NotificationQueueable implements Queueable {
                 return;
             }
             HAM_Group_Resource__c resource = resources[0];
-            String actionUrl = '?view=groups&groupId=' + resource.Group__c + '&subview=resources';
+            // resourceId lets ham_groupResources scroll to and highlight the amplified
+            // card, matching the postId deep link used by the post amplify flow below.
+            String actionUrl = '?view=groups&groupId=' + resource.Group__c
+                             + '&subview=resources&resourceId=' + resource.Id;
             dispatchAmplifyNotifications(resource.Group__c, resource.Group__r.Name, 'resource', actionUrl);
         } catch (Exception e) {
             System.debug('Exception in HAM_NotificationQueueable (amplify resource): ' + e.getMessage() + ' at ' + e.getStackTraceString());
@@ -401,21 +280,10 @@ public without sharing class HAM_NotificationQueueable implements Queueable {
                 if (!m.Receive_Notifications__c || !m.Notify_on_Tagged__c) {
                     continue;
                 }
-                // Per the client's rule, a member never gets two alerts for the same post:
-                // when they're already in the "New post in {Group}" fan-out (execute()
-                // above — every active member with the master toggle on, except the
-                // author), that message wins and the mention alert is dropped. Comment
-                // mentions have no competing alert, so they always send.
-                //
-                // As the toggles stand today the master gate is *also* the new-post
-                // subscription, so this suppresses every post mention. Written as a real
-                // condition rather than by deleting the branch: if the master toggle ever
-                // becomes a pure gate (the proposed Notify_on_New_Posts__c field), post
-                // mentions start flowing again for members who aren't subscribed to every
-                // post, with no change here.
-                if (mentionType == 'Post' && receivesNewPostAlert(m)) {
-                    continue;
-                }
+                // Post mentions send here on their own. There's no longer a competing
+                // "New post in {Group}" fan-out to dedupe against (removed 2026-07-21 —
+                // plain posts notify nobody), so a @mention is the only alert a post
+                // produces, gated purely on the master + Tagged toggles above.
                 contactIds.add(m.Contact__c);
             }
             if (contactIds.isEmpty()) {
@@ -480,18 +348,6 @@ public without sharing class HAM_NotificationQueueable implements Queueable {
         } catch (Exception e) {
             System.debug('Exception in HAM_NotificationQueueable (mentions): ' + e.getMessage() + ' at ' + e.getStackTraceString());
         }
-    }
-
-    /**
-     * @description Whether this member is already covered by the generic "New post in
-     *              {Group}" fan-out in execute() — i.e. the same recipient rule that
-     *              loop applies: an active member with the master toggle on, who isn't
-     *              the post's author. Kept in one place so the two stay in step.
-     * @param member Active member row of the group the post belongs to.
-     */
-    private Boolean receivesNewPostAlert(HAM_Group_Member__c member) {
-        return member.Receive_Notifications__c == true
-            && member.Contact__c != mentionAuthorContactId;
     }
 
     /**

@@ -3,12 +3,13 @@
 * @Description :
 * @Author :
 * @Last Modified By :
-* @Last Modified On : December 23, 2025
+* @Last Modified On : December 23, 2025 
 * @Modification Log :
 *==============================================================================
 * Ver | Date | Author | Modification
 *==============================================================================
 * 1.0 | December 23, 2025 |  Sachin | Initial Version
+* 2.0 | July 16, 2026 |  Hamilton Adv | ASC-14664 Add Data source for the HQ Hand raise
 **/
 
 public without sharing class HAM_VolunteerOpportunityController {
@@ -324,6 +325,7 @@ public without sharing class HAM_VolunteerOpportunityController {
 		newInterest.ucinn_ascendv2__Foundation_Funding_Interest__c = interestValueId;
 		newInterest.ucinn_ascendv2__Start_Date__c = System.today();
 		newInterest.HAM_Category__c = interestValue.HAM_Category__c;
+        newInterest.ucinn_ascendv2__Data_Source__c = 'Hamilton Quad'; //ASC-14664 Adding for reporting
 
 		insert newInterest;
         return newInterest.Id;

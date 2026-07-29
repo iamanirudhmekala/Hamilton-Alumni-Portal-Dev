@@ -100,16 +100,31 @@
     transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 
-.resource-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.09);
-    border-color: #1a518b;
+/* Same sticky-hover problem: without this, tapping a card's bookmark leaves that
+   card permanently lifted and outlined, reading as "selected". */
+@media (hover: hover) and (pointer: fine) {
+    .resource-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.09);
+        border-color: #1a518b;
+    }
 }
 
 /* Amplified cards get the highlighted (gold) treatment */
 .resource-card.amplified {
     border: 2px solid #c9922a;
     box-shadow: 0 2px 8px rgba(201, 146, 42, 0.25);
+}
+
+/* Deep-linked card (arrived from an amplify notification) — same flash the post
+   feed uses for a deep-linked post, so the two notification paths look alike. */
+.resource-card--highlighted {
+    animation: flashHighlight 2s ease-out;
+}
+
+@keyframes flashHighlight {
+    0% { background-color: rgba(26, 81, 139, 0.15); }
+    100% { background-color: #ffffff; }
 }
 
 .amplified-badge {
@@ -157,12 +172,23 @@
     --sds-c-icon-color-foreground-default: #8a94a6;
 }
 
-.card-action-btn:hover {
-    --sds-c-icon-color-foreground-default: #0a2463;
+/* Touch browsers keep :hover applied after a tap, so hover must never borrow the
+   bookmarked colour — otherwise un-bookmarking on a phone still looks bookmarked. */
+@media (hover: hover) and (pointer: fine) {
+    .card-action-btn:hover {
+        --sds-c-icon-color-foreground-default: #5b6b8c;
+    }
 }
 
 .card-action-btn.bookmark-active {
     --sds-c-icon-color-foreground-default: #0a2463;
+    background: #eef3f9;
+    border-radius: 50%;
+}
+
+/* Amplified resources: the bell reads as "on" so admins can tell it's a remove-amplification toggle */
+.card-action-btn.amplify-active {
+    --sds-c-icon-color-foreground-default: #C5922B;
 }
 
 .card-image-link {
@@ -421,9 +447,50 @@
         gap: 8px;
     }
 
+    /* Search takes row 1; the select and the Bookmarked toggle always share row 2.
+       A fixed flex-basis stops a long category label from pushing the toggle onto
+       a row of its own, and the shared height/appearance makes the two controls match. */
     .category-select {
         max-width: none;
+        flex: 1 1 140px;
+        min-width: 0;
+        box-sizing: border-box;
+        height: 38px;
+        -webkit-appearance: none;
+        appearance: none;
+        padding-right: 28px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%237a7a7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 12px 12px;
+    }
+
+    .btn-bookmark-filter {
         flex: 1 1 auto;
+        justify-content: center;
+        white-space: nowrap;
+        box-sizing: border-box;
+        height: 38px;
+    }
+
+    /* Grow the hit area to 44px without moving the glyph: the negative vertical
+       margins keep the row's contributed height at the original 22px, while the
+       full 44px horizontal footprint stops the two icons' targets from overlapping. */
+    .card-actions {
+        gap: 4px;
+        margin-left: 4px;
+    }
+
+    .card-action-btn {
+        width: 44px;
+        height: 44px;
+        margin-top: -11px;
+        margin-bottom: -11px;
+    }
+
+    .card-action-btn.bookmark-active {
+        /* Keep the tinted circle sized to the glyph, not to the enlarged hit area. */
+        background: radial-gradient(circle, #eef3f9 0 11px, transparent 11px);
     }
 
     .resources-grid{
@@ -441,8 +508,10 @@
 .resources-root.kirkland-override .resource-title {
     color: #166837;
 }
-.resources-root.kirkland-override .resource-card:hover {
-    border-color: #166837;
+@media (hover: hover) and (pointer: fine) {
+    .resources-root.kirkland-override .resource-card:hover {
+        border-color: #166837;
+    }
 }
 .resources-root.kirkland-override .resource-icon {
     --sds-c-icon-color-foreground-default: #166837;
@@ -451,16 +520,41 @@
     background: #eaf4ee;
     color: #166837;
 }
-.resources-root.kirkland-override .card-action-btn:hover {
-    --sds-c-icon-color-foreground-default: #166837;
+@media (hover: hover) and (pointer: fine) {
+    .resources-root.kirkland-override .card-action-btn:hover {
+        --sds-c-icon-color-foreground-default: #5c8a70;
+    }
 }
 .resources-root.kirkland-override .card-action-btn.bookmark-active {
-    background: #166837;
-    --sds-c-icon-color-foreground-default: #ffffff;
+    /* Match the default theme: a coloured icon on a tint, not a filled box with a white glyph. */
+    --sds-c-icon-color-foreground-default: #166837;
+    background: #eaf4ee;
+}
+@media (max-width: 768px) {
+    .resources-root.kirkland-override .card-action-btn.bookmark-active {
+        background: radial-gradient(circle, #eaf4ee 0 11px, transparent 11px);
+    }
+}
+.resources-root.kirkland-override .btn-bookmark-filter:hover {
+    border-color: #166837;
+    color: #166837;
+}
+.resources-root.kirkland-override .category-select:focus {
+    outline: none;
+    border-color: #166837;
+    box-shadow: 0 0 0 3px rgba(22, 104, 55, 0.15);
 }
 .resources-root.kirkland-override .btn-bookmark-filter.active {
     background: #166837;
     border-color: #166837;
+    color: #ffffff;
+}
+.resources-root.kirkland-override .resource-card--highlighted {
+    animation: flashHighlightKirkland 2s ease-out;
+}
+@keyframes flashHighlightKirkland {
+    0% { background-color: rgba(22, 104, 55, 0.15); }
+    100% { background-color: #ffffff; }
 }
 .resources-root.kirkland-override .empty-icon {
     --sds-c-icon-color-foreground-default: #166837;

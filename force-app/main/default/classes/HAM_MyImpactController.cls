@@ -576,7 +576,7 @@ public without sharing class HAM_MyImpactController {
 		String socialMediaSubquery = '(SELECT Id,ucinn_ascendv2__URL__c FROM ucinn_ascendv2__Social_Media__r where ucinn_ascendv2__Platform__c= \'Facebook\')';
 		
         // Main query to fetch constituent
-		String queryString = 'SELECT Id, HAM_Profile_Picture_URL__c, HAM_Name_w_Suffix__c,ucinn_ascendv2__Contact_Type__c, HAM_Current_FY_Paid__c, HAM_LiveAlumni_LinkedIn_URL__c,'+ queryFields + ', ' + campusContact +', '+ classContact + ', '+ degreeSubquery + ', ' + socialMediaSubquery + ' FROM Contact WHERE Id = \'' + String.escapeSingleQuotes(currentUserContactId) + '\' LIMIT 1';
+		String queryString = 'SELECT Id, HAM_Profile_Picture_URL__c, HAM_Name_w_Suffix__c,ucinn_ascendv2__Contact_Type__c, HAM_LiveAlumni_LinkedIn_URL__c,'+ queryFields + ', ' + campusContact +', '+ classContact + ', '+ degreeSubquery + ', ' + socialMediaSubquery + ' FROM Contact WHERE Id = \'' + String.escapeSingleQuotes(currentUserContactId) + '\' LIMIT 1';
         
 		Contact constituentSObject = null;
 		try {

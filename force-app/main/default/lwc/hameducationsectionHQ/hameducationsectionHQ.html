@@ -1,0 +1,312 @@
+<template>
+    <div class="edu-card">
+        <p class="edu-title">Education</p>
+
+        <template if:true={errorMessage}>
+            <div class="edu-error" role="alert">{errorMessage}</div>
+        </template>
+
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </template>
+
+        <template if:false={isLoading}>
+            <!-- =============================================== -->
+            <!-- Hamilton College Degree                          -->
+            <!-- =============================================== -->
+            <div class="sub-section">
+                <p class="sub-title">Hamilton College Degree</p>
+                <p class="sub-subtitle">Select up to 3 majors and up to 3 minors.</p>
+
+                <div class="fields-grid">
+                    <!-- Major -->
+                    <div class="field-col">
+                        <div class="label-row">
+                            <span class="field-label">Major</span>
+                            <span class="field-hint">(max 3)</span>
+                        </div>
+                        <div class="list-display-box">
+                            <div class="chips">
+                                <template for:each={majors} for:item="major">
+                                    <span key={major.id} class="chip">
+                                        {major.label}
+                                        <button
+                                            class="chip-remove"
+                                            data-id={major.id}
+                                            onclick={removeMajor}
+                                            title="Remove"
+                                            aria-label="Remove major"
+                                        >×</button>
+                                    </span>
+                                </template>
+                                <template if:false={majorLimitReached}>
+                                    <input
+                                        type="text"
+                                        class="chip-input"
+                                        placeholder="Add a major..."
+                                        value={majorSearchTerm}
+                                        oninput={handleMajorInput}
+                                        onfocus={handleMajorFocus}
+                                    />
+                                </template>
+                            </div>
+                        </div>
+                        <template if:true={showMajorDropdown}>
+                            <ul class="typeahead-dropdown">
+                                <template for:each={majorResults} for:item="opt">
+                                    <li key={opt.id}>
+                                        <button
+                                            class="typeahead-option"
+                                            data-id={opt.id}
+                                            data-label={opt.label}
+                                            onclick={selectMajor}
+                                        >{opt.label}</button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+
+                    <!-- Minor -->
+                    <div class="field-col">
+                        <div class="label-row">
+                            <span class="field-label">Minor</span>
+                            <span class="field-hint">(max 3)</span>
+                        </div>
+                        <div class="list-display-box">
+                            <div class="chips">
+                                <template for:each={minors} for:item="minor">
+                                    <span key={minor.id} class="chip">
+                                        {minor.label}
+                                        <button
+                                            class="chip-remove"
+                                            data-id={minor.id}
+                                            onclick={removeMinor}
+                                            title="Remove"
+                                            aria-label="Remove minor"
+                                        >×</button>
+                                    </span>
+                                </template>
+                                <template if:false={minorLimitReached}>
+                                    <input
+                                        type="text"
+                                        class="chip-input"
+                                        placeholder="Add a minor..."
+                                        value={minorSearchTerm}
+                                        oninput={handleMinorInput}
+                                        onfocus={handleMinorFocus}
+                                    />
+                                </template>
+                            </div>
+                        </div>
+                        <template if:true={showMinorDropdown}>
+                            <ul class="typeahead-dropdown">
+                                <template for:each={minorResults} for:item="opt">
+                                    <li key={opt.id}>
+                                        <button
+                                            class="typeahead-option"
+                                            data-id={opt.id}
+                                            data-label={opt.label}
+                                            onclick={selectMinor}
+                                        >{opt.label}</button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =============================================== -->
+            <!-- Graduate School                                  -->
+            <!-- =============================================== -->
+            <div class="sub-section">
+                <div class="sub2-header-row">
+                    <div class="sub2-title-col">
+                        <p class="sub-title">Graduate School</p>
+                        <p class="sub-subtitle">Add each graduate degree earned, with concentration and minor.</p>
+                    </div>
+                    <button class="btn-add-new" onclick={handleAddNew}>
+                        <span class="plus">+</span> Add New
+                    </button>
+                </div>
+
+                <template if:true={gradDegrees.length}>
+                    <div class="grad-table">
+                        <div class="table-header-row">
+                            <div class="cell col-school">School</div>
+                            <div class="cell col-degree">Degree Type</div>
+                            <div class="cell col-concentration">Concentration</div>
+                            <div class="cell col-minor">Minor</div>
+                            <div class="cell col-actions"></div>
+                        </div>
+                        <template for:each={gradDegrees} for:item="row">
+                            <div key={row.recordId} class="table-data-row">
+                                <div class="cell col-school">{row.institutionName}</div>
+                                <div class="cell col-degree">{row.degreeCodeDisplay}</div>
+                                <div class="cell col-concentration">{row.concentrationDisplay}</div>
+                                <div class="cell col-minor">{row.minorDisplay}</div>
+                                <div class="cell col-actions">
+                                    <button class="btn-edit" data-id={row.recordId} onclick={handleEditRow}>
+                                        <span class="pencil">✎</span> Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <template if:true={hasNoGradDegrees}>
+                    <p class="empty-hint">No graduate degrees added yet? Click "Add New" to add your first entry.</p>
+                </template>
+            </div>
+        </template>
+    </div>
+
+    <!-- =============================================== -->
+    <!-- Add/Edit Graduate Degree Modal                   -->
+    <!-- =============================================== -->
+    <template if:true={showGradModal}>
+        <div class="modal-backdrop" onclick={closeModal}></div>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="gradModalTitle">
+            <div class="modal-header">
+                <p id="gradModalTitle" class="modal-title">Graduate Degree</p>
+                <button class="modal-close" onclick={closeModal} aria-label="Close">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-field">
+                    <label class="field-label" for="schoolInput">School</label>
+                    <input
+                        id="schoolInput"
+                        type="text"
+                        class="modal-input"
+                        placeholder="Search for a school..."
+                        value={institutionLabel}
+                        oninput={handleInstitutionInput}
+                    />
+                    <template if:true={showInstitutionDropdown}>
+                        <ul class="typeahead-dropdown">
+                            <template for:each={institutionResults} for:item="opt">
+                                <li key={opt.id}>
+                                    <button
+                                        class="typeahead-option"
+                                        data-id={opt.id}
+                                        data-label={opt.label}
+                                        onclick={selectInstitution}
+                                    >{opt.label}</button>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+
+                <div class="modal-field">
+                    <label class="field-label" for="degreeTypeInput">Degree Type</label>
+                    <input
+                        id="degreeTypeInput"
+                        type="text"
+                        class="modal-input"
+                        placeholder="e.g. M.A., Ph.D."
+                        value={degreeCodeLabel}
+                        oninput={handleDegreeCodeInput}
+                    />
+                    <template if:true={showDegreeCodeDropdown}>
+                        <ul class="typeahead-dropdown">
+                            <template for:each={degreeCodeResults} for:item="opt">
+                                <li key={opt.id}>
+                                    <button
+                                        class="typeahead-option"
+                                        data-id={opt.id}
+                                        data-label={opt.label}
+                                        onclick={selectDegreeCode}
+                                    >{opt.label}</button>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+
+                <div class="modal-field">
+                    <label class="field-label" for="concentrationInput">Concentration</label>
+                    <input
+                        id="concentrationInput"
+                        type="text"
+                        class="modal-input"
+                        placeholder="Search for a concentration..."
+                        value={concentrationLabel}
+                        oninput={handleConcentrationInput}
+                    />
+                    <template if:true={showConcentrationDropdown}>
+                        <ul class="typeahead-dropdown">
+                            <template for:each={concentrationResults} for:item="opt">
+                                <li key={opt.id}>
+                                    <button
+                                        class="typeahead-option"
+                                        data-id={opt.id}
+                                        data-label={opt.label}
+                                        onclick={selectConcentration}
+                                    >{opt.label}</button>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+
+                <div class="modal-field">
+                    <label class="field-label" for="minorInput">Minor</label>
+                    <input
+                        id="minorInput"
+                        type="text"
+                        class="modal-input"
+                        placeholder="Search for a minor (optional)..."
+                        value={minorFieldLabel}
+                        oninput={handleMinorFieldInput}
+                    />
+                    <template if:true={showMinorFieldDropdown}>
+                        <ul class="typeahead-dropdown">
+                            <template for:each={minorFieldResults} for:item="opt">
+                                <li key={opt.id}>
+                                    <button
+                                        class="typeahead-option"
+                                        data-id={opt.id}
+                                        data-label={opt.label}
+                                        onclick={selectMinorField}
+                                    >{opt.label}</button>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+
+                <div class="modal-field">
+                    <label class="field-label" for="degreeYearInput">Degree Year</label>
+                    <input
+                        id="degreeYearInput"
+                        type="text"
+                        inputmode="numeric"
+                        maxlength="4"
+                        class="modal-input"
+                        placeholder="e.g. 2024"
+                        value={degreeYear}
+                        oninput={handleDegreeYearChange}
+                    />
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <template if:true={editingRecordId}>
+                    <button class="btn-delete" onclick={handleDeleteGradDegree} disabled={isDeletingGrad}>
+                        Delete
+                    </button>
+                </template>
+                <div class="modal-footer-right">
+                    <button class="btn-secondary" onclick={closeModal}>Cancel</button>
+                    <button class="btn-primary" onclick={handleSaveGradDegree} disabled={isSaveDisabled}>
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

@@ -323,9 +323,27 @@
 .people-icon {
     --sds-c-icon-color-foreground-default: #7a7a7a;
 }
-  .card-section, .admin-col {
+  .card-section {
         padding: 0 !important;
     }
+
+/* Reports and Pending Requests columns are sized to exactly 7/12 + 5/12 = 100%,
+   so a flex `gap` (extra space on top of that 100%) would overflow the row and
+   force the second column to wrap onto its own line. Padding is included in
+   each column's existing width (box-sizing: border-box), so it creates a
+   visual gap between the two columns without pushing them out of the row. */
+.admin-col {
+    padding: 0 10px !important;
+    box-sizing: border-box;
+}
+
+.admin-col:first-child {
+    padding-left: 0 !important;
+}
+
+.admin-col:last-child {
+    padding-right: 0 !important;
+}
 /* Viewports adjustment */
 @media (max-width: 768px) {
     .admin-root {
@@ -809,4 +827,25 @@
 }
 .admin-root.kirkland-override .btn-admin-reopen:hover {
     background: #eaf6ec;
+}
+/* Moderation: report-type badges and the Take Action modal's Cancel/Back buttons */
+.admin-root.kirkland-override .badge-message-report,
+.admin-root.kirkland-override .badge-user-report {
+    background: #eaf6ec;
+    color: #166837;
+}
+.admin-root.kirkland-override .btn-modal-secondary {
+    border-color: #166837;
+    color: #166837;
+}
+.admin-root.kirkland-override .btn-modal-secondary:hover:not(:disabled) {
+    background: #eaf6ec;
+}
+
+
+@media (max-width: 520px) {
+    .stat-box {
+    justify-content: flex-start;
+    min-height: 95px;
+}
 }

@@ -1,0 +1,422 @@
+:host {
+    display: block;
+}
+
+.edu-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 45px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.edu-title {
+    font-weight: 700;
+    font-size: 20px;
+    color: #231f20;
+    margin: 0;
+}
+
+.edu-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.sub-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.sub-title {
+    font-weight: 600;
+    font-size: 18px;
+    color: #231f20;
+    margin: 0;
+}
+
+.sub-subtitle {
+    font-weight: 400;
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ---------------- Hamilton Degree fields ---------------- */
+
+.fields-grid {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.field-col {
+    flex: 1 0 0;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+}
+
+.label-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.field-label {
+    font-weight: 500;
+    font-size: 16px;
+    color: #344054;
+}
+
+.field-hint {
+    font-weight: 400;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.list-display-box {
+    background: #ffffff;
+    border: 1px solid #d3ebfb;
+    border-radius: 10px;
+    min-height: 52px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.chips {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    width: 100%;
+}
+
+.chip {
+    background: #d3ebfb;
+    color: #002f86;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 4px 8px 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.chip-remove {
+    background: transparent;
+    border: none;
+    color: #002f86;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
+
+.chip-input {
+    flex: 1 0 120px;
+    min-width: 100px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #231f20;
+    background: transparent;
+}
+
+.typeahead-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    background: #ffffff;
+    border: 1px solid #d3ebfb;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 20;
+    list-style: none;
+    padding: 4px 0;
+}
+
+.typeahead-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 8px 15px;
+    font-size: 14px;
+    color: #231f20;
+    cursor: pointer;
+}
+
+.typeahead-option:hover {
+    background: #f4f9fd;
+}
+
+/* ---------------- Graduate School table ---------------- */
+
+.sub2-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.sub2-title-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.btn-add-new {
+    background: #002f85;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 20px;
+    font-weight: 600;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.btn-add-new .plus {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.grad-table {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.table-header-row {
+    background: #f4f4f4;
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+}
+
+.table-data-row {
+    background: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    min-height: 32px;
+}
+
+.table-data-row:last-child {
+    border-bottom: none;
+}
+
+.cell {
+    display: flex;
+    align-items: center;
+}
+
+.col-school {
+    flex: 0 0 26%;
+    padding-right: 12px;
+}
+
+.col-degree {
+    flex: 0 0 15%;
+    padding-right: 12px;
+}
+
+.col-concentration {
+    flex: 0 0 23%;
+    padding-right: 12px;
+}
+
+.col-minor {
+    flex: 0 0 23%;
+    padding-right: 12px;
+}
+
+.col-actions {
+    flex: 1 0 0;
+    justify-content: flex-end;
+}
+
+.table-header-row .cell {
+    font-weight: 600;
+    font-size: 13px;
+    color: #667085;
+}
+
+.table-data-row .cell {
+    font-weight: 500;
+    font-size: 15px;
+    color: #231f20;
+}
+
+.btn-edit {
+    background: #ffffff;
+    border: 1px solid #002f85;
+    color: #002f85;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.empty-hint {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* ---------------- Modal ---------------- */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 100;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff;
+    border-radius: 12px;
+    width: 480px;
+    max-width: 92vw;
+    max-height: 88vh;
+    overflow-y: auto;
+    z-index: 101;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.modal-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: #231f20;
+    margin: 0;
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.modal-field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.modal-input {
+    border: 1px solid #d3ebfb;
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 14px;
+    color: #231f20;
+    outline: none;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.modal-footer-right {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.btn-secondary {
+    background: #ffffff;
+    border: 1px solid #d0d5dd;
+    color: #344054;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #002f85;
+    border: none;
+    color: #ffffff;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-delete {
+    background: #ffffff;
+    border: 1px solid #dc2626;
+    color: #dc2626;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}

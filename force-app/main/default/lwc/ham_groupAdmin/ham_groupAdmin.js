@@ -6,6 +6,9 @@ import getPendingMembers from '@salesforce/apex/Ham_GroupsController.getPendingM
 import approveMember from '@salesforce/apex/Ham_GroupsController.approveMember';
 import rejectMember from '@salesforce/apex/Ham_GroupsController.rejectMember';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import warnTemplate from '@salesforce/label/c.HAM_Group_Admin_Action_Warn_Template';
+import deleteTemplate from '@salesforce/label/c.HAM_Group_Admin_Action_Delete_Template';
+import blockTemplate from '@salesforce/label/c.HAM_Group_Admin_Action_Block_Template';
 
 const REPORT_ACTIONS = [
     {
@@ -13,21 +16,21 @@ const REPORT_ACTIONS = [
         title: 'Warn the User',
         description: 'Send a warning message to not send such content again.',
         icon: 'utility:warning',
-        template: 'You have received a warning for inappropriate content. Please refrain from posting such content in the future to avoid further action.'
+        template: warnTemplate
     },
     {
         code: 'Delete',
         title: 'Delete the Content',
         description: 'Remove the content from group and send a warning that next time a bigger step will be taken.',
         icon: 'utility:delete',
-        template: 'Your recent post was removed because it didn\'t align with our community guidelines. Please consider this a formal warning. Future violations may result in a permanent ban from the group.'
+        template: deleteTemplate
     },
     {
         code: 'Block',
         title: 'Remove Content & Block User',
         description: 'Remove the user and inform them they were removed from the group due to inappropriate behavior that violates policy terms.',
         icon: 'utility:block_visitor',
-        template: 'This is to inform you that you have been removed from the group for violating our community guidelines regarding appropriate behavior. Consequently, your previous posts and comments have also been deleted.'
+        template: blockTemplate
     }
 ];
 
@@ -125,6 +128,14 @@ export default class Ham_groupAdmin extends LightningElement {
         });
     }
 
+    // Called by ham_groupDashboard when a report is filed elsewhere (e.g. from the
+    // discussion feed) so the pending count updates without waiting for this
+    // component to unmount/remount via tab navigation.
+    @api
+    refresh() {
+        return this.loadReports();
+    }
+
     loadReports() {
         return getReportedContent({ groupId: this.groupId, currentContactId: this.contactId })
             .then(data => {
@@ -183,6 +194,7 @@ export default class Ham_groupAdmin extends LightningElement {
         resolveReport({ reportIds, actionType, currentContactId: this.contactId })
             .then(() => {
                 this.showToast('Success', 'Report dismissed successfully.', 'success');
+                this.dispatchEvent(new CustomEvent('reportresolved'));
                 return this.loadReports();
             })
             .catch(err => {
@@ -297,6 +309,7 @@ export default class Ham_groupAdmin extends LightningElement {
             .then(() => {
                 this.showToast('Success', 'Action has been taken and the member has been notified by email.', 'success');
                 this.closeTakeActionModal();
+                this.dispatchEvent(new CustomEvent('reportresolved'));
                 return this.loadReports();
             })
             .catch(err => {

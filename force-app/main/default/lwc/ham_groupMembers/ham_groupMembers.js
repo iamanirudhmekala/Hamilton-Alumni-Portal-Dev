@@ -220,18 +220,18 @@ export default class Ham_groupMembers extends LightningElement {
         }, 0);
     }
 
+    // One badge per filter category, all selected values joined into a single pill
+    // (e.g. "Class Year: 2030, 1998, 2013") — directory parity with
+    // ham_alumniDisplayCmp.desktopFilterBadges. The remove "✕" drops the whole
+    // category, matching the directory.
     get desktopFilterBadges() {
-        const badges = [];
-        (this.savedFilters || []).forEach(filter => {
-            (filter.values || []).forEach((value, index) => {
-                badges.push({
-                    uniqueId: `${filter.placeholder}-${index}`,
-                    category: filter.placeholder,
-                    value
-                });
-            });
-        });
-        return badges;
+        return (this.savedFilters || [])
+            .filter(filter => filter.values && filter.values.length > 0)
+            .map((filter, index) => ({
+                uniqueId: `desktop-badge-${index}-${filter.placeholder}`,
+                category: filter.placeholder,
+                value: filter.values.join(', ')
+            }));
     }
 
     handleRemoveFilterPill(event) {

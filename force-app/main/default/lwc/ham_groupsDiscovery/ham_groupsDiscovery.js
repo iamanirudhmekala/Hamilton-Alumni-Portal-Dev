@@ -22,7 +22,7 @@ export default class Ham_groupsDiscovery extends LightningElement {
         this._isOverride = (value === true || value === 'true');
     }
     
-    @track tabMode = 'MyGroups'; // Default tab
+    @track tabMode = 'AllGroups'; // Default tab
     @track searchValue = ''; // NEW: Controls the text inside the input box
     @track searchTerm = '';  // Existing: Triggers the Apex @wire call
     @track categoryFilter = '';
@@ -134,10 +134,10 @@ export default class Ham_groupsDiscovery extends LightningElement {
     
     // Dynamic classes for styling active/inactive tabs
     get myGroupsClass() {
-        return this.tabMode === 'MyGroups' ? 'activetab-btn' : 'nonactivetab-btn';
+        return this.tabMode === 'MyGroups' ? 'pill active-pill' : 'pill inactive-pill';
     }
     get allGroupsClass() {
-        return this.tabMode === 'AllGroups' ? 'activetab-btn' : 'nonactivetab-btn';
+        return this.tabMode === 'AllGroups' ? 'pill active-pill' : 'pill inactive-pill';
     }
     get showEmptyState() {
         return this.groups && this.groups.length === 0;
@@ -283,11 +283,17 @@ export default class Ham_groupsDiscovery extends LightningElement {
     }
 
     get containerClass() {
-        return `slds-card slds-p-around_medium portal-bg ${this.isOverride ? 'kirkland-override' : ''}`;
+        return `portal-bg ${this.isOverride ? 'kirkland-override' : ''}`;
+    }
+
+    // For the request-new-group modals, which render outside .portal-bg — carries the
+    // theme class so the Kirkland (green) close-button overrides reach them.
+    get themeClass() {
+        return this.isOverride ? 'kirkland-override' : '';
     }
 
     get mobileContainerClass() {
-        return `slds-card slds-p-around_small portal-bg mobile-view ${this.isOverride ? 'kirkland-override' : ''}`;
+        return `portal-bg mobile-view ${this.isOverride ? 'kirkland-override' : ''}`;
     }
 
     get listViewClass() {

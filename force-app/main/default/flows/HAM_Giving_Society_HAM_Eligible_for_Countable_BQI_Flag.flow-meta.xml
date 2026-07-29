@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Eligibility</name>
+        <label>Eligibility</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Not Eligible</defaultConnectorLabel>
+        <rules>
+            <name>Eligible</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Degrees</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ucinn_ascendv2__Contact__r.ucinn_ascendv2__Primary_Contact_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Trustee</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Flag</targetReference>
+            </connector>
+            <label>Eligible</label>
+        </rules>
+    </decisions>
+    <description>Check HAM Eligible for Countable BQI to true if below condition true
+1. Primary Constituent type = Trustee
+2. HAM/Kirkland Degree&apos;s HAM_Reunion_Milestone_Year__c  &gt;=46</description>
+    <environments>Default</environments>
+    <interviewLabel>HAM Giving_Society_HAM_Eligible_for_Countable_BQI_Flag {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>HAM Giving Society HAM Eligible for Countable BQI Flag</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Is School flag = IF( RecordType.DeveloperName = &apos;School_Degree_Information&apos;, true, false) | All Hamilton and Kirkland Degrees.</description>
+        <name>Get_Degrees</name>
+        <label>Get Degrees</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Eligibility</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ucinn_ascendv2__Contact__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ucinn_ascendv2__Contact__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ucinn_ascendv2__Is_School_Formula__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>HAM_Reunion_Milestone_Year__c</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <numberValue>46.0</numberValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ucinn_ascendv2__Degree_Information__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Flag</name>
+        <label>Update Flag</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>HAM_Eligible_for_Countable_BQI__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Degrees</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ucinn_ascendv2__Giving_Society__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>a0rU1000003WPhVIAW</stringValue>
+            </value>
+        </filters>
+        <object>ucinn_ascendv2__Society_Membership__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

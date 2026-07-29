@@ -8,6 +8,10 @@
     object-position: center;
 }
 
+.portal-bg {
+    padding: 0px;
+}
+
 /* Container to keep them aligned side-by-side */
 .badges {
     display: flex;
@@ -533,23 +537,25 @@ myGrid.active{
 }
 
 .modal-title {
-    color: #1a2238;
-    font-size: 1.35rem;
-    font-weight: 600;
-    margin: 0 0 1.35rem 0;
+    color: #344054;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0 0 22px 0;
     line-height: 1.3;
+    font-family: 'Mallory-main', sans-serif;
 }
 
 .modal-text {
-    color: #5b76b7;
-    font-size: 1.05rem;
+    color: #002F8680;
+    font-size: 16px;
     font-weight: 400;
     line-height: 1.55;
-    margin: 0 0 2rem 0;
+    margin: 0 0 30px 0;
+    font-family: 'Mallory-main', sans-serif;
 }
 
 .modal-text strong {
-    color: #0a1f4d;
+    color: #002F86;
     font-weight: 700;
 }
 
@@ -559,20 +565,21 @@ myGrid.active{
 }
 
 .close-btn {
-    background: #14377d;
+    background: #002F86;
     color: #fff;
-    border: none;
+    border: 1px solid #002F86;
     border-radius: 8px;
     padding: 0.8rem 2.5rem;
-    font-size: 1.02rem;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
     cursor: pointer;
     transition: background 0.2s ease;
+    font-family: 'Mallory-main', sans-serif;
 }
 
-.close-btn:hover {
-    background: #0e2a63;
-}
+/* .close-btn:hover {
+    background: #002F86;
+} */
 
 .card, .network-card {
     cursor: pointer;
@@ -594,7 +601,55 @@ myGrid.active{
     margin-bottom: 8px;
 }
 
+
+.subtabs {
+    display: flex;
+    gap: 12px;
+}
+
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Mallory-main', sans-serif;
+    white-space: nowrap;
+    cursor: pointer;
+    border: none;
+}
+
+.active-pill {
+    background: #002F86;
+    color: #fff;
+}
+
+.inactive-pill {
+    background: #fff;
+    border: 1px solid #D1D5DC;
+    color: #000;
+}
+
+
+
+
 @media (max-width: 1024px) {
+
+      .subtabs{
+        gap: 0px;
+        border: 1px solid #DEE2E8;
+        background: #fff;
+    }
+
+     .pill.active-pill {
+        border-radius: 8px;
+    }
+    .pill {
+    border-radius: unset;
+}
+
     .card-desc.collapsed {
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -649,6 +704,7 @@ myGrid.active{
 /* ── Kirkland Override ───────────────────────────────────────── */
 .kirkland-override .activetab-btn { background: #166837 !important; }
 .kirkland-override .nonactivetab-btn { color: #166837 !important; }
+.kirkland-override .active-pill { background: #166837 !important; }
 .kirkland-override .search-btn { background: #166837 !important; }
 .kirkland-override .btn-primary { background-color: #166837 !important; }
 .kirkland-override .btn-primary:hover { background-color: #0e4423 !important; }
@@ -658,3 +714,307 @@ myGrid.active{
 .kirkland-override .close-btn:hover { background: #0e4423 !important; }
 .kirkland-override .mbl-close-btn { background: #166837 !important; }
 .kirkland-override .mbl-close-btn:hover { background: #0e4423 !important; }
+.kirkland-override .read-more-btn { background: #166837 !important; }
+.kirkland-override .read-more-btn:hover { background: #0e4423 !important; }
+.kirkland-override .badge-blue { background-color: #eaf6ec !important; color: #166837 !important; }
+
+
+
+
+
+
+
+
+/* ==========================================================================
+   WRAPPER (Trying matching UI with News cmp)
+   ========================================================================== */
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+/* ==========================================================================
+   GRID CARD
+   ========================================================================== */
+
+.card-item {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    display: flex;
+    flex-direction: column;
+    transition: .2s ease;
+}
+
+.card-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,.12);
+}
+
+.card-image {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    padding: 16px;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.card-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 12px;
+}
+
+/* ==========================================================================
+   LIST CARD
+   ========================================================================== */
+
+.list-item {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    display: flex;
+    transition: .2s ease;
+}
+
+.list-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,.12);
+}
+
+.list-image {
+    flex: 0 0 300px;
+    overflow: hidden;
+}
+
+.list-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.list-content {
+    flex: 1;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ==========================================================================
+   TITLES
+   ========================================================================== */
+
+.card-title,
+.list-title {
+    margin: 0;
+    font-family: "Mallory-main", sans-serif;
+    font-weight: 600;
+    color: #000;
+    line-height: 1.4;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-title {
+    font-size: 16px;
+    -webkit-line-clamp: 2;
+}
+
+.list-title {
+    font-size: 18px;
+    -webkit-line-clamp: 2;
+}
+
+/* ==========================================================================
+   DESCRIPTION
+   ========================================================================== */
+
+.card-description,
+.list-description {
+    margin: 0;
+    color: #555;
+    font-family: "Mallory-main", sans-serif;
+    line-height: 1.6;
+    flex: 1;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-description {
+    font-size: 14px;
+    -webkit-line-clamp: 3;
+    min-height: 63px;
+}
+
+.list-description {
+    font-size: 15px;
+    -webkit-line-clamp: 4;
+}
+
+/* ==========================================================================
+   BADGES
+   ========================================================================== */
+
+.card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Keep your existing badge styles
+.badge
+.badge-blue
+.badge-orange
+*/
+
+/* ==========================================================================
+   MEMBER COUNT
+   ========================================================================== */
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 14px;
+}
+
+.card-meta img {
+    width: 20px;
+    height: 20px;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.card-footer,
+.list-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+}
+
+/* ==========================================================================
+   BUTTON
+   ========================================================================== */
+
+.read-more-btn {
+    background: #002F86;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: "Mallory-main", sans-serif;
+    transition: .2s;
+    white-space: nowrap;
+}
+
+.read-more-btn:hover {
+    background: #002266;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width:1200px) {
+
+    .card-grid {
+        grid-template-columns: repeat(2,1fr);
+        gap:20px;
+    }
+
+}
+
+@media (max-width:767px) {
+
+    .card-grid {
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+
+    .list-item {
+        flex-direction:column;
+    }
+
+    .list-image {
+        width:100%;
+        flex:0 0 220px;
+    }
+
+    .list-content {
+        padding:20px;
+    }
+
+    .list-title {
+        font-size:16px;
+    }
+
+    .portal-bg{
+        padding: 0px 20px;
+    background: inherit;
+    }
+
+    .mobile-search-row {
+    width: 100%;
+}
+
+.mobile-search-input{
+    width: 70%;
+}
+
+}
+
+@media (max-width:480px) {
+
+    .search-btn, .mobile-filter-btn{
+        width: 15%;
+    }
+
+    .card-content {
+        padding:16px;
+    }
+
+    .card-footer,
+    .list-footer {
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .read-more-btn {
+        width:100%;
+    }
+
+}
