@@ -108,32 +108,20 @@
 
 /* Primary action button - "I'm Interested" */
 .read-more-btn {
-    background-color: #3FB3FF;
-    color: #002F86;
-    border: none;
-    border-radius: 8px;
+    background-color: #002F86;
+    color: #fff;
+    border-radius: 6px;
     /* padding: 7px 16px; */
     padding: 14px 30px;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Mallory-main', sans-serif;
     cursor: pointer;
     transition: background-color 0.2s ease;
     align-self: flex-start;
     margin-top: 4px;
+    border: 1px solid #002F86;
 }
-/* .read-more-btn {
-    background-color: #002F86;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 7px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    align-self: flex-start;
-    margin-top: 4px;
-} */
 
 /* Button hover state */
 .read-more-btn:hover:not(:disabled) {
@@ -145,16 +133,14 @@
     background-color: #02234a;
 } */
 
-/* Button active/pressed state */
-.read-more-btn:active {
+/* .read-more-btn:active {
     background-color: #011a36;
 }
 
-/* Button focus state for accessibility */
 .read-more-btn:focus {
     outline: 2px solid #032d60;
     outline-offset: 2px;
-}
+} */
 
 /* Button disabled state */
 .read-more-btn:disabled {

@@ -1,0 +1,5 @@
+{
+  "description" : "Alumni Search Response",
+  "lightning:type" : "@apexClassType/c__miltonAlumniSearchResponse",
+  "title" : "Alumni Search Response"
+}

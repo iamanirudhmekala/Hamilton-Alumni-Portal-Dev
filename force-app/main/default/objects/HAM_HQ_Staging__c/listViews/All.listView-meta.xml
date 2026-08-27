@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>HAM_Constituent__c</columns>
+    <columns>HAM_Degree_Code__c</columns>
+    <columns>HAM_Degree_Conferred_Year__c</columns>
+    <columns>HAM_Major__c</columns>
+    <columns>HAM_Minor__c</columns>
+    <columns>HAM_School__c</columns>
+    <columns>RECORDTYPE</columns>
+    <columns>HAM_Is_Processed__c</columns>
+    <columns>HAM_is_Ready_for_Processing__c</columns>
+    <columns>HAM_Degree_Information__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All</label>
+</ListView>

@@ -1,0 +1,54 @@
+<template>
+    <div class="opportunity-card-container">
+        <!-- Opportunity Cards Carousel -->
+        <div class="opportunity-carousel">
+            <template if:false={isFirstCard}>
+                <lightning-button-icon
+                    icon-name="utility:chevronleft"
+                    variant="bare"
+                    alternative-text="Previous"
+                    onclick={handlePrev}
+                    class="nav-arrow nav-arrow-left">
+                </lightning-button-icon>
+            </template>
+
+            <div class="opportunity-list-container" onscroll={handleScroll}>
+                <template for:each={opportunityData} for:item="opportunity">
+                    <div key={opportunity.recordId} class="opportunity-card">
+                        <!-- Name -->
+                        <div class="opportunity-header">
+                            <h2 class="opportunity-name">{opportunity.name}</h2>
+                        </div>
+
+                        <!-- Opportunity Details -->
+                        <div class="opportunity-details">
+                            <div class="opportunity-description">{opportunity.description}</div>
+
+                            <!-- Raise Hand Action -->
+                            <div class="raise-hand-container">
+                                <lightning-button
+                                    variant="brand"
+                                    label={opportunity.buttonLabel}
+                                    disabled={opportunity.isProcessing}
+                                    data-record-id={opportunity.recordId}
+                                    onclick={handleRaiseHand}
+                                    class="raise-hand-button">
+                                </lightning-button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <template if:false={isLastCard}>
+                <lightning-button-icon
+                    icon-name="utility:chevronright"
+                    variant="bare"
+                    alternative-text="Next"
+                    onclick={handleNext}
+                    class="nav-arrow nav-arrow-right">
+                </lightning-button-icon>
+            </template>
+        </div>
+    </div>
+</template>

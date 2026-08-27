@@ -11,13 +11,55 @@
     <contextVariables>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
-            <fieldName>MessagingSession.ConstituentName__c</fieldName>
+            <fieldName>MessagingSession.ConstituentId__c</fieldName>
+            <messageType>Text</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.ConstituentId__c</fieldName>
+            <messageType>EmbeddedMessaging</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.ConstituentId__c</fieldName>
+            <messageType>Custom</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.ConstituentId__c</fieldName>
+            <messageType>WhatsApp</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.ConstituentId__c</fieldName>
+            <messageType>AppleBusinessChat</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.ConstituentId__c</fieldName>
             <messageType>Facebook</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.ConstituentId__c</fieldName>
+            <messageType>Email</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.ConstituentId__c</fieldName>
+            <messageType>Line</messageType>
+        </contextVariableMappings>
+        <dataType>Text</dataType>
+        <description>This variable may also be referred to as MessagingSession ConstituentId__c</description>
+        <developerName>ConstituentId</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>ConstituentId</label>
+    </contextVariables>
+    <contextVariables>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.ConstituentName__c</fieldName>
-            <messageType>EmbeddedMessaging</messageType>
+            <messageType>WhatsApp</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
@@ -27,17 +69,17 @@
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.ConstituentName__c</fieldName>
-            <messageType>WhatsApp</messageType>
+            <messageType>EmbeddedMessaging</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.ConstituentName__c</fieldName>
-            <messageType>Email</messageType>
+            <messageType>Facebook</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.ConstituentName__c</fieldName>
-            <messageType>AppleBusinessChat</messageType>
+            <messageType>Custom</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
@@ -47,7 +89,12 @@
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.ConstituentName__c</fieldName>
-            <messageType>Custom</messageType>
+            <messageType>AppleBusinessChat</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.ConstituentName__c</fieldName>
+            <messageType>Email</messageType>
         </contextVariableMappings>
         <dataType>Text</dataType>
         <description>This variable may also be referred to as MessagingSession ConstituentName__c</description>
@@ -59,6 +106,16 @@
         <contextVariableMappings>
             <SObjectType>MessagingEndUser</SObjectType>
             <fieldName>MessagingEndUser.ContactId</fieldName>
+            <messageType>Text</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingEndUser</SObjectType>
+            <fieldName>MessagingEndUser.ContactId</fieldName>
+            <messageType>AppleBusinessChat</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingEndUser</SObjectType>
+            <fieldName>MessagingEndUser.ContactId</fieldName>
             <messageType>Facebook</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
@@ -80,16 +137,6 @@
             <SObjectType>MessagingEndUser</SObjectType>
             <fieldName>MessagingEndUser.ContactId</fieldName>
             <messageType>Custom</messageType>
-        </contextVariableMappings>
-        <contextVariableMappings>
-            <SObjectType>MessagingEndUser</SObjectType>
-            <fieldName>MessagingEndUser.ContactId</fieldName>
-            <messageType>Text</messageType>
-        </contextVariableMappings>
-        <contextVariableMappings>
-            <SObjectType>MessagingEndUser</SObjectType>
-            <fieldName>MessagingEndUser.ContactId</fieldName>
-            <messageType>AppleBusinessChat</messageType>
         </contextVariableMappings>
         <dataType>Text</dataType>
         <description>This variable may also be referred to as MessagingEndUser ContactId</description>
@@ -101,12 +148,7 @@
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.MessagingEndUserId</fieldName>
-            <messageType>Email</messageType>
-        </contextVariableMappings>
-        <contextVariableMappings>
-            <SObjectType>MessagingSession</SObjectType>
-            <fieldName>MessagingSession.MessagingEndUserId</fieldName>
-            <messageType>Custom</messageType>
+            <messageType>Text</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
@@ -116,7 +158,7 @@
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.MessagingEndUserId</fieldName>
-            <messageType>AppleBusinessChat</messageType>
+            <messageType>Custom</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
@@ -131,12 +173,17 @@
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.MessagingEndUserId</fieldName>
-            <messageType>Text</messageType>
+            <messageType>EmbeddedMessaging</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.MessagingEndUserId</fieldName>
-            <messageType>EmbeddedMessaging</messageType>
+            <messageType>AppleBusinessChat</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.MessagingEndUserId</fieldName>
+            <messageType>Email</messageType>
         </contextVariableMappings>
         <dataType>Text</dataType>
         <description>This variable may also be referred to as MessagingEndUser Id</description>
@@ -148,22 +195,7 @@
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.EndUserLanguage</fieldName>
-            <messageType>WhatsApp</messageType>
-        </contextVariableMappings>
-        <contextVariableMappings>
-            <SObjectType>MessagingSession</SObjectType>
-            <fieldName>MessagingSession.EndUserLanguage</fieldName>
             <messageType>Custom</messageType>
-        </contextVariableMappings>
-        <contextVariableMappings>
-            <SObjectType>MessagingSession</SObjectType>
-            <fieldName>MessagingSession.EndUserLanguage</fieldName>
-            <messageType>Facebook</messageType>
-        </contextVariableMappings>
-        <contextVariableMappings>
-            <SObjectType>MessagingSession</SObjectType>
-            <fieldName>MessagingSession.EndUserLanguage</fieldName>
-            <messageType>AppleBusinessChat</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
@@ -173,12 +205,27 @@
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.EndUserLanguage</fieldName>
+            <messageType>Line</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.EndUserLanguage</fieldName>
+            <messageType>WhatsApp</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.EndUserLanguage</fieldName>
             <messageType>Text</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.EndUserLanguage</fieldName>
-            <messageType>Line</messageType>
+            <messageType>AppleBusinessChat</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.EndUserLanguage</fieldName>
+            <messageType>Facebook</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
@@ -195,17 +242,7 @@
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.Id</fieldName>
-            <messageType>Custom</messageType>
-        </contextVariableMappings>
-        <contextVariableMappings>
-            <SObjectType>MessagingSession</SObjectType>
-            <fieldName>MessagingSession.Id</fieldName>
-            <messageType>Email</messageType>
-        </contextVariableMappings>
-        <contextVariableMappings>
-            <SObjectType>MessagingSession</SObjectType>
-            <fieldName>MessagingSession.Id</fieldName>
-            <messageType>AppleBusinessChat</messageType>
+            <messageType>Text</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
@@ -215,22 +252,32 @@
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.Id</fieldName>
+            <messageType>Custom</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.Id</fieldName>
             <messageType>Facebook</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.Id</fieldName>
-            <messageType>Line</messageType>
+            <messageType>AppleBusinessChat</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.Id</fieldName>
-            <messageType>Text</messageType>
+            <messageType>Email</messageType>
         </contextVariableMappings>
         <contextVariableMappings>
             <SObjectType>MessagingSession</SObjectType>
             <fieldName>MessagingSession.Id</fieldName>
             <messageType>WhatsApp</messageType>
+        </contextVariableMappings>
+        <contextVariableMappings>
+            <SObjectType>MessagingSession</SObjectType>
+            <fieldName>MessagingSession.Id</fieldName>
+            <messageType>Line</messageType>
         </contextVariableMappings>
         <dataType>Text</dataType>
         <description>This variable may also be referred to as MessagingSession Id</description>

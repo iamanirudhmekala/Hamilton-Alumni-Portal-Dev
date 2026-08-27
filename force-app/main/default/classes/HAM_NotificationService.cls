@@ -83,8 +83,7 @@ public without sharing class HAM_NotificationService {
             // Standard targetId opens a native record page, breaking Experience Cloud.
             // If the notification actionUrl is provided, we inject a JSON PageRef to route inside LWC Wrapper.
             if (String.isNotBlank(req.actionUrl)) {
-                String pageRefJson = '{"type": "standard__webPage", "attributes": {"url": "/' + req.actionUrl + '"}}';
-                currNotification.setTargetPageRef(pageRefJson);
+                currNotification.setTargetPageRef(buildTargetPageRef(req.actionUrl));
             } else {
                 currNotification.setTargetId(req.sourceId); 
             }
@@ -93,6 +92,69 @@ public without sharing class HAM_NotificationService {
         } catch (Exception e) {
             System.debug('Push Notification Failed: ' + e.getMessage());
         }
+    }
+
+    /**
+     * @description Builds the JSON PageRef used as a push notification's target.
+     *
+     * The action URL is stored query-only (e.g. '?view=directory&tab=Manage%20Invitations')
+     * because the in-app bell assigns it to window.location.href, where it resolves against
+     * whatever portal page the user is already on. A push has no such base, so the target
+     * must carry the Experience Cloud site path. Prefixing with a bare '/' — as this did
+     * previously — resolves to the domain root and lands on the "No Longer Supported" page.
+     *
+     * The site path is org-specific, and this runs from triggers and queueables where
+     * Site.getBaseUrl() returns null, so it comes from custom metadata rather than context.
+     *
+     * @param actionUrl The stored, query-only action URL.
+     * @return String JSON PageRef pointing at the portal page for that action URL.
+     */
+    public static String buildTargetPageRef(String actionUrl) {
+        String basePath = getSiteBasePath();
+        return '{"type": "standard__webPage", "attributes": {"url": "' + basePath + actionUrl + '"}}';
+    }
+
+    private static String cachedSiteBasePath;
+
+    /**
+     * @description Reads the configured Experience Cloud site base path, normalised to
+     * have a leading and trailing slash. Falls back to '/' if unconfigured, which
+     * reproduces the old (broken) behaviour rather than throwing — a misconfigured
+     * setting should not stop the notification itself from being delivered.
+     * @return String Site base path, e.g. '/HamiltonPortal/'.
+     */
+    private static String getSiteBasePath() {
+        // buildTargetPageRef() is called once per recipient inside the group fan-out
+        // loops, so resolve the setting once per transaction rather than per push.
+        if (cachedSiteBasePath != null) {
+            return cachedSiteBasePath;
+        }
+
+        String basePath;
+        for (HAM_Notification_Setting__mdt setting : [
+            SELECT Site_Base_Path__c
+            FROM HAM_Notification_Setting__mdt
+            WHERE DeveloperName = :HAM_ConstantsUtil.DEFAULTNOTIFICATIONSETTINGS
+            LIMIT 1
+        ]) {
+            basePath = setting.Site_Base_Path__c;
+        }
+
+        if (String.isBlank(basePath)) {
+            cachedSiteBasePath = '/';
+            return cachedSiteBasePath;
+        }
+
+        basePath = basePath.trim();
+        if (!basePath.startsWith('/')) {
+            basePath = '/' + basePath;
+        }
+        if (!basePath.endsWith('/')) {
+            basePath += '/';
+        }
+
+        cachedSiteBasePath = basePath;
+        return cachedSiteBasePath;
     }
 
     /**

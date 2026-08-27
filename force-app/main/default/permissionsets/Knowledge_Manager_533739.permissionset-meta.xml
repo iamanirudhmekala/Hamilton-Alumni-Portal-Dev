@@ -2,6 +2,11 @@
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Knowledge Manager Permission Set</description>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Information__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Knowledge__kav.Content__c</field>
         <readable>true</readable>

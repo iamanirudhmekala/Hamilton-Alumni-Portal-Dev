@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Campaign_Attached__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This drives the use of the code</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>If true= Appeal code is applied to gift; if false no appeal is associated.</inlineHelpText>
+    <label>Is Campaign Attached</label>
+    <type>Checkbox</type>
+</CustomField>

@@ -35,6 +35,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Google Geocoding API</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>MakeAGift</fullName>
             <default>false</default>
         </values>

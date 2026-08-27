@@ -1,0 +1,15 @@
+{
+  "required" : [ ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "contactId" : {
+      "title" : "Contact Id",
+      "description" : "Current user Contact Id. Accepted for input mapping only — not used by this action.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType",
+  "lightning:textIndexed" : true
+}

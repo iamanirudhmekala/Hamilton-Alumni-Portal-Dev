@@ -1,0 +1,29 @@
+{
+  "required" : [ ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "alumniName" : {
+      "title" : "Alumni Name",
+      "description" : "Pass the name to alumniName",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "classOfYear" : {
+      "title" : "Class of Year",
+      "description" : "Pass the year to classOfYear",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "majorDegree" : {
+      "title" : "Major / Degree",
+      "description" : "Pass the degree/major to majorDegree",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType",
+  "lightning:textIndexed" : true
+}

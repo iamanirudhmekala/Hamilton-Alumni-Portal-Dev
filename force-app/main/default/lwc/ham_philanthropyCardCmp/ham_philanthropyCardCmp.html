@@ -65,12 +65,28 @@
                             </div>
                         </template>
                     </div>
+                    <template if:true={hasActionButtons}>
+                        <div class="card-grant-actions">
+                            <template if:true={tableData.button1Url}>
+                                <a href={tableData.button1Url} target="_blank" class="action-button action-button-primary">{tableData.button1Label}</a>
+                            </template>
+                            <template if:true={tableData.button2Url}>
+                                <a href={tableData.button2Url} target="_blank" class="action-button action-button-secondary">{tableData.button2Label}</a>
+                            </template>
+                        </div>
+                    </template>
                 </div>
             </template>
         </template>
 
         <template if:false={cardRecords.length}>
             <div class="no-records-message">{label.noRecordsMsg}</div>
+        </template>
+
+        <template if:true={hasFootnote}>
+            <div class="slds-m-top_medium slds-p-around_small footer-message" style="background-color: #fff9e6; border: 1px solid #ffc107; border-radius: 4px;">
+                {tableData.footnote}
+            </div>
         </template>
 
         <template if:true={isReceiptsTable}>

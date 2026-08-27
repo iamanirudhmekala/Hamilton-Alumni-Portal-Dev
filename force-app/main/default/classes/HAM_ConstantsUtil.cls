@@ -141,6 +141,11 @@ public with sharing class HAM_ConstantsUtil {
     public static final string CONNECTION_PRIVCACY_SVID = 'SIV_VIS_CONNECTION';
     public static final string PROFILEPIC_PRIVCACY_SVID = 'SIV_VIS_PROFILE_PIC';
 
+    // Email suppression. Unlike the SIV_VIS_* codes above this is the Service Indicator
+    // Value's Name, not its HAM_Portal_ID__c, because that field is unpopulated on this
+    // record. Swap to a portal ID once HQ populates one — see isEmailSuppressed().
+    public static final String NO_CONTACT_MASS_EMAIL_SI = 'No Contact Mass Email';
+
     /*Events */
     public static final String CVENT_OBJECT_API = 'CventEvents__Event__c';
     public static final String BLACKTHORN_OBJECT_API = 'conference360__Event__c';

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Constituent__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Store the Constituents whose staging details are here</description>
+    <inlineHelpText>Store the Constituents whose staging details are here</inlineHelpText>
+    <label>Constituent</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>HAM HQ Stagings</relationshipLabel>
+    <relationshipName>HAM_HQ_Stagings</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

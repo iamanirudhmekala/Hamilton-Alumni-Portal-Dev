@@ -422,10 +422,24 @@ public without sharing class HAM_AlumniConnectionService {
                 acceptorName = contacts[0].Name;
             }
 
+            // Without this the push send is called with a null recipient, throws, and is
+            // swallowed by the catch in sendMobilePush — so acceptance produced an in-app
+            // bell row but never a push. Every other notification sender sets this.
+            Id requesterUserId;
+            for (User u : [
+                SELECT Id FROM User
+                WHERE ContactId = :connectionPrimary.HAM_Portal_User__c
+                AND IsActive = true
+                LIMIT 1
+            ]) {
+                requesterUserId = u.Id;
+            }
+
             HAM_NotificationService.NotificationRequest req =
                 new HAM_NotificationService.NotificationRequest();
-            
+
             req.recipientContactId = connectionPrimary.HAM_Portal_User__c;   // requester
+            req.recipientUserId    = requesterUserId;
             req.senderContactId    = connectionPrimary.HAM_Linked_Constituent__c; // acceptor
             req.senderName         = acceptorName;
             req.title              = HAM_ConstantsUtil.HAS_ACCEPTED_YOUR_REQUEST;

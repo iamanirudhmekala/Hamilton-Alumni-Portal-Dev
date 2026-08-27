@@ -5,12 +5,11 @@ import { LightningElement, api, track, wire } from 'lwc';
 import getOpportunities from '@salesforce/apex/HAM_VolunteerOpportunityController.getOpportunities';
 import setInterested from '@salesforce/apex/HAM_VolunteerOpportunityController.setInterested';
 import withdrawInterest from '@salesforce/apex/HAM_VolunteerOpportunityController.withdrawInterest';
-import getMyVolunteerActivities from '@salesforce/apex/HAM_VolunteerOpportunityController.getMyVolunteerActivities';
-import getPastVolunteerActivities from '@salesforce/apex/HAM_VolunteerOpportunityController.getPastVolunteerActivities';
 import getOpportunitiesCount from '@salesforce/apex/HAM_VolunteerOpportunityController.getOpportunitiesCount';
-import getPastActivityCount from '@salesforce/apex/HAM_VolunteerOpportunityController.getPastActivityCount';
-import getCommitteeActivities from '@salesforce/apex/HAM_VolunteerOpportunityController.getCommitteeActivities';
-import getCommitteesCount from '@salesforce/apex/HAM_VolunteerOpportunityController.getCommitteesCount';
+import getCurrentVolunteerRecords from '@salesforce/apex/HAM_VolunteerOpportunityController.getCurrentVolunteerRecords';
+import getCurrentVolunteerRecordsCount from '@salesforce/apex/HAM_VolunteerOpportunityController.getCurrentVolunteerRecordsCount';
+import getPastVolunteerRecords from '@salesforce/apex/HAM_VolunteerOpportunityController.getPastVolunteerRecords';
+import getPastVolunteerRecordsCount from '@salesforce/apex/HAM_VolunteerOpportunityController.getPastVolunteerRecordsCount';
 
 
 // Lightning Message Service for cross-component communication
@@ -30,9 +29,7 @@ import HAM_ICONS from '@salesforce/resourceUrl/HAM_Icons';
 
 // Custom labels
 import VolunteerCurrent from '@salesforce/label/c.ham_VolunteerOpp_Current';
-import VolunteerUpcoming from '@salesforce/label/c.ham_VolunteerOpp_Upcoming';
 import VolunteerInfoText from '@salesforce/label/c.HAM_volOppInfoText';
-import VolunteerCommittees from '@salesforce/label/c.ham_VolunteerOpp_Committees';
 import VolunteerPast from '@salesforce/label/c.ham_pastActivities';
 import VolunteerInfoTextEmail from '@salesforce/label/c.HAM_volOppInfoText_Email';
 
@@ -88,10 +85,11 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
     @track firstPageClass = 'page-btn disabled';
     @track lastPageClass = 'page-btn';
 
-    // My Activities data
-    @track myCurrentActivities = [];
-    @track myUpcomingActivities = [];
-    wiredMyActivitiesResult;
+    // Merged Current bucket (Activity + Committee/Board)
+    @track myCurrentBucketRecords = [];
+    @track currentBucketPage = 1;
+    @track totalRecordsCurrentBucket = 0;
+    @track currentBucketRecordsToSkip = 0;
 
     // Filter state
     @track filterFromDate = null;
@@ -108,14 +106,7 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
 
     // Accordion toggle states (mobile)
     @track showCurrentNews = true;
-    @track showUpcomingActivity = false;
     @track showPastActivity = false;
-    @track showCommitteesActivity = false;
-
-    @track myCommitteeActivities = [];
-    @track commCurrentPage = 1;
-    @track commTotalRecords = 0;
-    @track commRecordsToSkip = 0;
 
     _activeMainTab;
     _activeSubTab;
@@ -135,9 +126,7 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
      */
     labels = {
         volunteerOppCurr : VolunteerCurrent,
-        volunteerOppUp : VolunteerUpcoming,
         volunteerInfoText : VolunteerInfoText,
-        volunteerCommittees : VolunteerCommittees,
         volunteerPast : VolunteerPast,
         volunteerInfoTextEmail : VolunteerInfoTextEmail
     }
@@ -181,14 +170,11 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
     }
 
     /**
-     * Handles sub-tab click events to switch between Current, Upcoming, and Past views
+     * Handles sub-tab click events to switch between Current and Past views
      * @param {Event} event - Click event containing the sub-tab name in dataset
      */
     handleSubTabClick(event){
         this._activeSubTab = event.currentTarget.dataset.name;
-        if(this._activeSubTab === this.labels.volunteerCommittees) {
-            this.loadCommitteeActivities();
-        }
     }
 
     /**
@@ -232,27 +218,11 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
     }
 
     /**
-     * Computed property to check if Upcoming sub-tab is active
-     * @returns {Boolean} True if Upcoming sub-tab is active
-     */
-    get upcomingActive(){
-        return this._activeSubTab === this.labels.volunteerOppUp;
-    }
-
-    /**
      * Computed property to check if Past sub-tab is active
      * @returns {Boolean} True if Past sub-tab is active
      */
     get pastActive(){
         return this._activeSubTab === this.labels.volunteerPast;
-    }
-
-    get committeesActive(){
-        return this._activeSubTab === this.labels.volunteerCommittees;
-    }
-
-    get committeesClass(){
-        return this._activeSubTab === this.labels.volunteerCommittees ? 'sub-tab-active' : 'sub-tab-inactive';
     }
 
     /**
@@ -261,14 +231,6 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
      */
     get currentClass(){
         return this._activeSubTab === this.labels.volunteerOppCurr ? 'sub-tab-active' : 'sub-tab-inactive';
-    }
-
-    /**
-     * Computed property for CSS class of Upcoming sub-tab
-     * @returns {String} CSS class name for active or inactive state
-     */
-    get upcomingClass(){
-        return this._activeSubTab === this.labels.volunteerOppUp ? 'sub-tab-active' : 'sub-tab-inactive';
     }
 
     /**
@@ -301,23 +263,11 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
     }
 
     /**
-     * Returns the appropriate chevron icon for upcoming activities accordion
-     * @returns {String} URL of the chevron icon (open/close state)
-     */
-    get upcomingActivityIcon() {
-        return this.showUpcomingActivity ? this.images.volClose : this.images.volOpen;
-    }
-
-    /**
      * Returns the appropriate chevron icon for past activities accordion
      * @returns {String} URL of the chevron icon (open/close state)
      */
     get pastActivityIcon() {
         return this.showPastActivity ?  this.images.volClose : this.images.volOpen;
-    }
-
-    get committeesActivityIcon() {
-        return this.showCommitteesActivity ? this.images.volClose : this.images.volOpen;
     }
 
     get isListView() {
@@ -354,21 +304,10 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
     }
 
     /**
-     * Toggles the visibility of upcoming activities section in mobile accordion view
-     */
-    handleupcomingActivityToggle() {
-        this.showUpcomingActivity = !this.showUpcomingActivity;
-    }
-
-    /**
      * Toggles the visibility of past activities section in mobile accordion view
      */
     handlePastActivityToggle() {
         this.showPastActivity = !this.showPastActivity;
-    }
-
-    handleCommitteesToggle() {
-        this.showCommitteesActivity = !this.showCommitteesActivity;
     }
 
     /**
@@ -380,10 +319,6 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
         if (!this._activeSubTab) {
             this._activeSubTab = this.labels.volunteerOppCurr; 
         }
-        // REMOVE OR COMMENT OUT THESE 3 LINES:
-        // this.loadOpportunities();
-        // this.loadOpportunitiesCount();
-        // this.loadMyActivities();
         this.subscribeToMessageChannel();
     }
 
@@ -402,9 +337,8 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
         if (value) {
             this.loadOpportunities();
             this.loadOpportunitiesCount();
-            this.loadMyActivities();
-            this.loadCommitteesCount();
-            this.loadCommitteeActivities();
+            this.loadCurrentVolunteerRecords();
+            this.fetchPastActivities();
         }
     }
 
@@ -500,42 +434,55 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
 
 
     /**
-     * Fetches the current user's volunteer activities (current and upcoming)
-     * Calls processCurrentUpcoming to categorize activities and then loads past activities
+     * Fetches the merged Current bucket (Activity + Committee/Board records) with
+     * pagination, mirroring fetchPastActivities' count-then-fetch pattern.
+     * Renders into myCurrentBucketRecords.
      */
-    loadMyActivities() {
-        getMyVolunteerActivities({ 
-            currentUserContactId: this._userContactId, 
-            fromDate: null, 
-            toDate: null 
-        })
-        .then(result => {
-            this.processCurrentUpcoming(result);
-            this.fetchPastActivities();
-        })
-        .catch(error => {
-            console.error('Error fetching my activities:', error);
-        });
+    loadCurrentVolunteerRecords() {
+        if (!this._userContactId) return;
+
+        getCurrentVolunteerRecordsCount({ currentUserContactId: this._userContactId })
+            .then(count => {
+                this.totalRecordsCurrentBucket = count;
+
+                if (this.totalRecordsCurrentBucket > 0) {
+                    return getCurrentVolunteerRecords({
+                        recordLimit: this.resolvedRecordLimit,
+                        recordToSkip: this.currentBucketRecordsToSkip,
+                        currentUserContactId: this._userContactId
+                    });
+                }
+                return [];
+            })
+            .then(result => {
+                this.myCurrentBucketRecords = result.map(act => this.formatMergedBucketRecord(act));
+            })
+            .catch(error => {
+                console.error('Error fetching current volunteer records:', error);
+            });
     }
 
     /**
-     * Separates volunteer activities into current and upcoming categories
-     * Formats each activity with date ranges and images before storing in respective arrays
-     * @param {Array} data - Array of activity records from server
+     * Handles pagination page number clicks for the Current bucket
+     * @param {Event} event - Custom event from pagination component containing currentPage and recordsToSkip
      */
-    processCurrentUpcoming(data) {
-        let current = [];
-        let upcoming = [];
-        
-        data.forEach(act => {
-            if (act.computedTab === this.labels.volunteerOppCurr) {
-                current.push(this.formatActivity(act));
-            } else if (act.computedTab === this.labels.volunteerOppUp) {
-                upcoming.push(this.formatActivity(act));
-            }
-        });
-        this.myCurrentActivities = current;
-        this.myUpcomingActivities = upcoming;
+    handleCurrentPageChange(event) {
+        this.currentBucketPage = event.detail.currentPage;
+        this.currentBucketRecordsToSkip = event.detail.recordsToSkip;
+        this.loadCurrentVolunteerRecords();
+    }
+
+    /**
+     * Wraps formatActivity with an empty-description-preserves-card-height fix -
+     * needed since Committee records (often blank Role) are merged into the
+     * Current/Past buckets alongside Activity records.
+     */
+    formatMergedBucketRecord(act) {
+        const formatted = this.formatActivity(act);
+        if (!formatted.trimmedDescription || formatted.trimmedDescription.trim() === '') {
+            formatted.trimmedDescription = ' ';
+        }
+        return formatted;
     }
 
     /**
@@ -573,13 +520,8 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
             : '';
         
          let dateRange = startStr;
-         if (act.computedTab === this.labels.volunteerOppUp) {
-             dateRange = startStr;
-             if (endStr) dateRange += ` - ${endStr}`;
-         } else {
-             if (endStr) dateRange += ` - ${endStr}`;
-             else if (startStr && act.status === 'Current') dateRange += ` - Present`;
-         }
+         if (endStr) dateRange += ` - ${endStr}`;
+         else if (startStr && act.status === 'Current') dateRange += ` - Present`;
 
          return {
              ...act,
@@ -603,11 +545,11 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
         
         //const recordsToSkip = (this.currentPage - 1) * this.pageSizeForChild;
 
-        // Fetch total count first
-        getPastActivityCount({ 
-            currentUserContactId: this._userContactId, 
-            fromDate: this.filterFromDate, 
-            toDate: this.filterToDate 
+        // Fetch total count first (merged Activity + Committee/Board records)
+        getPastVolunteerRecordsCount({
+            currentUserContactId: this._userContactId,
+            fromDate: this.filterFromDate,
+            toDate: this.filterToDate
         })
         .then(count => {
             //this.totalRecords = count;
@@ -616,9 +558,9 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
 
             // Fetch paginated data if records exist
             if (this.totalRecordsForChild > 0) {
-                return getPastVolunteerActivities({
-                    pageSize: this.resolvedRecordLimit,
-                    recordsToSkip: this.volActrecordsToSkip,
+                return getPastVolunteerRecords({
+                    recordLimit: this.resolvedRecordLimit,
+                    recordToSkip: this.volActrecordsToSkip,
                     currentUserContactId: this._userContactId,
                     fromDate: this.filterFromDate,
                     toDate: this.filterToDate
@@ -629,8 +571,8 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
         })
         .then(data => {
             if (Array.isArray(data)) {
-                this.paginatedPastActivities = data.map(act => this.formatActivity(act));
-                
+                this.paginatedPastActivities = data.map(act => this.formatMergedBucketRecord(act));
+
                 //this.startCount = this.totalRecords === 0 ? 0 : recordsToSkip + 1;
                 //this.endCount = Math.min(recordsToSkip + this.pageSize, this.totalRecords);
             } else {
@@ -1110,58 +1052,6 @@ export default class Ham_VolunteerOppCmp extends LightningElement {
         this.volCurrentPage = event.detail.currentPage;
         this.volRecordsToSkip = event.detail.recordsToSkip;
         this.loadOpportunities();
-    }
-
-    /**
-     * ============================================================================
-     * ADDED FOR COMMITTEES SUB-TAB
-     * ============================================================================
-     */
-
-    loadCommitteesCount() {
-        getCommitteesCount({ currentUserContactId: this._userContactId })
-            .then(result => {
-                this.commTotalRecords = result;
-            })
-            .catch(error => {
-                console.error('Error fetching committees count:', error);
-            });
-    }
-
-    loadCommitteeActivities() {
-        this.isLoading = true;
-        getCommitteeActivities({ 
-            recordLimit: this.resolvedRecordLimit, 
-            recordToSkip: this.commRecordsToSkip, 
-            currentUserContactId: this._userContactId 
-        })
-        .then(result => {
-            // Process the result using the existing formatActivity
-            this.myCommitteeActivities = result.map(act => {
-                let formattedAct = this.formatActivity(act);
-                
-                // 1. Force image to default fallback
-                formattedAct.imageUrl = this.defaultImage;
-                
-                // 2. Exact space preserver for empty descriptions to keep card heights equal
-                if (!formattedAct.trimmedDescription || formattedAct.trimmedDescription.trim() === '') {
-                    formattedAct.trimmedDescription = '\u00A0'; // Non-breaking space
-                }
-                
-                return formattedAct;
-            });
-            this.isLoading = false;
-        })
-        .catch(error => {
-            console.error('Error fetching committee activities:', error);
-            this.isLoading = false;
-        });
-    }
-
-    handleCommPaginationPageChange(event) {
-        this.commCurrentPage = event.detail.currentPage;
-        this.commRecordsToSkip = event.detail.recordsToSkip;
-        this.loadCommitteeActivities();
     }
 
     handlePageChange(event) {

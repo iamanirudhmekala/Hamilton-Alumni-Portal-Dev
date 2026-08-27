@@ -7,6 +7,22 @@
         <value xsi:type="xsd:string">HAM_Category__c = &apos;Student NCAA Athletics&apos;</value>
     </values>
     <values>
+        <field>HAM_Button_1_Label__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Button_1_URL__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Button_2_Label__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Button_2_URL__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
         <field>HAM_Default_Display_Value__c</field>
         <value xsi:nil="true"/>
     </values>
@@ -60,6 +76,10 @@
     </values>
     <values>
         <field>HAM_Table_Field_Types__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Table_Footnote__c</field>
         <value xsi:nil="true"/>
     </values>
     <values>

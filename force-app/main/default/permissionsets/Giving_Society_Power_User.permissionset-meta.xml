@@ -102,6 +102,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Information__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Task.Funding_Interest__c</field>
         <readable>true</readable>
     </fieldPermissions>

@@ -206,15 +206,11 @@
     font-weight: 700;
 } */
 
-.btn-primary:hover {
-    border: 1px solid #002F86;
-    color: #FFFFFF;
-    background-color: #002F86;
-}
+
 .btn-primary {
-    background-color: #3FB3FF;
-    color: #002F86;
-    border: 1px solid #3FB3FF;
+    background-color: #002F86;
+    color: #fff;
+    border: 1px solid #002F86;
     /* padding: 8px 12px; */
     padding: 14px 30px;
     font-family: 'Mallory-main', sans-serif;
@@ -226,11 +222,35 @@
 }
 
 /* Secondary button */
+
 .btn-secondary {
+    background-color: #002F86;
+    color: #fff;
+    border: 1px solid #002F86;
+    /* padding: 8px 12px; */
+    padding: 14px 30px;
+    font-family: 'Mallory-main', sans-serif;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    line-height: 1.2;
+    font-weight: 700;
+    margin-left: 16px;
+}
+
+
+@media (min-width: 768px){
+.btn-secondary:hover, .btn-primary:hover {
+    border: 1px solid #002F86;
+    color: #FFFFFF;
+    background-color: #002F86;
+}
+}
+
+/* .btn-secondary {
     background-color: #ffffff;
     color: #002F86;
     border: 1px solid #002F86;
-    /* padding: 8px 12px; */
     padding: 14px 30px;
     font-size: 16px;
     font-weight: 700;
@@ -238,7 +258,7 @@
     cursor: pointer;
     line-height: 1.2;
     margin-left: 16px;
-}
+} */
 
 /* MODAL */
 .modal-backdrop {

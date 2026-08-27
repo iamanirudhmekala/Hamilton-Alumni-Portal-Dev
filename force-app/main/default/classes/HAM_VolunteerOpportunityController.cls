@@ -10,6 +10,7 @@
 *==============================================================================
 * 1.0 | December 23, 2025 |  Sachin | Initial Version
 * 2.0 | July 16, 2026 |  Hamilton Adv | ASC-14664 Add Data source for the HQ Hand raise
+* 3.0 | August 11, 2026 |  Hamilton Adv | ASC-14686 Collapse 4-tab Volunteer Service to Current/Past: added merged record methods, removed superseded getMyVolunteerActivities/getPastVolunteerActivities/getPastActivityCount/getCommitteeActivities/getCommitteesCount
 **/
 
 public without sharing class HAM_VolunteerOpportunityController {
@@ -34,187 +35,7 @@ public without sharing class HAM_VolunteerOpportunityController {
         @AuraEnabled public Date startDate {get;set;}
         @AuraEnabled public Date endDate {get;set;}
         @AuraEnabled public String status {get;set;} // Current, Former
-        @AuraEnabled public String computedTab {get;set;} // Helper for JS: Current, Upcoming, Past
-    }
-
-	/**
-     * @description Counts total PAST volunteer activities for pagination calculation
-     * Filters by contact, volunteer engagement type, and optional date range
-     * 
-     * @param currentUserContactId - Contact Id of the logged in user
-     * @param fromDate - Optional start date filter
-     * @param toDate - Optional end date filter
-     * @return Integer - Total count of past activities matching criteria
-     */
-    @AuraEnabled(cacheable=true)
-    public static Integer getPastActivityCount(Id currentUserContactId, Date fromDate, Date toDate) {
-        
-        String volunteerengage = HAM_ConstantsUtil.VOLUNTEER_ENGAGEMENT;
-        
-        String query = 'SELECT COUNT() FROM ucinn_ascendv2__Involvement__c ' + 
-                       'WHERE ucinn_ascendv2__Contact__c = :currentUserContactId ' + 
-                       'AND ucinn_ascendv2__Involvement_Code__c != null AND ucinn_ascendv2__Involvement_Type_Formula__c = \''+ String.escapeSingleQuotes(volunteerengage) + '\'';
-        
-        // "Past" Logic: Status is Former OR (Status is Current AND End Date is Past)
-        query += 'AND (ucinn_ascendv2__Status__c = \'Former\') '; 
-
-        if (fromDate != null) query += 'AND ucinn_ascendv2__Start_Date__c >= :fromDate ';
-        if (toDate != null) query += 'AND ucinn_ascendv2__Start_Date__c <= :toDate ';
-
-        try {
-            return Database.countQuery(query);
-        } catch(Exception e) {
-            return 0;
-        }
-    }
-
-	/**
-     * @description Fetches paginated past volunteer activities using keyset pagination (seek method)
-     * Retrieves activities with status 'Former' sorted by start date descending
-     * Uses keyset pagination to avoid OFFSET performance issues with large datasets
-     * 
-     * @param pageSize - Number of records to retrieve per page
-     * @param recordsToSkip - Number of records to skip (for page calculation)
-     * @param currentUserContactId - Contact Id of the logged in user
-     * @param fromDate - Optional start date filter
-     * @param toDate - Optional end date filter
-     * @return List<MyActivityWrapper> - List of past activities with formatted data
-     */
-    @AuraEnabled(cacheable=true)
-    public static List<MyActivityWrapper> getPastVolunteerActivities(
-        Integer pageSize, 
-        Integer recordsToSkip, 
-        Id currentUserContactId, 
-        Date fromDate, 
-        Date toDate
-    ) {
-        List<MyActivityWrapper> result = new List<MyActivityWrapper>();
-        
-        // Get Volunteer Enganement value 
-        String volunteerengage = HAM_ConstantsUtil.VOLUNTEER_ENGAGEMENT;
-        
-        // Build Base Criteria
-        String baseWhere = 'WHERE ucinn_ascendv2__Contact__c = :currentUserContactId ' + 
-                           'AND ucinn_ascendv2__Involvement_Code__c != null AND ucinn_ascendv2__Involvement_Type_Formula__c = \''+ String.escapeSingleQuotes(volunteerengage) + '\' ' + 
-                           'AND ucinn_ascendv2__Status__c = \'Former\' '; // Targeting Past Tab
-
-        if (fromDate != null) baseWhere += 'AND ucinn_ascendv2__Start_Date__c >= :fromDate ';
-        if (toDate != null) baseWhere += 'AND ucinn_ascendv2__Start_Date__c <= :toDate ';
-
-        // Select Fields
-        String selectFields = 'SELECT Id, ucinn_ascendv2__Start_Date__c, ucinn_ascendv2__End_Date__c, ucinn_ascendv2__Status__c, ' +
-                              'ucinn_ascendv2__Involvement_Code__c, ucinn_ascendv2__Involvement_Code__r.Name, ' +
-                              'ucinn_ascendv2__Involvement_Code__r.ucinn_ascendv2__Involvement_Description__c, ' +
-                              'ucinn_ascendv2__Involvement_Code__r.HAM_Portal_Image_URL__c ';
-
-        // PAGINATION LOGIC (The "Seek" Pattern)
-        String finalQuery = selectFields + 'FROM ucinn_ascendv2__Involvement__c ' + baseWhere;
-
-        // PAGE 1: Simple Limit
-        if (recordsToSkip == 0) {
-            // Order by Date DESC, then Id DESC for deterministic sorting
-            finalQuery += ' ORDER BY ucinn_ascendv2__Start_Date__c DESC, Id DESC LIMIT :pageSize';
-        } 
-        // PAGE > 1: Fetch skip records to find the cursor (Last Date & Id)
-        else {
-            // A. Fetch the records we want to skip to find the "Last Record" of the previous page
-            String skipQuery = 'SELECT Id, ucinn_ascendv2__Start_Date__c FROM ucinn_ascendv2__Involvement__c ' + 
-                               baseWhere + 
-                               ' ORDER BY ucinn_ascendv2__Start_Date__c DESC, Id DESC LIMIT :recordsToSkip';
-            
-            List<ucinn_ascendv2__Involvement__c> skippedList = Database.query(skipQuery);
-            
-            if (!skippedList.isEmpty()) {
-                // Get the last record from the skipped list
-                ucinn_ascendv2__Involvement__c lastRecord = skippedList[skippedList.size() - 1];
-                Date lastDate = lastRecord.ucinn_ascendv2__Start_Date__c;
-                Id lastId = lastRecord.Id;
-
-                // B. Filter for records "After" that last record (Date < lastDate OR (Date = lastDate AND Id < lastId))
-                // Note: Since we sort DESC, "After" means "Smaller" date/id
-                finalQuery += ' AND (ucinn_ascendv2__Start_Date__c < :lastDate OR (ucinn_ascendv2__Start_Date__c = :lastDate AND Id < :lastId)) ' +
-                              ' ORDER BY ucinn_ascendv2__Start_Date__c DESC, Id DESC LIMIT :pageSize';
-            } else {
-                // Fallback if something went wrong (return empty)
-                return result; 
-            }
-        }
-
-        List<ucinn_ascendv2__Involvement__c> involvements = Database.query(finalQuery);
-
-        // Map to Wrapper
-        for(ucinn_ascendv2__Involvement__c inv : involvements) {
-            MyActivityWrapper wrap = new MyActivityWrapper();
-            wrap.id = inv.Id;
-            wrap.name = inv.ucinn_ascendv2__Involvement_Code__r.Name;
-            wrap.description = inv.ucinn_ascendv2__Involvement_Code__r.ucinn_ascendv2__Involvement_Description__c;
-            wrap.imageUrl = inv.ucinn_ascendv2__Involvement_Code__r.HAM_Portal_Image_URL__c;
-            wrap.startDate = inv.ucinn_ascendv2__Start_Date__c;
-            wrap.endDate = inv.ucinn_ascendv2__End_Date__c;
-            wrap.status = inv.ucinn_ascendv2__Status__c;
-            wrap.computedTab = 'Past'; // We know these are past
-            result.add(wrap);
-        }
-
-        return result;
-    }
-
-	/**
-     * @description Fetches current and upcoming volunteer activities for a user
-     * Returns activities with null end dates, categorized as 'Current' or 'Upcoming'
-     * based on start date relative to today
-     * 
-     * @param currentUserContactId - Contact Id of the logged in user
-     * @param fromDate - Optional start date filter (currently unused)
-     * @param toDate - Optional end date filter (currently unused)
-     * @return List<MyActivityWrapper> - List of current and upcoming activities
-     */
-    @AuraEnabled(cacheable=true)
-    public static List<MyActivityWrapper> getMyVolunteerActivities(Id currentUserContactId, Date fromDate, Date toDate) {
-        List<MyActivityWrapper> result = new List<MyActivityWrapper>();
-        Date today = System.today();
-        
-        // Get Volunteer Enganement value 
-        String volunteerengage = HAM_ConstantsUtil.VOLUNTEER_ENGAGEMENT;
-        
-		// Base Query
-        String query = 'SELECT Id, ucinn_ascendv2__Start_Date__c, ucinn_ascendv2__End_Date__c, ucinn_ascendv2__Status__c, ' +
-                       'ucinn_ascendv2__Involvement_Code__c, ucinn_ascendv2__Involvement_Code__r.Name, ' +
-                       'ucinn_ascendv2__Involvement_Code__r.ucinn_ascendv2__Involvement_Description__c, ' +
-                       'ucinn_ascendv2__Involvement_Code__r.HAM_Portal_Image_URL__c ' +
-                       'FROM ucinn_ascendv2__Involvement__c ' +
-                       'WHERE ucinn_ascendv2__Contact__c = :currentUserContactId AND ucinn_ascendv2__Involvement_Type_Formula__c = \''+ String.escapeSingleQuotes(volunteerengage) + '\' '+ 
-                       'AND (ucinn_ascendv2__End_Date__c = null OR ucinn_ascendv2__End_Date__c > :today)'; // Only Open (Current/Upcoming)
-
-        query += 'ORDER BY ucinn_ascendv2__Start_Date__c ASC';
-
-		// fetch records from junction object (Involvement) and Parent (Involvement Value)
-        List<ucinn_ascendv2__Involvement__c> involvements = Database.query(query);
-
-        for(ucinn_ascendv2__Involvement__c inv : involvements) {
-            MyActivityWrapper wrap = new MyActivityWrapper();
-            wrap.id = inv.Id;
-            // Map fields from Parent Involvement Value
-            wrap.name = inv.ucinn_ascendv2__Involvement_Code__r.Name;
-            wrap.description = inv.ucinn_ascendv2__Involvement_Code__r.ucinn_ascendv2__Involvement_Description__c;
-            wrap.imageUrl = inv.ucinn_ascendv2__Involvement_Code__r.HAM_Portal_Image_URL__c;
-            
-            // Map fields from junction Object
-            wrap.startDate = inv.ucinn_ascendv2__Start_Date__c;
-            wrap.endDate = inv.ucinn_ascendv2__End_Date__c;
-            wrap.status = inv.ucinn_ascendv2__Status__c; // 'Current' or 'Former'
-
-            // Compute Tab Category logic
-			if (inv.ucinn_ascendv2__Start_Date__c > today) {
-				wrap.computedTab = 'Upcoming';
-			} else {
-				wrap.computedTab = 'Current';
-			}
-
-            result.add(wrap);
-        }
-
-        return result;
+        @AuraEnabled public String computedTab {get;set;} // Helper for JS: Current, Past
     }
 
 	/**
@@ -374,46 +195,100 @@ public without sharing class HAM_VolunteerOpportunityController {
 
     /**
      * ============================================================================
-     * ADDED FOR COMMITTEES SUB-TAB
+     * ADDED FOR CURRENT/PAST BUCKET MERGE (Activity + Committees combined)
      * ============================================================================
+     * A record is treated as "current" if Status is not Former AND (End Date is
+     * empty or in the future), and "past" if Status is Former OR End Date has
+     * already passed. Checking both signals means a record still lands in the
+     * correct bucket even if only one of the two fields was kept up to date -
+     * and since "current" is defined as the exact logical complement of "past",
+     * every record lands in exactly one bucket, never both, never neither.
      */
 
     /**
-     * @description Retrieves the total count of Committee activities for pagination.
-     * @param currentUserContactId - Contact Id of the logged in user
-     * @return Integer - Count of committee records
+     * @description Maps an Involvement record to MyActivityWrapper, branching on RecordType
+     * to populate Activity fields (via Involvement_Code__r) vs Committee/Board fields
+     * (Formula/Role) - the same field mapping the two record types use today.
+     *
+     * @param inv - Involvement record queried with the fields both branches need
+     * @param computedTab - 'Current' or 'Past', passed in by the caller
+     * @return MyActivityWrapper - Populated wrapper
      */
-    @AuraEnabled(cacheable=true)
-    public static Integer getCommitteesCount(Id currentUserContactId) {
-        String query = 'SELECT count() FROM ucinn_ascendv2__Involvement__c ' +
-                       'WHERE ucinn_ascendv2__Contact__c = :currentUserContactId ' +
-                       'AND (RecordType.DeveloperName = \'Board_of_Trustees\' OR RecordType.DeveloperName = \'Committee\') ' +
-                       'AND HAM_Volunteer_Activity__c = true';
-                       
-        return Database.countQuery(query);
+    private static MyActivityWrapper buildActivityWrapper(ucinn_ascendv2__Involvement__c inv, String computedTab) {
+        MyActivityWrapper wrap = new MyActivityWrapper();
+        wrap.id = inv.Id;
+        wrap.startDate = inv.ucinn_ascendv2__Start_Date__c;
+        wrap.endDate = inv.ucinn_ascendv2__End_Date__c;
+        wrap.status = inv.ucinn_ascendv2__Status__c;
+        wrap.computedTab = computedTab;
+
+        String recordTypeName = inv.RecordType != null ? inv.RecordType.DeveloperName : null;
+        if (recordTypeName == 'Committee' || recordTypeName == 'Board_of_Trustees') {
+            wrap.name = inv.ucinn_ascendv2__Involvement_Code_Description_Formula__c;
+            wrap.description = inv.ucinn_ascendv2__Role__c;
+            wrap.imageUrl = null;
+        } else {
+            wrap.name = inv.ucinn_ascendv2__Involvement_Code__r.Name;
+            wrap.description = inv.ucinn_ascendv2__Involvement_Code__r.ucinn_ascendv2__Involvement_Description__c;
+            wrap.imageUrl = inv.ucinn_ascendv2__Involvement_Code__r.HAM_Portal_Image_URL__c;
+        }
+        return wrap;
     }
 
     /**
-     * @description Fetches paginated Committee activities for the user.
-     * Maps the Formula field to Name and Role to Description.
-     * * @param recordLimit - Number of records to retrieve per page
-     * @param recordToSkip - Number of records to skip (Offset)
+     * @description Counts total CURRENT volunteer records (merged Activity + Committee/Board).
+     *
      * @param currentUserContactId - Contact Id of the logged in user
-     * @return List<MyActivityWrapper> - List of formatted committee activities
+     * @return Integer - Total count of current records matching criteria
      */
     @AuraEnabled(cacheable=true)
-    public static List<MyActivityWrapper> getCommitteeActivities(Integer recordLimit, Integer recordToSkip, Id currentUserContactId) {
+    public static Integer getCurrentVolunteerRecordsCount(Id currentUserContactId) {
+        String volunteerengage = HAM_ConstantsUtil.VOLUNTEER_ENGAGEMENT;
+
+        String query = 'SELECT COUNT() FROM ucinn_ascendv2__Involvement__c ' +
+                       'WHERE ucinn_ascendv2__Contact__c = :currentUserContactId ' +
+                       'AND ((ucinn_ascendv2__Involvement_Type_Formula__c = \'' + String.escapeSingleQuotes(volunteerengage) + '\') ' +
+                       'OR ((RecordType.DeveloperName = \'Board_of_Trustees\' OR RecordType.DeveloperName = \'Committee\') AND HAM_Volunteer_Activity__c = true)) ' +
+                       'AND (ucinn_ascendv2__Status__c != \'Former\' OR ucinn_ascendv2__Status__c = null) ' +
+                       'AND (ucinn_ascendv2__End_Date__c = null OR ucinn_ascendv2__End_Date__c > TODAY)';
+
+        try {
+            return Database.countQuery(query);
+        } catch(Exception e) {
+            return 0;
+        }
+    }
+
+    /**
+     * @description Fetches paginated CURRENT volunteer records, merging Activity and
+     * Committee/Board involvements into one list sorted by start date ascending.
+     * See getCurrentVolunteerRecordsCount for the current-bucket definition.
+     *
+     * @param recordLimit - Number of records to retrieve per page
+     * @param recordToSkip - Number of records to skip (offset)
+     * @param currentUserContactId - Contact Id of the logged in user
+     * @return List<MyActivityWrapper> - Merged current records
+     */
+    @AuraEnabled(cacheable=true)
+    public static List<MyActivityWrapper> getCurrentVolunteerRecords(Integer recordLimit, Integer recordToSkip, Id currentUserContactId) {
         List<MyActivityWrapper> result = new List<MyActivityWrapper>();
-        
-        String query = 'SELECT Id, ucinn_ascendv2__Involvement_Code_Description_Formula__c, ' +
-                       'ucinn_ascendv2__Role__c, ucinn_ascendv2__Start_Date__c, ' +
-                       'ucinn_ascendv2__End_Date__c, ucinn_ascendv2__Status__c ' +
+        String volunteerengage = HAM_ConstantsUtil.VOLUNTEER_ENGAGEMENT;
+
+        String query = 'SELECT Id, ucinn_ascendv2__Start_Date__c, ucinn_ascendv2__End_Date__c, ucinn_ascendv2__Status__c, ' +
+                       'RecordType.DeveloperName, ' +
+                       'ucinn_ascendv2__Involvement_Code__r.Name, ' +
+                       'ucinn_ascendv2__Involvement_Code__r.ucinn_ascendv2__Involvement_Description__c, ' +
+                       'ucinn_ascendv2__Involvement_Code__r.HAM_Portal_Image_URL__c, ' +
+                       'ucinn_ascendv2__Involvement_Code_Description_Formula__c, ' +
+                       'ucinn_ascendv2__Role__c ' +
                        'FROM ucinn_ascendv2__Involvement__c ' +
                        'WHERE ucinn_ascendv2__Contact__c = :currentUserContactId ' +
-                       'AND (RecordType.DeveloperName = \'Board_of_Trustees\' OR RecordType.DeveloperName = \'Committee\') ' +
-                       'AND HAM_Volunteer_Activity__c = true ' +
-                       'ORDER BY ucinn_ascendv2__Start_Date__c DESC NULLS LAST, Id DESC ';
-                       
+                       'AND ((ucinn_ascendv2__Involvement_Type_Formula__c = \'' + String.escapeSingleQuotes(volunteerengage) + '\') ' +
+                       'OR ((RecordType.DeveloperName = \'Board_of_Trustees\' OR RecordType.DeveloperName = \'Committee\') AND HAM_Volunteer_Activity__c = true)) ' +
+                       'AND (ucinn_ascendv2__Status__c != \'Former\' OR ucinn_ascendv2__Status__c = null) ' +
+                       'AND (ucinn_ascendv2__End_Date__c = null OR ucinn_ascendv2__End_Date__c > TODAY) ' +
+                       'ORDER BY ucinn_ascendv2__Start_Date__c ASC NULLS LAST, Id ASC';
+
         if (recordLimit != null && recordLimit > 0) {
             query += ' LIMIT ' + recordLimit;
         }
@@ -423,20 +298,96 @@ public without sharing class HAM_VolunteerOpportunityController {
 
         List<ucinn_ascendv2__Involvement__c> involvements = Database.query(query);
 
-        for(ucinn_ascendv2__Involvement__c inv : involvements) {
-            MyActivityWrapper wrap = new MyActivityWrapper();
-            wrap.id = inv.Id;
-            // Map Formula field as the Title
-            wrap.name = inv.ucinn_ascendv2__Involvement_Code_Description_Formula__c;
-            // Map Role field as the Description
-            wrap.description = inv.ucinn_ascendv2__Role__c;
-            wrap.startDate = inv.ucinn_ascendv2__Start_Date__c;
-            wrap.endDate = inv.ucinn_ascendv2__End_Date__c;
-            wrap.status = inv.ucinn_ascendv2__Status__c;
-            wrap.computedTab = 'Committees'; 
-            result.add(wrap);
+        for (ucinn_ascendv2__Involvement__c inv : involvements) {
+            result.add(buildActivityWrapper(inv, 'Current'));
         }
-        
+
+        return result;
+    }
+
+    /**
+     * @description Counts total PAST volunteer records (merged Activity + Committee/Board).
+     *
+     * @param currentUserContactId - Contact Id of the logged in user
+     * @param fromDate - Optional start date filter
+     * @param toDate - Optional end date filter
+     * @return Integer - Total count of past records matching criteria
+     */
+    @AuraEnabled(cacheable=true)
+    public static Integer getPastVolunteerRecordsCount(Id currentUserContactId, Date fromDate, Date toDate) {
+        String volunteerengage = HAM_ConstantsUtil.VOLUNTEER_ENGAGEMENT;
+
+        String query = 'SELECT COUNT() FROM ucinn_ascendv2__Involvement__c ' +
+                       'WHERE ucinn_ascendv2__Contact__c = :currentUserContactId ' +
+                       'AND ((ucinn_ascendv2__Involvement_Type_Formula__c = \'' + String.escapeSingleQuotes(volunteerengage) + '\') ' +
+                       'OR ((RecordType.DeveloperName = \'Board_of_Trustees\' OR RecordType.DeveloperName = \'Committee\') AND HAM_Volunteer_Activity__c = true)) ' +
+                       'AND (ucinn_ascendv2__Status__c = \'Former\' OR (ucinn_ascendv2__End_Date__c != null AND ucinn_ascendv2__End_Date__c <= TODAY)) ';
+
+        if (fromDate != null) query += 'AND ucinn_ascendv2__Start_Date__c >= :fromDate ';
+        if (toDate != null) query += 'AND ucinn_ascendv2__Start_Date__c <= :toDate ';
+
+        try {
+            return Database.countQuery(query);
+        } catch(Exception e) {
+            return 0;
+        }
+    }
+
+    /**
+     * @description Fetches paginated PAST volunteer records, merging Activity and
+     * Committee/Board involvements into one list sorted by end date descending.
+     * See getPastVolunteerRecordsCount for the past-bucket definition. Carries forward
+     * the optional date-range filter from the original Past tab.
+     *
+     * @param recordLimit - Number of records to retrieve per page
+     * @param recordToSkip - Number of records to skip (offset)
+     * @param currentUserContactId - Contact Id of the logged in user
+     * @param fromDate - Optional start date filter
+     * @param toDate - Optional end date filter
+     * @return List<MyActivityWrapper> - Merged past records
+     */
+    @AuraEnabled(cacheable=true)
+    public static List<MyActivityWrapper> getPastVolunteerRecords(
+        Integer recordLimit,
+        Integer recordToSkip,
+        Id currentUserContactId,
+        Date fromDate,
+        Date toDate
+    ) {
+        List<MyActivityWrapper> result = new List<MyActivityWrapper>();
+        String volunteerengage = HAM_ConstantsUtil.VOLUNTEER_ENGAGEMENT;
+
+        String query = 'SELECT Id, ucinn_ascendv2__Start_Date__c, ucinn_ascendv2__End_Date__c, ucinn_ascendv2__Status__c, ' +
+                       'RecordType.DeveloperName, ' +
+                       'ucinn_ascendv2__Involvement_Code__r.Name, ' +
+                       'ucinn_ascendv2__Involvement_Code__r.ucinn_ascendv2__Involvement_Description__c, ' +
+                       'ucinn_ascendv2__Involvement_Code__r.HAM_Portal_Image_URL__c, ' +
+                       'ucinn_ascendv2__Involvement_Code_Description_Formula__c, ' +
+                       'ucinn_ascendv2__Role__c ' +
+                       'FROM ucinn_ascendv2__Involvement__c ' +
+                       'WHERE ucinn_ascendv2__Contact__c = :currentUserContactId ' +
+                       'AND ((ucinn_ascendv2__Involvement_Type_Formula__c = \'' + String.escapeSingleQuotes(volunteerengage) + '\') ' +
+                       'OR ((RecordType.DeveloperName = \'Board_of_Trustees\' OR RecordType.DeveloperName = \'Committee\') AND HAM_Volunteer_Activity__c = true)) ' +
+                       'AND (ucinn_ascendv2__Status__c = \'Former\' OR (ucinn_ascendv2__End_Date__c != null AND ucinn_ascendv2__End_Date__c <= TODAY)) ';
+
+        if (fromDate != null) query += 'AND ucinn_ascendv2__Start_Date__c >= :fromDate ';
+        if (toDate != null) query += 'AND ucinn_ascendv2__Start_Date__c <= :toDate ';
+
+        query += 'ORDER BY ucinn_ascendv2__End_Date__c DESC NULLS LAST, Id DESC';
+
+        if (recordLimit != null && recordLimit > 0) {
+            query += ' LIMIT ' + recordLimit;
+        }
+        if (recordToSkip != null && recordToSkip > 0) {
+            query += ' OFFSET ' + recordToSkip;
+        }
+
+        List<ucinn_ascendv2__Involvement__c> involvements = Database.query(query);
+
+        for (ucinn_ascendv2__Involvement__c inv : involvements) {
+            result.add(buildActivityWrapper(inv, 'Past'));
+        }
+
         return result;
     }
 }

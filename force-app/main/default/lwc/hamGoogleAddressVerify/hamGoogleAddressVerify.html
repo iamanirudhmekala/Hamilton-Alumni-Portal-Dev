@@ -1,0 +1,64 @@
+<template>
+    <article class="slds-box slds-box_x-small verify-card">
+        <button
+            class="slds-button slds-button_icon slds-button_icon-border-filled verify-toggle"
+            onclick={handleAccordionToggle}
+            aria-expanded={isExpanded}
+        >
+            <lightning-icon icon-name={accordionIconName} size="x-small"></lightning-icon>
+            <span class="slds-m-left_x-small slds-text-heading_small">Verify Address</span>
+        </button>
+
+        <template if:true={isExpanded}>
+            <div class="slds-m-top_small">
+                <lightning-button
+                    label={verifyButtonLabel}
+                    variant="brand-outline"
+                    onclick={handleVerify}
+                    disabled={isLoading}
+                    class="slds-m-bottom_small"
+                ></lightning-button>
+
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Verifying address..." size="small"></lightning-spinner>
+                </template>
+
+                <template if:true={errorMessage}>
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                        <span>{errorMessage}</span>
+                    </div>
+                </template>
+
+                <template if:true={hasResult}>
+                    <template if:true={isAmbiguous}>
+                        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info slds-m-bottom_x-small" role="alert">
+                            <lightning-icon icon-name="utility:info" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                            <span>{ambiguityMessage}</span>
+                        </div>
+                    </template>
+
+                    <template if:true={statusNote}>
+                        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning slds-m-bottom_x-small" role="alert">
+                            <lightning-icon icon-name="utility:warning" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                            <span>{statusNote}</span>
+                        </div>
+                    </template>
+
+                    <lightning-datatable
+                        key-field="rowKey"
+                        data={tableData}
+                        columns={columns}
+                        hide-checkbox-column
+                        onrowaction={handleRowAction}
+                    ></lightning-datatable>
+
+                    <template if:true={sourceLabel}>
+                        <p class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">
+                            Source: {sourceLabel}
+                        </p>
+                    </template>
+                </template>
+            </div>
+        </template>
+    </article>
+</template>

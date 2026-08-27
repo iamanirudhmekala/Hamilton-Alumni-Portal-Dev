@@ -3,6 +3,16 @@
     <description>Grants all object and field access required to run the Blackthorn to Cvent migration pipeline. Assign to any user executing HAM_EventMigrationBatch or any individual batch in the chain.</description>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contact.HAM_Current_Employer_HQ__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.HAM_Describe_My_Impact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contact.Hamilton_Portal_Override__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -44,6 +54,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>HAM_Event_FAQ__c.HAM_Sort_Order__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Information__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

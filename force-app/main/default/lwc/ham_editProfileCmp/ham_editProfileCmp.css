@@ -212,7 +212,7 @@
 
 .section-title{
     color: #231F20;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     font-family: 'Mallory-main', sans-serif; 
     margin-bottom: 32px;
@@ -433,7 +433,7 @@ input.field-input:read-only {
 }
 .toggle-name { font-weight: 600; font-size: 0.95rem; color: #231F20; }
 .toggle-desc {
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: #777;
     margin-top: 2px;
 }
@@ -565,7 +565,7 @@ input.field-input:read-only {
     background: #fff;
     border: none;
     padding: 24px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     display: flex;
     justify-content: space-between;
@@ -744,8 +744,8 @@ input.field-input:read-only {
 .custom-toggle-track::after { content: ''; position: absolute; width: 20px; height: 20px; background: #fff; border-radius: 50%; top: 4px; left: 4px; transition: left 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
 .custom-toggle-track.checked { background-color: #002F86; }
 .custom-toggle-track.checked::after { left: 24px; }
-.custom-toggle-label-active { display: none; font-size: 0.8125rem; color: #3e3e3c; }
-.custom-toggle-label-inactive { display: inline; font-size: 0.8125rem; color: #3e3e3c; }
+.custom-toggle-label-active { display: none; font-size: 0.8rem; color: #3e3e3c; }
+.custom-toggle-label-inactive { display: inline; font-size: 0.8rem; color: #3e3e3c; }
 .custom-toggle-track.checked ~ .custom-toggle-label-active { display: inline; }
 .custom-toggle-track.checked ~ .custom-toggle-label-inactive { display: none; }
 

@@ -236,14 +236,8 @@
                         <div class={currentClass} onclick={handleSubTabClick} data-name={labels.volunteerOppCurr}>
                             <span class="sub-tab-heading">{label.volCurrentTab}</span>
                         </div>
-                        <div class={upcomingClass} onclick={handleSubTabClick} data-name={labels.volunteerOppUp}>
-                            <span class="sub-tab-heading">{label.volUpcomingTab}</span>
-                        </div>
                         <div class={pastClass} onclick={handleSubTabClick} data-name={labels.volunteerPast}>
                             <span class="sub-tab-heading">{label.volPastTab}</span>
-                        </div>
-                        <div class={committeesClass} onclick={handleSubTabClick} data-name={labels.volunteerCommittees}>
-                            <span class="sub-tab-heading">{labels.volunteerCommittees}</span>
                         </div>
                     </div>
                     <div class="sub-tab-line"></div>
@@ -259,7 +253,7 @@
                             
                             <div class="grid-container">
                                 <!-- Loop through current activities -->
-                                <template for:each={myCurrentActivities} for:item="activity">
+                                <template for:each={myCurrentBucketRecords} for:item="activity">
                                     <div key={activity.id} class="vol-opp-card">
                                             <!-- Activity image -->
                                             <div class="image-column">
@@ -270,17 +264,17 @@
                                                     />
                                                 </div>
                                             </div>
-                                            
+
                                             <!-- Activity details -->
                                             <div class="content-column">
                                                 <!-- Activity name -->
                                                 <h3 class="opp-title" title={activity.name}>
                                                     {activity.trimmedTitle}</h3>
-                                                
+
                                                 <!-- Activity description -->
                                                 <p class="opp-description" title={activity.description}>
                                                     {activity.trimmedDescription}</p>
-                                                
+
                                                 <!-- Date range with calendar icon -->
                                                 <div class="slds-m-top_auto slds-grid slds-grid_vertical-align-center slds-text-color_weak">
                                                     <!-- <lightning-icon icon-name="utility:event" size="x-small"
@@ -291,18 +285,18 @@
                                             </div>
                                     </div>
                                 </template>
-                                
+
                                 <!-- Empty state message -->
-                                <template if:false={myCurrentActivities.length}>
+                                <template if:false={myCurrentBucketRecords.length}>
                                     <div class="slds-p-around_medium slds-text-color_weak">No current activities found.</div>
                                 </template>
                             </div>
-                            
+
                         </template>
                         <template lwc:else>
                              <div class="list-class">
                                     <!-- Loop through current activities -->
-                                    <template for:each={myCurrentActivities} for:item="activity">
+                                    <template for:each={myCurrentBucketRecords} for:item="activity">
                                         <div key={activity.id} class="list-class-element">
                                             <!-- Activity image -->
                                             <div class="my-img-container-list">
@@ -331,94 +325,23 @@
                                     </template>
                                     
                                     <!-- Empty state message -->
-                                    <template if:false={myCurrentActivities.length}>
+                                    <template if:false={myCurrentBucketRecords.length}>
                                         <div class="slds-p-around_medium slds-text-color_weak">No current activities found.</div>
                                     </template>
                              </div>
                         </template>
-                    </template>
 
-                    <!-- ============================================ -->
-                    <!-- SUB-TAB: UPCOMING ACTIVITIES -->
-                    <!-- Activities scheduled for the future -->
-                    <!-- ============================================ -->
-                    <template lwc:if={upcomingActive}>
-                        <template lwc:if={isGridView}>
-                            <div class="grid-container">
-                                <!-- Loop through upcoming activities -->
-                                <template for:each={myUpcomingActivities} for:item="activity">
-                                    <div key={activity.id} class="vol-opp-card">
-                                            <!-- Activity image -->
-                                            <div class="image-column">
-                                                <div class="image-wrapper">
-                                                    <img
-                                                        src={activity.imageUrl}
-                                                        class="opp-image"
-                                                    />
-                                                </div>
-                                            </div>
-                                            
-                                            <!-- Activity details -->
-                                            <div class="content-column">
-                                                <!-- Activity name -->
-                                                <h3 class="opp-title" title={activity.name}>
-                                                  {activity.trimmedTitle}</h3>
-                                                
-                                                <!-- Activity description -->
-                                                <p class="opp-description" title={activity.description}>
-                                                  {activity.trimmedDescription}</p>
-                                                
-                                                <!-- Date range with calendar icon -->
-                                                <div class="slds-m-top_auto slds-grid slds-grid_vertical-align-center slds-text-color_weak">
-                                                    <!-- <lightning-icon icon-name="utility:event" size="x-small"
-                                                        class="slds-m-right_x-small"></lightning-icon> -->
-                                                        <img src={images.calendarImage} alt="Date" class="my-date-range-img"  />
-                                                    <span class="my-date-range-1">{activity.dateRange}</span>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </template>
-                                
-                                <!-- Empty state message -->
-                                <template if:false={myUpcomingActivities.length}>
-                                    <div class="slds-p-around_medium slds-text-color_weak">No upcoming activities found.</div>
-                                </template>
-                            </div>
-                        </template>
-                        <template lwc:else>
-                              <div class="list-class">
-                                <!-- Loop through upcoming activities -->
-                                <template for:each={myUpcomingActivities} for:item="activity">
-                                    <div key={activity.id} class="list-class-element">
-                                            <!-- Activity image -->
-                                            <div class="my-img-container-list">
-                                            <img src={activity.imageUrl} class="list-desktop-image" />
-                                            </div>
-                                            
-                                             <!-- Text content in the middle (title + description stacked) -->
-                                            <div class="my-text-container-list">
-                                                <h3 title={activity.name}>{activity.trimmedTitle}</h3>
-                                            </div>
-
-                                            <!-- Text content in the middle (title + description stacked) -->
-                                            <div class="my-text-container-list-desc">
-                                                <p title={activity.description}>{activity.trimmedDescription}</p>
-                                            </div>
-
-                                            <!-- Date range with calendar icon -->
-                                            <div>
-                                                <img src={images.calendarImage} alt="Date" class="my-date-range-img"  />
-                                                <span class="my-date-range-1">{activity.dateRange}</span>
-                                            </div>
-                                    </div>
-                                </template>
-                                
-                                <!-- Empty state message -->
-                                <template if:false={myUpcomingActivities.length}>
-                                    <div class="slds-p-around_medium slds-text-color_weak">No upcoming activities found.</div>
-                                </template>
-                            </div>
-                        </template>
+                        <!-- ============================================ -->
+                        <!-- PAGINATION CONTROLS -->
+                        <!-- ============================================ -->
+                        <c-ham_-pagination-util
+                            total-records={totalRecordsCurrentBucket}
+                            page-size={resolvedRecordLimit}
+                            current-page={currentBucketPage}
+                            result-label="Records"
+                            is-override={isOverride}
+                            onpagechange={handleCurrentPageChange}>
+                        </c-ham_-pagination-util>
                     </template>
 
                     <!-- ============================================ -->
@@ -599,78 +522,6 @@
                             </c-ham_-pagination-util>
                         </div>
                     </template>
-                    <!-- ============================================ -->
-                    <!-- SUB-TAB: COMMITTEES -->
-                    <!-- Displays Board of Trustees and Committees -->
-                    <!-- ============================================ -->
-                    <template lwc:if={committeesActive}>
-                        <!-- GRID VIEW -->
-                        <template lwc:if={isGridView}>
-                            <div class="grid-container">
-                                <template for:each={myCommitteeActivities} for:item="activity">
-                                    <div key={activity.id} class="vol-opp-card">
-                                        <div class="image-column">
-                                            <div class="image-wrapper">
-                                                <img src={activity.imageUrl} class="opp-image" alt="Committee" />
-                                            </div>
-                                        </div>
-                                        <div class="content-column">
-                                            <h3 class="opp-title" title={activity.name}>{activity.trimmedTitle}</h3>
-                                            <!-- Description uses non-breaking space if null to keep equal height -->
-                                            <p class="opp-description" title={activity.description}>{activity.trimmedDescription}</p>
-                                            <div class="slds-m-top_auto slds-grid slds-grid_vertical-align-center slds-text-color_weak">
-                                                <img src={images.calendarImage} alt="Date" class="my-date-range-img" />
-                                                <span class="my-date-range-1">{activity.dateRange}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-                                <template if:false={myCommitteeActivities.length}>
-                                    <div class="slds-p-around_medium slds-text-color_weak">No committees found.</div>
-                                </template>
-                            </div>
-                        </template>
-                        
-                        <!-- LIST VIEW -->
-                        <template lwc:else>
-                            <div class="list-class">
-                                <template for:each={myCommitteeActivities} for:item="activity">
-                                    <div key={activity.id} class="list-class-element">
-                                        <div class="my-img-container-list">
-                                            <img src={activity.imageUrl} class="list-desktop-image" alt="Committee" />
-                                        </div>
-                                        <div class="my-text-container-list" title={activity.name}>
-                                            <h3>{activity.trimmedTitle}</h3>
-                                        </div>
-                                        <div class="my-text-container-list-desc" title={activity.description}>
-                                            <p>{activity.trimmedDescription}</p>
-                                        </div>
-                                        <div>
-                                            <img src={images.calendarImage} alt="Date" class="my-date-range-img" />
-                                            <span class="my-date-range-1">{activity.dateRange}</span>
-                                        </div>
-                                    </div>
-                                </template>
-                                <template if:false={myCommitteeActivities.length}>
-                                    <div class="slds-p-around_medium slds-text-color_weak">No committees found.</div>
-                                </template>
-                            </div>
-                        </template>
-
-                        <!-- Pagination for Committees -->
-                        <template if:true={myCommitteeActivities.length}>
-                            <div class="my-pagination-container-cmp">
-                                <c-ham_-pagination-util
-                                    total-records={commTotalRecords}
-                                    page-size={resolvedRecordLimit}
-                                    current-page={commCurrentPage}
-                                    result-label="Records"
-                                    is-override={isOverride}
-                                    onpagechange={handleCommPaginationPageChange}>
-                                </c-ham_-pagination-util>
-                            </div>
-                        </template>
-                    </template>
                 </div>
             </template>
         </div>
@@ -814,7 +665,7 @@
                     <template lwc:if={showCurrentNews}>
                         <div class={containerClass}>
                             <!-- Loop through current activities -->
-                            <template for:each={myCurrentActivities} for:item="activity">
+                            <template for:each={myCurrentBucketRecords} for:item="activity">
                                 <div key={activity.id} class={itemClass}>
                                     <article class="my-article-section-mobile">
                                         <!-- Activity image -->
@@ -823,18 +674,18 @@
                                             alt="Volunteer"
                                             class="mobile-image"
                                         />
-                                        
-                                        
+
+
                                     <!-- Activity details -->
                                         <div class="my-article-text-container">
                                             <!-- Activity name -->
                                             <h3>
                                                 {activity.trimmedTitle}</h3>
-                                            
+
                                             <!-- Activity description -->
                                             <p>
                                                 {activity.trimmedDescription}</p>
-                                            
+
                                             <!-- Date range with calendar icon -->
                                             <div class="slds-grid slds-grid_vertical-align-center slds-text-color_weak">
                                                 <!-- <lightning-icon icon-name="utility:event" size="x-small"
@@ -846,73 +697,25 @@
                                      </article>
                                 </div>
                             </template>
-                            
+
                             <!-- Empty state message -->
-                            <template if:false={myCurrentActivities.length}>
+                            <template if:false={myCurrentBucketRecords.length}>
                                 <div class="slds-text-color_weak">No {label.volCurrentTab}.</div>
                             </template>
-                        </div>
-                    </template>
-                </div>
+                        <!-- ============================================ -->
+                        <!-- MOBILE PAGINATION CONTROLS -->
+                        <!-- ============================================ -->
+                        <c-ham_-pagination-util
+                            total-records={totalRecordsCurrentBucket}
+                            page-size={resolvedRecordLimit}
+                            current-page={currentBucketPage}
+                            result-label="Records"
+                            is-override={isOverride}
+                            onpagechange={handleCurrentPageChange}>
+                        </c-ham_-pagination-util>
 
-                <!-- ============================================ -->
-                <!-- COLLAPSIBLE SECTION: UPCOMING ACTIVITIES -->
-                <!-- ============================================ -->
-                <div class="current-news-container">
-                    <!-- Collapsible header with toggle icon -->
-                    <div class="current-news-span" onclick={handleupcomingActivityToggle}>
-                        <h1 class="current-news-heading">{label.volUpcomingTab}</h1>
-                        <div class="current-news-toggle-icon">
-                            <img 
-                                src={upcomingActivityIcon} 
-                                alt="icon" 
-                            />
-                            <!-- <lightning-icon icon-name={upcomingActivityIcon} size="x-small"></lightning-icon> -->
                         </div>
-                    </div>
 
-                    <!-- Expandable content -->
-                    <template lwc:if={showUpcomingActivity}>
-                        <div class={containerClass}>
-                            <!-- Loop through upcoming activities -->
-                            <template for:each={myUpcomingActivities} for:item="activity">
-                                <div key={activity.id} class={itemClass}>
-                                     <article class="my-article-section-mobile">
-                                        <!-- Activity image -->
-                                        <img
-                                            src={activity.imageUrl}
-                                            alt="Volunteer"
-                                            class="mobile-image"
-                                        />
-                                        
-
-                                    <!-- Activity details -->
-                                        <div class="my-article-text-container">
-                                            <!-- Activity name -->
-                                            <h3>
-                                                {activity.trimmedTitle}</h3>
-                                            
-                                            <!-- Activity description -->
-                                            <p>
-                                                {activity.trimmedDescription}</p>
-                                            
-                                            <!-- Date range with calendar icon -->
-                                            <div class="slds-grid slds-grid_vertical-align-center slds-text-color_weak">
-                                                <!-- <lightning-icon icon-name="utility:event" size="x-small"
-                                                    class="slds-m-right_x-small"></lightning-icon> -->
-                                                    <img src={images.calendarImage} alt="Date" class="my-date-range-img"  />
-                                                <span class="my-date-range-1">{activity.dateRange}</span>
-                                            </div>
-                                        </div>
-                                     </article>
-                                </div>
-                            </template>
-                            
-                            <!-- Empty state message -->
-                            <template if:false={myUpcomingActivities.length}>
-                                <div class="slds-text-color_weak">No {label.volUpcomingTab}.</div>
-                            </template>    
-                        </div>
                     </template>
                 </div>
 
@@ -998,16 +801,20 @@
                                                     <span class="list-date-title-small" style="display:block;">Or Select Date Range</span>
                                                     
                                                     <!-- From date picker -->
-                                                    <lightning-input type="date" label="From Date"
+                                                    <!-- Labels are shown (not label-hidden) and carry the expected
+                                                         format: on this form factor the date input renders as a bare
+                                                         box and the placeholder does not surface, leaving the user no
+                                                         indication of what to enter. -->
+                                                    <lightning-input type="date" label="From"
                                                         name="fromDate" value={filterFromDate}
-                                                        onchange={handleDateChange} variant="label-hidden"
-                                                        placeholder="From Date" class="slds-m-bottom_small from-date-input-container">
+                                                        onchange={handleDateChange}
+                                                        placeholder="mm/dd/yyyy" class="slds-m-bottom_small from-date-input-container">
                                                     </lightning-input>
-                                                    
+
                                                     <!-- To date picker -->
-                                                    <lightning-input type="date" label="To Date" name="toDate"
+                                                    <lightning-input type="date" label="To" name="toDate"
                                                         value={filterToDate} onchange={handleDateChange}
-                                                        variant="label-hidden" placeholder="To Date" class="date-input">
+                                                        placeholder="mm/dd/yyyy" class="date-input">
                                                     </lightning-input>
                                                 </li>
                                             </ul>
@@ -1022,7 +829,7 @@
                                 <!-- ============================================ -->
                                 <!-- MOBILE PAST ACTIVITIES LIST -->
                                 <!-- ============================================ -->
-                                <div class={containerClass} style="padding: 40px 8px !important;">
+                                <div class={containerClass} style="padding: 40px 0px !important;">
                                         <template for:each={paginatedPastActivities} for:item="activity">
                                             <div key={activity.id} class={itemClass}>
                                                 <article class="my-article-section-mobile">
@@ -1078,61 +885,6 @@
                                     onpagechange={handlePageChange}>
                                 </c-ham_-pagination-util>
                             </div>
-                        </div>
-                    </template>
-                </div>
-                <!-- ============================================ -->
-                <!-- MOBILE COLLAPSIBLE SECTION: COMMITTEES -->
-                <!-- ============================================ -->
-                <div class="current-news-container committees-class">
-                    <!-- Collapsible header with toggle icon -->
-                    <div class="current-news-span" onclick={handleCommitteesToggle}>
-                        <h1 class="current-news-heading">{labels.volunteerCommittees}</h1>
-                        <div class="current-news-toggle-icon">
-                            <img src={committeesActivityIcon} alt="icon" />
-                        </div>
-                    </div>
-
-                    <!-- Expandable content controlled by showCommitteesActivity -->
-                    <template lwc:if={showCommitteesActivity}>
-                        <div class={containerClass}>
-                            <template for:each={myCommitteeActivities} for:item="activity">
-                                <div key={activity.id} class={itemClass}>
-                                    <article class="my-article-section-mobile">
-                                        <!-- Activity image -->
-                                        <img src={activity.imageUrl} alt="Committee" class="mobile-image" />
-                                        
-                                        <!-- Activity details -->
-                                        <div class="my-article-text-container">
-                                            <h3>{activity.trimmedTitle}</h3>
-                                            <p>{activity.trimmedDescription}</p>
-                                            <div class="slds-grid slds-grid_vertical-align-center slds-text-color_weak">
-                                                <img src={images.calendarImage} alt="Date" class="my-date-range-img" />
-                                                <span class="my-date-range-1">{activity.dateRange}</span>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </div>
-                            </template>
-                            
-                            <!-- Empty state message -->
-                            <template if:false={myCommitteeActivities.length}>
-                                <div class="slds-text-color_weak slds-p-around_medium">No {labels.volunteerCommittees} found.</div>
-                            </template>
-                            
-                            <!-- Mobile Pagination -->
-                            <template if:true={myCommitteeActivities.length}>
-                                <div class="my-pagination-container-cmp slds-m-top_medium">
-                                    <c-ham_-pagination-util
-                                        total-records={commTotalRecords}
-                                        page-size={resolvedRecordLimit}
-                                        current-page={commCurrentPage}
-                                        result-label="Records"
-                                        is-override={isOverride}
-                                        onpagechange={handleCommPaginationPageChange}>
-                                    </c-ham_-pagination-util>
-                                </div>
-                            </template>
                         </div>
                     </template>
                 </div>

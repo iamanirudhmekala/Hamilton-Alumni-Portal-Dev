@@ -245,7 +245,7 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
         // logo: this.mainResource.hamIcons + '/logo.png',
         logo: this.mainResource.hamIcons + '/footerLogo.png',
         makeaGiftImage: this.mainResource.hamIcons + '/gift-outline.png',
-        makeaGiftImageMobile: this.mainResource.hamIcons + '/mobile-gift-outline.png',
+        makeaGiftImageMobile: this.mainResource.hamIcons + '/mobile-gift-outline-only-box.png',
         makeaGiftBoxImageMobile: this.mainResource.hamIcons + '/mobile-gift-outline-only-box.png',
         hamburgerMobile: this.mainResource.hamIcons + '/mobile-hamburger-outline.png',
         editProfileImage: this.mainResource.hamIcons + '/create-outline-1.png',

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Returns the list of publicly visible volunteer opportunities (Career Center and Events Volunteer categories).</description>
+    <developerName>Volunteer_Opportunity_Search_Action</developerName>
+    <invocationTarget>miltonVolunteerOpportunitySearchAction</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Volunteer_Opportunity_Search_Action</localDeveloperName>
+    <masterLabel>Volunteer Opportunity Search Action</masterLabel>
+    <progressIndicatorMessage>Almost done...</progressIndicatorMessage>
+</GenAiFunction>

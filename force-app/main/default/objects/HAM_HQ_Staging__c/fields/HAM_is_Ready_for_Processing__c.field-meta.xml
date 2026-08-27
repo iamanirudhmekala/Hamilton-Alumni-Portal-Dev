@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_is_Ready_for_Processing__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This field will trigger the flow when set to TRUE so that actual record can be created.</description>
+    <inlineHelpText>This field will trigger the flow when set to TRUE so that actual record can be created.</inlineHelpText>
+    <label>HAM is Ready for Processing</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

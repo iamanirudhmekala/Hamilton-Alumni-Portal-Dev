@@ -2,8 +2,8 @@
 * @File Name : HAM_MyImpactController.cls
 * @Description : This class is used to fetch contact details and philanthropy details on my impact page.
 * @Author : Cube84 - Sachin
-* @Last Modified By : Sachin
-* @Last Modified On : July 9, 2025
+* @Last Modified By : Nimish Vaidya
+* @Last Modified On : Aug 05, 2026
 * @Modification Log :
 *==============================================================================
 * Ver | Date | Author | Modification
@@ -13,6 +13,7 @@
 * 1.2 | Oct 09,2025 | Immanuel | Added logic to accomodate 2nd,3rd degree concentartions
 * 1.3 | Dec 03,2025 | Asheesh | Added logic to handle new homepage component.
 * 1.4 | June 19, 2026 | Sachin Kumar Sharma | Added visibility feature toggle for Receipts table.
+* 1.5 | Aug 05, 2026 | Nimish Vaidya | Added HAM_Table_Footnote__c and grant-form button fields to PhilanthropyDataTable for the HDAF table.
 **/
 @SuppressWarnings('PMD.NoTrailingWhitespace, PMD.IfElseStmtsMustUseBraces, PMD.IfStmtsMustUseBraces,PMD.ExcessivePublicCount, PMD.OperationWithLimitsInLoop, PMD.DebugsShouldUseLoggingLevel, PMD.ApexDoc, PMD.FieldNamingConventions, PMD.ExcessiveClassLength, PMD.ApexCRUDViolation, PMD.EmptyIfStmt, PMD.EmptyStatementBlock, PMD.AvoidNonRestrictiveQueries, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.NcssCount, PMD.NcssTypeCount, PMD.DetectCopyPasteForApex, PMD.LocalVariableNamingConventions, PMD.ExcessiveParameterList, PMD.ApexSOQLInjection, PMD.AvoidDeeplyNestedIfStmts, PMD.AvoidDebugStatements, PMD.StdCyclomaticComplexity, PMD.NcssMethodCount')
 public without sharing class HAM_MyImpactController {
@@ -171,13 +172,18 @@ public without sharing class HAM_MyImpactController {
 
     public class PhilanthropyDataTable {
         @AuraEnabled public String tableName;
-        @AuraEnabled public List<SObject> records; 
-        @AuraEnabled public List<String> columnLabels; 
+        @AuraEnabled public List<SObject> records;
+        @AuraEnabled public List<String> columnLabels;
         @AuraEnabled public List<String> columnApiNames;
         @AuraEnabled public List<String> fieldTypes;
         @AuraEnabled public Decimal displayLimit;
         @AuraEnabled public Boolean displayLoadMore;
         @AuraEnabled public Decimal order;
+        @AuraEnabled public String footnote;
+        @AuraEnabled public String button1Label;
+        @AuraEnabled public String button1Url;
+        @AuraEnabled public String button2Label;
+        @AuraEnabled public String button2Url;
     }
 
     // Wrapper to hold data of the interest values in affinities
@@ -217,9 +223,10 @@ public without sharing class HAM_MyImpactController {
     **/
     public static List<HAM_Object_Fetcher__mdt> getPhilanthrophyDetailMetadata(String additionalWhereClause) {
 		List<HAM_Object_Fetcher__mdt> objectFetchers = new List<HAM_Object_Fetcher__mdt>();
-        String query = 'SELECT Id, DeveloperName, HAM_Level_1__c, HAM_Level_2__c, HAM_Related_Object__c, HAM_Display_Type__c, HAM_Default_Display_Value__c, HAM_Display_Label__c,'+ 
+        String query = 'SELECT Id, DeveloperName, HAM_Level_1__c, HAM_Level_2__c, HAM_Related_Object__c, HAM_Display_Type__c, HAM_Default_Display_Value__c, HAM_Display_Label__c,'+
                         'HAM_Display_Field__c, HAM_Reference_Field__c, HAM_Additional_Filter__c, HAM_Order__c, HAM_Table_Default_Sort_Order__c,HAM_Table_Field_APIs__c,'+
-                        'HAM_Table_Field_Labels__c, HAM_Table_Limit__c, HAM_Table_Field_Types__c, HAM_Table_Load_More__c '+
+                        'HAM_Table_Field_Labels__c, HAM_Table_Limit__c, HAM_Table_Field_Types__c, HAM_Table_Load_More__c, '+
+                        'HAM_Table_Footnote__c, HAM_Button_1_Label__c, HAM_Button_1_URL__c, HAM_Button_2_Label__c, HAM_Button_2_URL__c '+
                         'FROM HAM_Object_Fetcher__mdt';
 
         // Append the additional WHERE clause if provided
@@ -385,8 +392,8 @@ public without sharing class HAM_MyImpactController {
                     query += ' LIMIT ' + recordLimit;
                 }
                 else {
-                    query += ' LIMIT ' + field.HAM_Table_Limit__c;
-                } 
+                    query += ' LIMIT ' + String.valueOf((Integer) field.HAM_Table_Limit__c);
+                }
 				 
                 List<Sobject> tableData = Database.query(query);
                 
@@ -399,6 +406,11 @@ public without sharing class HAM_MyImpactController {
                 dataTable.displayLimit = (Decimal) field.HAM_Table_Limit__c;
                 dataTable.displayLoadMore = field.HAM_Table_Load_More__c;
                 dataTable.order = (Decimal)field.HAM_Order__c;
+                dataTable.footnote = field.HAM_Table_Footnote__c;
+                dataTable.button1Label = field.HAM_Button_1_Label__c;
+                dataTable.button1Url = field.HAM_Button_1_URL__c;
+                dataTable.button2Label = field.HAM_Button_2_Label__c;
+                dataTable.button2Url = field.HAM_Button_2_URL__c;
                 philanthropyDetail.philanthropyDataTables.add(dataTable);
                                             
             }
@@ -1102,5 +1114,47 @@ public without sharing class HAM_MyImpactController {
         dataTable.order = (Decimal)field.HAM_Order__c;
         
         return dataTable;
+    }
+
+    /**
+    * @description Fetches the current value of the "Describe My Impact" long text field for a contact.
+    * Used to pre-populate the edit modal on the My Impact page.
+    * @param currentUserContactId - contactId of logged in portal user.
+    * @return String - the current text value of HAM_Describe_My_Impact__c (empty string if none).
+    */
+    @AuraEnabled(cacheable=false)
+    public static String getDescribeMyImpact(String currentUserContactId) {
+        String describeMyImpact = '';
+        try {
+            Contact con = [
+                SELECT Id, HAM_Describe_My_Impact__c
+                FROM Contact
+                WHERE Id = :currentUserContactId
+                WITH SECURITY_ENFORCED
+                LIMIT 1
+            ];
+            describeMyImpact = con.HAM_Describe_My_Impact__c != null ? con.HAM_Describe_My_Impact__c : '';
+        } catch (Exception e) {
+            System.debug('Error in getDescribeMyImpact: ' + e.getMessage());
+        }
+        return describeMyImpact;
+    }
+
+    /**
+    * @description Saves the user-edited "Describe My Impact" text back to the Contact record.
+    * @param currentUserContactId - contactId of logged in portal user.
+    * @param describeMyImpact - the new text entered by the user in the modal.
+    */
+    @AuraEnabled
+    public static void saveDescribeMyImpact(String currentUserContactId, String describeMyImpact) {
+        try {
+            Contact con = new Contact(
+                Id = currentUserContactId,
+                HAM_Describe_My_Impact__c = describeMyImpact
+            );
+            update con;
+        } catch (Exception e) {
+            throw new AuraHandledException('Failed to save Describe My Impact: ' + e.getMessage());
+        }
     }
 }

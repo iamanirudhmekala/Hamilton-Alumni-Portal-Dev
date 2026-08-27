@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Is_Processed__c</fullName>
+    <description>Once the Degree record is created this flag is set</description>
+    <formula>NOT(ISBLANK( HAM_Degree_Information__c ))</formula>
+    <inlineHelpText>Once the Degree record is created this flag is set</inlineHelpText>
+    <label>HAM Is Processed</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

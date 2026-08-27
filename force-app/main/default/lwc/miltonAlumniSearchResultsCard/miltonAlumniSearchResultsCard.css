@@ -1,0 +1,182 @@
+.alumni-card-container {
+    display: block;
+    width: 290px;
+    max-width: 290px;
+    box-sizing: border-box;
+    padding: 0.75rem;
+    margin-left: -0.75rem;
+}
+
+.alumniTitle {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #080707;
+    margin-bottom: 0.6rem;
+}
+
+.alumni-carousel {
+    position: relative;
+    width: 100%;
+}
+
+.alumni-list-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    gap: 0.6rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.alumni-list-container::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.alumni-card {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 0 0 100%;
+    width: 100%;
+    box-sizing: border-box;
+    background: #ffffff;
+    border-radius: 0.65rem;
+    padding: 0.65rem 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    gap: 0.6rem;
+    scroll-snap-align: start;
+}
+
+.bookmark-icon {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    z-index: 1;
+    --slds-c-icon-color-foreground: #706e6b;
+    --sds-c-icon-color-foreground: #706e6b;
+}
+
+.bookmark-icon.bookmarked {
+    --slds-c-icon-color-foreground: #ffb75d;
+    --sds-c-icon-color-foreground: #ffb75d;
+}
+
+.alumni-photo {
+    width: 4rem;
+    height: 6rem;
+    border-radius: 0.5rem;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.alumni-details {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.alumni-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.2rem;
+}
+
+.alumni-id {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #080707;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.degree-year {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.degree-year .degree {
+    font-size: 0.7rem;
+    color: #706e6b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.degree-year .year {
+    font-size: 0.7rem;
+    color: #706e6b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.actions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: auto;
+}
+
+.connection-button-wrapper {
+    display: block;
+    width: 100%;
+}
+
+.connection-button-wrapper,
+.connection-button,
+.view-details-button {
+    width: 100%;
+    font-size: 0.7rem;
+    --slds-c-button-font-size: 0.7rem;
+    --sds-c-button-font-size: 0.7rem;
+    --slds-c-button-spacing-block-start: 0.35rem;
+    --slds-c-button-spacing-block-end: 0.35rem;
+    --sds-c-button-spacing-block-start: 0.35rem;
+    --sds-c-button-spacing-block-end: 0.35rem;
+}
+
+.action-error-message {
+    margin-top: 0.35rem;
+    font-size: 0.7rem;
+    color: #ba0517;
+}
+
+.nav-arrow {
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    z-index: 1;
+    border-radius: 50%;
+    --slds-c-icon-color-foreground: #0b5cab;
+    --slds-c-icon-color-foreground-hover: #ffffff;
+    --slds-c-button-color-background: transparent;
+    --slds-c-button-color-background-hover: #0b5cab;
+    --slds-c-button-radius-border: 50%;
+    --sds-c-icon-color-foreground: #0b5cab;
+    --sds-c-icon-color-foreground-hover: #ffffff;
+    --sds-c-button-color-background: transparent;
+    --sds-c-button-color-background-hover: #0b5cab;
+    --sds-c-button-radius-border: 50%;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.nav-arrow-left {
+    left: 0.1rem;
+}
+
+.nav-arrow-right {
+    right: 0.1rem;
+}

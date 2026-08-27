@@ -454,6 +454,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Information__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>HAM_Trip_Details__c.HAM_End_Date_Time__c</field>
         <readable>true</readable>

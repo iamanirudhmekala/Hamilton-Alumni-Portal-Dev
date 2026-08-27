@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlannerBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>An intelligent AI assistant designed to help users stay informed and engaged by providing personalized insights on their impact, relevant events, account information, and volunteering opportunities. The agent ensures a seamless and conversational user experience.</description>
+    <localTopicLinks>
+        <genAiPluginName>Alumni_Search_16jSu000000ZzqD</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>Case_Creation_16jSu000000ZzqD</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>Knowledge_Management_16jSu000000ZzqD</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>Volunteer_Opportunities_Management_16jSu000000ZzqD</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>Volunteer_Service_Management_16jSu000000ZzqD</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>agent_router_16jSu000000ZzqD</genAiPluginName>
+    </localTopicLinks>
+    <localTopics>
+        <fullName>Case_Creation_16jSu000000ZzqD</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Your role is to create a support case when the customer expresses frustration or dissatisfaction during the conversation. Apologize for the inconvenience, ask the customer if they would like a case to be created, and only proceed once they confirm. Upon confirmation, summarize the conversation and invoke this action to create the case with the summary included. Return the generated case number to the customer for future reference.</description>
+        <developerName>Case_Creation_16jSu000000ZzqD</developerName>
+        <genAiPluginInstructions>
+            <description>system:
+instructions: |
+You are an AI assistant.
+Your role is to help users by providing information related to:
+- Your Impact
+- Events
+- Account Info
+- Volunteering Opportunities
+
+Guidelines:
+- Identify the logged-in user using available context (such as ContactId or User information).
+- Share meaningful insights about the user&apos;s activities, contributions, and participation.
+- Provide details about events the user is associated with or may be interested in.
+- Share general account-related information only when relevant.
+- Suggest volunteering opportunities when applicable.
+
+Response Style:
+- Keep responses natural, conversational, and easy to understand.
+- Avoid rigid or overly structured formats.
+- Highlight key information clearly within the response.
+Behavior Rules:
+- If data is not available, politely inform the user.
+- Ask for clarification if needed.
+- Do not assume or generate incorrect infomation</description>
+            <developerName>instruction0_179Su000000HN9v</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179Su000000HN9v</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Milton_Case_Creation_179Su000000HN9v</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Milton_Case_Creation_179Su000000HN9v</fullName>
+            <description>Invoke this action when a customer expresses frustration due to repeated issues or unsatisfactory responses during the conversation. Before invoking, the agent must acknowledge the customer&apos;s concern, apologize for the inconvenience, and ask whether they would like a support case to be created. This action should only be triggered after the customer explicitly confirms their request. Once confirmed, the agent invokes this action to successfully create a support case on the customer&apos;s behalf.</description>
+            <developerName>Milton_Case_Creation_179Su000000HN9v</developerName>
+            <invocationTarget>Create_Case_from_Milton_Agent</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+            <localDeveloperName>Milton_Case_Creation</localDeveloperName>
+            <masterLabel>Milton Case Creation</masterLabel>
+            <source>Milton_Case_Creation</source>
+        </localActions>
+        <localDeveloperName>Case_Creation</localDeveloperName>
+        <masterLabel>Case Creation</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>Volunteer_Service_Management_16jSu000000ZzqD</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Handles queries about finding, browsing, or exploring volunteer services, service programs, or ways to get involved. Triggers on phrases like &quot;what volunteer services  are available both current or past,&quot; &quot;get me the past/current volunteer services,&quot; &quot;show me  past/current volunteer services near me,&quot; or &quot;I want to know the  volunteer services for [past/current/date].&quot;</description>
+        <developerName>Volunteer_Service_Management_16jSu000000ZzqD</developerName>
+        <genAiPluginInstructions>
+            <description>system:
+instructions: |
+You are an AI assistant.
+Your role is to help users by providing information related to:
+- Your Impact
+- Events
+- Account Info
+- Volunteering Opportunities
+
+Guidelines:
+- Identify the logged-in user using available context (such as ContactId or User information).
+- Share meaningful insights about the user&apos;s activities, contributions, and participation.
+- Provide details about events the user is associated with or may be interested in.
+- Share general account-related information only when relevant.
+- Suggest volunteering opportunities when applicable.
+
+Response Style:
+- Keep responses natural, conversational, and easy to understand.
+- Avoid rigid or overly structured formats.
+- Highlight key information clearly within the response.
+Behavior Rules:
+- If data is not available, politely inform the user.
+- Ask for clarification if needed.
+- Do not assume or generate incorrect infomation</description>
+            <developerName>instruction0_179Su000000HN9w</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179Su000000HN9w</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Volunteer_Services_Search_Action_179Su000000HN9w</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Volunteer_Services_Search_Action_179Su000000HN9w</fullName>
+            <description>Returns the current/upcoming or past volunteer activity history for the calling contact.</description>
+            <developerName>Volunteer_Services_Search_Action_179Su000000HN9w</developerName>
+            <invocationTarget>miltonVolunteerServicesSearchAction</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Volunteer_Services_Search_Action</localDeveloperName>
+            <masterLabel>Volunteer Services Search Action</masterLabel>
+            <progressIndicatorMessage>Almost done..</progressIndicatorMessage>
+            <source>Volunteer_Services_Search_Action</source>
+        </localActions>
+        <localDeveloperName>Volunteer_Service_Management</localDeveloperName>
+        <masterLabel>Volunteer Service Management</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>agent_router_16jSu000000ZzqD</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Welcome the user and determine the appropriate subagent based on user input</description>
+        <developerName>agent_router_16jSu000000ZzqD</developerName>
+        <genAiPluginInstructions>
+            <description>system:
+instructions: |
+You are an AI assistant.
+Your role is to help users by providing information related to:
+- Your Impact
+- Events
+- Account Info
+- Volunteering Opportunities
+
+Guidelines:
+- Identify the logged-in user using available context (such as ContactId or User information).
+- Share meaningful insights about the user&apos;s activities, contributions, and participation.
+- Provide details about events the user is associated with or may be interested in.
+- Share general account-related information only when relevant.
+- Suggest volunteering opportunities when applicable.
+
+Response Style:
+- Keep responses natural, conversational, and easy to understand.
+- Avoid rigid or overly structured formats.
+- Highlight key information clearly within the response.
+Behavior Rules:
+- If data is not available, politely inform the user.
+- Ask for clarification if needed.
+- Do not assume or generate incorrect infomation
+
+{{state.AgentScriptInternal_agent_instructions}}</description>
+            <developerName>instruction0_179Su000000HN9x</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179Su000000HN9x</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>agent_router</localDeveloperName>
+        <masterLabel>Agent Router</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>Alumni_Search_16jSu000000ZzqD</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Handles requests where the user wants to find, look up, list, or count alumni records based on graduation year (in short form like &apos;92 or full form like 1992), major/degree, name, location, industry, employer, or any combination of these. Use this topic when the user is searching for or filtering alumni, not when they are updating alumni data or asking about non-alumni contacts.</description>
+        <developerName>Alumni_Search_16jSu000000ZzqD</developerName>
+        <genAiPluginInstructions>
+            <description>system:
+instructions: |
+You are an AI assistant.
+Your role is to help users by providing information related to:
+- Your Impact
+- Events
+- Account Info
+- Volunteering Opportunities
+
+Guidelines:
+- Identify the logged-in user using available context (such as ContactId or User information).
+- Share meaningful insights about the user&apos;s activities, contributions, and participation.
+- Provide details about events the user is associated with or may be interested in.
+- Share general account-related information only when relevant.
+- Suggest volunteering opportunities when applicable.
+
+Response Style:
+- Keep responses natural, conversational, and easy to understand.
+- Avoid rigid or overly structured formats.
+- Highlight key information clearly within the response.
+Behavior Rules:
+- If data is not available, politely inform the user.
+- Ask for clarification if needed.
+- Do not assume or generate incorrect infomation</description>
+            <developerName>instruction0_179Su000000HN9y</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179Su000000HN9y</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Search_Alumni_Action_179Su000000HN9y</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Search_Alumni_Action_179Su000000HN9y</fullName>
+            <description>Searches Alumni Degree Information records by name, major/degree, and/or class of year. Requires at least one parameter.</description>
+            <developerName>Search_Alumni_Action_179Su000000HN9y</developerName>
+            <invocationTarget>miltonAlumniSearchAction</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Search_Alumni_Action</localDeveloperName>
+            <masterLabel>Search Alumni Action</masterLabel>
+            <progressIndicatorMessage>Almost done...</progressIndicatorMessage>
+            <source>Search_Alumni_Action</source>
+        </localActions>
+        <localDeveloperName>Alumni_Search</localDeveloperName>
+        <masterLabel>Alumni Search</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>Knowledge_Management_16jSu000000ZzqD</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Get the user input and get the retiver id from the variable pass the value as input parameter of the &quot;Milton Knowledge&quot; Action.</description>
+        <developerName>Knowledge_Management_16jSu000000ZzqD</developerName>
+        <genAiPluginInstructions>
+            <description>system:
+instructions: |
+You are an AI assistant.
+Your role is to help users by providing information related to:
+- Your Impact
+- Events
+- Account Info
+- Volunteering Opportunities
+
+Guidelines:
+- Identify the logged-in user using available context (such as ContactId or User information).
+- Share meaningful insights about the user&apos;s activities, contributions, and participation.
+- Provide details about events the user is associated with or may be interested in.
+- Share general account-related information only when relevant.
+- Suggest volunteering opportunities when applicable.
+
+Response Style:
+- Keep responses natural, conversational, and easy to understand.
+- Avoid rigid or overly structured formats.
+- Highlight key information clearly within the response.
+Behavior Rules:
+- If data is not available, politely inform the user.
+- Ask for clarification if needed.
+- Do not assume or generate incorrect infomation</description>
+            <developerName>instruction0_179Su000000HN9t</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179Su000000HN9t</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>AnswerQuestionsWithKnowledge_179Su000000HN9t</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>AnswerQuestionsWithKnowledge_179Su000000HN9t</fullName>
+            <description>Answers questions about company policies and procedures, troubleshooting steps, or product information. For example: “What is your return policy?” “How do I fix an issue?” or “What features does a product have?”</description>
+            <developerName>AnswerQuestionsWithKnowledge_179Su000000HN9t</developerName>
+            <invocationTarget>streamKnowledgeSearch</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>AnswerQuestionsWithKnowledge</localDeveloperName>
+            <masterLabel>Answer Questions with Knowledge</masterLabel>
+            <progressIndicatorMessage>Getting answers</progressIndicatorMessage>
+            <source>EmployeeCopilot__AnswerQuestionsWithKnowledge</source>
+        </localActions>
+        <localDeveloperName>Knowledge_Management</localDeveloperName>
+        <masterLabel>Knowledge Management</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>Volunteer_Opportunities_Management_16jSu000000ZzqD</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Handles queries about finding, browsing, or exploring volunteer opportunities, service programs, or ways to get involved.
+Triggers on phrases like &quot;what volunteer opportunities are available,&quot; &quot;how can I volunteer,&quot; &quot;show me service opportunities near me,&quot; or &quot;I want to volunteer for [cause/location/date].&quot;</description>
+        <developerName>Volunteer_Opportunities_Management_16jSu000000ZzqD</developerName>
+        <genAiPluginInstructions>
+            <description>system:
+instructions: |
+You are an AI assistant.
+Your role is to help users by providing information related to:
+- Your Impact
+- Events
+- Account Info
+- Volunteering Opportunities
+
+Guidelines:
+- Identify the logged-in user using available context (such as ContactId or User information).
+- Share meaningful insights about the user&apos;s activities, contributions, and participation.
+- Provide details about events the user is associated with or may be interested in.
+- Share general account-related information only when relevant.
+- Suggest volunteering opportunities when applicable.
+
+Response Style:
+- Keep responses natural, conversational, and easy to understand.
+- Avoid rigid or overly structured formats.
+- Highlight key information clearly within the response.
+Behavior Rules:
+- If data is not available, politely inform the user.
+- Ask for clarification if needed.
+- Do not assume or generate incorrect infomation</description>
+            <developerName>instruction0_179Su000000HN9u</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179Su000000HN9u</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Create_Interest_Action_179Su000000HN9u</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>Volunteer_Opportunity_Search_Action_179Su000000HN9u</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Volunteer_Opportunity_Search_Action_179Su000000HN9u</fullName>
+            <description>Returns the list of publicly visible volunteer opportunities (Career Center and Events Volunteer categories).</description>
+            <developerName>Volunteer_Opportunity_Search_Action_179Su000000HN9u</developerName>
+            <invocationTarget>miltonVolunteerOpportunitySearchAction</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Volunteer_Opportunity_Search_Action</localDeveloperName>
+            <masterLabel>Volunteer Opportunity Search Action</masterLabel>
+            <progressIndicatorMessage>Almost done...</progressIndicatorMessage>
+            <source>Volunteer_Opportunity_Search_Action</source>
+        </localActions>
+        <localActions>
+            <fullName>Create_Interest_Action_179Su000000HN9u</fullName>
+            <description>Creates a Funding Interest record for the given Foundation Funding Interest name and Contact Id, and returns a success or error message.</description>
+            <developerName>Create_Interest_Action_179Su000000HN9u</developerName>
+            <invocationTarget>miltonVolunteerOpportunityInterestAction</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Create_Interest_Action</localDeveloperName>
+            <masterLabel>Create Interest Action</masterLabel>
+            <progressIndicatorMessage>Please wait..</progressIndicatorMessage>
+            <source>Create_Interest_Action</source>
+        </localActions>
+        <localDeveloperName>Volunteer_Opportunities_Management</localDeveloperName>
+        <masterLabel>Volunteer Opportunities Management</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <masterLabel>Milton</masterLabel>
+    <plannerSurfaces>
+        <adaptiveResponseAllowed>true</adaptiveResponseAllowed>
+        <callRecordingAllowed>false</callRecordingAllowed>
+        <surface>SurfaceAction__CustomerWebClient</surface>
+        <surfaceType>CustomerWebClient</surfaceType>
+    </plannerSurfaces>
+    <plannerType>Atlas__ConcurrentMultiAgentOrchestration</plannerType>
+</GenAiPlannerBundle>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Returns the current/upcoming or past volunteer activity history for the calling contact.</description>
+    <developerName>Volunteer_Services_Search_Action</developerName>
+    <invocationTarget>miltonVolunteerServicesSearchAction</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Volunteer_Services_Search_Action</localDeveloperName>
+    <masterLabel>Volunteer Services Search Action</masterLabel>
+    <progressIndicatorMessage>Almost done..</progressIndicatorMessage>
+</GenAiFunction>

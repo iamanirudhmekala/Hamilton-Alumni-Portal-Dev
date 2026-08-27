@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Searches Alumni Degree Information records by name, major/degree, and/or class of year. Requires at least one parameter.</description>
+    <developerName>Search_Alumni_Action</developerName>
+    <invocationTarget>miltonAlumniSearchAction</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Search_Alumni_Action</localDeveloperName>
+    <masterLabel>Search Alumni Action</masterLabel>
+    <progressIndicatorMessage>Almost done...</progressIndicatorMessage>
+</GenAiFunction>

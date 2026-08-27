@@ -32,7 +32,9 @@ export default class Ham_philanthropyDetailCmp extends LightningElement {
     @track campaignDirection = '▶';
     @track isReceipts = false;
     @track receiptsDirection = '▶';
-    
+    @track isHdaf = false;
+    @track hdafDirection = '▶';
+
  /*********** Table Details  ****************/
  // Tracked properties to hold data for each collapsible section's table
     @track openPledgesData = { tableRecords: [], displayRecords: [], hasMore: false, currentLimit: 0, tableName: '', columnApiNames: [], columnLabels: [],columnFieldTypes: [], sortField: '', sortDirection: 'asc' };
@@ -41,6 +43,7 @@ export default class Ham_philanthropyDetailCmp extends LightningElement {
     @track endowedData = { tableRecords: [], displayRecords: [], hasMore: false, currentLimit: 0, tableName: '', columnApiNames: [], columnLabels: [],columnFieldTypes: [], sortField: '', sortDirection: 'asc' };
     @track campaignData = { tableRecords: [], displayRecords: [], hasMore: false, currentLimit: 0, tableName: '', columnApiNames: [], columnLabels: [],columnFieldTypes: [], sortField: '', sortDirection: 'asc' };
     @track receiptsData = { tableRecords: [], displayRecords: [], hasMore: false, currentLimit: 0, tableName: 'Receipts', columnApiNames: [], columnLabels: [],columnFieldTypes: [], sortField: '', sortDirection: 'desc' };
+    @track hdafData = { tableRecords: [], displayRecords: [], hasMore: false, currentLimit: 0, tableName: '', columnApiNames: [], columnLabels: [],columnFieldTypes: [], sortField: '', sortDirection: 'asc' };
 
     // Public API properties to receive data from the parent component
     @api philanthropySections = [];
@@ -139,6 +142,7 @@ export default class Ham_philanthropyDetailCmp extends LightningElement {
             this.endowedData = { ...this.endowedData, tableRecords: [], displayRecords: [], hasMore: false };
             this.campaignData = { ...this.campaignData, tableRecords: [], displayRecords: [], hasMore: false };
             this.receiptsData = { ...this.receiptsData, tableRecords: [], displayRecords: [], hasMore: false };
+            this.hdafData = { ...this.hdafData, tableRecords: [], displayRecords: [], hasMore: false };
             return; // Exit if no data
         }
 
@@ -155,7 +159,12 @@ export default class Ham_philanthropyDetailCmp extends LightningElement {
                 sortDirection: 'desc',
                 displayRecords: [],
                 hasMore: false,
-                showLoadMore: tableData.displayLoadMore
+                showLoadMore: tableData.displayLoadMore,
+                footnote: tableData.footnote,
+                button1Label: tableData.button1Label,
+                button1Url: tableData.button1Url,
+                button2Label: tableData.button2Label,
+                button2Url: tableData.button2Url
             };
 
             // Apply sorting and pagination and assign to the correct tracked property
@@ -180,6 +189,9 @@ export default class Ham_philanthropyDetailCmp extends LightningElement {
                 case 'Campaigns':
                     this.campaignData = processedData;
                     break;
+                case 'Hamilton Donor Advised Fund (HDAF)':
+                    this.hdafData = processedData;
+                    break;
                 default:
                     console.warn(`Unknown table name: ${tableData.tableName}`);
             }
@@ -202,6 +214,7 @@ export default class Ham_philanthropyDetailCmp extends LightningElement {
                 case 'Giving Over Past 5 Years': targetData = { ...this.givingPastData }; break;
                 case 'Endowed Funds': targetData = { ...this.endowedData }; break;
                 case 'Campaigns': targetData = { ...this.campaignData }; break;
+                case 'Hamilton Donor Advised Fund (HDAF)': targetData = { ...this.hdafData }; break;
                 default:
                     console.error(`handleSort: Unknown sectionName - ${sectionName}`);
                     return;
@@ -221,6 +234,7 @@ export default class Ham_philanthropyDetailCmp extends LightningElement {
                 case 'Giving Over Past 5 Years': this.givingPastData = updatedData; break;
                 case 'Endowed Funds': this.endowedData = updatedData; break;
                 case 'Campaigns': this.campaignData = updatedData; break;
+                case 'Hamilton Donor Advised Fund (HDAF)': this.hdafData = updatedData; break;
             }
         }
 
@@ -239,6 +253,7 @@ export default class Ham_philanthropyDetailCmp extends LightningElement {
                 case 'Giving Over Past 5 Years': targetData = { ...this.givingPastData }; break;
                 case 'Endowed Funds': targetData = { ...this.endowedData }; break;
                 case 'Campaigns': targetData = { ...this.campaignData }; break;
+                case 'Hamilton Donor Advised Fund (HDAF)': targetData = { ...this.hdafData }; break;
                 default:
                     console.error(`handleLoadMore: Unknown sectionName - ${sectionName}`);
                     return;
@@ -256,6 +271,7 @@ export default class Ham_philanthropyDetailCmp extends LightningElement {
                 case 'Giving Over Past 5 Years': this.givingPastData = updatedData; break;
                 case 'Endowed Funds': this.endowedData = updatedData; break;
                 case 'Campaigns': this.campaignData = updatedData; break;
+                case 'Hamilton Donor Advised Fund (HDAF)': this.hdafData = updatedData; break;
             }
 
         }
@@ -368,6 +384,9 @@ export default class Ham_philanthropyDetailCmp extends LightningElement {
         } else if (section === 'campaign') {
             this.campaignDirection = (this.campaignDirection === '▶') ? '▼' : '▶';
             this.isCampaign = !this.isCampaign;
+        } else if (section === 'hdaf') {
+            this.hdafDirection = (this.hdafDirection === '▶') ? '▼' : '▶';
+            this.isHdaf = !this.isHdaf;
         }
     }
 
@@ -394,6 +413,10 @@ export default class Ham_philanthropyDetailCmp extends LightningElement {
 
     get receiptsClass() {
         return this.isReceipts ? 'accordion-header' : 'accordion-header-collapsed';
+    }
+
+    get hdafClass() {
+        return this.isHdaf ? 'accordion-header' : 'accordion-header-collapsed';
     }
 
     /**

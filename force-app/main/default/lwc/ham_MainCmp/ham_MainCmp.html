@@ -106,11 +106,14 @@
 
                         <!-- Row 5: Trivia & Volunteer -->
                         <div class="row two-column">
+                           
+                            
                             <div class="col trivia-col" data-section-id="trivia">
                                 <c-ham_hamilton-trivia usercontact-id={currentUserContactId}
                                     is-override={isOverride}></c-ham_hamilton-trivia>
                             </div>
-                            <div class="col" data-section-id="volunteer">
+                            
+                            <div class="col vol-mobile-col" data-section-id="volunteer">
                                 <c-ham_volunteer-opportunities onnavigatevolevent={handleNavigateVolunteer}
                                     user-contact-id={currentUserContactId} onnavigateevent={navigateMyImpact}
                                     label={label} images={images}

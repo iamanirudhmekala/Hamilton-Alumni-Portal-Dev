@@ -1,0 +1,8 @@
+.verify-card {
+    background: #ffffff;
+}
+
+.verify-toggle {
+    width: 100%;
+    justify-content: flex-start;
+}

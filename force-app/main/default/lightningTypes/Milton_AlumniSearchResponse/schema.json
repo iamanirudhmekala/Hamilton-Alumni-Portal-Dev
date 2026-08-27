@@ -1,0 +1,5 @@
+{
+  "title" : "Alumni Search Response",
+  "description" : "Alumni search results returned by the Alumni Search agent action, rendered as alumni profile cards.",
+  "lightning:type" : "@apexClassType/c__Milton_AlumniSearchResponse"
+}

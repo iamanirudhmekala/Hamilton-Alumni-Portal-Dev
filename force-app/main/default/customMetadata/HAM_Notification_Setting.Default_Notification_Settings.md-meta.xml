@@ -6,4 +6,8 @@
         <field>Polling_Interval_Seconds__c</field>
         <value xsi:type="xsd:double">10.0</value>
     </values>
+    <values>
+        <field>Site_Base_Path__c</field>
+        <value xsi:type="xsd:string">/HamiltonPortal/</value>
+    </values>
 </CustomMetadata>

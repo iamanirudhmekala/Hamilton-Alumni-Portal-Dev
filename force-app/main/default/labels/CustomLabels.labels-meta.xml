@@ -2557,4 +2557,20 @@ If you have any questions, please contact &lt;a href=&quot;mailto:giving@hamilto
         <shortDescription>HAM_Group_Members_No_Search_Results</shortDescription>
         <value>No profiles match your current search or filters. Try refining your search or removing search filters</value>
     </labels>
+    <labels>
+        <fullName>Grad_School_Record_ID</fullName>
+        <categories>Hamilton Quad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Grad School Record ID</shortDescription>
+        <value>0123t000000JeMLAA0</value>
+    </labels>
+    <labels>
+        <fullName>HQ_Data_Steward_Owner_Id</fullName>
+        <categories>Hamilton Quad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HQ Data Steward Owner Id</shortDescription>
+        <value>005U1000007B5egIAC</value>
+    </labels>
 </CustomLabels>

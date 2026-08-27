@@ -1,0 +1,44 @@
+<template>
+    <div class="service-card-container">
+        <!-- Volunteer Service Cards Carousel -->
+        <div class="service-carousel">
+            <template if:false={isFirstCard}>
+                <lightning-button-icon
+                    icon-name="utility:chevronleft"
+                    variant="bare"
+                    alternative-text="Previous"
+                    onclick={handlePrev}
+                    class="nav-arrow nav-arrow-left">
+                </lightning-button-icon>
+            </template>
+
+            <div class="service-list-container" onscroll={handleScroll}>
+                <template for:each={serviceData} for:item="activity">
+                    <div key={activity.recordId} class="service-card">
+                        <!-- Name and Status -->
+                        <div class="service-header">
+                            <h2 class="service-name">{activity.name}</h2>
+                            <span class="service-status-badge">{activity.computedTab}</span>
+                        </div>
+
+                        <!-- Service Details -->
+                        <div class="service-details">
+                            <div class="service-date-range">{activity.dateRange}</div>
+                            <div class="service-description">{activity.description}</div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <template if:false={isLastCard}>
+                <lightning-button-icon
+                    icon-name="utility:chevronright"
+                    variant="bare"
+                    alternative-text="Next"
+                    onclick={handleNext}
+                    class="nav-arrow nav-arrow-right">
+                </lightning-button-icon>
+            </template>
+        </div>
+    </div>
+</template>

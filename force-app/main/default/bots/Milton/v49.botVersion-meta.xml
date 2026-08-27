@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BotVersion xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>v49</fullName>
+    <articleAnswersGPTEnabled>false</articleAnswersGPTEnabled>
+    <botDialogs>
+        <botSteps>
+            <botMessages>
+                <message>Welcome to the HQ portal, {!$Context.ConstituentName}! I&apos;m Milton, your AI service assistant. 
+
+I can help you find information regarding the Directory, Volunteering opportunities, your Profile, upcoming Events, and Giving. What can I help you with today?</message>
+                <messageIdentifier>4158f88a-68db-48a3-8d1c-f62eaa8baf9f</messageIdentifier>
+            </botMessages>
+            <stepIdentifier>568324c9-2621-49ab-838b-871814602e77</stepIdentifier>
+            <type>Message</type>
+        </botSteps>
+        <botSteps>
+            <stepIdentifier>385c3cd6-c3ac-4301-a81f-cff9a6779c90</stepIdentifier>
+            <type>Wait</type>
+        </botSteps>
+        <developerName>Welcome</developerName>
+        <isPlaceholderDialog>false</isPlaceholderDialog>
+        <label>Welcome</label>
+        <showInFooterMenu>false</showInFooterMenu>
+    </botDialogs>
+    <botDialogs>
+        <botSteps>
+            <botMessages>
+                <message>Sorry, it looks like something has gone wrong.</message>
+                <messageIdentifier>387c18ef-35d2-4b51-8d91-ee4cb74b6d9c</messageIdentifier>
+            </botMessages>
+            <stepIdentifier>e7e7d974-c1ef-46e6-a577-2273e6a42ed1</stepIdentifier>
+            <type>Message</type>
+        </botSteps>
+        <botSteps>
+            <stepIdentifier>99621cc5-7f11-426e-93df-87cb0a1e6a57</stepIdentifier>
+            <type>Wait</type>
+        </botSteps>
+        <developerName>Rich_Content_Error_Handling</developerName>
+        <isPlaceholderDialog>false</isPlaceholderDialog>
+        <label>Error Handler</label>
+        <showInFooterMenu>false</showInFooterMenu>
+    </botDialogs>
+    <botDialogs>
+        <botSteps>
+            <conversationSystemMessage>
+                <type>Transfer</type>
+            </conversationSystemMessage>
+            <stepIdentifier>2b95f108-53be-4345-89ca-4ef12d3bc252</stepIdentifier>
+            <type>SystemMessage</type>
+        </botSteps>
+        <developerName>Transfer_To_Agent</developerName>
+        <isPlaceholderDialog>false</isPlaceholderDialog>
+        <label>Transfer To Agent</label>
+        <showInFooterMenu>false</showInFooterMenu>
+    </botDialogs>
+    <citationsEnabled>false</citationsEnabled>
+    <conversationDefinitionPlanners>
+        <genAiPlannerName>Milton_v49</genAiPlannerName>
+    </conversationDefinitionPlanners>
+    <conversationSystemDialogs>
+        <dialog>Rich_Content_Error_Handling</dialog>
+        <type>ErrorHandling</type>
+    </conversationSystemDialogs>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Stores the Salesforce Case ID created by an inbound email.</description>
+        <developerName>emailCaseId</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Email Case Id</label>
+        <visibility>External</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Displaying the phone number from the case creation action</description>
+        <developerName>Phone</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Phone</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>The agent instructions</description>
+        <developerName>AgentScriptInternal_agent_instructions</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Agent Instructions</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Stores the Salesforce Contact ID associated with the end user who sent the inbound email.</description>
+        <developerName>endUserContactId</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>End User Contact Id</label>
+        <visibility>External</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Stores the customer ID type, whether it&apos;s a Salesforce user or a contact.</description>
+        <developerName>customerType</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Customer Type</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Stores the Salesforce user ID or contact ID.</description>
+        <developerName>customerId</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Customer Id</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Stores email address of the end user who sent the inbound email.</description>
+        <developerName>endUserEmail</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>End User Email</label>
+        <visibility>External</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>The next topic to be visited</description>
+        <developerName>AgentScriptInternal_next_topic</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Next Topic</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>This variable may also be referred to as VerifiedCustomerId</description>
+        <developerName>VerifiedCustomerId</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Verified Customer Id</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Displaying the Email from the case creation flow.</description>
+        <developerName>Email</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Email</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>This is contactID of the loggedin user passsed from portal to agent</description>
+        <developerName>ContactId</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>ContactId</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Stores the authentication key that&apos;s used to generate the verification code.</description>
+        <developerName>authenticationKey</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>Authentication Key</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Stores a boolean value that indicates whether the customer code is verified.</description>
+        <developerName>isVerified</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>isVerified</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Using this variable to store the case number from the output response of the Milton case creation action.</description>
+        <developerName>caseNumber</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>caseNumber</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <copilotPrimaryLanguage>en_US</copilotPrimaryLanguage>
+    <copilotSecondaryLanguages>en_GB</copilotSecondaryLanguages>
+    <entryDialog>Welcome</entryDialog>
+    <intentDisambiguationEnabled>false</intentDisambiguationEnabled>
+    <intentV3Enabled>false</intentV3Enabled>
+    <knowledgeActionEnabled>false</knowledgeActionEnabled>
+    <knowledgeFallbackEnabled>false</knowledgeFallbackEnabled>
+    <smallTalkEnabled>false</smallTalkEnabled>
+    <staticPromptsEnabled>false</staticPromptsEnabled>
+    <stopRecPrompts>false</stopRecPrompts>
+    <stopWelcomePrompts>false</stopWelcomePrompts>
+    <surfacesEnabled>false</surfacesEnabled>
+    <toneType>Casual</toneType>
+</BotVersion>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Check_readiness</name>
+        <label>Check readiness</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Not Yet Ready</defaultConnectorLabel>
+        <rules>
+            <name>Is_Ready_for_Processing</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.HAM_is_Ready_for_Processing__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Generate_other_School_Degree</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Is Ready for Processing</label>
+        </rules>
+    </decisions>
+    <description>V1 - immediate flow 
+v2 - Schedule path
+v2.1 - Schedule path + update staging</description>
+    <environments>Default</environments>
+    <interviewLabel>Degree Code v1. Draft {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Create Grad Degree</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Generate_other_School_Degree</name>
+        <label>Generate other School Degree</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_staging_object</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>$Label.Grad_School_Record_ID</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ucinn_ascendv2__Conferred_Degree_Year__c</field>
+            <value>
+                <elementReference>$Record.HAM_Degree_Conferred_Year__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ucinn_ascendv2__Contact__c</field>
+            <value>
+                <elementReference>$Record.HAM_Constituent__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ucinn_ascendv2__Degree_Code__c</field>
+            <value>
+                <elementReference>$Record.HAM_Degree_Code__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ucinn_ascendv2__Degree_Institution__c</field>
+            <value>
+                <elementReference>$Record.HAM_School__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ucinn_ascendv2__Minor_Code__c</field>
+            <value>
+                <elementReference>$Record.HAM_Minor__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ucinn_ascendv2__Post_Code__c</field>
+            <value>
+                <elementReference>$Record.HAM_Major__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ucinn_ascendv2__Degree_Information__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordUpdates>
+        <name>Update_staging_object</name>
+        <label>Update staging object</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>HAM_Degree_Information__c</field>
+            <value>
+                <elementReference>Generate_other_School_Degree.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <object>HAM_HQ_Staging__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>Run_after_0_minutes</name>
+            <connector>
+                <targetReference>Check_readiness</targetReference>
+            </connector>
+            <label>Run after 0 minutes</label>
+            <maxBatchSize>1</maxBatchSize>
+            <offsetNumber>0</offsetNumber>
+            <offsetUnit>Minutes</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>InvalidDraft</status>
+</Flow>

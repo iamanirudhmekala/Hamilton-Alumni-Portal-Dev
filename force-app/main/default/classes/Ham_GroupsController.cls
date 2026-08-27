@@ -1454,8 +1454,7 @@ public without sharing class Ham_GroupsController {
                     currNotification.setTitle(title);
                     currNotification.setBody(plainBody);
                     currNotification.setNotificationTypeId(typeId);
-                    String pageRefJson = '{"type": "standard__webPage", "attributes": {"url": "/' + actionUrl + '"}}';
-                    currNotification.setTargetPageRef(pageRefJson);
+                    currNotification.setTargetPageRef(HAM_NotificationService.buildTargetPageRef(actionUrl));
                     currNotification.send(new Set<String>{ recipientUserId });
                 }
             }
@@ -2195,11 +2194,40 @@ public without sharing class Ham_GroupsController {
             }
         }
 
-        if (String.isNotBlank(targetEmail)) {
+        if (String.isNotBlank(targetEmail) && !isEmailSuppressed(targetContactId)) {
             sendModerationEmail(targetEmail, message);
         }
 
         return 'Success';
+    }
+
+    /**
+     * @description Whether outbound email to this contact is suppressed by an active
+     * service indicator.
+     *
+     * INTERIM (2026-08-13): matches the Service Indicator Value by Name, since
+     * HAM_Portal_ID__c is unpopulated on it. Pending client confirmation of which
+     * indicator governs transactional mail — "No Contact with Hamilton" is the blanket
+     * one and may belong here too. Once HQ populates a portal ID, match on that instead. Deliberately does NOT filter on RecordType, unlike
+     * getPrivacyMaskedContacts(): for a suppression check the failure modes are not
+     * symmetric — over-filtering emails someone who opted out, under-filtering merely
+     * skips an email we could have sent. Filtering on the contact lookup already scopes
+     * this to contact-level indicators.
+     * @param contactId Contact being emailed.
+     * @return Boolean true when an active suppressing indicator exists.
+     */
+    private static Boolean isEmailSuppressed(Id contactId) {
+        if (contactId == null) {
+            return false;
+        }
+        return ![
+            SELECT Id
+            FROM ucinn_ascendv2__Service_Indicator__c
+            WHERE ucinn_ascendv2__Contact__c = :contactId
+              AND ucinn_ascendv2__Is_Active__c = true
+              AND ucinn_ascendv2__Service_Indicator_Value__r.Name = :HAM_ConstantsUtil.NO_CONTACT_MASS_EMAIL_SI
+            LIMIT 1
+        ].isEmpty();
     }
 
     private static void sendModerationEmail(String toAddress, String body) {

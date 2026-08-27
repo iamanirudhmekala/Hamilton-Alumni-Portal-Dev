@@ -46,6 +46,10 @@
         <members>*</members>
         <name>GenAiFunction</name>
     </types>
+    <types>
+        <members>*</members>
+        <name>LightningTypeBundle</name>
+    </types>
 
     <!-- Prompt Templates -->
     <types>

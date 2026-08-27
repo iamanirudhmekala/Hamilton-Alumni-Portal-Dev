@@ -575,5 +575,92 @@ private class HAM_MyImpactController_Test {
         Assert.areEqual(false, result.showReceiptsTable, 'showReceiptsTable flag should be false.');
         Assert.areEqual(null, filteredReceipts, 'Filtered receipts should be null when table visibility is disabled.');
     }
+    /*------------- ASC-14285 Describe My Impact Section --------------------*/
+    /**
+    * @description Verifies getDescribeMyImpact returns an empty string when the field
+    * has not yet been populated on the Contact record.
+    */
+    @IsTest
+    static void testGetDescribeMyImpactDefaultOrBlank() {
+        Contact testContact = [SELECT Id FROM Contact WHERE LastName = 'TestUser' LIMIT 1];
 
+        Test.startTest();
+        String result = HAM_MyImpactController.getDescribeMyImpact(testContact.Id);
+        Test.stopTest();
+
+        System.assertNotEquals(null, result, 'Should never return null — either the field default value or empty string.');
+    }
+
+    /**
+    * @description Verifies saveDescribeMyImpact persists the text to the Contact record,
+    * and that a subsequent getDescribeMyImpact call reflects the saved value.
+    */
+    @IsTest
+    static void testSaveAndGetDescribeMyImpact() {
+        Contact testContact = [SELECT Id FROM Contact WHERE LastName = 'TestUser' LIMIT 1];
+        String newValue = 'I have given consistently to the Annual Fund and mentored students through Career Center programs.';
+
+        Test.startTest();
+        HAM_MyImpactController.saveDescribeMyImpact(testContact.Id, newValue);
+        String savedValue = HAM_MyImpactController.getDescribeMyImpact(testContact.Id);
+        Test.stopTest();
+
+        System.assertEquals(newValue, savedValue, 'Saved value should be returned on subsequent fetch.');
+
+        Contact updatedContact = [SELECT HAM_Describe_My_Impact__c FROM Contact WHERE Id = :testContact.Id];
+        System.assertEquals(newValue, updatedContact.HAM_Describe_My_Impact__c, 'Contact record should be updated with the new value.');
+    }
+
+    /**
+    * @description Verifies saveDescribeMyImpact correctly overwrites an existing value
+    * (simulating the user editing previously-saved text).
+    */
+    @IsTest
+    static void testSaveDescribeMyImpactOverwritesExistingValue() {
+        Contact testContact = [SELECT Id FROM Contact WHERE LastName = 'TestUser' LIMIT 1];
+
+        Test.startTest();
+        HAM_MyImpactController.saveDescribeMyImpact(testContact.Id, 'Initial impact statement.');
+        HAM_MyImpactController.saveDescribeMyImpact(testContact.Id, 'Updated impact statement.');
+        String finalValue = HAM_MyImpactController.getDescribeMyImpact(testContact.Id);
+        Test.stopTest();
+
+        System.assertEquals('Updated impact statement.', finalValue, 'Second save should overwrite the first value.');
+    }
+
+    /**
+    * @description Verifies saveDescribeMyImpact throws an AuraHandledException when given
+    * an invalid Contact Id, ensuring the LWC's catch block receives a clean error rather
+    * than an unhandled exception.
+    */
+    @IsTest
+    static void testSaveDescribeMyImpactInvalidIdThrowsException() {
+        String invalidContactId = '003000000000000AAA'; // well-formed but non-existent Contact Id
+        Boolean exceptionThrown = false;
+
+        Test.startTest();
+        try {
+            HAM_MyImpactController.saveDescribeMyImpact(invalidContactId, 'This should fail.');
+        } catch (AuraHandledException ahe) {
+            exceptionThrown = true;
+        }
+        Test.stopTest();
+
+        System.assert(exceptionThrown, 'saveDescribeMyImpact should throw an AuraHandledException for an invalid Contact Id.');
+    }
+
+    /**
+    * @description Verifies getDescribeMyImpact fails gracefully (returns empty string, no
+    * unhandled exception) when given a non-existent Contact Id.
+    */
+    @IsTest
+    static void testGetDescribeMyImpactInvalidIdReturnsEmpty() {
+        String invalidContactId = '003000000000000AAA';
+
+        Test.startTest();
+        String result = HAM_MyImpactController.getDescribeMyImpact(invalidContactId);
+        Test.stopTest();
+
+        System.assertEquals('', result, 'Should return empty string (not throw) when Contact Id does not resolve to a record.');
+    }
 }

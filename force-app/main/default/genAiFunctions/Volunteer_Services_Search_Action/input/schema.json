@@ -1,0 +1,35 @@
+{
+  "required" : [ "contactId" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "activityType" : {
+      "title" : "Activity Type",
+      "description" : "Which set of volunteer activities to return: \"Current\" (current and upcoming volunteer engagements) or \"Past\" (completed engagements). Defaults to \"Current\" when omitted or blank.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "contactId" : {
+      "title" : "Contact Id",
+      "description" : "Contact Id of the currently authenticated user. Must be bound to the Contact Id of the authenticated session; never accept as free text or infer from conversation.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "fromDate" : {
+      "title" : "From Date",
+      "description" : "Optional inclusive start-of-range filter, format YYYY-MM-DD. Only applied when Activity Type is \"Past\".",
+      "lightning:type" : "lightning__dateType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "toDate" : {
+      "title" : "To Date",
+      "description" : "Optional inclusive end-of-range filter, format YYYY-MM-DD. Only applied when Activity Type is \"Past\".",
+      "lightning:type" : "lightning__dateType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

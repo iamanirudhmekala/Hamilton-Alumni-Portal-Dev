@@ -52,6 +52,31 @@
                 </section>
 
                 <section class="section-tinted-bg">
+                    <button class={hdafClass} onclick={toggleSection} data-id="hdaf">
+                    {hdafDirection} {hdafData.tableName}
+                    </button>
+                    <div lwc:if={isHdaf}>
+                        <div class="desktop-only">
+                            <c-ham_philanthropy-data-table-cmp
+                                table-data={hdafData}
+                                is-override={isOverride}
+                                onsortaction={handleSort}
+                                onloadmoreaction={handleLoadMore}
+                                data-section={hdafData.tableName}>
+                            </c-ham_philanthropy-data-table-cmp>
+                        </div>
+                        <div class="mobile-only">
+                            <c-ham_philanthropy-card-cmp
+                                table-data={hdafData}
+                                onloadmoreaction={handleLoadMore}
+                                is-override={isOverride}
+                                data-section={hdafData.tableName}>
+                            </c-ham_philanthropy-card-cmp>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-tinted-bg">
                     <button class={givingLifetimeClass} onclick={toggleSection} data-id="givingLifetime">
                     {givingLifetimeDirection} {givingLifetimeData.tableName}
                     </button>

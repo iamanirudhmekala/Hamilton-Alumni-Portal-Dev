@@ -1,0 +1,27 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "alumniName" : {
+      "title" : "Alumni Name",
+      "description" : "Full or partial contact name",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "classOfYear" : {
+      "title" : "Class of Year",
+      "description" : "Graduation year",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "majorDegree" : {
+      "title" : "Major / Degree",
+      "description" : "Full or partial major/degree text",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

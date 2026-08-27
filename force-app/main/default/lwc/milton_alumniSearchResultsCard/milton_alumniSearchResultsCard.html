@@ -1,0 +1,30 @@
+<template>
+    <div class="results-wrapper">
+        <template lwc:if={hasCards}>
+            <div class="carousel">
+                <div class="cards-track">
+                    <template for:each={alumniData} for:item="alumni">
+                        <div key={alumni.recordId} class="alumni-card">
+                            <div class="alumni-details">
+                                <h3 class="alumni-name">{alumni.alumniName}</h3>
+                                <p class="alumni-field">{alumni.yearLabel}</p>
+                                <p class="alumni-field">{alumni.degreeLabel}</p>
+                                <button
+                                    class="view-details-btn"
+                                    data-contact-id={alumni.contactId}
+                                    onclick={handleViewDetails}
+                                >View Details</button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:else>
+            <div class={statusMessageClass}>
+                {statusMessage}
+            </div>
+        </template>
+    </div>
+</template>

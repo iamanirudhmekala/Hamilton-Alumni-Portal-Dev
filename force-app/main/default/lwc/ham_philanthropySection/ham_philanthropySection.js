@@ -1,6 +1,8 @@
 import { LightningElement, track, api, wire } from 'lwc';
 import { publish, MessageContext } from 'lightning/messageService';
 import MY_IMPACT_CHANNEL from '@salesforce/messageChannel/myImpactChannel__c';
+import getDescribeMyImpact from '@salesforce/apex/HAM_MyImpactController.getDescribeMyImpact';
+import saveDescribeMyImpact from '@salesforce/apex/HAM_MyImpactController.saveDescribeMyImpact';
 
 /**
  * @description A component to display an overview of a user's philanthropy highlights.
@@ -13,8 +15,16 @@ export default class Ham_philanthropySection extends LightningElement {
     @api mainResource;
     @api images = {};
     @api pageflag=false;
+    @api contactId;
     @track screenWidth = window.innerWidth;
     _isOverride = false;
+
+    // -------- Describe My Impact modal state --------
+    @track isDescribeModalOpen = false;
+    @track describeMyImpactValue = '';
+    @track isDescribeLoading = false;
+    @track isDescribeSaving = false;
+    @track describeErrorMessage = '';
 
     @api
     get isOverride() {
@@ -92,11 +102,6 @@ export default class Ham_philanthropySection extends LightningElement {
         return this.screenWidth >= 1024;
     }
 
-    // Getter to return the my impact widget style for desktop home view.
-   /* get computeFieldLabelStyle(){
-        return this.screenWidth >= 1024 && this.pageflag ? `margin-bottom:0rem;` : this.screenWidth < 1024 && !this.pageflag ? `margin-bottom:1rem;` : '';
-    }*/
-
     // Getter to return true flag when screen width is of mobile resolution
     get isMobileView() {
         return this.screenWidth <1024;
@@ -168,5 +173,83 @@ export default class Ham_philanthropySection extends LightningElement {
                 bubbles: true, 
                 composed: true
             }));
+    }
+
+    // ==================== Describe My Impact ====================
+
+    /**
+     * @description Opens the "Describe My Impact" modal and loads the existing
+     * value from the Contact record so the user can edit it.
+     */
+    async handleOpenDescribeModal() {
+        this.describeErrorMessage = '';
+        this.isDescribeModalOpen = true;
+        this.isDescribeLoading = true;
+
+        try {
+            const result = await getDescribeMyImpact({ currentUserContactId: this.contactId });
+            this.describeMyImpactValue = result || '';
+        } catch (error) {
+            this.describeErrorMessage = this.extractErrorMessage(error);
+        } finally {
+            this.isDescribeLoading = false;
+        }
+    }
+
+    /**
+     * @description Closes the modal without saving.
+     */
+    handleCloseDescribeModal() {
+        this.isDescribeModalOpen = false;
+        this.describeErrorMessage = '';
+    }
+
+    /**
+     * @description Keeps the tracked value in sync as the user types in the textarea.
+     * lightning-textarea emits its value via event.detail.value.
+     */
+    handleDescribeTextChange(event) {
+        this.describeMyImpactValue = event.detail.value;
+    }
+
+    /**
+     * @description Saves the edited value back to the Contact record and closes the modal.
+     */
+    async handleSaveDescribeModal() {
+        this.isDescribeSaving = true;
+        this.describeErrorMessage = '';
+
+        try {
+            await saveDescribeMyImpact({
+                currentUserContactId: this.contactId,
+                describeMyImpact: this.describeMyImpactValue
+            });
+            this.isDescribeModalOpen = false;
+        } catch (error) {
+            this.describeErrorMessage = this.extractErrorMessage(error);
+        } finally {
+            this.isDescribeSaving = false;
+        }
+    }
+
+    /**
+     * @description Prevents clicks inside the modal dialog from bubbling up
+     * and closing the modal via the overlay click handler.
+     */
+    handleModalContentClick(event) {
+        event.stopPropagation();
+    }
+
+    /**
+     * @description Normalizes Apex/AuraHandledException error shapes into a display string.
+     */
+    extractErrorMessage(error) {
+        if (error?.body?.message) {
+            return error.body.message;
+        }
+        if (Array.isArray(error?.body) && error.body.length > 0) {
+            return error.body.map((e) => e.message).join(', ');
+        }
+        return 'Something went wrong. Please try again.';
     }
 }

@@ -75,6 +75,27 @@ export default class Ham_philanthropyDataTableCmp extends LightningElement {
     }
 
     /**
+     * @description Getter to check if this table has fixed action buttons configured via metadata.
+     */
+    get hasActionButtons() {
+        return !!(this.tableData && (this.tableData.button1Url || this.tableData.button2Url));
+    }
+
+    /**
+     * @description Getter to check if this table has footnote text configured via metadata.
+     */
+    get hasFootnote() {
+        return !!(this.tableData && this.tableData.footnote);
+    }
+
+    /**
+     * @description Total column count including the action-buttons column, used for colspan.
+     */
+    get totalColumnCount() {
+        return this.tableData.columnLabels.length + (this.hasActionButtons ? 1 : 0);
+    }
+
+    /**
      * @description Returns the appropriate chevron icon based on expansion state.
      */
     get filterIcon() {

@@ -1,0 +1,15 @@
+{
+  "required" : [ "contactId" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "contactId" : {
+      "title" : "Contact Id",
+      "description" : "Pass the ConstituentId Variable as contactId.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType",
+  "lightning:textIndexed" : true
+}

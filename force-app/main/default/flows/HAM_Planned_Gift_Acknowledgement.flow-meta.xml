@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>PG Acknowledgment Task Review - 
+
+
+ Produce a task for each “acknowledgement” similar to Presidential/VP
+1. Credit Type = Hard or soft
+2. Cash Amount is greater than $0
+3. Stage does not equal Adjusted
+4. Opportunity Type equals PGCGA (Charitable Gift Annuity), PGCLT (Charitable Lead Trust), PGCRT (Charitable Lead Trust), PGEST (Realized Estate Estate Gift)
+
+Asana: https://app.asana.com/1/940410193405385/project/1210017981826692/task/1216395292167560?focus=true</description>
+    <environments>Default</environments>
+    <interviewLabel>Planned Gift Acknowledgement {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Planned Gift Acknowledgement</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Task</name>
+        <label>Create Task</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>$Record.CreatedDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>HAM_Hard_and_Soft_Credit__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$Record.CreatedById</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Priority</field>
+            <value>
+                <stringValue>High</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Open</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Planned Gift Acknowledgement </stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.ucinn_ascendv2__Contact__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ucinn_ascendv2__Correspondence_Type__c</field>
+            <value>
+                <stringValue>Correspondence</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Create_Task</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>1 AND 2 AND (3 OR 4 OR 5 OR 6)</filterLogic>
+        <filters>
+            <field>ucinn_ascendv2__Credit_Amount__c</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ucinn_ascendv2__Pledge_Gift_Stage_Formula__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Adjusted</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>HAM_Opportunity_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>PGCGA (Charitable Gift Annuity)</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>HAM_Opportunity_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>PGCLT (Charitable Lead Trust)</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>HAM_Opportunity_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>PGCRT (Charitable Remainder Trust)</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>HAM_Opportunity_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>PGEST (Realized Estate Gift)</stringValue>
+            </value>
+        </filters>
+        <object>ucinn_ascendv2__Hard_and_Soft_Credit__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

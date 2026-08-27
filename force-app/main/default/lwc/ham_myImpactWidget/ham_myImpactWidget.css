@@ -188,6 +188,7 @@
 @media (max-width: 1023px) {
     .impact-wrapper {
         padding: 10px;
+        height: unset;
     }
 
     .impact-title {

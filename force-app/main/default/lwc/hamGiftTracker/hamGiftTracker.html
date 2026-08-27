@@ -1,0 +1,146 @@
+<template>
+    <lightning-card title="Portal - MakeAGift Transactions (MGFT)" icon-name="standard:opportunity">
+
+        <div class="slds-p-horizontal_medium slds-p-bottom_small">
+
+            <!-- Filters -->
+            <div class="slds-grid slds-wrap slds-gutters slds-p-bottom_small">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-input
+                        type="date"
+                        label="Start Date"
+                        value={startDate}
+                        onchange={handleStartDateChange}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-input
+                        type="date"
+                        label="End Date"
+                        value={endDate}
+                        onchange={handleEndDateChange}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-input
+                        type="text"
+                        label="Name"
+                        placeholder="Search by name"
+                        value={donorName}
+                        onchange={handleDonorNameChange}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-combobox
+                        label="Appeal Code"
+                        value={appealCampaignId}
+                        options={appealCodeOptions}
+                        onchange={handleAppealCodeChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-combobox
+                        label="Fiscal Year (1)"
+                        value={fiscalYear1}
+                        options={fiscalYearOptions}
+                        onchange={handleFiscalYear1Change}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <lightning-combobox
+                        label="Fiscal Year (2)"
+                        value={fiscalYear2}
+                        options={fiscalYearOptions}
+                        onchange={handleFiscalYear2Change}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-4 slds-align-bottom">
+                    <div class="slds-p-top_medium">
+                        <lightning-button
+                            variant="brand"
+                            label="Search"
+                            onclick={handleSearch}
+                            class="slds-m-right_x-small">
+                        </lightning-button>
+                        <lightning-button
+                            variant="neutral"
+                            label="Clear Filters"
+                            onclick={handleClear}>
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics: today's total -->
+            <div class="slds-grid slds-wrap slds-gutters slds-p-vertical_small slds-p-top_medium slds-border_top">
+                <template if:true={analyticsError}>
+                    <div class="slds-col slds-size_1-of-1 slds-text-color_error slds-text-body_small slds-p-bottom_x-small">
+                        {analyticsError}
+                    </div>
+                </template>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                    <div style="background: var(--surface-1); border-radius: var(--radius); padding: 1rem;">
+                        <p class="slds-text-body_small slds-text-color_weak slds-p-bottom_xx-small">Total Amount Today</p>
+                        <p style="font-size: 24px; font-weight: 500;">{formattedTodayTotal}</p>
+                    </div>
+                </div>
+            </div>
+
+            <template if:true={errorMessage}>
+                <div class="slds-text-color_error slds-p-bottom_small">{errorMessage}</div>
+            </template>
+
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+
+            <template if:true={hasRows}>
+                <lightning-datatable
+                    key-field="recordId"
+                    data={pagedRows}
+                    columns={columns}
+                    sorted-by={sortedBy}
+                    sorted-direction={sortedDirection}
+                    onsort={handleSort}
+                    hide-checkbox-column>
+                </lightning-datatable>
+
+                <!-- Pagination bar -->
+                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-p-top_small">
+                    <div class="slds-text-body_small slds-text-color_weak">
+                        {rowCountLabel}
+                    </div>
+                    <div class="slds-grid slds-grid_vertical-align-center">
+                        <lightning-button
+                            label="Previous"
+                            icon-name="utility:chevronleft"
+                            variant="neutral"
+                            disabled={disablePrevious}
+                            onclick={handlePrevious}
+                            class="slds-m-right_x-small">
+                        </lightning-button>
+                        <span class="slds-text-body_small slds-p-horizontal_small">{pageLabel}</span>
+                        <lightning-button
+                            label="Next"
+                            icon-name="utility:chevronright"
+                            icon-position="right"
+                            variant="neutral"
+                            disabled={disableNext}
+                            onclick={handleNext}
+                            class="slds-m-left_x-small">
+                        </lightning-button>
+                    </div>
+                </div>
+            </template>
+
+            <template if:false={hasRows}>
+                <template if:false={isLoading}>
+                    <div class="slds-text-align_center slds-p-vertical_medium slds-text-color_weak">
+                        No transactions found for the selected filters.
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

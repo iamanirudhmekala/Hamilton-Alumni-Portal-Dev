@@ -773,15 +773,26 @@ myGrid.active{
    ========================================================================== */
 @media (max-width: 1023px){
 
+    /* The embedded-messaging launcher ("Ask Me Anything") and the bottom nav are
+       both fixed to the viewport bottom and are injected outside this component,
+       so they overlap whatever content ends up last. Without this clearance the
+       Past accordion header sits underneath them and reads as missing. Applied to
+       the host so it protects the last element whichever section that turns out
+       to be, rather than a single card. */
+    :host {
+        display: block;
+        padding-bottom: 150px;
+    }
+
     /* .my-pagination-container-cmp{
         margin-bottom: 60px;
     } */
 .my-dropdown-container{
     z-index: 9999;
 }
-.volunteer-opp-parent-container{
-    padding-bottom: 50px;
-}
+/* .volunteer-opp-parent-container{
+    padding-bottom: 160px;
+} */
     .slds-dropdown-trigger {
     width: 75% !important;
 }
@@ -881,7 +892,7 @@ myGrid.active{
 
     .my-vertical-tab-container{
         /* padding: 40px 25px; */
-        padding: 20px 25px 40px 25px;
+        padding: 20px 20px 40px 20px;
     }
 
     .my-article-section-mobile{

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Current_FY_Paid_CRMA__c</fullName>
+    <description>This field is populated from CRMA</description>
+    <inlineHelpText>This field is populated from CRMA</inlineHelpText>
+    <label>Current FY Paid CRMA</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

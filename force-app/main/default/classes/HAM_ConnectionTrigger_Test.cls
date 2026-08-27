@@ -13,7 +13,7 @@
  *  Jan 15, 2026  │ Sachin   │ Initial version
  * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
  */
-
+@SuppressWarnings('PMD.NoTrailingWhitespace, PMD.ApexCRUDViolation, PMD.EmptyIfStmt, PMD.EmptyStatementBlock, PMD.AvoidNonRestrictiveQueries, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.NcssCount, PMD.NcssTypeCount, PMD.DetectCopyPasteForApex, PMD.LocalVariableNamingConventions, PMD.ExcessiveParameterList, PMD.ApexSOQLInjection, PMD.AvoidDeeplyNestedIfStmts, PMD.AvoidDebugStatements, PMD.StdCyclomaticComplexity, PMD.NcssMethodCount')
 @isTest
 public class HAM_ConnectionTrigger_Test {
 
@@ -23,8 +23,16 @@ public class HAM_ConnectionTrigger_Test {
         Account acc = new Account(Name = 'Trigger Test Account');
         insert acc;
         
-        Contact sender = new Contact(LastName = 'Sender2', AccountId = acc.Id);
-        Contact recipient = new Contact(LastName = 'Recipient2', AccountId = acc.Id);
+        // Email is required, not cosmetic: inserting a HAM_Connection__c with
+        // Status = 'Request Sent' fires the record-triggered flow
+        // 'HAM Connection Request Notification', whose email alert resolves its
+        // recipient from the related contact. With no Email the alert resolves to
+        // 0 recipients, the flow fails, and the DML is rolled back with
+        // CANNOT_EXECUTE_FLOW_TRIGGER before any trigger assertion can run.
+        // (HAM_Data_Source__c defaults to 'Portal User', so the flow's second
+        // filter is always satisfied in tests even though no test sets it.)
+        Contact sender = new Contact(LastName = 'Sender2', AccountId = acc.Id, Email = 'sender2@test.com');
+        Contact recipient = new Contact(LastName = 'Recipient2', AccountId = acc.Id, Email = 'recipient2@test.com');
         insert new List<Contact>{sender, recipient};
         
         // Create User for recipient (needed for Push Notification mapping in trigger)

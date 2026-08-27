@@ -142,7 +142,12 @@
                         </div>
                         <template for:each={gradDegrees} for:item="row">
                             <div key={row.recordId} class="table-data-row">
-                                <div class="cell col-school">{row.institutionName}</div>
+                                <div class="cell col-school">
+                                    {row.institutionName}
+                                    <template if:true={row.isPending}>
+                                        <span class="pending-badge">Pending review</span>
+                                    </template>
+                                </div>
                                 <div class="cell col-degree">{row.degreeCodeDisplay}</div>
                                 <div class="cell col-concentration">{row.concentrationDisplay}</div>
                                 <div class="cell col-minor">{row.minorDisplay}</div>
@@ -197,6 +202,13 @@
                                     >{opt.label}</button>
                                 </li>
                             </template>
+                            <template if:true={showInstitutionUseTyped}>
+                                <li class="typeahead-other">
+                                    <button class="typeahead-option typeahead-option-other" onclick={useTypedInstitution}>
+                                        Don't see it? Use "{institutionLabel}" as entered
+                                    </button>
+                                </li>
+                            </template>
                         </ul>
                     </template>
                 </div>
@@ -221,6 +233,13 @@
                                         data-label={opt.label}
                                         onclick={selectDegreeCode}
                                     >{opt.label}</button>
+                                </li>
+                            </template>
+                            <template if:true={showDegreeCodeUseTyped}>
+                                <li class="typeahead-other">
+                                    <button class="typeahead-option typeahead-option-other" onclick={useTypedDegreeCode}>
+                                        Don't see it? Use "{degreeCodeLabel}" as entered
+                                    </button>
                                 </li>
                             </template>
                         </ul>
@@ -249,6 +268,13 @@
                                     >{opt.label}</button>
                                 </li>
                             </template>
+                            <template if:true={showConcentrationUseTyped}>
+                                <li class="typeahead-other">
+                                    <button class="typeahead-option typeahead-option-other" onclick={useTypedConcentration}>
+                                        Don't see it? Use "{concentrationLabel}" as entered
+                                    </button>
+                                </li>
+                            </template>
                         </ul>
                     </template>
                 </div>
@@ -273,6 +299,13 @@
                                         data-label={opt.label}
                                         onclick={selectMinorField}
                                     >{opt.label}</button>
+                                </li>
+                            </template>
+                            <template if:true={showMinorFieldUseTyped}>
+                                <li class="typeahead-other">
+                                    <button class="typeahead-option typeahead-option-other" onclick={useTypedMinorField}>
+                                        Don't see it? Use "{minorFieldLabel}" as entered
+                                    </button>
                                 </li>
                             </template>
                         </ul>

@@ -3,6 +3,11 @@
     <description>Chatbot Permission Set</description>
     <fieldPermissions>
         <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Information__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Knowledge__kav.Content__c</field>
         <readable>true</readable>
     </fieldPermissions>

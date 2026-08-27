@@ -62,7 +62,7 @@
                                 <template lwc:if={label}>
                                     <a target="_blank" class="header-icon-link" data-link={label.makeagiftlink}
                                         onclick={handleMakeGiftClick}>
-                                        <img src={images.makeaGiftImage} alt="Make a Gift" class="header-icon-img">
+                                        <img src={images.makeaGiftImageMobile} alt="Make a Gift" class="header-icon-img">
                                     </a>
                                 </template>
                             </div>
@@ -70,12 +70,14 @@
 
                     </template>
 
-
+                <template lwc:if={isDesktopView}>
                     <div class="slds-m-right_xx-small">
                         <button class="feedback-header-btn" onclick={handleFeedbackClick}>
                             <b>{feedbackLabel}</b>
                         </button>
                     </div>
+                </template>
+
 
                     <div class="slds-m-right_xx-small">
                         <c-ham_notification-bell selected-tab={activeTab} is-override={isOverride} images={images}></c-ham_notification-bell>

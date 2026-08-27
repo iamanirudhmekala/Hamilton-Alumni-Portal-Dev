@@ -618,6 +618,9 @@ c-ham_-footer-cmp {
         grid-template-columns: 1fr;
         /* Stack on mobile */
     }
+    .two-column .vol-mobile-col {
+        order: -1;
+    }
 }
 
 /* Mobile Card for news and Events*/

@@ -7,6 +7,22 @@
         <value xsi:type="xsd:string">RecordType.Name = &apos;Campaign&apos; AND HAM_Status__c = &apos;Active&apos;</value>
     </values>
     <values>
+        <field>HAM_Button_1_Label__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Button_1_URL__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Button_2_Label__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Button_2_URL__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
         <field>HAM_Default_Display_Value__c</field>
         <value xsi:nil="true"/>
     </values>
@@ -32,7 +48,7 @@
     </values>
     <values>
         <field>HAM_Order__c</field>
-        <value xsi:type="xsd:double">5.0</value>
+        <value xsi:type="xsd:double">6.0</value>
     </values>
     <values>
         <field>HAM_Reference_Field__c</field>
@@ -61,6 +77,10 @@
     <values>
         <field>HAM_Table_Field_Types__c</field>
         <value xsi:type="xsd:string">text,currency,currency</value>
+    </values>
+    <values>
+        <field>HAM_Table_Footnote__c</field>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>HAM_Table_Limit__c</field>

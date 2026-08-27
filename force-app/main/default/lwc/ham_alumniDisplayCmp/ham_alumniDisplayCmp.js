@@ -122,6 +122,9 @@ export default class Ham_alumniDisplayCmp extends LightningElement {
     allowBookmark = false;
     showCustomToast = false;
     tabInitialized = false;
+    // Set when the active tab changes; consumed by wiredAlumni() to force one refresh
+    // against the INCOMING tab's wire config. See handleTabClick().
+    _pendingWireRefresh = false;
     primarykeyset = '';
     secondarykeyset = '';
 
@@ -305,23 +308,10 @@ export default class Ham_alumniDisplayCmp extends LightningElement {
             this.loadTabs();
             this.resetTabState(value);
 
-            // Programmatically trigger wire refresh on programmatic tab changes
+            // Deferred to wiredAlumni() so refreshApex runs against the incoming tab's wire
+            // config rather than the outgoing one. See handleTabClick().
             this.isLoading = true;
-            setTimeout(() => {
-                Promise.all([
-                    refreshApex(this.wiredAlumniCount),
-                    refreshApex(this.wiredAlumniResult)
-                ])
-                    .then(() => {
-                        this.applyTabFilter();
-                    })
-                    .catch(error => {
-                        console.error('Error refreshing data on programmatic tab change:', error);
-                    })
-                    .finally(() => {
-                        this.isLoading = false;
-                    });
-            }, 0);
+            this._pendingWireRefresh = true;
         }
     }
 
@@ -362,6 +352,11 @@ export default class Ham_alumniDisplayCmp extends LightningElement {
         // Wipe existing data immediately to avoid "ghost data"
         this.alumniData = [];
         this.filteredData = [];
+
+        // The Favorites / Bookmarked pills are scoped to a single tab — carrying their
+        // state across a tab switch silently filters the tab the user just landed on
+        this.isFavIconActive = false;
+        this.isBookmarkActive = false;
 
         // Reset Pagination
         this.currentPage = 1;
@@ -661,6 +656,22 @@ export default class Ham_alumniDisplayCmp extends LightningElement {
         this.wiredAlumniResult = result;
         const { data, error } = result;
 
+        // Changing the tab or a Favorites/Bookmarked pill changes the wire config, so this
+        // result may have been served straight from the Apex wire cache — which the adapter
+        // never revalidates on its own, and which may predate a favourite/bookmark change
+        // made under a different config. Now that the wires have re-provisioned for the
+        // INCOMING config, refreshApex finally targets the right cache entry. Clear the
+        // flag first: refreshApex re-enters this handler.
+        if (this._pendingWireRefresh && (data || error)) {
+            this._pendingWireRefresh = false;
+            Promise.all([
+                refreshApex(this.wiredAlumniCount),
+                refreshApex(this.wiredAlumniResult)
+            ]).catch(refreshError => {
+                console.error('Error refreshing data on config change:', refreshError);
+            });
+        }
+
         if (data) {
             this.alumniData = data || [];
              // Capture logged-in user's connection-privacy flag from the Apex response
@@ -806,7 +817,13 @@ export default class Ham_alumniDisplayCmp extends LightningElement {
         this.currentPage = 1;
         this.recordsToSkip = 0;
         this.totalRecordsForChild = null;
-        // Wire re-fires reactively via _favoriteConnectionsFilterStr getter
+        // The wire re-fires reactively via _favoriteConnectionsFilterStr, but each pill
+        // state is a separate Apex wire cache entry and the adapter never revalidates on
+        // its own. Un-favouriting with the pill ON only refreshes the pill-ON entry, so
+        // switching the pill OFF would serve a snapshot taken before the change and the
+        // row would still render with a filled heart. Force one refresh of the incoming
+        // config; wiredAlumni() consumes this once the new result provisions.
+        this._pendingWireRefresh = true;
     }
 
 
@@ -831,6 +848,11 @@ export default class Ham_alumniDisplayCmp extends LightningElement {
                 const matchingPrimary = primaryConnMap.get(secConn.portalUserId);
 
                 if (!matchingPrimary) return false;
+
+                // The Favorites pill also filters server-side. Re-applying it here means a
+                // de-favorited row drops as soon as fresh flags arrive, rather than relying
+                // on the request that carried the new filter having landed first.
+                if (this.isFavIconActive && matchingPrimary.flags?.isFavorite !== true) return false;
 
                 return secConn.linkedUserId === matchingPrimary.portalUserId &&
                     matchingPrimary.flags?.isConnected === true;
@@ -942,7 +964,10 @@ export default class Ham_alumniDisplayCmp extends LightningElement {
         this.currentPage = 1;
         this.recordsToSkip = 0;
         this.totalRecordsForChild = null;
-        // Wire re-fires reactively via _bookmarkConnectionsFilterStr getter
+        // Same stale-cache problem as handleFavIconToggle() — each pill state caches
+        // separately, so the incoming config needs one forced refresh or the bookmark
+        // icon renders against a pre-change snapshot.
+        this._pendingWireRefresh = true;
     }
 
     applyTabFilter() {
@@ -1140,26 +1165,15 @@ export default class Ham_alumniDisplayCmp extends LightningElement {
 
         this.isLoading = true;
         this._activeTabName = newTab;
-        
+
         this.resetTabState(newTab);
 
-        // Wait for the next event loop tick so LWC has time to push the new reactive
-        // parameters to the @wire before we call refreshApex.
-        setTimeout(() => {
-            Promise.all([
-                refreshApex(this.wiredAlumniCount),
-                refreshApex(this.wiredAlumniResult)
-            ])
-                .then(() => {
-                    this.applyTabFilter();
-                })
-                .catch(error => {
-                    console.error('Error refreshing data:', error);
-                })
-                .finally(() => {
-                    this.isLoading = false;
-                });
-        }, 0);
+        // Refreshing here is what the old setTimeout(0) tried to do, but it ran before the
+        // wires had re-provisioned, so refreshApex hit the OUTGOING tab's cache entry and
+        // the incoming tab was still served stale — the "switch tabs and back" half of the
+        // bug. Defer it to wiredAlumni() instead, which runs once the new config's result
+        // has actually landed and so refreshes the right entry.
+        this._pendingWireRefresh = true;
     }
 
 
@@ -1515,26 +1529,21 @@ export default class Ham_alumniDisplayCmp extends LightningElement {
         this.searchPlaceHolder = 'Search Alumni...';
         this.showViewToggle = true;
 
-        // Refresh data using refreshApex
-        Promise.all([
-            refreshApex(this.wiredAlumniCount),
-            refreshApex(this.wiredAlumniResult)
-        ])
-            .then(() => {
-                this.applyTabFilter();
-            })
-            .catch(error => {
-                console.error('Error refreshing data:', error);
-            })
-            .finally(() => {
-                this.isLoading = false;
-            });
+        // Same deferral as handleTabClick — refreshing inline here would hit the outgoing
+        // tab's wire config, since _activeTabName only just changed.
+        this._pendingWireRefresh = true;
 
-        //this.isLoading = false;
         this.updateTabClasses();
     }
 
-    handleChildRefresh() {
+    /**
+     * @description Handles the refreshdata event raised by the grid/list children after
+     * a successful connection action. Drops the acted-on row locally first so the list
+     * updates instantly, then refreshes from the server, which stays authoritative.
+     * @param {CustomEvent} event - detail is { actionKey, constituentId, tab }.
+     */
+    handleChildRefresh(event) {
+        this.removeRowLocally(event?.detail);
 
         // Refresh data using refreshApex
         Promise.all([
@@ -1550,6 +1559,52 @@ export default class Ham_alumniDisplayCmp extends LightningElement {
             .finally(() => {
                 this.isLoading = false;
             });
+    }
+
+
+    /**
+     * @description Removes the acted-on row from the rendered list immediately after a
+     * successful action, for the two cases where the action makes that row ineligible for
+     * the view on screen: un-bookmarking on Bookmarked Profiles, and un-favoriting while
+     * the Favorites pill is active. Every other action leaves the list alone and relies on
+     * the server refresh. Row identity differs per tab — Bookmarks rows are primary
+     * connections keyed by linkedUserId, My Connections rows are secondary connections
+     * keyed by portalUserId — so both fields are matched.
+     * @param {Object} detail - { actionKey, constituentId } from the child's refreshdata event.
+     */
+    removeRowLocally(detail) {
+        const actionKey = detail?.actionKey;
+        const constituentId = detail?.constituentId;
+        if (!actionKey || !constituentId) {
+            return;
+        }
+
+        const dropsFromBookmarks = this.isBookmarksTab && actionKey === 'removeBookmark';
+        const dropsFromFavorites = this.isMyConnectionsTab && this.isFavIconActive && actionKey === 'removeFavorite';
+        if (!dropsFromBookmarks && !dropsFromFavorites) {
+            return;
+        }
+
+        const current = this.filteredData || [];
+        const remaining = current.filter(row =>
+            row.linkedUserId !== constituentId && row.portalUserId !== constituentId
+        );
+
+        if (remaining.length === current.length) {
+            return; // Nothing matched — leave pagination untouched
+        }
+
+        this.filteredData = remaining;
+
+        if (this.totalRecordsForChild > 0) {
+            this.totalRecordsForChild = this.totalRecordsForChild - 1;
+        }
+
+        // Removing the last row on a page would otherwise strand the user on an empty page
+        if (remaining.length === 0 && this.currentPage > 1) {
+            this.currentPage = this.currentPage - 1;
+            this.recordsToSkip = (this.currentPage - 1) * this.pageSizeForChild;
+        }
     }
 
 

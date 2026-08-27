@@ -416,6 +416,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contact.HAM_Current_Employer_HQ__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contact.HAM_Current_Regions__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -427,6 +432,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.HAM_Current_Yr_Hamilton_Fund_Fundraising__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.HAM_Describe_My_Impact__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2812,6 +2822,41 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>HAM_Group__c.is_Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>HAM_HQ_Staging__c.HAM_Constituent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Conferred_Year__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Information__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Major__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Minor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_is_Ready_for_Processing__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

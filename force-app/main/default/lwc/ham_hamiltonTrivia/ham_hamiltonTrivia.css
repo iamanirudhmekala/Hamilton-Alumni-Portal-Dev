@@ -156,9 +156,9 @@
 }
 
 .submit-btn {
-    background-color: #3FB3FF;
-    color: #002F86;
-    border: 1px solid #3FB3FF;
+    background-color: #002F86;
+    color: #fff;
+    border: 1px solid #002F86;
     /* padding: 8px 12px; */
     padding: 14px 30px;
     font-family: 'Mallory-main', sans-serif;
@@ -169,10 +169,12 @@
     font-weight: 700; 
 }
 
+@media (min-width: 768px){
 .submit-btn:hover {
     border: 1px solid #002F86;
     color: #FFFFFF;
     background-color: #002F86;
+}
 }
 
 /*.submit-btn:disabled {

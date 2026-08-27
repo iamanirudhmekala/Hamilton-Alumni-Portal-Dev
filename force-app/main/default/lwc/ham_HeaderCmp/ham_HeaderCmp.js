@@ -26,7 +26,8 @@ export default class Ham_HeaderCmp extends LightningElement {
     };
 
     icons = {
-        feedbackIcon: this.mainResource.hamIcons + '/list-view.png'
+        feedbackIcon: this.mainResource.hamIcons + '/list-view.png',
+        hamquadlogo: this.mainResource.hamIcons + '/hamiltonquad-primary-dark-background.png',	
     }
 
     connectedCallback() {
@@ -45,7 +46,7 @@ export default class Ham_HeaderCmp extends LightningElement {
         // ''    → overlay was active (Edit Profile / Preferences) → no tab highlighted
         // value → restore that tab
         this.activeTab = storedTab !== null ? storedTab : (this.label?.hometitle || 'Home');
-        this.logo = this.images?.logo || '#';
+        this.logo = this.icons?.hamquadlogo || '#';
         this.makeagift = this.label?.makeagiftlink || '#';
         
         this.subscribeToMessageChannel();

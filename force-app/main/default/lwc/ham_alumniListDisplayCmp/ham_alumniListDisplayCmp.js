@@ -742,7 +742,13 @@ export default class Ham_alumniListDisplayCmp extends LightningElement {
             .then(result => {
                 if (result === RESULTS.SUCCESS) {
                     this.dispatchEvent(new CustomEvent('refreshdata', {
-                        detail: this._tab,
+                        // Carry the acted-on row up so the parent can drop it immediately
+                        // instead of waiting for the refresh round-trip to land.
+                        detail: {
+                            actionKey: this.resolveActionKey(this.clickedFunctiontype),
+                            constituentId: this.clickedUser,
+                            tab: this._tab
+                        },
                         bubbles: true,
                         composed: true
                     }));
@@ -805,6 +811,19 @@ export default class Ham_alumniListDisplayCmp extends LightningElement {
     }
 
      
+    /**
+     * @description Maps a raw action onto a stable token for the parent to branch on.
+     * Several ACTIONS values are custom labels, so their text can change per org —
+     * the parent must not compare against them directly.
+     * @param {String} action - The clicked action (ACTIONS value)
+     * @returns {String|null} 'removeBookmark', 'removeFavorite', or null
+     */
+    resolveActionKey(action) {
+        if (action === ACTIONS.REMOVE_BOOKMARK) return 'removeBookmark';
+        if (action === ACTIONS.REMOVE_FAVORITE) return 'removeFavorite';
+        return null;
+    }
+
     /**
      * @description Resets variables related to modal and button states.
      */

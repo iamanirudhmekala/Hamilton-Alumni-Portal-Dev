@@ -198,8 +198,7 @@ public without sharing class HAM_NotificationQueueable implements Queueable {
                 currNotification.setTitle(title);
                 currNotification.setBody(body);
                 currNotification.setNotificationTypeId(typeId);
-                String pageRefJson = '{"type": "standard__webPage", "attributes": {"url": "/' + actionUrl + '"}}';
-                currNotification.setTargetPageRef(pageRefJson);
+                currNotification.setTargetPageRef(HAM_NotificationService.buildTargetPageRef(actionUrl));
                 currNotification.send(new Set<String>{recipientUserId});
             } catch (Exception pushEx) {
                 System.debug('Mobile Notification push failed: ' + pushEx.getMessage());
@@ -333,8 +332,7 @@ public without sharing class HAM_NotificationQueueable implements Queueable {
                     currNotification.setTitle(title);
                     currNotification.setBody(body);
                     currNotification.setNotificationTypeId(typeId);
-                    String pageRefJson = '{"type": "standard__webPage", "attributes": {"url": "/' + actionUrl + '"}}';
-                    currNotification.setTargetPageRef(pageRefJson);
+                    currNotification.setTargetPageRef(HAM_NotificationService.buildTargetPageRef(actionUrl));
                     currNotification.send(new Set<String>{recipientUserId});
                 } catch (Exception pushEx) {
                     System.debug('Mobile Notification push failed: ' + pushEx.getMessage());

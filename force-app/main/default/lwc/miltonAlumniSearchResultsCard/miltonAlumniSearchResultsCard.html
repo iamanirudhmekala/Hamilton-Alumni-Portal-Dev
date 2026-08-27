@@ -1,0 +1,96 @@
+<template>
+    <div class="alumni-card-container">
+    <span class="alumniTitle">Alumni Search Results</span>
+
+        <!-- Alumni Cards Carousel -->
+        <div class="alumni-carousel">
+            <template if:false={isFirstCard}>
+                <lightning-button-icon
+                    icon-name="utility:chevronleft"
+                    variant="bare"
+                    alternative-text="Previous"
+                    onclick={handlePrev}
+                    class="nav-arrow nav-arrow-left">
+                </lightning-button-icon>
+            </template>
+
+            <div class="alumni-list-container" onscroll={handleScroll}>
+                <template for:each={alumniData} for:item="alumni">
+                    <div key={alumni.recordId} class="alumni-card">
+                        <!-- Bookmark -->
+                        <template if:false={alumni.isSelf}>
+                            <lightning-button-icon
+                                icon-name="utility:bookmark"
+                                variant="bare"
+                                alternative-text="Bookmark"
+                                title="Bookmark"
+                                disabled={alumni.isBookmarkProcessing}
+                                data-contact-id={alumni.contactId}
+                                onclick={handleBookmarkToggle}
+                                class={alumni.bookmarkIconClass}>
+                            </lightning-button-icon>
+                        </template>
+
+                        <!-- Profile Picture -->
+                        <img src={alumni.profilePictureUrl} alt={alumni.alumniName} class="alumni-photo" />
+
+                        <!-- Alumni Details -->
+                        <div class="alumni-details">
+                            <!-- Alumni Info Section -->
+                            <div class="alumni-info">
+                                <h2 class="alumni-id">{alumni.alumniName}</h2>
+                            </div>
+
+                            <!-- Degree and Graduation Year -->
+                            <div class="degree-year">
+                                <div class="year">
+                                    {alumni.yearLabel}
+                                </div>
+                                <div class="degree">
+                                    {alumni.degreeLabel}
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="actions-container">
+                                <template if:true={alumni.connectionActionType}>
+                                    <span class="connection-button-wrapper" title={alumni.tooltipText}>
+                                        <lightning-button
+                                            variant="neutral"
+                                            label={alumni.connectionButtonLabel}
+                                            disabled={alumni.isConnectionButtonDisabled}
+                                            data-contact-id={alumni.contactId}
+                                            data-action-type={alumni.connectionActionType}
+                                            onclick={handleConnectionAction}
+                                            class="connection-button">
+                                        </lightning-button>
+                                    </span>
+                                </template>
+                                <lightning-button
+                                    variant="brand"
+                                    label="View Details"
+                                    data-contact-id={alumni.contactId}
+                                    onclick={handleViewDetails}
+                                    class="view-details-button">
+                                </lightning-button>
+                            </div>
+                            <template if:true={alumni.errorMessage}>
+                                <div class="action-error-message">{alumni.errorMessage}</div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <template if:false={isLastCard}>
+                <lightning-button-icon
+                    icon-name="utility:chevronright"
+                    variant="bare"
+                    alternative-text="Next"
+                    onclick={handleNext}
+                    class="nav-arrow nav-arrow-right">
+                </lightning-button-icon>
+            </template>
+        </div>
+    </div>
+</template>

@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>HAM_Field_API__c</field>
-        <value xsi:type="xsd:string">Constituent_Employer__r.Name</value>
+        <value xsi:type="xsd:string">HAM_Current_Employer_HQ__c</value>
     </values>
     <values>
         <field>HAM_Field_Type__c</field>

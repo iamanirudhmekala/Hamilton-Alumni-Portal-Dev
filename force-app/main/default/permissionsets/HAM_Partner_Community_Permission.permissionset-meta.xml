@@ -5,6 +5,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>HAMEducationSectionController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>HAM_AlumniConnectionService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -162,6 +166,34 @@
     </classAccesses>
     <classAccesses>
         <apexClass>Ham_UpcomingEventsController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonAlumniResult</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonAlumniSearchAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonAlumniSearchResponse</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonVolunteerOpportunityInterestAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonVolunteerOpportunityResult</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonVolunteerOpportunitySearchAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonVolunteerOpportunitySearchResponse</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <customMetadataTypeAccesses>
@@ -418,6 +450,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contact.HAM_Current_Employer_HQ__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contact.HAM_Current_Regions__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -429,6 +466,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.HAM_Current_Yr_Hamilton_Fund_Fundraising__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.HAM_Describe_My_Impact__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2797,6 +2839,51 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>HAM_HQ_Staging__c.HAM_Constituent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Conferred_Year__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Information__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Is_Processed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>HAM_HQ_Staging__c.HAM_Major__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>HAM_HQ_Staging__c.HAM_Minor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>HAM_HQ_Staging__c.HAM_School__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>HAM_HQ_Staging__c.HAM_is_Ready_for_Processing__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>HAM_Listing__c.HAM_End_Date__c</field>
         <readable>true</readable>
@@ -3967,38 +4054,13 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.Ant_Degree_Year_Number_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.GOLD_Flag__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>ucinn_ascendv2__Degree_Information__c.HAMRolledOver__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>ucinn_ascendv2__Degree_Information__c.HAM_Anticipated_Class_Year__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.HAM_Constituent_Primary_Contact_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.HAM_Constituent_Reunion_Year__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.HAM_Degree_Institution_Name_Formula__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4009,31 +4071,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ucinn_ascendv2__Degree_Information__c.HAM_First_Minor__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.HAM_GOLD_Flag__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.HAM_Reunion_Integer_Date_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.HAM_Reunion_Milestone_6_months__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.HAM_Reunion_Milestone_Year__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.HAM_Reunion_Milestone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4057,43 +4094,13 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.Reunion_Milestone_Year__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.Reunion_Milestone__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>ucinn_ascendv2__Degree_Information__c.Second_Minor_Code__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.Second_Minor__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.Third_Concentration_Area_of_Study__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.Third_Concentration_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>ucinn_ascendv2__Degree_Information__c.Third_Minor_Code__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.Third_Minor__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4142,33 +4149,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Degree_Level_Code_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Degree_Level_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Degree_Name_Auto_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Degree_Type_Text__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Degree_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Degree_Year_Number_Formula__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4197,53 +4179,13 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Is_School_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Major_Degree_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Major_Degree_Short_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Major_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Major_School_of_Study_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Minor_Code__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Minor_Degree_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Minor_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Minor_Post_Code__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Minor_School_of_Study_Formula__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4262,33 +4204,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__School_1_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__School_2_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Second_Major_Degree_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Second_Major_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Second_Major_Post_Code__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ucinn_ascendv2__Degree_Information__c.ucinn_ascendv2__Second_Major_School_of_Study_Formula__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4598,6 +4515,46 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ucinn_ascendv2__Minor_Code__c.ucinn_ascendv2__Academic_Organization__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Minor_Code__c.ucinn_ascendv2__Department_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Minor_Code__c.ucinn_ascendv2__Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Minor_Code__c.ucinn_ascendv2__Effective_Term_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Minor_Code__c.ucinn_ascendv2__Expired_Term_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Minor_Code__c.ucinn_ascendv2__External_System_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Minor_Code__c.ucinn_ascendv2__Minor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Minor_Code__c.ucinn_ascendv2__School_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ucinn_ascendv2__Phone__c.International_Phone__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4669,6 +4626,71 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ucinn_ascendv2__Phone__c.ucinn_ascendv2__Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__Degree_Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__Degree_Level_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__Degree__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__Effective_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__Expiration_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__External_System_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__Is_Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__Major_Specialty_Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__Major_Specialty__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__Post_Code_Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__School_1__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__School_2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ucinn_ascendv2__Post_Code__c.ucinn_ascendv2__School_of_Study__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4950,6 +4972,16 @@
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>HAM_HQ_Staging__c</object>
+        <viewAllFields>true</viewAllFields>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
         <allowEdit>false</allowEdit>
@@ -5166,7 +5198,7 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>ucinn_ascendv2__Degree_Information__c</object>
-        <viewAllFields>false</viewAllFields>
+        <viewAllFields>true</viewAllFields>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -5215,8 +5247,28 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>ucinn_ascendv2__Minor_Code__c</object>
+        <viewAllFields>true</viewAllFields>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>ucinn_ascendv2__Phone__c</object>
         <viewAllFields>false</viewAllFields>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>ucinn_ascendv2__Post_Code__c</object>
+        <viewAllFields>true</viewAllFields>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -5258,6 +5310,10 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
+        <recordType>HAM_HQ_Staging__c.Grad_School_Degree</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
         <recordType>HAM_Pledge_Balance__c.Campaign</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -5275,6 +5331,10 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <recordType>HAM_Pledge_Balance__c.Open_Pledge</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>ucinn_ascendv2__Degree_Information__c.Hamilton_AIS_Degree_Information</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

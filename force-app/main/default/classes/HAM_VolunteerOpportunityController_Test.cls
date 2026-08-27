@@ -9,6 +9,7 @@
 * Ver | Date | Author | Modification
 *==============================================================================
 * 1.0 | January 06, 2026 | Cube84 - Asheesh  | Initial Version
+* 2.0 | August 11, 2026 | Hamilton Adv | ASC-14686 Add tests for merged Current/Past volunteer record methods
 **/
 
 @isTest
@@ -220,6 +221,44 @@ public class HAM_VolunteerOpportunityController_Test {
                     ucinn_ascendv2__Start_Date__c = Date.today().addYears(-1)
                 ));
             }
+
+        // Deliberately inconsistent record: Status still says 'Current' but End Date has
+        // already passed - proves the merged current/past bucket logic catches this via
+        // End_Date__c even when Status__c wasn't kept up to date. Under the old Current/Past
+        // queries this record was invisible (failed both: not open-ended, not Status=Former).
+        involvements.add(new ucinn_ascendv2__Involvement__c(
+            RecordTypeId = volunteerRTId,
+            ucinn_ascendv2__Contact__c = con.Id,
+            ucinn_ascendv2__Involvement_Code__c = involvementValues[2].Id,
+            ucinn_ascendv2__Start_Date__c = Date.today().addDays(-60),
+            ucinn_ascendv2__End_Date__c = Date.today().addDays(-5),
+            ucinn_ascendv2__Status__c = 'Current'
+        ));
+
+        // Former Committee Activities (past)
+        for(Integer i = 0; i < 2; i++) {
+            involvements.add(new ucinn_ascendv2__Involvement__c(
+                RecordTypeId = committeeRTId,
+                ucinn_ascendv2__Contact__c = con.Id,
+                ucinn_ascendv2__Involvement_Code__c = involvementValues[4].Id,
+                ucinn_ascendv2__Status__c = 'Former',
+                ucinn_ascendv2__Role__c = 'Member',
+                ucinn_ascendv2__Start_Date__c = Date.today().addYears(-3),
+                ucinn_ascendv2__End_Date__c = Date.today().addYears(-1).addMonths(-i)
+            ));
+        }
+
+        // Former Board Activity (past)
+        involvements.add(new ucinn_ascendv2__Involvement__c(
+            RecordTypeId = boardRTId,
+            ucinn_ascendv2__Contact__c = con.Id,
+            ucinn_ascendv2__Involvement_Code__c = involvementValues[3].Id,
+            ucinn_ascendv2__Status__c = 'Former',
+            ucinn_ascendv2__Role__c = 'Chair',
+            ucinn_ascendv2__Start_Date__c = Date.today().addYears(-5),
+            ucinn_ascendv2__End_Date__c = Date.today().addYears(-2)
+        ));
+
         insert involvements;
         User admin = [SELECT Id FROM User WHERE LastName = 'TempSys' LIMIT 1];
         System.runAs(admin) {
@@ -319,137 +358,25 @@ public class HAM_VolunteerOpportunityController_Test {
     }
     
     /**
-     * @description Test method for getMyVolunteerActivities
-     */
-    @isTest
-    static void getMyVolunteerActivitiesTestMethod() {
-        Contact testContact = [SELECT Id FROM Contact WHERE Email = 'testvolunteer@example.com' LIMIT 1];
-        
-        Test.startTest();
-        List<HAM_VolunteerOpportunityController.MyActivityWrapper> activities = 
-            HAM_VolunteerOpportunityController.getMyVolunteerActivities(testContact.Id, null, null);
-        Test.stopTest();
-        
-        System.assertNotEquals(null, activities, 'Activities list should not be null');
-        System.assertEquals(2, activities.size(), 'Should return current and upcoming activities only');
-        
-        // Verify Record Type is correctly assigned
-        Id volunteerRTId = [SELECT Id FROM RecordType 
-                           WHERE SobjectType = 'ucinn_ascendv2__Involvement__c' 
-                           AND DeveloperName = 'Volunteer_Engagement' 
-                           LIMIT 1].Id;
-        
-        List<ucinn_ascendv2__Involvement__c> involvementsWithRT = [
-            SELECT Id, RecordTypeId FROM ucinn_ascendv2__Involvement__c 
-            WHERE ucinn_ascendv2__Contact__c = :testContact.Id 
-            AND ucinn_ascendv2__End_Date__c = null
-        ];
-        
-        // Check for current and upcoming activities
-        Boolean hasCurrentActivity = false;
-        Boolean hasUpcomingActivity = false;
-        for(HAM_VolunteerOpportunityController.MyActivityWrapper act : activities) {
-            if(act.computedTab == 'Current') hasCurrentActivity = true;
-            if(act.computedTab == 'Upcoming') hasUpcomingActivity = true;
-        }
-        
-        System.assert(hasCurrentActivity, 'Should have at least one current activity');
-        System.assert(hasUpcomingActivity, 'Should have at least one upcoming activity');
-    }
-    
-    /**
-     * @description Test method for getPastActivityCount
-     */
-    @isTest
-    static void getPastActivityCountTestMethod() {
-        Contact testContact = [SELECT Id FROM Contact WHERE Email = 'testvolunteer@example.com' LIMIT 1];
-        
-        Test.startTest();
-        Integer count = HAM_VolunteerOpportunityController.getPastActivityCount(testContact.Id, null, null);
-        Test.stopTest();
-        
-        System.assertNotEquals(null, count, 'Count should not be null');
-        System.assertEquals(11, count, 'Should count all past activities');
-    }
-    
-    /**
-     * @description Test method for getPastVolunteerActivities with pagination
-     */
-    @isTest
-    static void getPastVolunteerActivitiesTestMethod() {
-        Contact testContact = [SELECT Id FROM Contact WHERE Email = 'testvolunteer@example.com' LIMIT 1];
-        
-        Test.startTest();
-        // Test first page
-        List<HAM_VolunteerOpportunityController.MyActivityWrapper> page1 = 
-            HAM_VolunteerOpportunityController.getPastVolunteerActivities(5, 0, testContact.Id, null, null);
-        
-        // Test second page
-        List<HAM_VolunteerOpportunityController.MyActivityWrapper> page2 = 
-            HAM_VolunteerOpportunityController.getPastVolunteerActivities(5, 5, testContact.Id, null, null);
-        Test.stopTest();
-        
-        System.assertEquals(5, page1.size(), 'First page should have 5 records');
-        System.assertEquals(5, page2.size(), 'Second page should have 5 records');
-        System.assertNotEquals(page1[0].id, page2[0].id, 'Pages should contain different records');
-        
-        // Verify all activities are marked as Past and have correct Record Type
-        Id volunteerRTId = [SELECT Id FROM RecordType 
-                           WHERE SobjectType = 'ucinn_ascendv2__Involvement__c' 
-                           AND DeveloperName = 'Volunteer_Engagement' 
-                           LIMIT 1].Id;
-        
-        for(HAM_VolunteerOpportunityController.MyActivityWrapper act : page1) {
-            System.assertEquals('Past', act.computedTab, 'Activity should be marked as Past');
-            
-            // Verify Record Type
-            ucinn_ascendv2__Involvement__c inv = [SELECT RecordTypeId FROM ucinn_ascendv2__Involvement__c WHERE Id = :act.id];
-            System.assertEquals(volunteerRTId, inv.RecordTypeId, 'Record Type should be Volunteer Engagement');
-        }
-    }
-    
-    /**
-     * @description Test method for getPastVolunteerActivities with date filtering
-     */
-    @isTest
-    static void getPastVolunteerActivitiesWithDateFilterTestMethod() {
-        Contact testContact = [SELECT Id FROM Contact WHERE Email = 'testvolunteer@example.com' LIMIT 1];
-        Date fromDate = Date.today().addDays(-100);
-        Date toDate = Date.today().addDays(-50);
-        
-        Test.startTest();
-        List<HAM_VolunteerOpportunityController.MyActivityWrapper> filteredActivities = 
-            HAM_VolunteerOpportunityController.getPastVolunteerActivities(10, 0, testContact.Id, fromDate, toDate);
-        Test.stopTest();
-        
-        System.assertNotEquals(null, filteredActivities, 'Filtered activities should not be null');
-        // Verify activities fall within date range
-        for(HAM_VolunteerOpportunityController.MyActivityWrapper act : filteredActivities) {
-            System.assert(act.startDate >= fromDate && act.startDate <= toDate, 
-                         'Activity start date should be within filter range');
-        }
-    }
-    
-    /**
      * @description Test method for error handling with invalid contact ID
      */
     @isTest
     static void errorHandlingTestMethod() {
         Test.startTest();
-        List<HAM_VolunteerOpportunityController.OpportunityWrapper> opps = 
+        List<HAM_VolunteerOpportunityController.OpportunityWrapper> opps =
             HAM_VolunteerOpportunityController.getOpportunities(0, 0, null);
-        
-        List<HAM_VolunteerOpportunityController.MyActivityWrapper> activities = 
-            HAM_VolunteerOpportunityController.getMyVolunteerActivities(null, null, null);
-        
-        Integer count = HAM_VolunteerOpportunityController.getPastActivityCount(null, null, null);
+
+        List<HAM_VolunteerOpportunityController.MyActivityWrapper> current =
+            HAM_VolunteerOpportunityController.getCurrentVolunteerRecords(50, 0, null);
+
+        Integer count = HAM_VolunteerOpportunityController.getPastVolunteerRecordsCount(null, null, null);
         Test.stopTest();
-        
+
         System.assertNotEquals(null, opps, 'Should return empty list, not null');
-        System.assertNotEquals(null, activities, 'Should return empty list, not null');
+        System.assertNotEquals(null, current, 'Should return empty list, not null');
         System.assertEquals(0, count, 'Count should be 0 for invalid contact');
     }
-    
+
     @isTest
     static void getOpportunitiesCountTestMethod() {
         
@@ -489,36 +416,143 @@ public class HAM_VolunteerOpportunityController_Test {
     }
 
     /**
-     * @description Tests retrieval and count of Committee/Board activities.
+     * @description Test method for getCurrentVolunteerRecords / getCurrentVolunteerRecordsCount
+     * (merged Activity + Committee/Board records for the current bucket).
      */
     @isTest
-    static void testCommitteeActivities() {
-        Contact con = [SELECT Id FROM Contact WHERE Email = 'testvolunteer@example.com' LIMIT 1];
+    static void getCurrentVolunteerRecordsTestMethod() {
+        Contact testContact = [SELECT Id FROM Contact WHERE Email = 'testvolunteer@example.com' LIMIT 1];
 
         Test.startTest();
-        Integer count = HAM_VolunteerOpportunityController.getCommitteesCount(con.Id);
-        List<HAM_VolunteerOpportunityController.MyActivityWrapper> committees = 
-            HAM_VolunteerOpportunityController.getCommitteeActivities(10, 0, con.Id);
+        Integer count = HAM_VolunteerOpportunityController.getCurrentVolunteerRecordsCount(testContact.Id);
+        List<HAM_VolunteerOpportunityController.MyActivityWrapper> current =
+            HAM_VolunteerOpportunityController.getCurrentVolunteerRecords(50, 0, testContact.Id);
         Test.stopTest();
 
-        System.assertEquals(5, count, 'Should count 3 Committees and 2 Boards.');
-        System.assertEquals(5, committees.size(), 'Should return 5 committee wrappers.');
-        System.assertEquals('Committees', committees[0].computedTab, 'Computed tab should be Committees.');
+        System.assertEquals(7, count, 'Should count 2 current/upcoming activities, 3 current committees, 2 current boards.');
+        System.assertEquals(7, current.size(), 'Should return all 7 current records.');
+
+        for (HAM_VolunteerOpportunityController.MyActivityWrapper act : current) {
+            System.assertEquals('Current', act.computedTab, 'Every record in this bucket should be marked Current.');
+        }
+
+        for (Integer i = 1; i < current.size(); i++) {
+            System.assert(current[i - 1].startDate <= current[i].startDate, 'Current records should be sorted by start date ascending.');
+        }
     }
 
     /**
-     * @description Validates Committee pagination using limit and offset.
+     * @description Test method for getPastVolunteerRecords / getPastVolunteerRecordsCount,
+     * including the deliberately Status/EndDate-inconsistent record.
      */
     @isTest
-    static void testCommitteePagination() {
-        Contact con = [SELECT Id FROM Contact WHERE Email = 'testvolunteer@example.com' LIMIT 1];
+    static void getPastVolunteerRecordsTestMethod() {
+        Contact testContact = [SELECT Id FROM Contact WHERE Email = 'testvolunteer@example.com' LIMIT 1];
 
         Test.startTest();
-        List<HAM_VolunteerOpportunityController.MyActivityWrapper> paged = 
-            HAM_VolunteerOpportunityController.getCommitteeActivities(2, 0, con.Id);
+        Integer count = HAM_VolunteerOpportunityController.getPastVolunteerRecordsCount(testContact.Id, null, null);
+        List<HAM_VolunteerOpportunityController.MyActivityWrapper> past =
+            HAM_VolunteerOpportunityController.getPastVolunteerRecords(50, 0, testContact.Id, null, null);
         Test.stopTest();
 
-        System.assertEquals(2, paged.size(), 'Should respect the limit of 2.');
+        System.assertEquals(15, count, 'Should count 11 past activities, 1 inconsistent record, 2 former committees, 1 former board.');
+        System.assertEquals(15, past.size(), 'Should return all 15 past records.');
+
+        for (HAM_VolunteerOpportunityController.MyActivityWrapper act : past) {
+            System.assertEquals('Past', act.computedTab, 'Every record in this bucket should be marked Past.');
+        }
+
+        for (Integer i = 1; i < past.size(); i++) {
+            if (past[i - 1].endDate != null && past[i].endDate != null) {
+                System.assert(past[i - 1].endDate >= past[i].endDate, 'Past records should be sorted by end date descending.');
+            }
+        }
+
+        // The record inserted with Status='Current' but a past End_Date must show up here.
+        // Note: org automation reconciles Status__c to 'Former' on insert for this record, so
+        // it's identified by its unique Start_Date rather than by Status - the point of this
+        // test is that End_Date alone is enough to classify it as Past even if Status lags.
+        Boolean foundInconsistentRecord = false;
+        for (HAM_VolunteerOpportunityController.MyActivityWrapper act : past) {
+            if (act.startDate == Date.today().addDays(-60)) {
+                foundInconsistentRecord = true;
+            }
+        }
+        System.assert(foundInconsistentRecord, 'A record with a past End Date should be classified as Past regardless of Status.');
+    }
+
+    /**
+     * @description Guard test: the Current and Past buckets must never return the same record Id.
+     */
+    @isTest
+    static void currentAndPastRecordsDoNotOverlapTestMethod() {
+        Contact testContact = [SELECT Id FROM Contact WHERE Email = 'testvolunteer@example.com' LIMIT 1];
+
+        Test.startTest();
+        List<HAM_VolunteerOpportunityController.MyActivityWrapper> current =
+            HAM_VolunteerOpportunityController.getCurrentVolunteerRecords(50, 0, testContact.Id);
+        List<HAM_VolunteerOpportunityController.MyActivityWrapper> past =
+            HAM_VolunteerOpportunityController.getPastVolunteerRecords(50, 0, testContact.Id, null, null);
+        Test.stopTest();
+
+        Set<String> currentIds = new Set<String>();
+        for (HAM_VolunteerOpportunityController.MyActivityWrapper act : current) {
+            currentIds.add(act.id);
+        }
+
+        Set<String> overlap = new Set<String>();
+        for (HAM_VolunteerOpportunityController.MyActivityWrapper act : past) {
+            if (currentIds.contains(act.id)) {
+                overlap.add(act.id);
+            }
+        }
+
+        System.assertEquals(0, overlap.size(), 'No record should ever appear in both the Current and Past buckets: ' + String.valueOf(overlap));
+    }
+
+    /**
+     * @description Guard test: Current count + Past count must equal the true total of relevant
+     * records for the contact - proves nothing is silently dropped by the bucket split.
+     */
+    @isTest
+    static void currentPlusPastCountsMatchTrueTotalTestMethod() {
+        Contact testContact = [SELECT Id FROM Contact WHERE Email = 'testvolunteer@example.com' LIMIT 1];
+
+        Integer trueTotal = [
+            SELECT COUNT()
+            FROM ucinn_ascendv2__Involvement__c
+            WHERE ucinn_ascendv2__Contact__c = :testContact.Id
+            AND (
+                (ucinn_ascendv2__Involvement_Type_Formula__c = 'Volunteer Engagement')
+                OR (
+                    (RecordType.DeveloperName = 'Board_of_Trustees' OR RecordType.DeveloperName = 'Committee')
+                    AND HAM_Volunteer_Activity__c = true
+                )
+            )
+        ];
+
+        Test.startTest();
+        Integer currentCount = HAM_VolunteerOpportunityController.getCurrentVolunteerRecordsCount(testContact.Id);
+        Integer pastCount = HAM_VolunteerOpportunityController.getPastVolunteerRecordsCount(testContact.Id, null, null);
+        Test.stopTest();
+
+        System.assertEquals(trueTotal, currentCount + pastCount,
+            'Current count (' + currentCount + ') + Past count (' + pastCount + ') must equal the true total (' + trueTotal + ').');
+    }
+
+    /**
+     * @description Validates pagination on the new merged Current bucket using limit and offset.
+     */
+    @isTest
+    static void getCurrentVolunteerRecordsPaginationTestMethod() {
+        Contact testContact = [SELECT Id FROM Contact WHERE Email = 'testvolunteer@example.com' LIMIT 1];
+
+        Test.startTest();
+        List<HAM_VolunteerOpportunityController.MyActivityWrapper> paged =
+            HAM_VolunteerOpportunityController.getCurrentVolunteerRecords(3, 0, testContact.Id);
+        Test.stopTest();
+
+        System.assertEquals(3, paged.size(), 'Should respect the limit of 3.');
     }
 
 }

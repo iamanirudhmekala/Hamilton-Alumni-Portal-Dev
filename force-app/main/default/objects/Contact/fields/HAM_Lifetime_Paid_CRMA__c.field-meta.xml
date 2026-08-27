@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Lifetime_Paid_CRMA__c</fullName>
+    <description>This is CRMA Lifetime Paid field replacing the existing one that just uses the ascend one</description>
+    <inlineHelpText>This is CRMA Lifetime Paid field replacing the existing one that just uses the ascend one</inlineHelpText>
+    <label>Lifetime Paid CRMA</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

@@ -66,6 +66,22 @@
 
 .filter-header-text { color: #003366; }
 
+.grant-actions { white-space: nowrap; }
+.action-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem 0.5rem 0.25rem 0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.grant-actions .action-button-primary { background-color: #003366 !important; color: #FFFFFF !important; border: 1px solid #003366 !important; }
+.grant-actions .action-button-secondary { background-color: #FFFFFF !important; color: #003366 !important; border: 1px solid #003366 !important; }
+.kirkland-override .grant-actions .action-button-primary { background-color: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .grant-actions .action-button-secondary { color: #166837 !important; border-color: #166837 !important; }
+
 /* ── Kirkland Override ───────────────────────────────────────── */
 .kirkland-override .data-table th { background-color: #166837 !important; border-color: #166837 !important; }
 .kirkland-override .data-table tbody tr:nth-child(even) { background-color: #EDFCF3 !important; }

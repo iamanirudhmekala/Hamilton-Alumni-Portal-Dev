@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Degree_Information__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This is the newly created Degree record from this staging object to avoid duplicate info</description>
+    <inlineHelpText>This is the newly created Degree record from this staging object to avoid duplicate info</inlineHelpText>
+    <label>Degree Information</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>ucinn_ascendv2__Degree_Information__c.RecordType.Name</field>
+            <operation>equals</operation>
+            <value>Non-School Degree Information</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>ucinn_ascendv2__Degree_Information__c</referenceTo>
+    <relationshipLabel>HAM HQ Stagings</relationshipLabel>
+    <relationshipName>HAM_HQ_Stagings</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

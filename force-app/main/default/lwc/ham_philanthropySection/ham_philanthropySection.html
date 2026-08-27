@@ -56,6 +56,7 @@
         <template lwc:if={ispageflagFalse}> <!--Added conditional rendering for reusing in homepage-->
             <div class="button-container">
                 <button class="deep-dive-button" onclick={handleButtonClick} >{label.deeperdiveintomyphilanthropy}</button>
+                <button class="describe-impact-button" onclick={handleOpenDescribeModal}>Describe My Impact</button>
             </div>
         </template>
         <template lwc:else>
@@ -65,8 +66,47 @@
                         onclick={handleMyImpactNavigation}>
                     See Full Impact
                     </a>
+                    <button class="describe-impact-button describe-impact-button-mobile" onclick={handleOpenDescribeModal}>Describe My Impact</button>
                 </div>
             </template>
+        </template>
+
+        <!-- Describe My Impact Modal -->
+        <template lwc:if={isDescribeModalOpen}>
+            <div class="describe-modal-overlay" onclick={handleCloseDescribeModal}>
+                <div class="describe-modal-content" onclick={handleModalContentClick}>
+                    <div class="describe-modal-header">
+                        <h3>Describe My Impact</h3>
+                        <button class="describe-modal-close" onclick={handleCloseDescribeModal} aria-label="Close">&times;</button>
+                    </div>
+
+                    <div class="describe-modal-body">
+                        <template lwc:if={isDescribeLoading}>
+                            <div class="describe-modal-loading">Loading...</div>
+                        </template>
+                        <template lwc:else>
+                            <lightning-textarea
+                                class="describe-modal-textarea"
+                                variant="label-hidden"
+                                value={describeMyImpactValue}
+                                onchange={handleDescribeTextChange}
+                                placeholder="Tell us about your impact...">
+                            </lightning-textarea>
+                            <template lwc:if={describeErrorMessage}>
+                                <p class="describe-modal-error">{describeErrorMessage}</p>
+                            </template>
+                        </template>
+                    </div>
+
+                    <div class="describe-modal-footer">
+                        <button class="describe-modal-cancel" onclick={handleCloseDescribeModal} disabled={isDescribeSaving}>Cancel</button>
+                        <button class="describe-modal-save" onclick={handleSaveDescribeModal} disabled={isDescribeSaving}>
+                            <template lwc:if={isDescribeSaving}>Saving...</template>
+                            <template lwc:else>Save</template>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </template>
     </div>
 </template>

@@ -1,0 +1,97 @@
+.results-wrapper {
+    width: 100%;
+}
+
+.carousel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cards-track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 0.25rem;
+    flex: 1;
+}
+
+.cards-track::-webkit-scrollbar {
+    height: 6px;
+}
+
+.alumni-card {
+    flex: 0 0 220px;
+    background: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.alumni-details {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.alumni-name {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #16325c;
+}
+
+.alumni-field {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #3e3e3c;
+}
+
+.view-details-btn {
+    margin-top: 0.5rem;
+    align-self: flex-start;
+    background: #032d60;
+    color: #ffffff;
+    border: none;
+    border-radius: 1rem;
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.view-details-btn:hover {
+    background: #061c3f;
+}
+
+.nav-btn {
+    flex: 0 0 auto;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: none;
+    background: #eef4ff;
+    color: #032d60;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.nav-btn:hover {
+    background: #d8e6ff;
+}
+
+.status-message {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: #f3f3f3;
+    color: #3e3e3c;
+    font-size: 0.9rem;
+}
+
+.status-message.error {
+    background: #fdecea;
+    color: #a80000;
+}

@@ -245,6 +245,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contact.HAM_Current_Employer_HQ__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contact.HAM_Current_FY_Paid__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -266,6 +271,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.HAM_Date_Last_Modified__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.HAM_Describe_My_Impact__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2806,6 +2816,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>HAM_Engagement_Activity_Value__c.HAM_Parent_Engagement_Activity_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Information__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

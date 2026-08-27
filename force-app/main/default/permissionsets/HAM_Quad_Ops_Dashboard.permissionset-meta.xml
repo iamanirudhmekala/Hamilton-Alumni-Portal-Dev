@@ -17,6 +17,11 @@
         <enabled>true</enabled>
     </classAccesses>
     <description>Grants access to the Hamilton Quad Ops Dashboard. Assign to AIS/IT staff only — this dashboard shows login-error detail with names/emails and is not intended for the public Experience Cloud site.</description>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Information__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>HAM Quad Ops Dashboard</label>
 </PermissionSet>

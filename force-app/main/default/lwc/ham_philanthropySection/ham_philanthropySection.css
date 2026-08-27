@@ -309,6 +309,8 @@
 .button-container {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 1rem;
   margin-top: 2rem;
 }
 
@@ -496,7 +498,9 @@
     .button-wrapper {
         display: flex;
         justify-content: left;
+        align-items: center;
         width: 100%;
+        gap: 0.5rem;
         /* margin-top: 40px; */
     }
 
@@ -521,6 +525,7 @@
         max-width: 90%;
         text-decoration: none;
         text-align: center;
+        box-sizing: border-box;
     }
 
 
@@ -557,6 +562,30 @@
     
     .info-section {
         margin-bottom: 10px;
+    }
+
+    /* ── Describe My Impact button: mobile sizing ─────────────── */
+    .button-container {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .button-container .deep-dive-button,
+    .button-container .describe-impact-button {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.95rem;
+        margin-left: 0;
+    }
+
+    .describe-impact-button-mobile {
+        width: auto;
+        margin-left: 0;
+        padding: 8px 16px;
+        font-size: 13px;
+        height: 35px;
+        box-sizing: border-box;
     }
 
 }
@@ -596,3 +625,162 @@
 .kirkland-override .deep-dive-button { background-color: #166837 !important; }
 .kirkland-override .deep-dive-button:hover { background-color: #065124 !important; }
 .kirkland-override .navigate-button { background-color: #166837 !important; }
+
+/* ── Describe My Impact button ───────────────────────────────── */
+/* Sized to match .deep-dive-button exactly (same padding/radius/font)
+   so the outline button never renders larger than the filled one. */
+.describe-impact-button {
+    background-color: transparent;
+    color: #002F86;
+    border: 1.5px solid #002F86;
+    border-radius: 6px;
+    padding: 0.75rem 3rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-family: 'Mallory', sans-serif;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.describe-impact-button:hover {
+    background-color: #002F86;
+    color: white;
+}
+
+.describe-impact-button-mobile {
+    padding: 8px 16px;
+    font-size: 13px;
+    height: 35px;
+    box-sizing: border-box;
+}
+
+.kirkland-override .describe-impact-button {
+    color: #166837 !important;
+    border-color: #166837 !important;
+}
+
+.kirkland-override .describe-impact-button:hover {
+    background-color: #166837 !important;
+    color: white !important;
+}
+
+/* ── Describe My Impact Modal ────────────────────────────────── */
+.describe-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9000;
+}
+
+.describe-modal-content {
+    background-color: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 520px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    font-family: 'Mallory', sans-serif;
+}
+
+.describe-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #F4F4F4;
+}
+
+.describe-modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #002F86;
+}
+
+.describe-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #686E78;
+    padding: 0;
+}
+
+.describe-modal-body {
+    padding: 1.25rem 1.5rem;
+    overflow-y: auto;
+}
+
+.describe-modal-textarea {
+    --slds-c-textarea-sizing-min-height: 180px;
+    display: block;
+    width: 100%;
+}
+
+.describe-modal-loading {
+    text-align: center;
+    color: #686E78;
+    padding: 2rem 0;
+}
+
+.describe-modal-error {
+    color: #B00020;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.describe-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #F4F4F4;
+}
+
+.describe-modal-cancel {
+    background-color: transparent;
+    color: #686E78;
+    border: 1px solid #D3EBFB;
+    border-radius: 8px;
+    padding: 0.6rem 1.25rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.describe-modal-save {
+    background-color: #002F86;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.describe-modal-save:hover {
+    background-color: #001f60;
+}
+
+.describe-modal-save:disabled,
+.describe-modal-cancel:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.kirkland-override .describe-modal-save {
+    background-color: #166837 !important;
+}
+
+.kirkland-override .describe-modal-save:hover {
+    background-color: #065124 !important;
+}

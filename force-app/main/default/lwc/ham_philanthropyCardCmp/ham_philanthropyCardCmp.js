@@ -36,6 +36,20 @@ export default class Ham_philanthropyCardCmp extends LightningElement {
         return this.tableData && this.tableData.tableName === 'Receipts';
     }
 
+    /**
+     * @description Getter to check if this table has fixed action buttons configured via metadata.
+     */
+    get hasActionButtons() {
+        return !!(this.tableData && (this.tableData.button1Url || this.tableData.button2Url));
+    }
+
+    /**
+     * @description Getter to check if this table has footnote text configured via metadata.
+     */
+    get hasFootnote() {
+        return !!(this.tableData && this.tableData.footnote);
+    }
+
     get wrapperClass() {
         return this.isOverride ? 'card-list-container kirkland-override' : 'card-list-container';
     }

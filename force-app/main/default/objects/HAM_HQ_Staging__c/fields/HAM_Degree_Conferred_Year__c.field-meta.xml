@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAM_Degree_Conferred_Year__c</fullName>
+    <description>The year the grad school degree was conferred</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The year the grad school degree was conferred</inlineHelpText>
+    <label>Degree Conferred Year</label>
+    <length>4</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

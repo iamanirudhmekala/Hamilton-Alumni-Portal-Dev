@@ -49,6 +49,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AlumniSearchAction</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>Attendee</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -629,6 +633,26 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>HAM_MGFTReviewTxnCtrl</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HAM_MGFTReviewTxnCtrlTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HAM_MGFTSessionAssignmentScheduler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HAM_MGFTSessionAssignmentService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HAM_MGFTSessionAssignmentServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>HAM_MainController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -833,6 +857,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>HQGradDegreeStagingProcessor</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>HamCCClosedTasksController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -926,6 +954,18 @@
     </classAccesses>
     <classAccesses>
         <apexClass>HamGivingPagePaymentTabControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HamGoogleAddressResult</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HamGoogleAddressVerifyController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HamGoogleAddressVerifyControllerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1074,6 +1114,18 @@
     </classAccesses>
     <classAccesses>
         <apexClass>MicrobatchSelfRegControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>Milton_AlumniResult</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>Milton_AlumniSearchAction</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>Milton_AlumniSearchResponse</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1234,6 +1286,50 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ham_SmartyStreetScheduler_Test</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonAlumniConnectionAction</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonAlumniResult</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonAlumniSearchAction</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonAlumniSearchResponse</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonVolunteerOpportunityInterestAction</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonVolunteerOpportunityResult</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonVolunteerOpportunitySearchAction</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonVolunteerOpportunitySearchResponse</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonVolunteerServicesResult</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonVolunteerServicesSearchAction</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>miltonVolunteerServicesSearchResponse</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <custom>true</custom>
@@ -4315,6 +4411,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contact.HAM_Current_Employer_HQ__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.HAM_Current_FY_Paid_CRMA__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contact.HAM_Current_FY_Paid__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4336,6 +4442,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.HAM_Date_Last_Modified__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.HAM_Describe_My_Impact__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4626,6 +4737,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.HAM_Lifetime_Committed_w_BQI__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.HAM_Lifetime_Paid_CRMA__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10260,6 +10376,51 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Constituent__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Code__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Conferred_Year__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Degree_Information__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Is_Processed__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Major__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_Minor__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_School__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_HQ_Staging__c.HAM_is_Ready_for_Processing__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>HAM_Hand_Raise_Portal_Notification__mdt.Career_Center_Recipients__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -10485,6 +10646,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>HAM_Notification_Setting__mdt.Site_Base_Path__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>HAM_Notification__c.HAM_Action_URL__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -10531,6 +10697,26 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>HAM_Object_Fetcher__mdt.HAM_Additional_Filter__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_Object_Fetcher__mdt.HAM_Button_1_Label__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_Object_Fetcher__mdt.HAM_Button_1_URL__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_Object_Fetcher__mdt.HAM_Button_2_Label__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_Object_Fetcher__mdt.HAM_Button_2_URL__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10601,6 +10787,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>HAM_Object_Fetcher__mdt.HAM_Table_Field_Types__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>HAM_Object_Fetcher__mdt.HAM_Table_Footnote__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10980,7 +11171,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Ham_GivingApp_Feature_Toggle__mdt.Appeal_Code__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Ham_GivingApp_Feature_Toggle__mdt.Is_Active__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ham_GivingApp_Feature_Toggle__mdt.Is_Campaign_Attached__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -19010,6 +19211,11 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
+        <recordType>HAM_HQ_Staging__c.Grad_School_Degree</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
         <recordType>HAM_Pledge_Balance__c.Campaign</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -19287,6 +19493,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-DataQueryWorkspace</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-DataQuickAttribute</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

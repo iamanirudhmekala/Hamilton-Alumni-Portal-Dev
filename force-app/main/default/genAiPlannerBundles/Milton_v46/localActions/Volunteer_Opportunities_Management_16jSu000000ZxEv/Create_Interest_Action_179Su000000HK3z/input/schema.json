@@ -1,0 +1,22 @@
+{
+  "required" : [ "contactId", "interestValueName" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "contactId" : {
+      "title" : "Contact Id",
+      "description" : "Contact Id of the user raising their hand.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "interestValueName" : {
+      "title" : "Foundation Funding Interest Name",
+      "description" : "Name of the Foundation Funding Interest (volunteer opportunity) the contact is raising their hand for.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType",
+  "lightning:textIndexed" : true
+}

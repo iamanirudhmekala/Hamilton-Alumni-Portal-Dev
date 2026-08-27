@@ -7,6 +7,22 @@
         <value xsi:type="xsd:string">(HAM_Category__c = &apos;Student Clubs&apos; OR HAM_Category__c  = &apos;Student Private Societies&apos;) AND (ucinn_ascendv2__End_Date__c= NULL OR ucinn_ascendv2__End_Date__c&gt; TODAY)</value>
     </values>
     <values>
+        <field>HAM_Button_1_Label__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Button_1_URL__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Button_2_Label__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Button_2_URL__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
         <field>HAM_Default_Display_Value__c</field>
         <value xsi:type="xsd:string">You are not part of any undergraduate organization yet.</value>
     </values>
@@ -60,6 +76,10 @@
     </values>
     <values>
         <field>HAM_Table_Field_Types__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Table_Footnote__c</field>
         <value xsi:nil="true"/>
     </values>
     <values>

@@ -17,6 +17,8 @@
     display: flex;
     flex-direction: column;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    padding: 12px;
 }
 
 .card-item:hover {
@@ -47,7 +49,8 @@
 }
 
 .card-content {
-    padding: 12px;
+    /* padding: 12px; */
+    margin-top: 12px;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -275,9 +278,9 @@
 }
 
 @media (max-width: 480px) {
-    .card-content {
+    /* .card-content {
         padding: 16px;
-    }
+    } */
 
     .card-footer,
     .list-footer {

@@ -65,7 +65,7 @@
     height: 24px;
     object-fit: contain;
     /* Convert to blue #002F86 */
-    filter: brightness(0) saturate(100%) invert(11%) sepia(86%) saturate(3084%) hue-rotate(214deg) brightness(91%) contrast(107%);
+    /* filter: brightness(0) saturate(100%) invert(11%) sepia(86%) saturate(3084%) hue-rotate(214deg) brightness(91%) contrast(107%); */
 }
 
 .header-icon-link {
@@ -238,8 +238,7 @@
 @media (max-width: 420px) {
     .hamilton-logo img {
         width: 150px;
-        height: 37px !important;
-        /* height: 45px !important; */
+        height: 45px !important;
     }
 }
 

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>MyPhiloDetail Table 7</label>
+    <protected>false</protected>
+    <values>
+        <field>HAM_Additional_Filter__c</field>
+        <value xsi:type="xsd:string">ucinn_ascendv2__Status__c = &apos;Current&apos; AND ucinn_ascendv2__Designation__r.ucinn_ascendv2__Fund_Type__c = &apos;Hamilton Donor-Advised Fund&apos;</value>
+    </values>
+    <values>
+        <field>HAM_Button_1_Label__c</field>
+        <value xsi:type="xsd:string">HDAF Grant Form</value>
+    </values>
+    <values>
+        <field>HAM_Button_1_URL__c</field>
+        <value xsi:type="xsd:string">https://powerforms.docusign.net/6ce1ae1c-c8c5-47ac-bc19-d39ac25e320a?env=na3&amp;acct=6ffeef32-0e8b-44b5-8e1a-24d97c0c577d&amp;accountId=6ffeef32-0e8b-44b5-8e1a-24d97c0c577d</value>
+    </values>
+    <values>
+        <field>HAM_Button_2_Label__c</field>
+        <value xsi:type="xsd:string">ODAF Grant Form</value>
+    </values>
+    <values>
+        <field>HAM_Button_2_URL__c</field>
+        <value xsi:type="xsd:string">https://powerforms.docusign.net/02b070a1-5a3a-4c72-954d-6549120ca406?env=na3&amp;acct=6ffeef32-0e8b-44b5-8e1a-24d97c0c577d&amp;accountId=6ffeef32-0e8b-44b5-8e1a-24d97c0c577d</value>
+    </values>
+    <values>
+        <field>HAM_Default_Display_Value__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Display_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Display_Label__c</field>
+        <value xsi:type="xsd:string">Hamilton Donor Advised Fund (HDAF)</value>
+    </values>
+    <values>
+        <field>HAM_Display_Type__c</field>
+        <value xsi:type="xsd:string">Table</value>
+    </values>
+    <values>
+        <field>HAM_Level_1__c</field>
+        <value xsi:type="xsd:string">My Philanthropy Detail</value>
+    </values>
+    <values>
+        <field>HAM_Level_2__c</field>
+        <value xsi:type="xsd:string">Hamilton Donor Advised Fund (HDAF)</value>
+    </values>
+    <values>
+        <field>HAM_Order__c</field>
+        <value xsi:type="xsd:double">2.0</value>
+    </values>
+    <values>
+        <field>HAM_Reference_Field__c</field>
+        <value xsi:type="xsd:string">ucinn_ascendv2__Contact_Stewardee__c</value>
+    </values>
+    <values>
+        <field>HAM_Related_Object__c</field>
+        <value xsi:type="xsd:string">ucinn_ascendv2__Designation_Stewardship__c</value>
+    </values>
+    <values>
+        <field>HAM_Service_Indicator_ID__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>HAM_Table_Default_Sort_Order__c</field>
+        <value xsi:type="xsd:string">ORDER BY HAM_Designation_Endowment_Market_Value__c DESC</value>
+    </values>
+    <values>
+        <field>HAM_Table_Field_APIs__c</field>
+        <value xsi:type="xsd:string">HAM_Fund_Name__c,HAM_Designation_Endowment_Market_Value__c,Ham_Desig_Endowment_Market_Value_Date__c</value>
+    </values>
+    <values>
+        <field>HAM_Table_Field_Labels__c</field>
+        <value xsi:type="xsd:string">Name,Market Value,As of</value>
+    </values>
+    <values>
+        <field>HAM_Table_Field_Types__c</field>
+        <value xsi:type="xsd:string">text,currency,date</value>
+    </values>
+    <values>
+        <field>HAM_Table_Footnote__c</field>
+        <value xsi:type="xsd:string">This is an estimate. Market value shown reflects the most recent balance and may not reflect real-time activity. For more current values, or for questions, please contact Julie Ross &apos;84 or Allie Donahoe &apos;17, Gift Planning.</value>
+    </values>
+    <values>
+        <field>HAM_Table_Limit__c</field>
+        <value xsi:type="xsd:double">5.0</value>
+    </values>
+    <values>
+        <field>HAM_Table_Load_More__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Ham_Section_Order__c</field>
+        <value xsi:nil="true"/>
+    </values>
+</CustomMetadata>

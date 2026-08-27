@@ -100,3 +100,10 @@
 .kirkland-override .mobile-pledge-card { background-color: #EDFCF3 !important; }
 .kirkland-override .load-more-button { background-color: #166837 !important; }
 .kirkland-override .slds-text-title_bold { color: #166837 !important; }
+
+.card-grant-actions { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+.card-grant-actions .action-button { display: block; width: 100%; text-align: center; padding: 10px 15px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; }
+.card-grant-actions .action-button-primary { background-color: #003366; color: #FFFFFF !important; border: 1px solid #003366; }
+.card-grant-actions .action-button-secondary { background-color: #FFFFFF; color: #003366 !important; border: 1px solid #003366; }
+.kirkland-override .card-grant-actions .action-button-primary { background-color: #166837 !important; border-color: #166837 !important; }
+.kirkland-override .card-grant-actions .action-button-secondary { color: #166837 !important; border-color: #166837 !important; }
