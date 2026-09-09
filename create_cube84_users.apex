@@ -14,7 +14,7 @@
 // ============================================================
 
 // ---------- Config ----------
-String envSuffix   = '.fullqa';                // <-- CHANGE per environment ('.uat', etc.)
+String envSuffix   = '.advdev';                // <-- CHANGE per environment ('.uat', etc.)
 String profileName = 'System Administrator';
 String timezone    = 'America/New_York';
 String locale      = 'en_US';

@@ -87,6 +87,7 @@ import HAM_MILLER from '@salesforce/resourceUrl/HAM_Miller';
 import { subscribe, unsubscribe, MessageContext, publish } from 'lightning/messageService';
 import HEADER_CHANNEL from '@salesforce/messageChannel/ham_HeaderMessageChannel__c';
 import NAVIGATION_CHANNEL from '@salesforce/messageChannel/ham_HomeNavigationChannel__c';
+import THUMBNAIL_REFRESH_CHANNEL from '@salesforce/messageChannel/ham_HomeThumbnailRefresh__c';
 
 // Importing Apex methods
 import getMyLinksMetaData from '@salesforce/apex/HAM_MainController.getMyLinksMetaData';
@@ -311,6 +312,11 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
 
     @wire(MessageContext)
     messageContext;
+
+    // Set when something elsewhere on the page invalidates the redirection card
+    // thumbnails; acted on in renderedCallback once the home view is showing again.
+    thumbnailSubscription;
+    thumbnailsNeedRefresh = false;
 
 
     /**
@@ -714,6 +720,36 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
                 (message) => this.handleMessage(message)
             );
         }
+
+        // The redirection cards refresh themselves while the home view is on screen.
+        // This subscription covers the other case: a connection made on the Directory
+        // view, where the cards are unmounted and would otherwise come back stale.
+        if (!this.thumbnailSubscription) {
+            this.thumbnailSubscription = subscribe(
+                this.messageContext,
+                THUMBNAIL_REFRESH_CHANNEL,
+                () => { this.thumbnailsNeedRefresh = true; }
+            );
+        }
+    }
+
+    /**
+     * @description Refreshes the redirection card thumbnails once the home view is back
+     * on screen after a change made elsewhere on the page.
+     */
+    renderedCallback() {
+        if (!this.thumbnailsNeedRefresh || !this.isHomeView) {
+            return;
+        }
+
+        const redirectionCards = this.template.querySelectorAll('c-ham_redirection-cards');
+
+        if (!redirectionCards || redirectionCards.length === 0) {
+            return;
+        }
+
+        redirectionCards.forEach(card => card.refreshThumbnails());
+        this.thumbnailsNeedRefresh = false;
     }
 
     /**
@@ -860,6 +896,11 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
         if (this.subscription) {
             unsubscribe(this.subscription);
             this.subscription = null;
+        }
+
+        if (this.thumbnailSubscription) {
+            unsubscribe(this.thumbnailSubscription);
+            this.thumbnailSubscription = null;
         }
     }
 

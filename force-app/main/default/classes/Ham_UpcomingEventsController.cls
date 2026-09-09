@@ -85,6 +85,11 @@ public without sharing class Ham_UpcomingEventsController {
     private static final String FORMAT_VIRTUAL         = 'Virtual';
     private static final Integer MAX_RECORDS           = 3;        // desktop cap; mobile slicing done in LWC
 
+    // Home page redirection card: when the resolved event has no image, fall back to the
+    // card's static production image rather than walking on to the next event.
+    // Flip to true to skip imageless events instead (pending BA confirmation).
+    private static final Boolean SKIP_EVENTS_WITHOUT_IMAGE = false;
+
     // ─────────────────────────────────────────────────────────────────────────
     // PUBLIC WIRE METHOD
     // ─────────────────────────────────────────────────────────────────────────
@@ -447,5 +452,127 @@ public without sharing class Ham_UpcomingEventsController {
         if (String.isBlank(fieldApi)) return '';
         Object val = rec.get(fieldApi);
         return val != null ? String.valueOf(val) : '-';  // Date.valueOf() → 'YYYY-MM-DD'
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // HOME PAGE REDIRECTION CARD THUMBNAIL
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /**
+     * @description Resolves the image shown on the Home Page "Events" redirection card.
+     *              Preference order:
+     *                1. Next upcoming event the logged-in user is registered for.
+     *                2. Next upcoming event overall.
+     *              Registration is determined by an existing CventEvents__Attendee__c
+     *              record, the same signal getHomePageEvents uses for isRegistered.
+     *
+     *              Deliberately independent of the In-Person / Virtual split used by
+     *              getHomePageEvents so the card is unaffected when that widget changes.
+     *
+     *              When the resolved event has no image the method returns null and the
+     *              LWC keeps its static production image — it does NOT walk on to the
+     *              next event. Flip SKIP_EVENTS_WITHOUT_IMAGE to change that.
+     *
+     * @param contactId Contact Id of the logged-in portal user.
+     * @return Image URL of the resolved event, or null when nothing resolves.
+     */
+    public static String getHomePageEventThumbnail(String contactId) {
+
+        if (String.isBlank(contactId)) {
+            return null;
+        }
+
+        // ── Resolve field API names from metadata (same source as getHomePageEvents) ──
+        Map<String, String> fieldLabelToApi = new Map<String, String>();
+
+        for (Ham_Events_Metadata__mdt mdt : [
+            SELECT Field_Label__c, Field_API_Name__c
+            FROM Ham_Events_Metadata__mdt
+            WHERE Object_API_Name__c = :CVENT_OBJECT_API
+              AND Object_Active__c   = true
+              AND Field_Retrievable__c = true
+        ]) {
+            if (String.isNotBlank(mdt.Field_Label__c) && String.isNotBlank(mdt.Field_API_Name__c)) {
+                fieldLabelToApi.put(mdt.Field_Label__c, mdt.Field_API_Name__c);
+            }
+        }
+
+        String imageApi     = fieldLabelToApi.get(LABEL_IMAGE);
+        String startDateApi = fieldLabelToApi.get(LABEL_START_DATE);
+        String endDateApi   = fieldLabelToApi.get(LABEL_END_DATE);
+
+        if (String.isBlank(imageApi) || String.isBlank(startDateApi)) {
+            System.debug('Ham_UpcomingEventsController: Image / StartDate metadata missing for thumbnail.');
+            return null;
+        }
+
+        Date today = Date.today();
+
+        // Same "upcoming" rule as getHomePageEvents: EndDate when populated, else StartDate.
+        String upcomingFilter;
+        if (String.isNotBlank(endDateApi)) {
+            upcomingFilter = '((' + endDateApi + ' != null AND ' + endDateApi + ' > :today)'
+                + ' OR (' + endDateApi + ' = null AND ' + startDateApi + ' >= :today))';
+        } else {
+            upcomingFilter = startDateApi + ' >= :today';
+        }
+
+        String baseConditions = ' WHERE ' + System.Label.Ham_CventsWhereClause + ' AND ' + upcomingFilter;
+
+        if (SKIP_EVENTS_WITHOUT_IMAGE) {
+            baseConditions += ' AND ' + imageApi + ' != null';
+        }
+
+        String selectClause  = 'SELECT Id, ' + imageApi + ', ' + startDateApi;
+        String orderAndLimit = ' ORDER BY ' + startDateApi + ' ASC LIMIT 1';
+
+        // ── 1. Next upcoming event the user is registered for ────────────────
+        Set<Id> registeredEventIds = new Set<Id>();
+
+        for (CventEvents__Attendee__c att : [
+            SELECT CventEvents__Event__c
+            FROM   CventEvents__Attendee__c
+            WHERE  CventEvents__Contact__c = :contactId
+            AND    CventEvents__Event__c  != null
+        ]) {
+            registeredEventIds.add(att.CventEvents__Event__c);
+        }
+
+        if (!registeredEventIds.isEmpty()) {
+            String registeredQuery = selectClause + ' FROM ' + CVENT_OBJECT_API
+                + baseConditions + ' AND Id IN :registeredEventIds' + orderAndLimit;
+
+            try {
+                List<CventEvents__Event__c> registeredRecords = Database.query(registeredQuery);
+                if (!registeredRecords.isEmpty()) {
+                    return blankToNull(getStringField(registeredRecords[0], imageApi));
+                }
+            } catch (Exception e) {
+                System.debug('Ham_UpcomingEventsController — registered thumbnail query error: ' + e.getMessage());
+            }
+        }
+
+        // ── 2. Fallback: next upcoming event overall ─────────────────────────
+        String upcomingQuery = selectClause + ' FROM ' + CVENT_OBJECT_API
+            + baseConditions + orderAndLimit;
+
+        try {
+            List<CventEvents__Event__c> upcomingRecords = Database.query(upcomingQuery);
+            if (!upcomingRecords.isEmpty()) {
+                return blankToNull(getStringField(upcomingRecords[0], imageApi));
+            }
+        } catch (Exception e) {
+            System.debug('Ham_UpcomingEventsController — upcoming thumbnail query error: ' + e.getMessage());
+        }
+
+        return null;
+    }
+
+    /**
+     * getStringField returns '-' for a missing field API and '' for a null value;
+     * neither is a usable image URL, so both collapse to null for the caller.
+     */
+    private static String blankToNull(String value) {
+        return (String.isBlank(value) || value == '-') ? null : value;
     }
 }

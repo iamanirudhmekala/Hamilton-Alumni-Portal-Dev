@@ -17,6 +17,9 @@ global class miltonAlumniResult {
     global String majorDegree;
 
     @AuraEnabled
+    global String email;
+
+    @AuraEnabled
     global String classOfYear;
 
     @AuraEnabled
@@ -33,4 +36,10 @@ global class miltonAlumniResult {
 
     @AuraEnabled
     global Boolean isSelf;
+
+    @AuraEnabled
+    global Boolean isDeceased;
+
+    @AuraEnabled
+    global Boolean connectionPrivacyEnabled;
 }

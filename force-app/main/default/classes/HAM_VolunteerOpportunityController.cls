@@ -390,4 +390,43 @@ public without sharing class HAM_VolunteerOpportunityController {
 
         return result;
     }
+
+    /**
+     * @description Returns the portal image of the user's most recent CURRENT volunteer
+     *              service, for the Home Page "Volunteer Opportunities" redirection card.
+     *
+     *              Uses the same record filter as getCurrentVolunteerRecords but sorted
+     *              newest-first — that method sorts oldest-first for the activity list,
+     *              so it cannot be reused directly for "latest".
+     *
+     * @param currentUserContactId Contact Id of the logged in user
+     * @return Image URL, or null when the user has no current service or it has no image.
+     */
+    public static String getLatestCurrentVolunteerImage(Id currentUserContactId) {
+
+        if (currentUserContactId == null) {
+            return null;
+        }
+
+        String volunteerengage = HAM_ConstantsUtil.VOLUNTEER_ENGAGEMENT;
+
+        String query = 'SELECT Id, ucinn_ascendv2__Involvement_Code__r.HAM_Portal_Image_URL__c ' +
+                       'FROM ucinn_ascendv2__Involvement__c ' +
+                       'WHERE ucinn_ascendv2__Contact__c = :currentUserContactId ' +
+                       'AND ((ucinn_ascendv2__Involvement_Type_Formula__c = \'' + String.escapeSingleQuotes(volunteerengage) + '\') ' +
+                       'OR ((RecordType.DeveloperName = \'Board_of_Trustees\' OR RecordType.DeveloperName = \'Committee\') AND HAM_Volunteer_Activity__c = true)) ' +
+                       'AND (ucinn_ascendv2__Status__c != \'Former\' OR ucinn_ascendv2__Status__c = null) ' +
+                       'AND (ucinn_ascendv2__End_Date__c = null OR ucinn_ascendv2__End_Date__c > TODAY) ' +
+                       'ORDER BY ucinn_ascendv2__Start_Date__c DESC NULLS LAST, Id DESC LIMIT 1';
+
+        List<ucinn_ascendv2__Involvement__c> involvements = Database.query(query);
+
+        if (involvements.isEmpty() || involvements[0].ucinn_ascendv2__Involvement_Code__r == null) {
+            return null;
+        }
+
+        String imageUrl = involvements[0].ucinn_ascendv2__Involvement_Code__r.HAM_Portal_Image_URL__c;
+
+        return String.isBlank(imageUrl) ? null : imageUrl;
+    }
 }

@@ -594,4 +594,128 @@ private class Ham_UpcomingEventsControllerTest {
         System.assertEquals(null, item.id, 'New EventItem.id should default to null');
         System.assertEquals(null, item.isRegistered, 'New EventItem.isRegistered should default to null');
     }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // HOME PAGE REDIRECTION CARD THUMBNAIL
+    // ─────────────────────────────────────────────────────────────────────────
+
+    // ── 12. Registered event wins even when an earlier unregistered one exists ─
+    @isTest
+    static void testThumbnail_PrefersRegisteredEvent() {
+        Contact c = getContact('Region');
+
+        CventEvents__Event__c earlierUnregistered = new CventEvents__Event__c(
+            CventEvents__pkg_Title__c       = 'Earlier Unregistered Event',
+            CventEvents__pkg_StartDate__c   = Date.today().addDays(2),
+            HAMImageURL__c                  = 'https://images.test/unregistered.jpg',
+            ADVEventFormat__c               = FORMAT_IP,
+            ADVPublicPrivate__c             = 'Public',
+            CventEvents__pkg_Status__c      = STATUS_ACTIVE,
+            CventEvents__pkg_EventStatus__c = 'Upcoming',
+            CventEvents__pkg_EventStub__c   = 'THM1',
+            CventEvents__pkg_Code__c        = 'THM1',
+            CventEvents__pkg_Category__c    = 'Test Ctaegory'
+        );
+
+        CventEvents__Event__c laterRegistered = new CventEvents__Event__c(
+            CventEvents__pkg_Title__c       = 'Later Registered Event',
+            CventEvents__pkg_StartDate__c   = Date.today().addDays(4),
+            HAMImageURL__c                  = 'https://images.test/registered.jpg',
+            ADVEventFormat__c               = FORMAT_IP,
+            ADVPublicPrivate__c             = 'Public',
+            CventEvents__pkg_Status__c      = STATUS_ACTIVE,
+            CventEvents__pkg_EventStatus__c = 'Upcoming',
+            CventEvents__pkg_EventStub__c   = 'THM2',
+            CventEvents__pkg_Code__c        = 'THM2',
+            CventEvents__pkg_Category__c    = 'Test Ctaegory'
+        );
+
+        insert new List<CventEvents__Event__c>{ earlierUnregistered, laterRegistered };
+
+        insert new CventEvents__Attendee__c(
+            CventEvents__Event__c        = laterRegistered.Id,
+            CventEvents__Contact__c      = c.Id,
+            CventEvents__Status__c       = 'Visited',
+            CventEvents__AttendeeStub__c = '/thumbtest1',
+            CventEvents__IsFreeloader__c = false
+        );
+
+        Test.startTest();
+        String thumbnail = Ham_UpcomingEventsController.getHomePageEventThumbnail(c.Id);
+        Test.stopTest();
+
+        System.assertEquals('https://images.test/registered.jpg', thumbnail,
+            'A registered event outranks an earlier unregistered one');
+    }
+
+    // ── 13. No registrations → next upcoming event's image ───────────────────
+    @isTest
+    static void testThumbnail_FallsBackToNextUpcomingEvent() {
+        Contact c = getContact('Region');
+
+        insert new CventEvents__Event__c(
+            CventEvents__pkg_Title__c       = 'Soonest Upcoming Event',
+            CventEvents__pkg_StartDate__c   = Date.today().addDays(1),
+            HAMImageURL__c                  = 'https://images.test/soonest.jpg',
+            ADVEventFormat__c               = FORMAT_IP,
+            ADVPublicPrivate__c             = 'Public',
+            CventEvents__pkg_Status__c      = STATUS_ACTIVE,
+            CventEvents__pkg_EventStatus__c = 'Upcoming',
+            CventEvents__pkg_EventStub__c   = 'THM3',
+            CventEvents__pkg_Code__c        = 'THM3',
+            CventEvents__pkg_Category__c    = 'Test Ctaegory'
+        );
+
+        Test.startTest();
+        String thumbnail = Ham_UpcomingEventsController.getHomePageEventThumbnail(c.Id);
+        Test.stopTest();
+
+        System.assertEquals('https://images.test/soonest.jpg', thumbnail,
+            'With no registrations the next upcoming event supplies the image');
+    }
+
+    // ── 14. Resolved event has no image → null, so the card stays static ─────
+    @isTest
+    static void testThumbnail_BlankImageReturnsNull() {
+        Contact c = getContact('Region');
+
+        CventEvents__Event__c imagelessEvent = new CventEvents__Event__c(
+            CventEvents__pkg_Title__c       = 'Imageless Upcoming Event',
+            CventEvents__pkg_StartDate__c   = Date.today().addDays(1),
+            ADVEventFormat__c               = FORMAT_IP,
+            ADVPublicPrivate__c             = 'Public',
+            CventEvents__pkg_Status__c      = STATUS_ACTIVE,
+            CventEvents__pkg_EventStatus__c = 'Upcoming',
+            CventEvents__pkg_EventStub__c   = 'THM4',
+            CventEvents__pkg_Code__c        = 'THM4',
+            CventEvents__pkg_Category__c    = 'Test Ctaegory'
+            // HAMImageURL__c intentionally blank
+        );
+        insert imagelessEvent;
+
+        insert new CventEvents__Attendee__c(
+            CventEvents__Event__c        = imagelessEvent.Id,
+            CventEvents__Contact__c      = c.Id,
+            CventEvents__Status__c       = 'Visited',
+            CventEvents__AttendeeStub__c = '/thumbtest2',
+            CventEvents__IsFreeloader__c = false
+        );
+
+        Test.startTest();
+        String thumbnail = Ham_UpcomingEventsController.getHomePageEventThumbnail(c.Id);
+        Test.stopTest();
+
+        System.assertEquals(null, thumbnail,
+            'An imageless event yields null rather than walking on to the next event');
+    }
+
+    // ── 15. Blank contact id → null ──────────────────────────────────────────
+    @isTest
+    static void testThumbnail_BlankContactIdReturnsNull() {
+        Test.startTest();
+        String thumbnail = Ham_UpcomingEventsController.getHomePageEventThumbnail('');
+        Test.stopTest();
+
+        System.assertEquals(null, thumbnail, 'A blank contact id resolves to no thumbnail');
+    }
 }

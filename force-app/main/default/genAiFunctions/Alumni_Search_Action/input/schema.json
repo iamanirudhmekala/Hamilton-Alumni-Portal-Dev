@@ -1,4 +1,5 @@
 {
+  "required" : [ "contactId" ],
   "unevaluatedProperties" : false,
   "properties" : {
     "alumniName" : {
@@ -15,9 +16,30 @@
       "lightning:isPII" : false,
       "copilotAction:isUserInput" : true
     },
+    "constituentType" : {
+      "title" : "Constituent Type",
+      "description" : "Pass Alumni/Hamilton_Alumni/Current_Employee/Retired_Employee/Former_Employee as ConstituentType.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "contactId" : {
+      "title" : "Contact Id",
+      "description" : "Pass the ConstituentId Variable as contactId.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
     "majorDegree" : {
       "title" : "Major / Degree",
       "description" : "Full or partial major/degree text",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "region" : {
+      "title" : "Region",
+      "description" : "Pass the location/Region if the user provides.",
       "lightning:type" : "lightning__textType",
       "lightning:isPII" : false,
       "copilotAction:isUserInput" : true

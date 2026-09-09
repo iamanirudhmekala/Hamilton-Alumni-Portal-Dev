@@ -1,5 +1,9 @@
 import { LightningElement, api,wire,track } from 'lwc';
 
+//Import Lightning Message Service — tells the home page its Directory thumbnail is stale
+import { publish, MessageContext } from 'lightning/messageService';
+import THUMBNAIL_REFRESH_CHANNEL from '@salesforce/messageChannel/ham_HomeThumbnailRefresh__c';
+
 //Importing apex methods
 import getAlumniOverview from '@salesforce/apex/HAM_AlumniProfileOverviewController.getAlumniOverview'; 
 import getConnectionStatus from '@salesforce/apex/HAM_AlumniProfileOverviewController.getConnectionStatus';
@@ -71,6 +75,8 @@ const MODAL_CONFIG = {
     }
 };
 export default class Ham_alumniProfileOverviewCmp extends LightningElement {
+
+    @wire(MessageContext) messageContext;
 
     @api profile;
     @api contactId;
@@ -512,6 +518,9 @@ export default class Ham_alumniProfileOverviewCmp extends LightningElement {
         })
         .then(result => {
             if (result === 'Success') {
+
+                // The home page Directory card shows the latest connection's photo
+                publish(this.messageContext, THUMBNAIL_REFRESH_CHANNEL, { source: 'connection' });
 
                 if(this.clickedFunctiontype === ACTIONS.SEND_REQUEST){
                    this.toastMessage = this.localLabel.toastMessageReqSend;

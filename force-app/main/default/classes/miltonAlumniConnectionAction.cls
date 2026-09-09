@@ -27,7 +27,6 @@ public without sharing class miltonAlumniConnectionAction {
         @AuraEnabled public Boolean isConnected = false;
         @AuraEnabled public Boolean isBookmarked = false;
         @AuraEnabled public Boolean isRequestSent = false;
-        @AuraEnabled public Boolean isActive = false;
         @AuraEnabled public Boolean isSelf = false;
     }
 
@@ -40,9 +39,12 @@ public without sharing class miltonAlumniConnectionAction {
     };
 
     /**
-     * Looks up connection/bookmark/active status for a set of alumni Contact Ids,
+     * Looks up connection/bookmark status for a set of alumni Contact Ids,
      * relative to the given viewer Contact Id. Always returns one entry per
-     * input alumniContactId.
+     * input alumniContactId. Active status is not part of this — it comes
+     * straight from Contact.HAM_Is_Active__c on the caller's own query
+     * (see miltonAlumniSearchAction), since that data is already in hand
+     * there and doesn't need a second query/loop here.
      */
     @AuraEnabled(cacheable=true)
     public static Map<Id, ConnectionFlags> getConnectionFlags(Id viewerContactId, List<Id> alumniContactIds) {
@@ -85,13 +87,6 @@ public without sharing class miltonAlumniConnectionAction {
             }
         }
 
-        for (Contact c : [SELECT Id, HAM_Is_Active__c FROM Contact WHERE Id IN :alumniContactIds]) {
-            ConnectionFlags flags = flagsByContactId.get(c.Id);
-            if (flags != null && c.HAM_Is_Active__c == true) {
-                flags.isActive = true;
-            }
-        }
-
         return flagsByContactId;
     }
 
@@ -101,5 +96,17 @@ public without sharing class miltonAlumniConnectionAction {
             return 'Error';
         }
         return HAM_AlumniConnectionService.handleConnectionRequest(portalId, linkedConstituentId, null, functionType);
+    }
+
+    /**
+     * Passthrough to HAM_AlumniConnectionService.checkUserStatus — same
+     * pre-check ham_alumniListDisplayCmp/ham_alumniGridDisplayCmp run before
+     * a Send Request click, so this card never calls updateConnection for a
+     * contact with no linked User record at all (that would otherwise hit
+     * handleSendRequest's unguarded constituentUser[0] on an empty list).
+     */
+    @AuraEnabled(cacheable=true)
+    public static String checkUserStatus(String linkedConstituentId) {
+        return HAM_AlumniConnectionService.checkUserStatus(linkedConstituentId);
     }
 }

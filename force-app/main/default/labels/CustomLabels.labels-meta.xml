@@ -2097,6 +2097,13 @@ HAM_Portal_User__r.HAM_Is_Active__c = true AND HAM_Linked_Constituent__c = :port
         <value>Take a break</value>
     </labels>
     <labels>
+        <fullName>ham_webcamResourceTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Title of the Resources listing used for the home page Webcam card</shortDescription>
+        <value>Webcam</value>
+    </labels>
+    <labels>
         <fullName>ham_EventRecording_FromAddress</fullName>
         <language>en_US</language>
         <protected>false</protected>
@@ -2572,5 +2579,19 @@ If you have any questions, please contact &lt;a href=&quot;mailto:giving@hamilto
         <protected>false</protected>
         <shortDescription>HQ Data Steward Owner Id</shortDescription>
         <value>005U1000007B5egIAC</value>
+    </labels>
+    <labels>
+        <fullName>Milton_Necrology</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Milton_Necrology</shortDescription>
+        <value>https://www.hamilton.edu/alumni/necrology</value>
+    </labels>
+    <labels>
+        <fullName>Milton_Profile_URL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Milton_Profile_URL</shortDescription>
+        <value>https://hamiltoncollege--advdev.sandbox.my.site.com/HamiltonPortal/?view=profileoverview&amp;cardId=</value>
     </labels>
 </CustomLabels>

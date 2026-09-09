@@ -1,4 +1,7 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
+//Import Lightning Message Service — tells the home page its Directory thumbnail is stale
+import { publish, MessageContext } from 'lightning/messageService';
+import THUMBNAIL_REFRESH_CHANNEL from '@salesforce/messageChannel/ham_HomeThumbnailRefresh__c';
 //Import Apex controller
 import handleConnectionRequest from '@salesforce/apex/HAM_AlumniConnectionService.handleConnectionRequest';
 import checkUserStatus from '@salesforce/apex/HAM_AlumniConnectionService.checkUserStatus';
@@ -110,6 +113,7 @@ const MODAL_CONFIG = {
 
 export default class Ham_alumniGridDisplayCmp extends LightningElement {
 
+    @wire(MessageContext) messageContext;
 
     @api initialDirectoryFilters;
     @api userHasModifiedFilters;
@@ -788,6 +792,9 @@ export default class Ham_alumniGridDisplayCmp extends LightningElement {
         })
             .then(result => {
                 if (result === 'Success') {
+                    // The home page Directory card shows the latest connection's photo
+                    publish(this.messageContext, THUMBNAIL_REFRESH_CHANNEL, { source: 'connection' });
+
                     this.dispatchEvent(new CustomEvent('refreshdata', {
                         // Carry the acted-on row up so the parent can drop it immediately
                         // instead of waiting for the refresh round-trip to land.

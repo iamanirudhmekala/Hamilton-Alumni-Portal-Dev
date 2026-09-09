@@ -105,7 +105,7 @@ public without sharing class HAMEducationSectionController {
         get {
             return Schema.SObjectType.ucinn_ascendv2__Degree_Information__c
                 .getRecordTypeInfosByDeveloperName()
-                .get('School_Degree_Information')
+                .get('Hamilton_AIS_Degree_Information')
                 .getRecordTypeId();
         }
     }

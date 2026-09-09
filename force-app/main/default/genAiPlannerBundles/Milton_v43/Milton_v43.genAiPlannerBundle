@@ -105,7 +105,6 @@ Behavior Rules:
             <localDeveloperName>Alumni_Search_Action</localDeveloperName>
             <masterLabel>Alumni Search Action</masterLabel>
             <progressIndicatorMessage>please wait...</progressIndicatorMessage>
-            <source>Alumni_Search_Action</source>
         </localActions>
         <localDeveloperName>Alumni_Search</localDeveloperName>
         <masterLabel>Alumni Search</masterLabel>

@@ -1,0 +1,60 @@
+<template>
+    <div class="event-card-container">
+        <!-- Event Cards Carousel -->
+        <div class="event-carousel">
+            <template if:false={isFirstCard}>
+                <lightning-button-icon
+                    icon-name="utility:chevronleft"
+                    variant="bare"
+                    alternative-text="Previous"
+                    onclick={handlePrev}
+                    class="nav-arrow nav-arrow-left">
+                </lightning-button-icon>
+            </template>
+
+            <div class="event-list-container" onscroll={handleScroll}>
+                <template for:each={eventData} for:item="event">
+                    <div key={event.recordId} class="event-card">
+                        <!-- Event Image -->
+                        <template if:true={event.imageUrl}>
+                            <img src={event.imageUrl} alt={event.eventName} class="event-photo" />
+                        </template>
+
+                        <!-- Event Details -->
+                        <div class="event-details">
+                            <h2 class="event-name">{event.eventName}</h2>
+
+                            <template if:true={event.description}>
+                                <div class="event-description">{event.description}</div>
+                            </template>
+
+                            <template if:true={event.dateTimeLabel}>
+                                <div class="event-meta">
+                                    <lightning-icon icon-name="utility:clock" size="xx-small" class="meta-icon"></lightning-icon>
+                                    <span class="meta-text">{event.dateTimeLabel}</span>
+                                </div>
+                            </template>
+
+                            <template if:true={event.location}>
+                                <div class="event-meta">
+                                    <lightning-icon icon-name="utility:location" size="xx-small" class="meta-icon"></lightning-icon>
+                                    <span class="meta-text">{event.location}</span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <template if:false={isLastCard}>
+                <lightning-button-icon
+                    icon-name="utility:chevronright"
+                    variant="bare"
+                    alternative-text="Next"
+                    onclick={handleNext}
+                    class="nav-arrow nav-arrow-right">
+                </lightning-button-icon>
+            </template>
+        </div>
+    </div>
+</template>

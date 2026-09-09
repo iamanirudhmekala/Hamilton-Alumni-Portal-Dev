@@ -1,6 +1,9 @@
 import { LightningElement, api } from 'lwc';
 import updateConnection from '@salesforce/apex/miltonAlumniConnectionAction.updateConnection';
 import getConnectionFlags from '@salesforce/apex/miltonAlumniConnectionAction.getConnectionFlags';
+import checkUserStatus from '@salesforce/apex/miltonAlumniConnectionAction.checkUserStatus';
+import MILTON_NECROLOGY_URL from '@salesforce/label/c.Milton_Necrology';
+import MILTON_PROFILE_URL from '@salesforce/label/c.Milton_Profile_URL';
 
 const SEND_REQUEST = 'Send Request';
 const CANCEL_REQUEST = 'Cancel Request';
@@ -60,7 +63,9 @@ export default class MiltonAlumniSearchResultsCard extends LightningElement {
     }
 
     deriveActionState(alumni) {
-        const connectionActionType = alumni.isSelf
+        // Deceased alumni never get a connection action - Necrology is shown instead (see markup).
+        // connectionPrivacyEnabled (SIV_VIS_CONNECTION) suppresses it too, with no replacement action.
+        const connectionActionType = (alumni.isSelf || alumni.isDeceased || alumni.connectionPrivacyEnabled)
             ? null
             : alumni.isConnected
                 ? REMOVE_CONNECTION
@@ -137,11 +142,13 @@ export default class MiltonAlumniSearchResultsCard extends LightningElement {
                 if (!flags) {
                     return;
                 }
+                // isActive isn't part of getConnectionFlags (it comes from the
+                // Contact record on the original search, not reconciled here) —
+                // leave whatever value is already on the record untouched.
                 const updates = {
                     isConnected: flags.isConnected,
                     isBookmarked: flags.isBookmarked,
-                    isRequestSent: flags.isRequestSent,
-                    isActive: flags.isActive
+                    isRequestSent: flags.isRequestSent
                 };
                 this.setStoredState(contactId, updates);
                 this.setAlumniState(contactId, updates);
@@ -178,9 +185,13 @@ export default class MiltonAlumniSearchResultsCard extends LightningElement {
     }
 
     handleViewDetails(event) {
-        const contactId = event.target.dataset.contactId;
-        const url = `https://hamiltoncollege--advdev.sandbox.my.site.com/HamiltonPortal/?view=profileoverview&cardId=${contactId}`;
+        const contactId = event.currentTarget.dataset.contactId;
+        const url = `${MILTON_PROFILE_URL}${contactId}`;
         window.open(url, '_blank');
+    }
+
+    handleNecrologyClick() {
+        window.open(MILTON_NECROLOGY_URL, '_blank');
     }
 
     async handleConnectionAction(event) {
@@ -204,6 +215,19 @@ export default class MiltonAlumniSearchResultsCard extends LightningElement {
         this.setAlumniState(contactId, { [processingField]: true, errorMessage: '' });
 
         try {
+            // Same pre-check ham_alumniListDisplayCmp/ham_alumniGridDisplayCmp run
+            // before a Send Request click — HAM_AlumniConnectionService.handleSendRequest
+            // has an unguarded constituentUser[0] on an empty list, so we must never
+            // call updateConnection for Send Request without checking first.
+            if (actionType === SEND_REQUEST) {
+                const status = await checkUserStatus({ linkedConstituentId: contactId });
+                if (status === 'Inactive User') {
+                    this.setStoredState(contactId, { isActive: false });
+                    this.setAlumniState(contactId, { isActive: false, errorMessage: NOT_ACTIVE_MESSAGE });
+                    return;
+                }
+            }
+
             const result = await updateConnection({ portalId, linkedConstituentId: contactId, functionType: actionType });
             this.applyUpdateResult(contactId, actionType, result);
         } catch (error) {
@@ -239,6 +263,7 @@ export default class MiltonAlumniSearchResultsCard extends LightningElement {
             this.setStoredState(contactId, { isActive: false });
             this.setAlumniState(contactId, { errorMessage: NOT_ACTIVE_MESSAGE, isActive: false });
         } else {
+            console.error('[MiltonAlumniSearchResultsCard] updateConnection returned non-success result:', actionType, result);
             this.setAlumniState(contactId, { errorMessage: GENERIC_ERROR_MESSAGE });
         }
     }

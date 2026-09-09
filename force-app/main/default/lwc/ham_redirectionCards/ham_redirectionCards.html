@@ -10,7 +10,11 @@
         <div class="card-track-wrapper">
             <div class="card-track">
                 <template for:each={cards} for:item="card">
-                    <div key={card.id} class={card.cardClass} style={card.backgroundStyle} data-id={card.id} onclick={handleCardClick}>
+                    <div key={card.id} class={card.cardClass} data-id={card.id} data-link={card.linkUrl} onclick={handleCardClick}>
+                        <!-- Rendered as an img, not a CSS background, so a dead dynamic
+                             URL can fall back to the production image via onerror -->
+                        <img src={card.imageUrl} data-fallback={card.fallbackUrl} onerror={handleImageError}
+                            alt={card.title} class="card-bg-img" />
                         <div class="card-overlay">
                             <p class="card-explore">Explore</p>
                             <h3 class="card-title">{card.title}</h3>

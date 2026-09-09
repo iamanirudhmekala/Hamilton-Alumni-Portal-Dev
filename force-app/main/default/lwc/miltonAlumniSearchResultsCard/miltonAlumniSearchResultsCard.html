@@ -1,7 +1,5 @@
 <template>
     <div class="alumni-card-container">
-    <span class="alumniTitle">Alumni Search Results</span>
-
         <!-- Alumni Cards Carousel -->
         <div class="alumni-carousel">
             <template if:false={isFirstCard}>
@@ -38,7 +36,13 @@
                         <div class="alumni-details">
                             <!-- Alumni Info Section -->
                             <div class="alumni-info">
-                                <h2 class="alumni-id">{alumni.alumniName}</h2>
+                                <h2 class="alumni-id">
+                                    <a
+                                        href="javascript:void(0);"
+                                        data-contact-id={alumni.contactId}
+                                        onclick={handleViewDetails}
+                                        class="alumni-name-link">{alumni.alumniName}</a>
+                                </h2>
                             </div>
 
                             <!-- Degree and Graduation Year -->
@@ -49,10 +53,26 @@
                                 <div class="degree">
                                     {alumni.degreeLabel}
                                 </div>
+                                <!-- Email is omitted entirely (not shown as a blank/placeholder) when the
+                                     alumni has opted to hide it - Apex already returns email as null in that case -->
+                                <template if:true={alumni.email}>
+                                    <div class="email">
+                                        {alumni.email}
+                                    </div>
+                                </template>
                             </div>
 
                             <!-- Actions -->
                             <div class="actions-container">
+                                <!-- Deceased alumni get a Necrology link instead of any connection action -->
+                                <template if:true={alumni.isDeceased}>
+                                    <lightning-button
+                                        variant="neutral"
+                                        label="Necrology"
+                                        onclick={handleNecrologyClick}
+                                        class="connection-button">
+                                    </lightning-button>
+                                </template>
                                 <template if:true={alumni.connectionActionType}>
                                     <span class="connection-button-wrapper" title={alumni.tooltipText}>
                                         <lightning-button
@@ -66,13 +86,6 @@
                                         </lightning-button>
                                     </span>
                                 </template>
-                                <lightning-button
-                                    variant="brand"
-                                    label="View Details"
-                                    data-contact-id={alumni.contactId}
-                                    onclick={handleViewDetails}
-                                    class="view-details-button">
-                                </lightning-button>
                             </div>
                             <template if:true={alumni.errorMessage}>
                                 <div class="action-error-message">{alumni.errorMessage}</div>

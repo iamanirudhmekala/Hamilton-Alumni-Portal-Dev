@@ -52,6 +52,21 @@
 .card-bg-5 { background: linear-gradient(150deg, #145a32 0%, #0d3d28 100%); }
 .card-bg-6 { background: linear-gradient(150deg, #4a235a 0%, #2d1a3e 100%); }
 .card-bg-7 { background: linear-gradient(150deg, #6b2d1a 0%, #4a1f0d 100%); }
+.card-bg-8 { background: linear-gradient(150deg, #1b4d4d 0%, #0d3030 100%); }
+
+/* ── Thumbnail image ─────────────────────────────────────
+   Sits behind .card-overlay and fills the card the way the previous
+   background-image did, but as an <img> so onerror can swap in the
+   production fallback when a dynamic URL fails to load. */
+.card-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
 
 /* ── Text overlay ───────────────────────────────────── */
 .card-overlay {

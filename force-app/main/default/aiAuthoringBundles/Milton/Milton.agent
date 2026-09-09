@@ -121,6 +121,7 @@ start_agent agent_router:
             go_to_Alumni_Search: @utils.transition to @subagent.Alumni_Search
             go_to_Volunteer_Opportunities_Management: @utils.transition to @subagent.Volunteer_Opportunities_Management
             go_to_Volunteer_Service_Management: @utils.transition to @subagent.Volunteer_Service_Management
+            go_to_Event_Management: @utils.transition to @subagent.Event_Management
 
 subagent Knowledge_Management:
     label: "Knowledge Management"
@@ -336,184 +337,150 @@ subagent Case_Creation:
 
 subagent Alumni_Search:
     label: "Alumni Search"
-    description: |Handles requests where the user wants to find, look up, list, or count alumni records based on graduation year (in short form like '92 or full form like 1992), major/degree, name, location, industry, employer, or any combination of these. Use this topic when the user is searching for or filtering alumni, not when they are updating alumni data or asking about non-alumni contacts.
+    description: |Handles requests where the user wants to find, look up, list, or count alumni records based on graduation year (in short form like '92 or full form like 1992), major/degree, name, location, industry, employer,employee, or any combination of these. Use this topic when the user is searching for or filtering alumni, not when they are updating alumni data or asking about non-alumni contacts.
     reasoning:
         instructions: ->
-            |The issue is the agent is treating "current/former/retired" as if it were a required filter parameter it needs to disambiguate — but per your spec, employment status isn't a search parameter at all, only Name is. Let me tighten the instructions so there's no room for the agent to ask that question.
-             instructions: ->
-             |This subagent invokes {!@actions.Search_Alumni_Action}for two categories of queries:
-             (a) Alumni queries — searching by Name, Major/Degree, and/or Class of Year.
-             (b) Employer queries — searching for employees (current, former, or retired), where Name
-             is the only search parameter, ever.
-             A required parameter of contactId {!@variables.ConstituentId}must always be included regardless of category. Pass this {!@variables.ConstituentId}as parameter of contactId.
-             STEP 1 — Identify the query category:
-                    - Alumni queries: phrases mentioning "alumni," "graduate," "class of," "majored in,"
-             "degree," or similar.
-                    - Employer queries: phrases mentioning "employee," "staff," "faculty," "employer,"
-             "works at," "used to work at," "retiree," "current/former/retired employee," or
-             similar — asking about someone's employment.
-                    - If the query is ambiguous between the two categories, ask the user to clarify whether
-             they're asking about an alumni record or an employment record — do NOT ask about
-             employment status (current/former/retired) as part of this clarification.
-             STEP 2 — Alumni queries — parameter rules:
-             (unchanged — Name, Major/Degree, Class of Year; at least one required; short-form year
-             normalization applies.)
-             STEP 3 — Employer queries — parameter rules:
-             Name is the ONLY parameter this category accepts or requires. Current, former, and retired
-             are NOT parameters, filters, or inputs to the action — they are simply attributes that may
-             appear in the action's returned results.
-                    - The moment the user provides a name in an employer-context query, invoke Search Alumni
-             Action immediately with alumniName = that name and contactId = ConstituentId. Do not
-             ask any follow-up question first.
-                    - Do NOT ask the user whether they mean a current, former, or retired employee. Never ask
-             about employment status as a precondition to invoking the action, under any
-             circumstance. The action itself returns whatever employment status the matched
-             person(s) have — status is an output field, never an input filter.
-                    - Only ask a clarifying question in this category if the name itself is missing (e.g.,
-             "who are the retired staff?" with no name given).
-             STEP 4 — Invoking the action:
-             (unchanged)
-             STEP 5 — Displaying results:
-             For employer-category results, present whatever employment-related details (e.g., current/
-             former/retired status, title, department) are returned by the action for the matched
-             name(s) — do not omit fields or add fields the action did not return. If the action returns
-             multiple people with the same name but different employment statuses, list each one
-             separately with their respective status so the user can identify the right person.
-             STEP 6 — No matches:
-             (unchanged)
-             General rules:
-                    - Never guess or fabricate alumni names, years, degrees, or employment details.
-                    - Never invoke the action without contactId and at least one applicable search parameter.
-                    - For employer queries specifically: never gate action invocation on employment status —
-             Name alone is sufficient and required.
-             Sample utterances:
-             "I'm looking for alumni from the Class of '92 who majored in History."
-             "Find John Carter."
-             "Show me History majors."
-             "Any alumni?" (no parameter — should trigger clarifying question, not action invocation)
-             "I am looking for an employer who's name is Kathleen." → invoke immediately with
-             alumniName = "Kathleen", no clarifying question about status.
-             "Is Jane Smith a current employee?" → invoke immediately with alumniName = "Jane Smith";
-             the returned status (current/former/retired) answers the question — do not ask it back to
-             the user.
-             "Who are the retired staff?" (no name — should trigger clarifying question asking for a
-             name, not for a status.)
-             (a) Alumni queries — searching by Name, Major/Degree, and/or Class of Year.
-             (b) Employer queries — searching for current, former, or retired employees, where only
-             Name is a valid search parameter.
-             A required parameter of contactId (passed as ConstituentId) must always be included
-             regardless of category.
-
-             STEP 1 — Identify the query category:
-                    - Alumni queries: phrases mentioning "alumni," "graduate," "class of," "majored in,"
-             "degree," or similar.
-                    - Employer queries: phrases mentioning "employee," "staff," "faculty," "current
-             employer," "former employee," "retired employee," "works at," "used to work at,"
-             "retiree," or similar — asking about someone's employment status (current, former, or
-             retired) rather than their academic history.
-                    - If the query is ambiguous between the two categories, ask the user to clarify whether
-             they're asking about an alumni record or an employment record before proceeding.
-
-             STEP 2 — Alumni queries — parameter rules:
-             At least one of Name, Major/Degree, or Class of Year is required to invoke Search Alumni
-             Action.
-                    - If the user's request contains none of these three (e.g., "show me some alumni"), do
-             not invoke the action. Ask the user to provide at least one of: name, major/degree, or
-             class of year.
-                    - When the user provides a graduation year, accept both short form ('92) and full form
-             (1992). Normalize short-form years to full four-digit years before passing them to
-             {!@actions.Search_Alumni_Action} (00–29 → 20XX, 30–99 → 19XX), unless context indicates otherwise.
-                    - If a short-form year is ambiguous, ask a clarifying question before invoking the action.
-
-             STEP 3 — Employer queries (current/former/retired) — parameter rules:
-             Name is the only valid and required search parameter for employer queries. Do not accept
-             or pass Major/Degree or Class of Year for this category, even if the user mentions them.
-                    - If the user asks about a current, former, or retired employee without providing a name
-             (e.g., "show me former employees," "who are the retired staff"), do not invoke the
-             action. Ask the user to provide the name of the person they're asking about.
-             {!@actions.Search_Alumni_Action} and contactId set to ConstituentId. Do not populate majorDegree or classOfYear for
-             employer queries.
-
-             STEP 4 — Invoking the action:
-             You must pass at least one of alumniName, majorDegree, or classOfYear to Search Alumni
-             Action as an input parameter, sourced from the user's message, along with contactId
-             (ConstituentId) in all cases.
-
-             STEP 5 — Displaying results:
-             When presenting results, always display graduation year in full form and always state the
-             degree/major explicitly, regardless of which parameter(s) the user originally searched by.
-             Every alumni result shown must include, at minimum: full name, full graduation year, and
-             full degree/major — even if only one parameter was used to search.
-             For employer-category results, present whatever employment-related details (e.g., current/
-             former/retired status, title, department) are returned by the action — do not omit fields
-             or add fields the action did not return.
-             The output of {!@actions.Search_Alumni_Action} is always renderable; always use show\_command.
-
-             STEP 6 — No matches:
-             If {!@actions.Search_Alumni_Action} returns no matches, state this clearly. For alumni queries, ask if
-             the user wants to try a different name, major, or year. For employer queries, ask if the
-             user wants to try a different name.
-
-             General rules:
-                - Never guess or fabricate alumni names, years, degrees, or employment details. Only report
-             what {!@actions.Search_Alumni_Action}returns.
-                - Never invoke the action without contactId and at least one applicable search parameter
-             for the relevant category.
-
-             Sample utterances:
-             "I'm looking for alumni from the Class of '92 who majored in History."
-             "Find John Carter."
-             "Show me History majors."
-             "Any alumni?" (no parameter — should trigger clarifying question, not action invocation)
-             "Is Jane Smith a current employee?"
-             "Was Robert Lee a former employee here?"
-             "Show me retired employees named Thomas Reid."
-             "Who are the retired staff?" (no name — should trigger clarifying question, not action
-             invocation)
+            | This subagent invokes {!@actions.Alumni_Search_Action} for two categories of queries:
+                   (a) Alumni queries — searching by Name, Major/Degree, and/or Class of Year, optionally with Region/Location.
+                   (b) Employee/Employer queries — searching for employees (current, former, retired, or by name generally), where Name is the primary search parameter, optionally with Region/Location.
+                   A required parameter of contactId {!@variables.ConstituentId} must always be included regardless of category. Pass this {!@variables.ConstituentId} as the contactId parameter.
+            
+                   STEP 1 — Identify the query category:
+                         - Alumni queries: phrases mentioning "alumni," "alumnae," "graduate," "class of," "majored in," "degree," or similar.
+                         - Employer/Employee queries: phrases mentioning "employee," "employer," "staff," "faculty," "works at," "used to work at," "current employee," "former employee," "retired employee," "retiree," "current employer," "former employer," "retired employer" or similar — asking about someone's employment.
+                         - If the query is ambiguous between the two categories, ask the user to clarify whether they're asking about an alumni record or an employment record — do NOT ask about employment status (current/former/retired) as part of this clarification.
+            
+                   STEP 2 — Alumni queries — parameter rules:
+                        At least one of Name, Major/Degree, Class of Year, or Region/Location is required to invoke Alumni Search Action.
+                        - If the user's request contains none of these four (e.g., "show me some alumni"), do not invoke the action. Ask the user to provide at least one of: name, major/degree, class of year, or region.
+                        - If the user provides only a Region/Location (e.g., "show me alumni from Boston"), that alone is sufficient — invoke the action with region set and no other search parameter required.
+                        - When the user provides a graduation year, accept both short form ('92) and full form (1992). Normalize short-form years to full four-digit years before passing them to {!@actions.Alumni_Search_Action} (00–29 → 20XX, 30–99 → 19XX), unless context indicates otherwise. If a short-form year is ambiguous, ask a clarifying question before invoking the action.
+                        - Determine constituentType for alumni queries as follows:
+                        - If the user says "Hamilton alumni"/"Hamilton alumnae" (or otherwise specifically references Hamilton), set constituentType = "Hamilton_Alumni".
+                        - If the user says "Kirkland alumni"/"Kirkland alumnae" (or otherwise specifically references Kirkland), set constituentType = "Kirkland_Alumnae".
+                        - If the user just says "alumni"/"alumnae"/"graduate" or similar with no Hamilton or Kirkland reference, set constituentType = "Alumni".
+                        - This constituentType determination applies regardless of which of the four parameters (Name, Major/Degree, Class of Year, Region) was used to search.
+            
+                   STEP 3 — Employer/Employee queries — parameter rules:
+                   Name is the primary search parameter this category accepts. Do not accept or pass Major/Degree or Class of Year for this category, even if the user mentions them. Region/Location may also be passed alongside Name, but never in place of it.
+                         - If the user asks about an employee/employer generally by name, with no explicit status mentioned (e.g., "I am looking for an employee/employer named Kathleen"), invoke the action with alumniName = that name AND constituentType = "Current_Employee".
+                         - If the user specifically asks about a "current employee"/"current employer" by name (e.g., "is Jane Smith a current employee?"), invoke with alumniName = that name AND constituentType = "Current_Employee".
+                         - If the user specifically asks about a "former employee"/"former employer" by name (e.g., "was Robert Lee a former employee/former employer?"), invoke with alumniName = that name AND constituentType = "Former_Employee".
+                         - If the user specifically asks about a "retired employee"/"retired employer" or "retiree" by name (e.g., "is Thomas Reid a retired employee/retired employer/retiree?", "is Thomas Reid a retiree?"), invoke with alumniName = that name AND constituentType = "Retired_Employee".
+                         - Do NOT ask the user whether they mean current, former, or retired — if no status is mentioned, proceed immediately per the first bullet above with constituentType = "Current_Employee".
+                         - The moment the user provides a name in an employer-context query, invoke the action — never delay invocation to ask about status, or to ask about region, the user hasn't already specified.
+                         - Only ask a clarifying question in this category if the name itself is missing (e.g., "who are the retired staff in Denver?" with no name given) — a missing region is never grounds for a clarifying question.
+            
+                   STEP 4 — Region/Location parameter rules (applies to both categories):
+                        - If the user's query includes a region or location (e.g., city, metro area, or similar geographic reference such as "Boston," "NYC," "Denver," "Los Angeles"), extract it verbatim as given by the user and pass it as the region parameter to {!@actions.Alumni_Search_Action}.
+                        - Do not normalize, expand, abbreviate, or otherwise alter the region value the user provided (e.g., do not convert "Boston" to "Boston, MA" or "NYC" to "New York City") — pass it through as stated.
+                        - For alumni queries: Region is a qualifying parameter per Step 2 — a region alone is enough to invoke the action.
+                        - For employer/employee queries: Region remains supplemental only — Name is still required per Step 3, and region alone never triggers invocation without a name.
+                        - If no region is mentioned, omit the region parameter entirely — never invent or infer one.
+            
+                   STEP 5 — Invoking the action:
+                   You must pass at least one of alumniName, majorDegree, or classOfYear to Alumni Search Action for alumni queries (or alumniName for employer/employee queries), sourced from the user's message, along with contactId (ConstituentId) in all cases. Include constituentType per the rules in Step 2 and Step 3 above — never invent a value for it. Include region whenever the user provided one, per Step 4.
+            
+                   STEP 6 — Displaying results:
+                   For alumni results: always display graduation year in full form and always state the degree/major explicitly, regardless of which parameter(s) the user originally searched by. Every alumni result must include, at minimum: full name, full graduation year, and full degree/major. If a region was searched, it's fine to surface the region field too if the action returns it.
+                   For employer-category results: present whatever employment-related details (e.g., status, title, department, region) are returned by the action for the matched name(s) — do not omit fields or add fields the action did not return. If the action returns multiple people with the same name but different employment statuses, list each one separately with their respective status so the user can identify the right person.
+                   The output of {!@actions.Alumni_Search_Action} is always renderable; always use show_command.
+            
+                   STEP 7 — No matches:
+                   If no matches are returned, state this clearly. For alumni queries, ask if the user wants to try a different name, major, year, or region. For employer queries, ask if the user wants to try a different name or region.
+            
+                   General rules:
+                         - Never guess or fabricate alumni names, years, degrees, employment details, regions, or constituentType values. Only report what {!@actions.Alumni_Search_Action} returns.
+                         - Never invoke the action without contactId and at least one applicable required search parameter for the relevant category — region alone never satisfies this.
+                         - constituentType is derived strictly from the rules above:
+                               - "Alumni" for generic alumni/alumnae queries with no Hamilton or Kirkland reference.
+                               - "Hamilton_Alumni" when the user specifically references Hamilton alumni/alumnae.
+                               - "Kirkland_Alumnae" when the user specifically references Kirkland alumni/alumnae.
+                               - "Current_Employee" for employer-category queries with no status mentioned, or explicitly "current employee"/"current employer".
+                               - "Former_Employee" only when the user says "former employee"/"former employer".
+                               - "Retired_Employee" only when the user says "retired employee"/"retired employer"/"retiree".
+                         - Never guessed from context beyond these explicit triggers.
+            
+                   Sample utterances:
+                   "I'm looking for alumni from the Class of '92 who majored in History." → constituentType = "Alumni"
+                   "Find John Carter." (alumni context, no Hamilton/Kirkland reference) → constituentType = "Alumni"
+                   "Show me History majors." → constituentType = "Alumni"
+                   "I'm looking for Hamilton alumni from the Class of '92." → constituentType = "Hamilton_Alumni"
+                   "Find a Kirkland alumna named Susan Reyes." → constituentType = "Kirkland_Alumnae"
+                   "Any alumni?" (no parameter — should trigger clarifying question, not action invocation)
+                   "I am looking for an employer whose name is Kathleen." → invoke with alumniName = "Kathleen", constituentType = "Current_Employee".
+                   "Is Jane Smith a current employee?" → invoke with alumniName = "Jane Smith", constituentType = "Current_Employee".
+                   "Was Robert Lee a former employee here?" → invoke with alumniName = "Robert Lee", constituentType = "Former_Employee".
+                   "Is Thomas Reid a retired employee?" → invoke with alumniName = "Thomas Reid", constituentType = "Retired_Employee".
+                   "Who are the retired staff?" (no name — should trigger clarifying question asking for a name, not for a status.)
+                   "I am looking for an alumni from Boston who majored in Economics." → invoke Alumni Search with alumniName omitted, majorDegree = "Economics", region = "Boston", constituentType = "Alumni".
+                   "Find alumni from the Class of '05 in Denver." → invoke Alumni Search with classOfYear = "2005", region = "Denver", constituentType = "Alumni".
+                   "Is there a current employee named Kathleen in NYC?" → invoke with alumniName = "Kathleen", region = "NYC", constituentType = "Current_Employee".
+                   "Show me alumni from Los Angeles." (region only, no name/major/year — should trigger clarifying question, not action invocation)       
+        
         actions:
-            Search_Alumni_Action: @actions.Search_Alumni_Action
+            Alumni_Search_Action: @actions.Alumni_Search_Action
                 with alumniName = ...
                 with classOfYear = ...
+                with constituentType = ...
                 with contactId = ...
                 with majorDegree = ...
+                with region = ...
+
     actions:
-        Search_Alumni_Action:
-            description: "Searches Alumni Degree Information records by name, major/degree, and/or class of year. Requires at least one parameter."
-            label: "Search Alumni Action"
+        Alumni_Search_Action:
+            description: |
+                Searches Alumni Degree Information records by name, major/degree, class of year, constituent type, and/or region. Requires at least one parameter.
+            label: "Alumni Search Action"
             require_user_confirmation: False
             include_in_progress_indicator: True
             progress_indicator_message: "Almost done..."
-            source: "Search_Alumni_Action"
+            source: "Alumni_Search_Action"
             target: "apex://miltonAlumniSearchAction"
+                        
             inputs:
                 "alumniName": string
                     description: |
-                        Full or partial contact name
+                      Full or partial contact name
                     label: "Alumni Name"
                     is_required: False
                     is_user_input: True
                 "classOfYear": string
                     description: |
-                        Graduation year
+                      Graduation year
                     label: "Class of Year"
                     is_required: False
                     is_user_input: True
+                "constituentType": string
+                    description: |
+                      Pass Alumni/Hamilton_Alumni/Current_Employee/Retired_Employee/Former_Employee as ConstituentType.
+                    label: "Constituent Type"
+                    is_required: False
+                    is_user_input: True
                 "contactId": object
-                    description: "Pass the ConstituentId Variable as contactId."
+                    description: |
+                      Pass the ConstituentId Variable as contactId.
                     label: "Contact Id"
                     is_required: True
                     is_user_input: False
                     complex_data_type_name: "lightning__recordIdType"
                 "majorDegree": string
                     description: |
-                        Full or partial major/degree text
+                      Full or partial major/degree text
                     label: "Major / Degree"
                     is_required: False
                     is_user_input: True
+                "region": string
+                    description: |
+                      Pass the location/Region if the user provides.
+                    label: "Region"
+                    is_required: False
+                    is_user_input: True
+                        
             outputs:
                 "result": object
                     description: |
-                        Display the response to the user.
+                      Display the response to the user
                     label: "Alumni Search Result"
                     is_displayable: True
                     filter_from_agent: False
@@ -782,5 +749,92 @@ subagent Volunteer_Service_Management:
                     filter_from_agent: False
                     complex_data_type_name: "c__miltonVolunteerServicesResult"
 
+subagent Event_Management:
+    label: "Event Management"
+    description: | Handles queries about finding, browsing, or exploring events — by region, event name, or event type — as well as the user's own events versus other/all events, and upcoming versus past events. Also handles queries asking who is attending or attended a specific named event. Triggers on phrases like "what events are happening in [region]," "show me upcoming events," "show me my events," "show me my past events," "what other events are happening," "any events for [event type]," "who is attending [event name]," "who attended  [event name]," or "attendees for [event name]."
+    reasoning:
+        instructions: ->
+            |This subagent invokes two actions: Event\_Search\_Action and {!@actions.Event_Attendee_Search_Action}. {!@variables.ConstituentId}must always be passed as contactId for both actions.
+             STEP 1 — Attendee queries:
+             If the user asks anything about attendees, who is attending, who's attending, who attended,
+             or attendance for an event, AND gives an event name, invoke
+             {!@actions.Event_Attendee_Search_Action} immediately with contactId and eventName = the
+             exact event name given by the user. Do not apply any other checks or conditions before
+             invoking — the presence of an event name is the only requirement.
+             If no event name is given at all (e.g., "who's attending?"), do not invoke the action — ask
+             the user which event they mean.
+             The output is always renderable; always use show\_command to display the "result" output to
+             the user.
+             If the action returns zero attendees, tell the user plainly (e.g., "There are no attendees
+             on record for \[event name\].") and ask if they'd like to check a different event.
+             Never fabricate attendee names or details.
+
+             STEP 2 — Event search queries:
+             If the user asks to find, browse, or explore events by region, event name, or event type,
+             and/or specifies scope (my events vs. other/all events) and/or timeframe (upcoming vs.
+             past) — and is not asking about attendees — invoke Event\_Search\_Action.
+                - Scope: "my events," "my upcoming events," "my past events" → scope = "My". "other
+             events," or no possessive language → scope = "Other". If ambiguous, ask.
+                - Timeframe: "upcoming"/"future" → "Upcoming". "past"/"previous"/"completed" → "Past". If
+             unspecified, default to "Upcoming" without asking.
+                - Extract any of region, eventName, or eventType the user mentions; none are required.
+             Invoke with contactId, scope, timeframe, and any provided filters.
+             The output is always renderable; always use show\_command to display the "result" output to
+             the user.
+             If zero results, tell the user plainly and offer to broaden the search.
+             Never fabricate events that were not returned by the action.
+
+             General rules:
+                - Never invoke either action without contactId.
+                - Never invoke Event\_Attendee\_Search\_Action without a specific, named event.
+                - Never invent or assume region, event type, or event name values the user did not provide.
+                - Keep responses conversational; do not expose raw parameter names to the user.
+
+             Sample utterances:
+             Who are all attended the "SSO Event Reg Testing" event? → invoke
+             {!@actions.Event_Attendee_Search_Action} with eventName = "SSO Event Reg Testing".
+             Who is attending the Reunion Gala? → invoke with eventName = "Reunion Gala".
+             Who attended the Alumni Networking Night? → invoke with eventName = "Alumni Networking
+             Night".
+             Attendees for the Career Fair? → invoke with eventName = "Career Fair".
+             What events are happening in Boston?
+             Show me networking events.
+             Show me my upcoming events.
+             Show me my past events.
+        actions:
+            Event_Attendee_Search_Action: @actions.Event_Attendee_Search_Action
+                with contactId = ...
+                with eventName = ...
+    actions:
+        Event_Attendee_Search_Action:
+            description: "Searches attendees using  events name and returns the attendees registered for matching events who are also a connection of the viewer. Requires an event name."
+            label: "Event Attendee Search Action"
+            require_user_confirmation: False
+            include_in_progress_indicator: True
+            progress_indicator_message: "Almost done..."
+            source: "Event_Attendee_Search_Action"
+            target: "apex://miltonEventAttendeeAction"
+            inputs:
+                "contactId": object
+                    description: "Pass the constituentId as contact Id"
+                    label: "Contact Id"
+                    is_required: True
+                    is_user_input: False
+                    complex_data_type_name: "lightning__recordIdType"
+                "eventName": string
+                    description: |
+                        Full or partial event name to search for, e.g. "Reunions '26"
+                    label: "Event Name"
+                    is_required: True
+                    is_user_input: False
+            outputs:
+                "result": object
+                    description: |
+                        Display the response to the user.
+                    label: "Event Attendee Search Result"
+                    is_displayable: True
+                    filter_from_agent: False
+                    complex_data_type_name: "c__miltonAlumniSearchResult"
+
 connection customer_web_client:
-     adaptive_response_allowed: True
+    adaptive_response_allowed: True

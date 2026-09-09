@@ -3,7 +3,7 @@
   "properties" : {
     "result" : {
       "title" : "Alumni Search Result",
-      "description" : "Display the response to the user.",
+      "description" : "Display the response to the user",
       "lightning:type" : "c__miltonAlumniSearchResult",
       "lightning:isPII" : false,
       "copilotAction:isDisplayable" : true,

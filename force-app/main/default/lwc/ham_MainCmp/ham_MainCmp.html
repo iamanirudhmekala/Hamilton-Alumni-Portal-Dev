@@ -45,7 +45,8 @@
 
                         <!-- Row 0: Redirection Cards -->
                         <div class="row full-width">
-                            <c-ham_redirection-cards is-override={isOverride} onscrolltosection={handleScrollToSection}>
+                            <c-ham_redirection-cards is-override={isOverride} usercontact-id={currentUserContactId}
+                                onscrolltosection={handleScrollToSection}>
                             </c-ham_redirection-cards>
                         </div>
 
@@ -140,7 +141,7 @@
                         <template lwc:if={isDesktopView}>
                             <!-- Row 0: Redirection Cards -->
                             <div class="row full-width">
-                                <c-ham_redirection-cards is-student={isStudent}
+                                <c-ham_redirection-cards is-student={isStudent} usercontact-id={currentUserContactId}
                                     onscrolltosection={handleScrollToSection}>
                                 </c-ham_redirection-cards>
                             </div>
@@ -180,7 +181,7 @@
                         <template lwc:if={isMobileView}>
                             <!-- Redirection Cards -->
                             <div class="row full-width">
-                                <c-ham_redirection-cards is-student={isStudent}
+                                <c-ham_redirection-cards is-student={isStudent} usercontact-id={currentUserContactId}
                                     onscrolltosection={handleScrollToSection}>
                                 </c-ham_redirection-cards>
                             </div>

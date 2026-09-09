@@ -6,6 +6,11 @@
     <columns>CONTACT.TITLE</columns>
     <columns>CONTACT.EMAIL</columns>
     <columns>CONTACT.PHONE1</columns>
-    <filterScope>Mine</filterScope>
-    <label>My Contacts</label>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ucinn_ascendv2__PRM__c</field>
+        <operation>equals</operation>
+        <value>Cube84 Admin</value>
+    </filters>
+    <label>My Constituents</label>
 </ListView>

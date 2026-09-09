@@ -24,6 +24,10 @@
         <members>*</members>
         <name>CustomMetadata</name>
     </types>
+    <types>
+        <members>*</members>
+        <name>LightningMessageChannel</name>
+    </types>
 
      <!-- Agentforce Agents -->
     <types>

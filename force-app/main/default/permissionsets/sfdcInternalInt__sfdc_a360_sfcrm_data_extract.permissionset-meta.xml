@@ -12068,6 +12068,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ProductAttributeDefinition.CategorySequence</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>ProductAttributeDefinition.DefaultValue</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -12189,6 +12194,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>ProductClassificationAttr.AttributeNameOverride</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ProductClassificationAttr.CategorySequence</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

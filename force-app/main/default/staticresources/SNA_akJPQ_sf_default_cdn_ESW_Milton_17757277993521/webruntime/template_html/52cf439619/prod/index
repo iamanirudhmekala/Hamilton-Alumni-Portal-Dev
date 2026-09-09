@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="{language}">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="lwr-revised" content="240.0" />
+        <script type="text/javascript">
+            {errorHandlerScript}
+        </script>
+        {webruntimeInit}
+        {headmarkup}
+    </head>
+    <body>
+        <webruntime-app></webruntime-app>
+    </body>
+</html>

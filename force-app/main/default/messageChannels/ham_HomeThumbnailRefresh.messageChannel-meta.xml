@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Signals the home page redirection cards to refresh their dynamic thumbnails after a change elsewhere on the page, such as a new connection.</description>
+    <isExposed>true</isExposed>
+    <lightningMessageFields>
+        <description>What changed - e.g. connection. Lets subscribers ignore sources they do not care about.</description>
+        <fieldName>source</fieldName>
+    </lightningMessageFields>
+    <masterLabel>Home Thumbnail Refresh</masterLabel>
+</LightningMessageChannel>

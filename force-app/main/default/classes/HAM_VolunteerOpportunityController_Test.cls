@@ -17,27 +17,11 @@ public class HAM_VolunteerOpportunityController_Test {
     
     @testSetup
     static void setup() {       
-        // Create Account test data
-        Account acc = new Account(Name = 'Test Account', Industry = 'Finance');
-        insert acc;
-
-        // Create Contact test data
-        Contact con = new Contact(
-            LastName = 'TestUser',
-            Email = 'testvolunteer@example.com',
-            HAM_LiveAlumni_LinkedIn_URL__c = 'https://linkedin.com/test',
-            HAM_Profile_Picture_URL__c = 'https://profilepic.com/test.jpg',
-            Constituent_Employer__c = acc.Id,
-            Job_Title__c = 'Financial Analyst',
-            ucinn_ascendv2__Preferred_Class_Year__c = '1979'
-        );
-        insert con;
-        
         RecordType volunteerEngagementRT = [SELECT Id from RecordType where DeveloperName = 'Volunteer_Engagement'];
-        
+
         // Create Users in Isolated Context
         Profile sysAdmin = [SELECT Id FROM Profile WHERE Name = 'System Administrator' LIMIT 1];
-        Profile portalProfile = [SELECT Id FROM Profile WHERE Name LIKE '%Community%' LIMIT 1];
+        Profile portalProfile = getPortalProfile();
         Id roleId;
         try {
             roleId = [SELECT Id FROM UserRole WHERE DeveloperName = 'Portal_User' LIMIT 1].Id;
@@ -46,8 +30,23 @@ public class HAM_VolunteerOpportunityController_Test {
             insert role;
             roleId = role.Id;
         }
-    
-        // Create temporary system context user
+
+        // Account Owner — a portal user can only be created when the owner of its contact's
+        // account holds a UserRole, so this user creates the account and contact below.
+        User acctOwner = new User(
+            Alias = 'acctown',
+            Email = 'acctown' + System.currentTimeMillis() + '@test.com',
+            EmailEncodingKey = 'UTF-8',
+            LastName = 'AcctOwner',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
+            ProfileId = sysAdmin.Id,
+            TimeZoneSidKey = 'America/Los_Angeles',
+            UserRoleId = roleId,
+            UserName = 'acctown' + System.currentTimeMillis() + '@test.com'
+        );
+
+        // Create temporary system context user — later blocks run as this user
         User tempSysUser = new User(
             Alias = 'tempsys',
             Email = 'tempsys' + System.currentTimeMillis() + '@test.com',
@@ -59,24 +58,33 @@ public class HAM_VolunteerOpportunityController_Test {
             TimeZoneSidKey = 'America/Los_Angeles',
             UserName = 'tempsys' + System.currentTimeMillis() + '@test.com'
         );
-        insert tempSysUser;
-    
-        System.runAs(tempSysUser) {
-            // Account Owner
-            User acctOwner = new User(
-                Alias = 'acctown',
-                Email = 'acctown' + System.currentTimeMillis() + '@test.com',
-                EmailEncodingKey = 'UTF-8',
-                LastName = 'AcctOwner',
-                LanguageLocaleKey = 'en_US',
-                LocaleSidKey = 'en_US',
-                ProfileId = sysAdmin.Id,
-                TimeZoneSidKey = 'America/Los_Angeles',
-                UserRoleId = roleId,
-                UserName = 'acctown' + System.currentTimeMillis() + '@test.com'
+
+        // User DML is isolated in its own runAs so the volunteer data inserted further
+        // down does not trip MIXED_DML_OPERATION.
+        System.runAs(new User(Id = UserInfo.getUserId())) {
+            insert new List<User>{ acctOwner, tempSysUser };
+        }
+
+        Contact con;
+
+        System.runAs(acctOwner) {
+            // Create Account test data
+            Account acc = new Account(Name = 'Test Account', Industry = 'Finance');
+            insert acc;
+
+            // Create Contact test data
+            con = new Contact(
+                LastName = 'TestUser',
+                Email = 'testvolunteer@example.com',
+                AccountId = acc.Id,
+                HAM_LiveAlumni_LinkedIn_URL__c = 'https://linkedin.com/test',
+                HAM_Profile_Picture_URL__c = 'https://profilepic.com/test.jpg',
+                Constituent_Employer__c = acc.Id,
+                Job_Title__c = 'Financial Analyst',
+                ucinn_ascendv2__Preferred_Class_Year__c = '1979'
             );
-            insert acctOwner;
-    
+            insert con;
+
             // Portal user (linked to Contact)
             User portalUser = new User(
                 Alias = 'voltest',
@@ -555,4 +563,48 @@ public class HAM_VolunteerOpportunityController_Test {
         System.assertEquals(3, paged.size(), 'Should respect the limit of 3.');
     }
 
+
+    /**
+     * @description Home page Volunteer card: the most recently started current service
+     * supplies the image, not the oldest one the activity list leads with.
+     */
+    @isTest
+    static void getLatestCurrentVolunteerImageTestMethod() {
+        Contact testContact = [SELECT Id FROM Contact WHERE Email = 'testvolunteer@example.com' LIMIT 1];
+
+        Test.startTest();
+        String imageUrl = HAM_VolunteerOpportunityController.getLatestCurrentVolunteerImage(testContact.Id);
+        Test.stopTest();
+
+        System.assertEquals('https://example.com/activity2.jpg', imageUrl,
+            'The current service with the latest start date supplies the card image');
+    }
+
+    /**
+     * @description No contact, no service — the card falls back to its static image.
+     */
+    @isTest
+    static void getLatestCurrentVolunteerImageNullContactTestMethod() {
+        Test.startTest();
+        String imageUrl = HAM_VolunteerOpportunityController.getLatestCurrentVolunteerImage(null);
+        Test.stopTest();
+
+        System.assertEquals(null, imageUrl, 'A null contact id resolves to no image');
+    }
+
+    /**
+     * @description Resolves a portal profile by UserType, which holds regardless of how the
+     * org names its community profiles, falling back to a name match.
+     */
+    private static Profile getPortalProfile() {
+        List<Profile> portalProfiles = [
+            SELECT Id FROM Profile
+            WHERE UserType IN ('PowerPartner', 'CspLitePortal', 'PowerCustomerSuccess')
+            LIMIT 1
+        ];
+
+        return portalProfiles.isEmpty()
+            ? [SELECT Id FROM Profile WHERE Name LIKE '%Community%' LIMIT 1]
+            : portalProfiles[0];
+    }
 }

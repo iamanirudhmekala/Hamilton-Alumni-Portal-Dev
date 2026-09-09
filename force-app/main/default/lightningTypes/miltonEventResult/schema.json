@@ -1,0 +1,5 @@
+{
+  "title" : "Event Search Response",
+  "description" : "Event search results returned by the Event Search agent action, rendered as event cards.",
+  "lightning:type" : "@apexClassType/c__miltonEventSearchResponse"
+}
