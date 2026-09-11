@@ -4,6 +4,9 @@ import siteDefaultImageResource from '@salesforce/resourceUrl/HAM_SiteFallbackIm
 import ham_homeEventsRegister       from '@salesforce/label/c.ham_homeEventsRegister';
 import ham_homeEventsModifyRegister from '@salesforce/label/c.ham_homeEventsModifyRegister';
 import siteDefaultImageResourceKirkland from '@salesforce/resourceUrl/HAM_SiteFallbackImage_Kirkland';
+// Same labels the Events tab uses for its sub-tabs, so the two views cannot drift apart
+import MY_EVENTS    from '@salesforce/label/c.ham_EventsMainTab1SubTab1';
+import OTHER_EVENTS from '@salesforce/label/c.ham_EventsMainTab1SubTab2';
 
 
 const DEFAULT_IMAGE_URL = siteDefaultImageResource;
@@ -49,11 +52,16 @@ export default class Ham_UpcomingEvents extends LightningElement {
     get isOverride()      { return this._isOverride; }
 
     // ── Internal state ───────────────────────────────────────────────────────
-    @track isLoading     = true;
-    @track activeFilter  = 'In Person';   // default toggle state
-    @track inPersonEvents = [];           // processed In-Person event list
-    @track virtualEvents  = [];           // processed Virtual event list
-    @track screenWidth   = window.innerWidth;
+    @track isLoading    = true;
+    @track activeFilter = MY_EVENTS;      // set for real once the data lands
+    @track myEvents     = [];             // processed registered event list
+    @track otherEvents  = [];             // processed non-registered event list
+    @track screenWidth  = window.innerWidth;
+
+    labels = {
+        myEvents   : MY_EVENTS,
+        otherEvents: OTHER_EVENTS
+    };
 
     placeholders = [1, 2, 3];            // skeleton card count
 
@@ -72,7 +80,7 @@ export default class Ham_UpcomingEvents extends LightningElement {
 
     // ── Imperative Apex call ──────────────────────────────────────────────────
     /**
-     * Fetches both In-Person and Virtual events in a single Apex call.
+     * Fetches both My Events and Other Events in a single Apex call.
      * Called from the usercontactId setter so it fires as soon as the parent
      * supplies the contactId — same timing as the old @wire reactive call.
      * Non-cacheable so registration status (isRegistered / personalizedLink)
@@ -82,14 +90,22 @@ export default class Ham_UpcomingEvents extends LightningElement {
 
         getHomePageEvents({ contactId: this._usercontactId })
             .then(data => {
-                this.inPersonEvents = this.processEvents(data.inPersonEvents || []);
-                this.virtualEvents  = this.processEvents(data.virtualEvents  || []);
+                this.myEvents    = this.processEvents(data.myEvents    || []);
+                this.otherEvents = this.processEvents(data.otherEvents || []);
+
+                // Most users are registered for nothing, so land them on Other Events.
+                // My Events then only shows its empty message if they open it themselves.
+                this.activeFilter = this.myEvents.length > 0
+                    ? this.labels.myEvents
+                    : this.labels.otherEvents;
+
                 this.isLoading = false;
             })
             .catch(error => {
                 console.error('Ham_UpcomingEvents — error fetching events:', JSON.stringify(error));
-                this.inPersonEvents = [];
-                this.virtualEvents  = [];
+                this.myEvents    = [];
+                this.otherEvents = [];
+                this.activeFilter = this.labels.otherEvents;
                 this.isLoading = false;
             });
     }
@@ -134,19 +150,34 @@ export default class Ham_UpcomingEvents extends LightningElement {
 
     // ── Computed properties ──────────────────────────────────────────────────
 
+    /** The list behind the active toggle. */
+    get activeEvents() {
+        return this.activeFilter === this.labels.myEvents
+            ? this.myEvents
+            : this.otherEvents;
+    }
+
     /**
      * Returns the event list for the active toggle, capped at 3 (desktop) or 1 (mobile).
      * Slicing happens in JS so the Apex query always fetches exactly 3 and caches them.
      */
     get displayedEvents() {
-        const source = this.activeFilter === 'In Person'
-            ? this.inPersonEvents
-            : this.virtualEvents;
+        const source = this.activeEvents;
         return this.isMobileView ? source.slice(0, 1) : source.slice(0, 3);
     }
 
     get hasEvents() {
         return this.displayedEvents && this.displayedEvents.length > 0;
+    }
+
+    /**
+     * Empty-state copy depends on the tab: a user who opens My Events with nothing
+     * registered is told so, rather than being told more events are coming.
+     */
+    get emptyStateMessage() {
+        return this.activeFilter === this.labels.myEvents
+            ? 'You have no registered upcoming events.'
+            : 'More Events coming soon.';
     }
 
     get isDesktopView() { return this.screenWidth >= 1024; }
@@ -162,50 +193,35 @@ export default class Ham_UpcomingEvents extends LightningElement {
     }
 
     // Toggle button CSS classes (active = filled background)
-    get inPersonClass() {
-        if (this.activeFilter === 'In Person') return 'custom-btn active';
+    get myEventsClass() {
+        if (this.activeFilter === this.labels.myEvents) return 'custom-btn active';
         return this._isOverride ? 'custom-btn kirkland-inactive' : 'custom-btn';
     }
-    get virtualClass() {
-        if (this.activeFilter === 'Virtual') return 'custom-btn active';
+    get otherEventsClass() {
+        if (this.activeFilter === this.labels.otherEvents) return 'custom-btn active';
         return this._isOverride ? 'custom-btn kirkland-inactive' : 'custom-btn';
     }
 
-    // Toggle button icons — swap to active variant when selected
-    get inPersonImg() {
-        return this.activeFilter === 'In Person'
-            ? this.images.inpersonActiveImage
-            : this.images.inpersonImage;
+    // Toggle button icons — selected tab shows a tick, the other an empty circle,
+    // matching the pills on the Events tab.
+    get myEventsIcon() {
+        if (this.activeFilter !== this.labels.myEvents) return this.images.circleIcon;
+        return this._isOverride ? this.images.tickGreenIcon : this.images.tickIcon;
     }
-    get virtualImg() {
-        return this.activeFilter === 'Virtual'
-            ? this.images.virtualActiveImage
-            : this.images.virtualImage;
-    }
-    get kirklandInPersonImg() {
-        return this.activeFilter === 'In Person'
-            ? this.images.inpersonActiveImage
-            : this.images.inPersonGreen;
-    }
-    get kirklandVirtualImg() {
-        return this.activeFilter === 'Virtual'
-            ? this.images.virtualActiveImage
-            : this.images.virtualGreen;
+    get otherEventsIcon() {
+        if (this.activeFilter !== this.labels.otherEvents) return this.images.circleIcon;
+        return this._isOverride ? this.images.tickGreenIcon : this.images.tickIcon;
     }
 
     // Mobile view: show the first event's image (or fallback)
     get mobileImageUrl() {
-        const source = this.activeFilter === 'In Person'
-            ? this.inPersonEvents
-            : this.virtualEvents;
+        const source = this.activeEvents;
         return source && source.length > 0 && source[0].imageUrl
             ? source[0].imageUrl
             : this.defaultImageUrl;
     }
     get mobileImageClass() {
-        const source = this.activeFilter === 'In Person'
-            ? this.inPersonEvents
-            : this.virtualEvents;
+        const source = this.activeEvents;
         const hasActualImage = source && source.length > 0 && source[0].imageUrl;
         return hasActualImage ? 'img-border' : 'img-border fallback-img-16-9';
     }

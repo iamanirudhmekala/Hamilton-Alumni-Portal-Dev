@@ -14,7 +14,7 @@
 // ============================================================
 
 // ---------- Config ----------
-String envSuffix   = '.advdev';                // <-- CHANGE per environment ('.uat', etc.)
+String envSuffix   = '.fullqa';                // <-- CHANGE per environment ('.uat', etc.)
 String profileName = 'System Administrator';
 String timezone    = 'America/New_York';
 String locale      = 'en_US';
@@ -25,16 +25,15 @@ List<String> permSetNames = new List<String>{ 'HAM_Admin' };
 // ---------- People (base username = real email) ----------
 // FirstName = everything before the last space; LastName = last word
 List<String> firstNames = new List<String>{
-    'Nilesh', 'Sachin Kumar', 'Immanuel', 'Arthiraja',
-    'Feroz', 'Bhavani', 'Prathyusha', 'Deepika'
+    'Sachin Kumar','Arthiraja',
+    'Bhavani','Prathyusha','Sudarsan'
 };
 List<String> lastNames = new List<String>{
-    'Mohokar', 'Sharma', 'Sirigiri', 'Govindan',
-    'Basha', 'Sure', 'Mallemuru', 'Jogan'
+    'Sharma','Govindan','Sure','Mallemuru','Krishnan'
 };
 List<String> usernameBases = new List<String>{
-    'nilesh.m@cube84.com', 'sachin.s@cube84.com', 'immanuel.s@cube84.com', 'arthiraja.g@cube84.com',
-    'feroz@cube84.com', 'bhavani.s@cube84.com', 'prathyusha.m@cube84.com', 'deepika.j@cube84.com'
+    'sachin.s@cube84.com','arthiraja.g@cube84.com',
+    'bhavani.s@cube84.com', 'prathyusha.m@cube84.com', 'sudarsan.k@cube84.com'
 };
 Integer total = usernameBases.size();
 

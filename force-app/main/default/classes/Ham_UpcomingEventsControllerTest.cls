@@ -6,14 +6,15 @@
  * Description     : Test class for Ham_UpcomingEventsController.
  *                   Targets >85% code coverage across all branches:
  *                     - Blank contactId guard
- *                     - Contact with regions → In-Person region+category query
- *                     - Contact without regions → gap fill fires directly
- *                     - Gap fill top-up when region filter returns < 3
- *                     - Virtual events query
+ *                     - My Events / Other Events split by registration
+ *                     - No registrations → My Events empty, Other Events populated
+ *                     - A registered event appears in My Events only
+ *                     - Format (In-Person / Virtual) no longer splits the lists
  *                     - Registration enrichment (isRegistered + personalizedLink)
  *                     - Null personalizedLink → '' fallback
  *                     - Cancelled/Pending/past events excluded by base condition
  *                     - MAX_RECORDS cap (≤ 3 per list)
+ *                     - Home page redirection card thumbnail resolution
  *
  * Note: Tests rely on Ham_Events_Metadata__mdt records being present in the org
  *       (Custom Metadata is accessible in tests without insertion).
@@ -172,8 +173,8 @@ private class Ham_UpcomingEventsControllerTest {
         Test.stopTest();
 
         System.assertNotEquals(null, result, 'Wrapper should never be null');
-        System.assertEquals(0, result.inPersonEvents.size(), 'inPersonEvents must be empty for null contactId');
-        System.assertEquals(0, result.virtualEvents.size(),  'virtualEvents must be empty for null contactId');
+        System.assertEquals(0, result.myEvents.size(), 'myEvents must be empty for null contactId');
+        System.assertEquals(0, result.otherEvents.size(), 'otherEvents must be empty for null contactId');
     }
 
     // ── 2. Empty string contactId → immediate empty return ────────────────────
@@ -185,13 +186,13 @@ private class Ham_UpcomingEventsControllerTest {
         Test.stopTest();
 
         System.assertNotEquals(null, result, 'Wrapper should never be null');
-        System.assertEquals(0, result.inPersonEvents.size());
-        System.assertEquals(0, result.virtualEvents.size());
+        System.assertEquals(0, result.myEvents.size());
+        System.assertEquals(0, result.otherEvents.size());
     }
 
-    // ── 3. Happy path — contact with region ───────────────────────────────────
+    // ── 3. Happy path — both lists returned, each capped at MAX_RECORDS ───────
     @isTest
-    static void testHappyPath_ContactWithRegion() {
+    static void testHappyPath_BothListsReturned() {
         Contact c = getContact('Region');
 
         Test.startTest();
@@ -200,78 +201,66 @@ private class Ham_UpcomingEventsControllerTest {
         Test.stopTest();
 
         System.assertNotEquals(null, result, 'Result should not be null');
-        System.assertNotEquals(null, result.inPersonEvents, 'inPersonEvents list should not be null');
-        System.assertNotEquals(null, result.virtualEvents,  'virtualEvents list should not be null');
-        System.assert(result.inPersonEvents.size() <= 3, 'In-Person results must not exceed MAX_RECORDS = 3');
-        System.assert(result.virtualEvents.size()  <= 3, 'Virtual results must not exceed MAX_RECORDS = 3');
+        System.assertNotEquals(null, result.myEvents,    'myEvents list should not be null');
+        System.assertNotEquals(null, result.otherEvents, 'otherEvents list should not be null');
+        System.assert(result.myEvents.size()    <= 3, 'My Events must not exceed MAX_RECORDS = 3');
+        System.assert(result.otherEvents.size() <= 3, 'Other Events must not exceed MAX_RECORDS = 3');
     }
 
-    // ── 4. Contact with multiple semicolon-delimited regions ──────────────────
+    // ── 4. No registrations → My Events empty, Other Events populated ─────────
     @isTest
-    static void testContactWithMultipleRegions() {
-        Contact c = getContact('MultiRegion');
-
-        Test.startTest();
-        Ham_UpcomingEventsController.HomeEventsWrapper result =
-            Ham_UpcomingEventsController.getHomePageEvents(c.Id);
-        Test.stopTest();
-
-        System.assertNotEquals(null, result);
-        System.assert(result.inPersonEvents.size() <= 3);
-        System.assert(result.virtualEvents.size()  <= 3);
-    }
-
-    // ── 5. Contact with no region → region/category query skipped, gap fill fires
-    @isTest
-    static void testContactWithNoRegion_GapFillFires() {
-        Contact c = getContact('NoRegion');
-
-        Test.startTest();
-        Ham_UpcomingEventsController.HomeEventsWrapper result =
-            Ham_UpcomingEventsController.getHomePageEvents(c.Id);
-        Test.stopTest();
-
-        System.assertNotEquals(null, result);
-        System.assertNotEquals(null, result.inPersonEvents);
-        System.assert(result.inPersonEvents.size() <= 3);
-    }
-
-    // ── 6. Gap fill tops up to 3 when region filter returns fewer records ──────
-    @isTest
-    static void testGapFill_TopsUpToThree() {
+    static void testNoRegistrations_MyEventsEmpty() {
         Contact c = getContact('Region');
 
-        // Insert extra In-Person events with no region — only gap fill picks these up
-        Date futureDate = Date.today().addDays(10);
-        List<CventEvents__Event__c> extras = new List<CventEvents__Event__c>();
-        for (Integer i = 0; i < 3; i++) {
-            extras.add(new CventEvents__Event__c(
-                CventEvents__pkg_Title__c       = 'Gap Fill Event ' + i,
-                CventEvents__pkg_StartDate__c   = futureDate.addDays(i),
-                ADVEventFormat__c               = FORMAT_IP,
-                ADVPublicPrivate__c             = 'Public',
-                CventEvents__pkg_Status__c      = STATUS_ACTIVE,
-                CventEvents__pkg_EventStatus__c = 'Upcoming',
-                CventEvents__pkg_EventStub__c   = 'GF0' + i,
-                CventEvents__pkg_Code__c        = 'GF0' + i,
-                CventEvents__pkg_Category__c = 'Test Ctaegory'
-                // ADVPrimaryRegion__c intentionally blank — won't match region filter
-            ));
+        Test.startTest();
+        Ham_UpcomingEventsController.HomeEventsWrapper result =
+            Ham_UpcomingEventsController.getHomePageEvents(c.Id);
+        Test.stopTest();
+
+        System.assertEquals(0, result.myEvents.size(),
+            'A user registered for nothing has no My Events');
+        System.assert(result.otherEvents.size() > 0,
+            'Upcoming events the user is not registered for belong to Other Events');
+    }
+
+    // ── 5. A registered event moves from Other Events to My Events ────────────
+    @isTest
+    static void testRegisteredEvent_MovesToMyEvents() {
+        Contact c = getContact('Region');
+        CventEvents__Event__c ev = getEvent('Upcoming In-Person Event');
+
+        insert new CventEvents__Attendee__c(
+            CventEvents__Event__c        = ev.Id,
+            CventEvents__Contact__c      = c.Id,
+            CventEvents__Status__c       = 'Visited',
+            CventEvents__AttendeeStub__c = '/splittest1',
+            CventEvents__IsFreeloader__c = false
+        );
+
+        Test.startTest();
+        Ham_UpcomingEventsController.HomeEventsWrapper result =
+            Ham_UpcomingEventsController.getHomePageEvents(c.Id);
+        Test.stopTest();
+
+        Boolean foundInMyEvents = false;
+        for (Ham_UpcomingEventsController.EventItem item : result.myEvents) {
+            if (item.id == String.valueOf(ev.Id)) {
+                foundInMyEvents = true;
+                System.assertEquals(true, item.isRegistered,
+                    'Everything in My Events is registered by definition');
+            }
         }
-        insert extras;
+        System.assertEquals(true, foundInMyEvents, 'The registered event belongs to My Events');
 
-        Test.startTest();
-        Ham_UpcomingEventsController.HomeEventsWrapper result =
-            Ham_UpcomingEventsController.getHomePageEvents(c.Id);
-        Test.stopTest();
-
-        System.assertNotEquals(null, result);
-        System.assert(result.inPersonEvents.size() <= 3, 'Gap fill must never exceed MAX_RECORDS = 3');
+        for (Ham_UpcomingEventsController.EventItem item : result.otherEvents) {
+            System.assertNotEquals(String.valueOf(ev.Id), item.id,
+                'A registered event must not also appear under Other Events');
+        }
     }
 
-    // ── 7. Virtual events appear in virtualEvents list ────────────────────────
+    // ── 6. Other Events carries no registration flag ──────────────────────────
     @isTest
-    static void testVirtualEventsReturned() {
+    static void testOtherEvents_NotFlaggedAsRegistered() {
         Contact c = getContact('Region');
 
         Test.startTest();
@@ -279,8 +268,34 @@ private class Ham_UpcomingEventsControllerTest {
             Ham_UpcomingEventsController.getHomePageEvents(c.Id);
         Test.stopTest();
 
-        System.assertNotEquals(null, result.virtualEvents, 'virtualEvents list should not be null');
-        System.assert(result.virtualEvents.size() <= 3);
+        for (Ham_UpcomingEventsController.EventItem item : result.otherEvents) {
+            System.assertEquals(false, item.isRegistered,
+                'Other Events are by definition not registered — the card shows Learn More/Register');
+        }
+    }
+
+    // ── 7. Virtual and In-Person events sit together in the same lists ────────
+    @isTest
+    static void testFormatNoLongerSplitsTheLists() {
+        Contact c = getContact('Region');
+
+        Test.startTest();
+        Ham_UpcomingEventsController.HomeEventsWrapper result =
+            Ham_UpcomingEventsController.getHomePageEvents(c.Id);
+        Test.stopTest();
+
+        // Setup creates one upcoming In-Person and one upcoming Virtual event, neither
+        // registered, so both must show up under Other Events now that format is ignored.
+        Boolean foundInPerson = false;
+        Boolean foundVirtual  = false;
+
+        for (Ham_UpcomingEventsController.EventItem item : result.otherEvents) {
+            if (item.title == 'Upcoming In-Person Event') foundInPerson = true;
+            if (item.title == 'Upcoming Virtual Event')   foundVirtual  = true;
+        }
+
+        System.assertEquals(true, foundInPerson, 'In-Person events belong to Other Events');
+        System.assertEquals(true, foundVirtual,  'Virtual events belong to Other Events too');
     }
 
     // ── 8. Registered user — attendee with personalizedLink set ───────────────
@@ -305,7 +320,7 @@ private class Ham_UpcomingEventsControllerTest {
         System.assertNotEquals(null, result);
 
         Ham_UpcomingEventsController.EventItem registeredItem = null;
-        for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
+        for (Ham_UpcomingEventsController.EventItem item : result.myEvents) {
             if (item.id == String.valueOf(ev.Id)) {
                 registeredItem = item;
                 break;
@@ -341,7 +356,7 @@ private class Ham_UpcomingEventsControllerTest {
             Ham_UpcomingEventsController.getHomePageEvents(c.Id);
         Test.stopTest();
 
-        for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
+        for (Ham_UpcomingEventsController.EventItem item : result.myEvents) {
             if (item.id == String.valueOf(ev.Id)) {
                 /*System.assertEquals(true, item.isRegistered,
                     'Should still be marked registered even without personalizedLink');
@@ -362,7 +377,7 @@ private class Ham_UpcomingEventsControllerTest {
             Ham_UpcomingEventsController.getHomePageEvents(c.Id);
         Test.stopTest();
 
-        for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
+        for (Ham_UpcomingEventsController.EventItem item : result.otherEvents) {
             System.assertNotEquals('Cancelled In-Person Event', item.title,
                 'Cancelled event must be excluded by base condition');
         }
@@ -378,7 +393,7 @@ private class Ham_UpcomingEventsControllerTest {
             Ham_UpcomingEventsController.getHomePageEvents(c.Id);
         Test.stopTest();
 
-        for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
+        for (Ham_UpcomingEventsController.EventItem item : result.otherEvents) {
             System.assertNotEquals('Pending In-Person Event', item.title,
                 'Pending event must be excluded by base condition');
         }
@@ -394,7 +409,7 @@ private class Ham_UpcomingEventsControllerTest {
             Ham_UpcomingEventsController.getHomePageEvents(c.Id);
         Test.stopTest();
 
-        for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
+        for (Ham_UpcomingEventsController.EventItem item : result.otherEvents) {
             System.assertNotEquals('Past In-Person Event', item.title,
                 'Past event must be excluded by upcoming date filter');
         }
@@ -438,10 +453,10 @@ private class Ham_UpcomingEventsControllerTest {
             Ham_UpcomingEventsController.getHomePageEvents(c.Id);
         Test.stopTest();
 
-        System.assert(result.inPersonEvents.size() <= 3,
-            'In-Person list must be capped at MAX_RECORDS = 3');
-        System.assert(result.virtualEvents.size() <= 3,
-            'Virtual list must be capped at MAX_RECORDS = 3');
+        System.assert(result.myEvents.size() <= 3,
+            'My Events list must be capped at MAX_RECORDS = 3');
+        System.assert(result.otherEvents.size() <= 3,
+            'Other Events list must be capped at MAX_RECORDS = 3');
     }
 
     // ── 14. EventItem defaults — isRegistered = false, personalizedLink = '' ──
@@ -454,17 +469,12 @@ private class Ham_UpcomingEventsControllerTest {
             Ham_UpcomingEventsController.getHomePageEvents(c.Id);
         Test.stopTest();
 
-        for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
+        for (Ham_UpcomingEventsController.EventItem item : result.otherEvents) {
             System.assertNotEquals(null, item.id, 'EventItem id should not be null');
             System.assertEquals(false, item.isRegistered,
                 'isRegistered should default to false for unregistered user');
             System.assertEquals('', item.personalizedLink,
                 'personalizedLink should default to empty string');
-        }
-        for (Ham_UpcomingEventsController.EventItem item : result.virtualEvents) {
-            System.assertNotEquals(null, item.id);
-            System.assertEquals(false, item.isRegistered);
-            System.assertEquals('', item.personalizedLink);
         }
     }
 
@@ -493,7 +503,7 @@ private class Ham_UpcomingEventsControllerTest {
         Test.stopTest();
 
         Boolean found = false;
-        for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
+        for (Ham_UpcomingEventsController.EventItem item : result.otherEvents) {
             if (item.title == 'In Progress Multi-Day Event') {
                 found = true;
                 break;
@@ -527,7 +537,7 @@ private class Ham_UpcomingEventsControllerTest {
             Ham_UpcomingEventsController.getHomePageEvents(c.Id);
         Test.stopTest();
 
-        for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
+        for (Ham_UpcomingEventsController.EventItem item : result.otherEvents) {
             System.assertNotEquals('Ended Multi-Day Event', item.title,
                 'Event with EndDate in the past must be excluded regardless of StartDate');
         }
@@ -545,7 +555,7 @@ private class Ham_UpcomingEventsControllerTest {
         Test.stopTest();
 
         Boolean found = false;
-        for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
+        for (Ham_UpcomingEventsController.EventItem item : result.otherEvents) {
             if (item.title == 'Essentials URL Event') {
                 found = true;
                 System.assertEquals('https://example.com/essentials', item.registrationLink,
@@ -553,7 +563,7 @@ private class Ham_UpcomingEventsControllerTest {
                 break;
             }
         }
-        System.assert(found, 'Essentials URL Event should be present via gap fill');
+        System.assert(found, 'Essentials URL Event should be present in Other Events');
     }
 
     // ── 17c. Unregistered — ADVEssentialsURLforascend__c blank falls back to
@@ -568,7 +578,7 @@ private class Ham_UpcomingEventsControllerTest {
         Test.stopTest();
 
         Boolean found = false;
-        for (Ham_UpcomingEventsController.EventItem item : result.inPersonEvents) {
+        for (Ham_UpcomingEventsController.EventItem item : result.otherEvents) {
             if (item.title == 'Upcoming In-Person Event') {
                 found = true;
                 System.assertEquals('https://example.com/register', item.registrationLink,
@@ -576,7 +586,7 @@ private class Ham_UpcomingEventsControllerTest {
                 break;
             }
         }
-        System.assert(found, 'Upcoming In-Person Event should be present via gap fill');
+        System.assert(found, 'Upcoming In-Person Event should be present in Other Events');
     }
 
     // ── 17. Wrapper inner classes instantiate with correct defaults ────────────
@@ -585,10 +595,10 @@ private class Ham_UpcomingEventsControllerTest {
         Ham_UpcomingEventsController.HomeEventsWrapper wrapper =
             new Ham_UpcomingEventsController.HomeEventsWrapper();
 
-        System.assertNotEquals(null, wrapper.inPersonEvents, 'inPersonEvents must be initialized');
-        System.assertNotEquals(null, wrapper.virtualEvents,  'virtualEvents must be initialized');
-        System.assertEquals(0, wrapper.inPersonEvents.size());
-        System.assertEquals(0, wrapper.virtualEvents.size());
+        System.assertNotEquals(null, wrapper.myEvents, 'myEvents must be initialized');
+        System.assertNotEquals(null, wrapper.otherEvents, 'otherEvents must be initialized');
+        System.assertEquals(0, wrapper.myEvents.size());
+        System.assertEquals(0, wrapper.otherEvents.size());
 
         Ham_UpcomingEventsController.EventItem item = new Ham_UpcomingEventsController.EventItem();
         System.assertEquals(null, item.id, 'New EventItem.id should default to null');

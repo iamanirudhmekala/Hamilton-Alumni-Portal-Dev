@@ -266,6 +266,11 @@ export default class Ham_MainCmp extends NavigationMixin(LightningElement) {
         virtualImage: this.mainResource.hamIcons + '/virtual.png',
         virtualGreen: this.mainResource.hamIcons + '/virtual-green.png',
         virtualActiveImage: this.mainResource.hamIcons + '/virtual-active.png',
+        // Pill icons for the events widget's My Events / Other Events toggle,
+        // the same icons the Events tab uses for its sub-tabs
+        tickIcon: this.mainResource.hamIcons + '/tick-circle.png',
+        tickGreenIcon: this.mainResource.hamIcons + '/tick-circle-green.png',
+        circleIcon: this.mainResource.hamIcons + '/only-circle.png',
         mobileGridOutlineOnly: this.mainResource.hamIcons + '/mobile-gift-outline-only-box.png',
         givingDayClose: this.mainResource.hamIcons + '/giving-day-close.png',
         mobileArrow: this.mainResource.hamIcons + '/mobile-arrow.png',

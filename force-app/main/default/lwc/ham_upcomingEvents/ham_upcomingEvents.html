@@ -20,28 +20,17 @@
                     </a>
                 </div>
 
-                <!-- In Person / Virtual toggle buttons -->
+                <!-- My Events / Other Events toggle buttons -->
                 <div class="event-btn-container">
-                    <button class={inPersonClass} data-filter="In Person" onclick={handleFilterChange}>
-                        <template lwc:if={isOverride}>
-                            <img src={kirklandInPersonImg} class="btn-icon" data-filter="In Person"
-                                onclick={handleFilterChange} />
-                        </template>
-                        <template lwc:else>
-                            <img src={inPersonImg} class="btn-icon" data-filter="In Person"
-                                onclick={handleFilterChange} />
-                        </template>
-                        In Person
+                    <button class={myEventsClass} data-filter={labels.myEvents} onclick={handleFilterChange}>
+                        <img src={myEventsIcon} class="btn-icon" data-filter={labels.myEvents}
+                            onclick={handleFilterChange} />
+                        {labels.myEvents}
                     </button>
-                    <button class={virtualClass} data-filter="Virtual" onclick={handleFilterChange}>
-                        <template lwc:if={isOverride}>
-                            <img src={kirklandVirtualImg} class="btn-icon" data-filter="Virtual"
-                                onclick={handleFilterChange} />
-                        </template>
-                        <template lwc:else>
-                            <img src={virtualImg} class="btn-icon" data-filter="Virtual" onclick={handleFilterChange} />
-                        </template>
-                        Virtual
+                    <button class={otherEventsClass} data-filter={labels.otherEvents} onclick={handleFilterChange}>
+                        <img src={otherEventsIcon} class="btn-icon" data-filter={labels.otherEvents}
+                            onclick={handleFilterChange} />
+                        {labels.otherEvents}
                     </button>
                 </div>
 
@@ -123,7 +112,7 @@
                                 title="Information">
                                 <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
                             </span>
-                            <h2>More Events coming soon.</h2>
+                            <h2>{emptyStateMessage}</h2>
                         </div>
                     </template>
                 </template>
